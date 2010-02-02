@@ -21,8 +21,10 @@ __author__ = 'drew@sentineldesign.net'
 
 from recurly import Recurly, RecurlyError
 
+# Set authentication credentials
 recurly = Recurly(username='yourusername', password='yourpassword')
 
+# Create an account
 account = {
         'account_code': '1234',
         'username': 'jdoe',
@@ -32,14 +34,18 @@ account = {
         'company_name': 'Domain, LLC.',
     }
 recurly.accounts.create(data=account)
-print recurly.accounts(account_code='1234')
 
+# List accounts
+print recurly.accounts()
+
+# Update an account
 account = {
         'first_name': 'Jane',
     }
 recurly.accounts.update(account_code='1234', data=account)
+
+# Get an account
 print recurly.accounts(account_code='1234')
 
+# Delete an account
 recurly.accounts.delete(account_code='1234')
-
-print recurly.accounts()
