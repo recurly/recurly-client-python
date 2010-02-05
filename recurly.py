@@ -16,8 +16,8 @@
 
 '''A minimalist Python interface for the Recurly API'''
 
-__author__ = 'drew@sentineldesign.net'
-__version__ = '0.1-devel'
+__author__ = 'Drew Yeaton <drew@sentineldesign.net>'
+__version__ = '0.2-devel'
 
 
 import base64
@@ -39,32 +39,31 @@ CRUD_METHODS = {
         'delete': 'DELETE'
     }
 
-MODEL_PK = {
-        'accounts': {
-                'model': 'account',
-                'pk': 'account_code',
-            },
-        'plans': {
-                'model': 'plan',
-                'pk': 'plan_code',
-            },
-        'transactions': {
-                'model': 'transaction',
-                'pk': 'transaction_id',
-            },
+PK = {
+        'account': 'account_code',
+        'plan': 'plan_code',
+        'transaction': 'transaction_id',
+        'invoice': 'invoice_id',
     }
 
+SINGULAR = {'billing_info': 'billing_info'}
 
-class RecurlyError(Exception):
-    pass
+
+class RecurlyError(Exception): pass
+class RecurlyConnectionError(Exception): pass
+class RecurlyValidationError(Exception): pass
 
 
 class Recurly(object):
-    def __init__(self, username=None, password=None, uri=''):
+    username = ''
+    password = ''
+    uri = ''
+    response = ''   
+    
+    def __init__(self, username='', password='', uri=''):
         self.username = username
         self.password = password
         self.uri = uri
-        self._urllib = urllib2
     
     
     def __getattr__(self, k):
@@ -78,23 +77,19 @@ class Recurly(object):
         # Split out uri into segments and assume the last segment is an 
         # action. If it isn't place it on the end of the url again
         urili = self.uri.split('/')
-        action = urili.pop()
         
         # Determine method with which to to request uri
+        action = urili.pop()
         try:
             method = CRUD_METHODS[action]
         except KeyError:
             urili.append(action)
             method = 'GET'
         
-        # Get pk name and model name for this uri
-        try:
-            pk = MODEL_PK[urili[1]]['pk']
-            model = MODEL_PK[urili[1]]['model']
-        except KeyError:
-            pk = 'id'
-            model = urili[1]
-        
+        r = Recurly.singularize(urili[1])
+        pk = PK[r]
+        model = Recurly.singularize(urili[-1])
+                
         # If pk is set in arguments, place it in url instead
         uid = kwargs.pop(pk, False)
         if uid:
@@ -107,10 +102,10 @@ class Recurly(object):
         
         # Build url from the pieces
         url = URL + '/'.join(urili)
-        
+                
         # Build request with our new url, method, and data
-        opener = self._urllib.build_opener(self._urllib.HTTPHandler)
-        self._request = self._urllib.Request(url=url, data=data)
+        opener = urllib2.build_opener(urllib2.HTTPHandler)
+        self._request = urllib2.Request(url=url, data=data)
         self._request.get_method = lambda: method
         self._request.add_header('Content-Type', 'application/xml')
         self._request.add_header('Authorization', 'Basic %s' % base64.encodestring('%s:%s' % (self.username, self.password))[:-1])
@@ -126,18 +121,41 @@ class Recurly(object):
                 print e.read()
                 raise RecurlyError(e.code)
         except URLError, e:
-            print e.read()
-            raise RecurlyError(e.code)
-                
-        # Remove space between xml tags
-        xml_response = re.sub(">\s+", '>', xml_response)
+            raise RecurlyConnectionError(e)
         
-        if xml_response.strip() is '':
-            return None
+        xml_response = Recurly.remove_white_space(xml_response)
+        
+        if xml_response is '':
+            self.response = None
         else:
-            return Recurly.xml_to_dict(xml_response)
+            self.response = Recurly.xml_to_dict(xml_response)
+        
+        return self.response
     
-
+    
+    def parse_notification(self, xml):
+        xml = Recurly.remove_white_space(xml)
+        doc = minidom.parseString(xml)
+        root = doc.documentElement
+        self.response = Recurly._parse_xml_doc(root.firstChild)
+        return root.tagName
+    
+    
+    @staticmethod
+    def singularize(name):
+        try:
+            return SINGULAR[name]
+        except KeyError:
+            return name[:-1]
+    
+    
+    @staticmethod
+    def remove_white_space(xml):
+        xml = re.sub(">\s+", '>', xml)
+        xml = xml.strip()        
+        return xml
+    
+    
     @staticmethod
     def _build_xml_doc(doc, root, data):
         for n in data:          
@@ -192,6 +210,6 @@ class Recurly(object):
         doc = minidom.parseString(xml)
         return Recurly._parse_xml_doc(doc.documentElement)
     
-
+ 
 __all__ = ['Recurly', 'RecurlyError']
             

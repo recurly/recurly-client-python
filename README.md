@@ -4,7 +4,7 @@ The python-recurly library is a minimalist Python interface for Recurly's subscr
 
 ##Usage
 
-Please see example.py for a quick example of creating, reading, updated, deleting and listing accounts.
+Please see example.py for a quick example of creating, reading, updated, deleting and listing accounts. For further examples, read through the tests in recurlytest.py.
 
 ##Requirements
 
