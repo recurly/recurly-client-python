@@ -17,12 +17,17 @@
 '''A minimalist Python interface for the Recurly API'''
 
 __author__ = 'Drew Yeaton <drew@sentineldesign.net>'
+__version__ = '0.9-devel'
 
 
-import recurly
+from recurly import Recurly, RecurlyError
+
+
+USERNAME = ''
+PASSWORD = ''
 
 # Set authentication credentials
-recurly = recurly.Recurly(username='', password='')
+recurly = Recurly(username=USERNAME, password=PASSWORD)
 
 def crud_example():
     # Create an account
@@ -30,35 +35,35 @@ def crud_example():
             'account_code': '1234',
             'username': 'jdoe',
             'email': 'jdoe@domain.com',
-            'first_name': 'John',
+            'first_name': 'J',
             'last_name': 'Doe',
             'company_name': 'Domain, LLC.',
         }
     recurly.accounts.create(data=account)
-    
+        
     # List accounts
     print recurly.accounts()
     
-    # # Update an account
-    # account = {
-    #         'first_name': 'Jane',
-    #     }
-    # recurly.accounts.update(account_code='1234', data=account)
-    # 
-    # # Get an account
-    # print recurly.accounts(account_code='1234')
-    # 
-    # # Delete an account
-    # recurly.accounts.delete(account_code='1234')
+    # Update an account
+    account = {
+            'first_name': 'Jane',
+        }
+    recurly.accounts.update(account_code='1234', data=account)
+    
+    # Get an account
+    print recurly.accounts(account_code='1234')
+    
+    # Delete an account
+    recurly.accounts.delete(account_code='1234')
 
 
 def notification_example():
     xml = '<?xml version="1.0" encoding="UTF-8"?><canceled_account_notification><account><account_code>verena@test.com</account_code><username></username><email>verena@test.com</email><first_name>Verena</first_name><last_name>Test</last_name><company_name></company_name></account></canceled_account_notification>'
     
-    note = recurly.parse_notification(xml)
-    data = recurly.response
+    note_type = recurly.parse_notification(xml)
+    note_data = recurly.response
     
-    print note, data
+    print note_type, note_data
 
 crud_example()
-# notification_example()
+notification_example()

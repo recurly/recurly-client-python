@@ -17,7 +17,7 @@
 '''A minimalist Python interface for the Recurly API'''
 
 __author__ = 'Drew Yeaton <drew@sentineldesign.net>'
-__version__ = '0.2-devel'
+__version__ = '0.9-devel'
 
 
 import base64
@@ -32,6 +32,7 @@ from xml.dom import minidom
 
 URL = 'https://app.recurly.com'
 
+# Names of each action and its related request method
 CRUD_METHODS = {
         'create': 'POST',
         'read': 'GET',
@@ -39,6 +40,8 @@ CRUD_METHODS = {
         'delete': 'DELETE'
     }
 
+# A list of resources and primary keys for each. If you wish 
+# to use 'id' for every resource, just remove these
 PK = {
         'account': 'account_code',
         'plan': 'plan_code',
@@ -46,19 +49,30 @@ PK = {
         'invoice': 'invoice_id',
     }
 
-SINGULAR = {'billing_info': 'billing_info'}
-
+# Name of each resource that should be treated as an array
+# no matter the number of siblings it has. However, this
+# is only applicable when its parent is of type 'collection'
+# or 'array'
+MULTIPLE = [
+        'account',
+        'charge',
+        'credit',
+        'invoice',
+        'plan',
+        'transaction',
+    ]
 
 class RecurlyError(Exception): pass
-class RecurlyConnectionError(Exception): pass
 class RecurlyValidationError(Exception): pass
+class RecurlyConnectionError(Exception): pass
 
 
 class Recurly(object):
     username = ''
     password = ''
     uri = ''
-    response = ''   
+    response = None
+    errors = None
     
     def __init__(self, username='', password='', uri=''):
         self.username = username
@@ -87,7 +101,11 @@ class Recurly(object):
             method = 'GET'
         
         r = Recurly.singularize(urili[1])
-        pk = PK[r]
+        try:
+            pk = PK[r]
+        except KeyError:
+            pk = 'id'
+                
         model = Recurly.singularize(urili[-1])
                 
         # If pk is set in arguments, place it in url instead
@@ -100,9 +118,14 @@ class Recurly(object):
         if data:
             data = Recurly.dict_to_xml(model, data)
         
+        # Build argument list if necessary
+        args = ''
+        if method == 'GET' and kwargs:
+            args = "?%s" % (urllib.urlencode(kwargs.items()))
+        
         # Build url from the pieces
-        url = URL + '/'.join(urili)
-                
+        url = URL + '/'.join(urili) + args
+                   
         # Build request with our new url, method, and data
         opener = urllib2.build_opener(urllib2.HTTPHandler)
         self._request = urllib2.Request(url=url, data=data)
@@ -114,15 +137,22 @@ class Recurly(object):
             response = opener.open(self._request)
             xml_response = response.read()
         except HTTPError, e:
+            xml_response = e.read()
+            
             # All responses in this range are successes
             if e.code in range(200, 205):
-                xml_response = e.read()
+                pass
+            elif e.code == 422 and 'errors' in xml_response:
+                er = Recurly.remove_white_space(xml_response)
+                self.errors = Recurly.xml_to_dict(er) if er else None
+                msg = '. '.join(self.errors.values()) + '.'
+                raise RecurlyValidationError(msg)
             else:
                 print e.read()
-                raise RecurlyError(e.code)
+                raise RecurlyError(e)
         except URLError, e:
             raise RecurlyConnectionError(e)
-        
+                
         xml_response = Recurly.remove_white_space(xml_response)
         
         if xml_response is '':
@@ -137,16 +167,16 @@ class Recurly(object):
         xml = Recurly.remove_white_space(xml)
         doc = minidom.parseString(xml)
         root = doc.documentElement
-        self.response = Recurly._parse_xml_doc(root.firstChild)
+        self.response = Recurly._parse_xml_doc(root)
         return root.tagName
     
     
     @staticmethod
     def singularize(name):
-        try:
-            return SINGULAR[name]
-        except KeyError:
-            return name[:-1]
+        # @todo Account for situation in the future where resource has
+        # a name where we can't singularize it by removing the trailing 's'.
+        # Also, this feels/looks like an ugly way to do this
+        return name[:-1] if name[:-1] in MULTIPLE else name
     
     
     @staticmethod
@@ -180,26 +210,37 @@ class Recurly(object):
     
     @staticmethod
     def _parse_xml_doc(root):
+        try:
+            attr = root.attributes['type']
+            root_type = attr.value
+        except:
+            root_type = None
+        
         child = root.firstChild
-        if(not child):
+        if not child:
             return None
-        elif(child.nodeType == minidom.Node.TEXT_NODE):
+        elif child.nodeType == minidom.Node.TEXT_NODE:
+            # @todo Change this to maintain type (eg. int, string, datetime)
             return child.nodeValue
 
         di = {}
         while child is not None:
-            if(child.nodeType == minidom.Node.ELEMENT_NODE):
+            if child.nodeType == minidom.Node.ELEMENT_NODE:
                 try:
                     di[child.tagName]
                 except KeyError:
-                    di[child.tagName] = None
-                
+                    # @todo This could be changed so that if the root type is an array,
+                    # we automatically treat the resource as an array (eg. no checking 
+                    # the element name)
+                    if child.tagName in MULTIPLE and root_type in ['array', 'collection']:
+                        di[child.tagName] = []
+                    else:
+                        di[child.tagName] = None
+
                 if di[child.tagName] is None:
                     di[child.tagName] = Recurly._parse_xml_doc(child)
                 elif type(di[child.tagName]) is types.ListType:
                     di[child.tagName].append(Recurly._parse_xml_doc(child))
-                else:
-                    di[child.tagName] = [di[child.tagName], Recurly._parse_xml_doc(child)]
                 
             child = child.nextSibling
         return di
@@ -211,5 +252,5 @@ class Recurly(object):
         return Recurly._parse_xml_doc(doc.documentElement)
     
  
-__all__ = ['Recurly', 'RecurlyError']
+__all__ = ['Recurly', 'RecurlyError', 'RecurlyValidationError', 'RecurlyConnectionError']
             
