@@ -17,7 +17,7 @@
 '''A minimalist Python interface for the Recurly API'''
 
 __author__ = 'Drew Yeaton <drew@sentineldesign.net>'
-__version__ = '0.9-devel'
+__version__ = '1.0-devel'
 
 
 import base64
