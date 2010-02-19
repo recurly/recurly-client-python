@@ -1,23 +1,9 @@
 #!/usr/bin/python2.5
-#
-# Copyright 2010 Sentinel Design. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 '''A minimalist Python interface for the Recurly API'''
 
 __author__ = 'Drew Yeaton <drew@sentineldesign.net>'
-__version__ = '1.0-devel'
+__version__ = '1.1-devel'
 
 
 import base64
@@ -62,9 +48,18 @@ MULTIPLE = [
         'transaction',
     ]
 
-class RecurlyError(Exception): pass
-class RecurlyValidationError(Exception): pass
-class RecurlyConnectionError(Exception): pass
+# These resources should always be treated as an array
+# even the root element is not of the 'array' type
+FORCED_MULTIPLE = [
+        'error',
+    ]
+
+class RecurlyException(Exception): pass
+class RecurlyValidationException(RecurlyException): pass
+class RecurlyConnectionException(RecurlyException): pass
+class RecurlyNotFoundException(RecurlyException): pass
+class RecurlyServerException(RecurlyException): pass
+class RecurlyServiceUnavailableException(RecurlyException): pass
 
 
 class Recurly(object):
@@ -130,9 +125,11 @@ class Recurly(object):
         opener = urllib2.build_opener(urllib2.HTTPHandler)
         self._request = urllib2.Request(url=url, data=data)
         self._request.get_method = lambda: method
+        self._request.add_header('Accepts', 'application/xml')
         self._request.add_header('Content-Type', 'application/xml')
+        self._request.add_header('User-Agent', 'Recurly Python Client (v' + __version__ + ')')
         self._request.add_header('Authorization', 'Basic %s' % base64.encodestring('%s:%s' % (self.username, self.password))[:-1])
-
+                
         try:                        
             response = opener.open(self._request)
             xml_response = response.read()
@@ -142,16 +139,20 @@ class Recurly(object):
             # All responses in this range are successes
             if e.code in range(200, 205):
                 pass
-            elif e.code == 422 and 'errors' in xml_response:
-                er = Recurly.remove_white_space(xml_response)
-                self.errors = Recurly.xml_to_dict(er) if er else None
-                msg = '. '.join(self.errors.values()) + '.'
-                raise RecurlyValidationError(msg)
+            elif e.code == 422:
+                msg = self.parse_errors(xml_response)
+                raise RecurlyValidationException(msg)
+            elif e.code == 404:
+                msg = self.parse_errors(xml_response)
+                raise RecurlyNotFoundException(msg)
+            elif e.code == 500:
+                raise RecurlyServerException(e)
+            elif e.code == 503:
+                raise RecurlyServiceUnavailableException(e)
             else:
-                print e.read()
-                raise RecurlyError(e)
+                raise RecurlyException(e)
         except URLError, e:
-            raise RecurlyConnectionError(e)
+            raise RecurlyConnectionException(e)
                 
         xml_response = Recurly.remove_white_space(xml_response)
         
@@ -161,6 +162,19 @@ class Recurly(object):
             self.response = Recurly.xml_to_dict(xml_response)
         
         return self.response
+    
+    
+    def parse_errors(self, xml):
+        xml = Recurly.remove_white_space(xml)
+        if not xml:
+            return None
+        
+        er = Recurly.xml_to_dict(xml)
+        self.errors = er['error']
+        
+        # Remove periods from all sentences that have them.
+        ers = [e[:-1] if e[-1:] == '.' else e for e in self.errors]
+        return '. '.join(ers) + '.'
     
     
     def parse_notification(self, xml):
@@ -234,6 +248,8 @@ class Recurly(object):
                     # the element name)
                     if child.tagName in MULTIPLE and root_type in ['array', 'collection']:
                         di[child.tagName] = []
+                    elif  child.tagName in FORCED_MULTIPLE:
+                        di[child.tagName] = []
                     else:
                         di[child.tagName] = None
 
@@ -252,5 +268,4 @@ class Recurly(object):
         return Recurly._parse_xml_doc(doc.documentElement)
     
  
-__all__ = ['Recurly', 'RecurlyError', 'RecurlyValidationError', 'RecurlyConnectionError']
-            
+__all__ = ['Recurly', 'RecurlyException', 'RecurlyValidationException', 'RecurlyConnectionException']
