@@ -170,11 +170,11 @@ class Recurly(object):
             return None
         
         er = Recurly.xml_to_dict(xml)
-        self.errors = er['error']
+        ers = er['error']
         
         # Remove periods from all sentences that have them.
-        ers = [e[:-1] if e[-1:] == '.' else e for e in self.errors]
-        return '. '.join(ers) + '.'
+        self.errors = [e[:-1] if e[-1:] == '.' else e for e in ers]
+        return '. '.join(self.errors) + '.'
     
     
     def parse_notification(self, xml):
@@ -248,7 +248,7 @@ class Recurly(object):
                     # the element name)
                     if child.tagName in MULTIPLE and root_type in ['array', 'collection']:
                         di[child.tagName] = []
-                    elif  child.tagName in FORCED_MULTIPLE:
+                    elif child.tagName in FORCED_MULTIPLE:
                         di[child.tagName] = []
                     else:
                         di[child.tagName] = None

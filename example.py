@@ -25,7 +25,7 @@ def crud_example():
             'last_name': 'Doe',
             'company_name': 'Domain, LLC.',
         }
-    # recurly.accounts.create(data=account)
+    recurly.accounts.create(data=account)
         
     # List accounts
     print recurly.accounts()
