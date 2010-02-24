@@ -2,7 +2,8 @@
 
 '''A minimalist Python interface for the Recurly API'''
 
-__author__ = 'Drew Yeaton <drew@sentineldesign.net>'
+__author__ = 'Drew Yeaton <drew.yeaton@recurly.com>'
+__license__ = 'MIT License'
 __version__ = '1.1-devel'
 
 
