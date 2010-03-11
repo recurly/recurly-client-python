@@ -4,7 +4,7 @@
 
 __author__ = 'Drew Yeaton <drew.yeaton@recurly.com>'
 __license__ = 'MIT License'
-__version__ = '1.1-devel'
+__version__ = '1.2-devel'
 
 
 import base64
@@ -129,7 +129,7 @@ class Recurly(object):
         self._request.add_header('Accept', 'application/xml')
         self._request.add_header('Content-Type', 'application/xml')
         self._request.add_header('User-Agent', 'Recurly Python Client (v' + __version__ + ')')
-        self._request.add_header('Authorization', 'Basic %s' % base64.encodestring('%s:%s' % (self.username, self.password))[:-1])
+        self._request.add_header('Authorization', 'Basic %s' % base64.standard_b64encode('%s:%s' % (self.username, self.password)))
                 
         try:                        
             response = opener.open(self._request)

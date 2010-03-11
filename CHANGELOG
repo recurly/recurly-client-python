@@ -1,0 +1,10 @@
+## March 11, 2010 ##
+Version 1.2
+
+- Fix authentication header if the username long
+
+
+## February 23, 2010 ##
+Version 1.1
+
+- Initial release
