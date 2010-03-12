@@ -129,7 +129,7 @@ class Recurly(object):
         self._request.add_header('Accept', 'application/xml')
         self._request.add_header('Content-Type', 'application/xml')
         self._request.add_header('User-Agent', 'Recurly Python Client (v' + __version__ + ')')
-        self._request.add_header('Authorization', 'Basic %s' % base64.encodestring('%s:%s' % (self.username, self.password))[:-1])
+        self._request.add_header('Authorization', 'Basic %s' % base64.standard_b64encode('%s:%s' % (self.username, self.password)))
                 
         try:                        
             response = opener.open(self._request)
