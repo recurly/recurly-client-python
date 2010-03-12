@@ -271,4 +271,6 @@ class Recurly(object):
         return Recurly._parse_xml_doc(doc.documentElement)
     
  
-__all__ = ['Recurly', 'RecurlyException', 'RecurlyValidationException', 'RecurlyConnectionException']
+__all__ = ['Recurly', 'RecurlyException', 'RecurlyValidationException', 'RecurlyConnectionException', 'RecurlyNotFoundException', 'RecurlyServerException', 'RecurlyServiceUnavailableException']
+
+
