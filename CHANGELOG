@@ -1,6 +1,7 @@
 ## March 11, 2010 ##
 Version 1.2
 
+- Added 'subdomain' parameter
 - Fix authentication header if the username long
 
 

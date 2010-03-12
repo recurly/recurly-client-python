@@ -12,9 +12,10 @@ from recurly import Recurly, RecurlyException, RecurlyConnectionException, Recur
 
 USERNAME = ''
 PASSWORD = ''
+SUBDOMAIN = ''
 
 # Set authentication credentials
-recurly = Recurly(username=USERNAME, password=PASSWORD)
+recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
 
 def crud_example():
     # Create an account

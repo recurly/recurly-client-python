@@ -4,7 +4,7 @@
 
 __author__ = 'Drew Yeaton <drew.yeaton@recurly.com>'
 __license__ = 'MIT License'
-__version__ = '1.1-devel'
+__version__ = '1.2-devel'
 
 
 import sys
@@ -18,6 +18,7 @@ from recurly import Recurly, RecurlyException, RecurlyConnectionException, Recur
 # Use your Recurly credentials here.
 USERNAME = ''
 PASSWORD = ''
+SUBDOMAIN = ''
 
 # Create 2 plans in the web interface and fill these in.
 PLAN_CODE_A = ''
@@ -47,7 +48,7 @@ class AccountTestCase(unittest.TestCase):
     create_account_result = None
     
     def create_account(self, account_code):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_account_data = {
                 'account_code': account_code,
@@ -65,7 +66,7 @@ class AccountTestCase(unittest.TestCase):
     
     def test_create_account(self):
         account_code = str(random.randint(0,10000000))
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_data = {
                 'account_code': account_code,
@@ -83,7 +84,7 @@ class AccountTestCase(unittest.TestCase):
     
     
     def test_get_account(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         account_code = str(random.randint(0,10000000))
         self.create_account(account_code=account_code)
@@ -99,7 +100,7 @@ class AccountTestCase(unittest.TestCase):
     
     
     def test_update_account(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         account_code = str(random.randint(0,10000000))
         self.create_account(account_code=account_code)
@@ -116,7 +117,7 @@ class AccountTestCase(unittest.TestCase):
     
     
     def test_close_account(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         account_code = str(random.randint(0,10000000))
         self.create_account(account_code=account_code)
@@ -127,7 +128,7 @@ class AccountTestCase(unittest.TestCase):
     
     
     def test_list_accounts(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         account_code = str(random.randint(0,10000000))
         self.create_account(account_code=account_code)
@@ -144,7 +145,7 @@ class BillingInfoTestCase(unittest.TestCase):
     account_code = ''
     
     def setUp(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         self.account_code = str(random.randint(0,10000000))
         
@@ -163,7 +164,7 @@ class BillingInfoTestCase(unittest.TestCase):
     
         
     def test_update_billing_info(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         update_data = {
                 'first_name': self.create_account_data['first_name'],
@@ -186,7 +187,7 @@ class BillingInfoTestCase(unittest.TestCase):
     
     
     def test_get_billing_info(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         update_data = {
                 'first_name': self.create_account_data['first_name'],
@@ -211,7 +212,7 @@ class BillingInfoTestCase(unittest.TestCase):
     
     
     def test_clear_billing_info(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         update_data = {
                 'first_name': self.create_account_data['first_name'],
@@ -246,7 +247,7 @@ class ChargeTestCase(unittest.TestCase):
     account_code = ''
     
     def setUp(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         self.account_code = str(random.randint(0,10000000))
         
@@ -265,7 +266,7 @@ class ChargeTestCase(unittest.TestCase):
     
     
     def test_charge_account(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_data = {
                 'amount': '9.99',
@@ -278,7 +279,7 @@ class ChargeTestCase(unittest.TestCase):
     
     
     def test_list_charges(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_data = {
                 'amount': '9.99',
@@ -298,7 +299,7 @@ class CreditTestCase(unittest.TestCase):
     account_code = ''
     
     def setUp(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         self.account_code = str(random.randint(0,10000000))
         
@@ -317,7 +318,7 @@ class CreditTestCase(unittest.TestCase):
     
     
     def test_credit_account(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_data = {
                 'amount': '9.99',
@@ -330,7 +331,7 @@ class CreditTestCase(unittest.TestCase):
     
     
     def test_list_credits(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_data = {
                 'amount': '9.99',
@@ -349,7 +350,7 @@ class InvoiceTestCase(unittest.TestCase):
     account_code = ''
     
     def setUp(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         self.account_code = str(random.randint(0,10000000))
         
@@ -368,7 +369,7 @@ class InvoiceTestCase(unittest.TestCase):
     
     
     def test_list_invoice(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         list_result = recurly.accounts.invoices(account_code=ACCOUNT_WITH_INVOICE)
         
@@ -377,7 +378,7 @@ class InvoiceTestCase(unittest.TestCase):
     
     
     def test_get_invoice(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         list_result = recurly.accounts.invoices(account_code=ACCOUNT_WITH_INVOICE)
         
@@ -388,7 +389,7 @@ class InvoiceTestCase(unittest.TestCase):
 
 class PlanTestCase(unittest.TestCase):
     def test_list_plans(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         list_result = recurly.plans()
         
@@ -397,7 +398,7 @@ class PlanTestCase(unittest.TestCase):
     
     
     def test_get_plans(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         get_result = recurly.plans(plan_code=PLAN_CODE_A)
         
@@ -412,7 +413,7 @@ class SubscriptionTestCase(unittest.TestCase):
     account_code = ''
     
     def create_account(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
                     
         create_account_data = {
                 'account_code': self.account_code,
@@ -429,7 +430,7 @@ class SubscriptionTestCase(unittest.TestCase):
     
     
     def create_subscription(self):
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         create_account_data = {
                 'account_code': self.account_code,
@@ -487,7 +488,7 @@ class SubscriptionTestCase(unittest.TestCase):
         self.create_account()
         self.create_subscription()
         
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         get_result = recurly.accounts.subscription(account_code=self.account_code)
         
@@ -509,7 +510,7 @@ class SubscriptionTestCase(unittest.TestCase):
         self.create_account()
         self.create_subscription()
         
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         cancel_result = recurly.accounts.subscription.delete(account_code=self.account_code)
         
@@ -522,7 +523,7 @@ class SubscriptionTestCase(unittest.TestCase):
         self.create_account()
         self.create_subscription()
         
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         cancel_result = recurly.accounts.subscription.delete(account_code=self.account_code, refund='partial')
         
@@ -535,7 +536,7 @@ class SubscriptionTestCase(unittest.TestCase):
         self.create_account()
         self.create_subscription()
         
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         update_data = {
                 'timeframe': 'now',
@@ -554,7 +555,7 @@ class SubscriptionTestCase(unittest.TestCase):
         self.create_account()
         self.create_subscription()
         
-        recurly = Recurly(username=USERNAME, password=PASSWORD)
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
         update_data = {
                 'timeframe': 'renewal',

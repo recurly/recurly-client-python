@@ -17,7 +17,7 @@ from urllib2 import URLError, HTTPError
 from xml.dom import minidom
 
 
-URL = 'https://app.recurly.com'
+URL = 'https://%s.recurly.com'
 
 # Names of each action and its related request method
 CRUD_METHODS = {
@@ -66,13 +66,15 @@ class RecurlyServiceUnavailableException(RecurlyException): pass
 class Recurly(object):
     username = ''
     password = ''
+    subdomain = 'app'
     uri = ''
     response = None
     errors = None
     
-    def __init__(self, username='', password='', uri=''):
+    def __init__(self, username='', password='', subdomain='app', uri=''):
         self.username = username
         self.password = password
+        self.subdomain = subdomain
         self.uri = uri
     
     
@@ -80,7 +82,7 @@ class Recurly(object):
         try:
             return object.__getattr__(self, k)
         except AttributeError:
-            return Recurly(self.username, self.password, self.uri + '/' + k)
+            return Recurly(self.username, self.password, self.subdomain, self.uri + '/' + k)
     
     
     def __call__(self, **kwargs):
@@ -120,7 +122,7 @@ class Recurly(object):
             args = "?%s" % (urllib.urlencode(kwargs.items()))
         
         # Build url from the pieces
-        url = URL + '/'.join(urili) + args
+        url = (URL % self.subdomain) + '/'.join(urili) + args
                    
         # Build request with our new url, method, and data
         opener = urllib2.build_opener(urllib2.HTTPHandler)
