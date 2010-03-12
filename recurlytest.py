@@ -21,8 +21,8 @@ PASSWORD = ''
 SUBDOMAIN = ''
 
 # Create 2 plans in the web interface and fill these in.
-PLAN_CODE_A = ''
-PLAN_CODE_B = ''
+PLAN_CODE_A = 'bronze'
+PLAN_CODE_B = 'trial'
 
 # Make or find a user with an invoice and put her account code here.
 ACCOUNT_WITH_INVOICE = ''
@@ -391,7 +391,7 @@ class PlanTestCase(unittest.TestCase):
     def test_list_plans(self):
         recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
-        list_result = recurly.plans()
+        list_result = recurly.company.plans()
         
         self.assertEqual(type(list_result), types.DictType)
         self.assertEqual(type(list_result['plan']), types.ListType)
@@ -400,7 +400,7 @@ class PlanTestCase(unittest.TestCase):
     def test_get_plans(self):
         recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
-        get_result = recurly.plans(plan_code=PLAN_CODE_A)
+        get_result = recurly.company.plans(plan_code=PLAN_CODE_A)
         
         self.assertEqual(type(get_result), types.DictType)
 
