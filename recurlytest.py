@@ -544,7 +544,7 @@ class SubscriptionTestCase(unittest.TestCase):
                 'quantity': '2',
             }
         
-        update_result = recurly.accounts.subscription(account_code=self.account_code, data=update_data)
+        update_result = recurly.accounts.subscription.update(account_code=self.account_code, data=update_data)
         
         self.assertEqual(type(update_result), types.DictType)
     
