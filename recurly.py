@@ -45,6 +45,8 @@ MULTIPLE = [
         'charge',
         'credit',
         'invoice',
+        'line_item',
+        'payment',
         'plan',
         'transaction',
     ]
