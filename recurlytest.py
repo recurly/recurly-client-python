@@ -268,8 +268,9 @@ class ChargeTestCase(unittest.TestCase):
     def test_charge_account(self):
         recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
         
+        # Explicitly setting the amount as a float type here.
         create_data = {
-                'amount': '9.99',
+                'amount': 9.99,
                 'description': 'Charging $9.99 to account from unittest',
             }
         create_result = recurly.accounts.charges.create(account_code=self.account_code, data=create_data)
@@ -441,9 +442,10 @@ class SubscriptionTestCase(unittest.TestCase):
                 'company_name': 'Company, LLC.',
             }
         
+        # Explicitly setting quantity as an integer here.
         create_subscription_data = {
                 'plan_code': PLAN_CODE_A,
-                'quantity': '1',
+                'quantity': 1,
                 'account': {
                     'account_code': self.account_code,
                     'username': 'jdoe',
@@ -544,7 +546,7 @@ class SubscriptionTestCase(unittest.TestCase):
                 'quantity': '2',
             }
         
-        update_result = recurly.accounts.subscription(account_code=self.account_code, data=update_data)
+        update_result = recurly.accounts.subscription.update(account_code=self.account_code, data=update_data)
         
         self.assertEqual(type(update_result), types.DictType)
     

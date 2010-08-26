@@ -213,6 +213,8 @@ class Recurly(object):
                 Recurly._build_xml_doc(doc, element, data[n])
             elif type(data[n]) in (types.StringType, types.UnicodeType):
                 element.appendChild(doc.createTextNode(data[n]))
+            elif type(data[n]) in (types.IntType, types.LongType, types.FloatType):
+                element.appendChild(doc.createTextNode(str(data[n])))
     
     
     @staticmethod
