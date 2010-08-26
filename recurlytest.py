@@ -460,7 +460,7 @@ class SubscriptionTestCase(unittest.TestCase):
                         'country': 'US',
                         'zip': '94105',
                         'credit_card': {
-                            'number': '1',
+                            'number': '4111-1111-1111-1111',
                             'year': '2018',
                             'month': '12',
                             'verification_value': '123',
