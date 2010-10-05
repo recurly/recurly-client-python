@@ -62,7 +62,6 @@ class RecurlyNotFoundException(RecurlyException): pass
 class RecurlyServerException(RecurlyException): pass
 class RecurlyServiceUnavailableException(RecurlyException): pass
 
-
 class Recurly(object):
     username = ''
     password = ''
@@ -113,9 +112,10 @@ class Recurly(object):
         
         # Also, remove data from arguments and convert it to XML
         data = kwargs.pop('data', None)
+
         if data:
             data = Recurly.dict_to_xml(model, data)
-        
+
         # Build argument list if necessary
         args = ''
         if method == 'GET' and kwargs:
@@ -123,7 +123,7 @@ class Recurly(object):
         
         # Build url from the pieces
         url = (URL % self.subdomain) + '/'.join(urili) + args
-                   
+        
         # Build request with our new url, method, and data
         opener = urllib2.build_opener(urllib2.HTTPHandler)
         self._request = urllib2.Request(url=url, data=data)
@@ -212,11 +212,10 @@ class Recurly(object):
             if type(data[n]) == types.DictType:
                 Recurly._build_xml_doc(doc, element, data[n])
             elif type(data[n]) in (types.StringType, types.UnicodeType):
-                element.appendChild(doc.createTextNode(data[n]))
+                element.appendChild(doc.createTextNode( unicode(data[n], 'utf-8')))
             elif type(data[n]) in (types.IntType, types.LongType, types.FloatType):
                 element.appendChild(doc.createTextNode(str(data[n])))
-    
-    
+
     @staticmethod
     def dict_to_xml(trunk, data):
         doc = minidom.Document()
@@ -224,9 +223,8 @@ class Recurly(object):
         doc.appendChild(root)
         Recurly._build_xml_doc(doc, root, data)
 
-        return doc.toxml()
-    
-    
+        return doc.toxml(encoding='utf-8')
+
     @staticmethod
     def _parse_xml_doc(root):
         try:
