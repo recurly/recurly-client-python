@@ -211,8 +211,10 @@ class Recurly(object):
 
             if type(data[n]) == types.DictType:
                 Recurly._build_xml_doc(doc, element, data[n])
-            elif type(data[n]) in (types.StringType, types.UnicodeType):
-                element.appendChild(doc.createTextNode( unicode(data[n], 'utf-8')))
+            elif type(data[n]) == types.StringType:
+                element.appendChild(doc.createTextNode(unicode(data[n], 'utf-8')))
+            elif type(data[n]) == types.UnicodeType:
+                element.appendChild(doc.createTextNode(data[n]))
             elif type(data[n]) in (types.IntType, types.LongType, types.FloatType):
                 element.appendChild(doc.createTextNode(str(data[n])))
 
