@@ -120,7 +120,7 @@ class Recurly(object):
 
         # Build argument list if necessary
         args = ''
-        if method == 'GET' and kwargs:
+        if kwargs:
             args = "?%s" % (urllib.urlencode(kwargs.items()))
         
         # Build url from the pieces
