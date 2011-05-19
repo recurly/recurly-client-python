@@ -49,6 +49,7 @@ MULTIPLE = [
         'payment',
         'plan',
         'transaction',
+		'add_on',
     ]
 
 # These resources should always be treated as an array
@@ -221,9 +222,9 @@ class Recurly(object):
             elif type(data[n]) in (types.IntType, types.LongType, types.FloatType):
                 element.appendChild(doc.createTextNode(str(data[n])))
             elif type(data[n]) == types.ListType:
-                if str(n) == 'add_ons':
+                if n[:-1] in MULTIPLE:
 					for addon in data[n]:
-						addOnElement = doc.createElement('add_on')
+						addOnElement = doc.createElement(Recurly.singularize(n))
 						Recurly._build_xml_doc(doc, addOnElement, addon)
 						element.appendChild(addOnElement)
 							
@@ -271,12 +272,9 @@ class Recurly(object):
                     di[child.tagName] = Recurly._parse_xml_doc(child)
                 elif type(di[child.tagName]) is types.ListType:
 					grandchild = child.firstChild
-					if not grandchild:
-						continue
-					else:
-						while grandchild is not None:
-							di[child.tagName].append(Recurly._parse_xml_doc(grandchild))
-							grandchild = grandchild.nextSibling
+					while grandchild is not None:
+						di[child.tagName].append(Recurly._parse_xml_doc(grandchild))
+						grandchild = grandchild.nextSibling
                 
             child = child.nextSibling
         return di
