@@ -17,7 +17,7 @@ from urllib2 import URLError, HTTPError
 from xml.dom import minidom
 
 
-URL = 'https://%s.recurly.com'
+URL = 'http://%s.lvh.me:3000'
 
 # Names of each action and its related request method
 CRUD_METHODS = {
@@ -55,6 +55,7 @@ MULTIPLE = [
 # even the root element is not of the 'array' type
 FORCED_MULTIPLE = [
         'error',
+		'add_ons',
     ]
 
 class RecurlyException(Exception): pass
@@ -79,11 +80,11 @@ class Recurly(object):
         self.uri = uri
     
     
-    def __getattr__(self, k):
+    def __getattr__(self, attribute_name):
         try:
-            return object.__getattr__(self, k)
+            return object.__getattr__(self, attribute_name)
         except AttributeError:
-            return Recurly(self.username, self.password, self.subdomain, self.uri + '/' + k)
+            return Recurly(self.username, self.password, self.subdomain, self.uri + '/' + attribute_name)
     
     
     def __call__(self, **kwargs):
@@ -135,7 +136,7 @@ class Recurly(object):
         self._request.add_header('User-Agent', 'Recurly Python Client (v' + __version__ + ')')
         self._request.add_header('Authorization', 'Basic %s' % base64.standard_b64encode('%s:%s' % (self.username, self.password)))
                 
-        try:                        
+        try:  
             response = opener.open(self._request)
             xml_response = response.read()
         except HTTPError, e:
@@ -219,7 +220,13 @@ class Recurly(object):
                 element.appendChild(doc.createTextNode(data[n]))
             elif type(data[n]) in (types.IntType, types.LongType, types.FloatType):
                 element.appendChild(doc.createTextNode(str(data[n])))
-
+            elif type(data[n]) == types.ListType:
+                if str(n) == 'add_ons':
+					for addon in data[n]:
+						addOnElement = doc.createElement('add_on')
+						Recurly._build_xml_doc(doc, addOnElement, addon)
+						element.appendChild(addOnElement)
+							
     @staticmethod
     def dict_to_xml(trunk, data):
         doc = minidom.Document()
@@ -263,7 +270,13 @@ class Recurly(object):
                 if di[child.tagName] is None:
                     di[child.tagName] = Recurly._parse_xml_doc(child)
                 elif type(di[child.tagName]) is types.ListType:
-                    di[child.tagName].append(Recurly._parse_xml_doc(child))
+					grandchild = child.firstChild
+					if not grandchild:
+						continue
+					else:
+						while grandchild is not None:
+							di[child.tagName].append(Recurly._parse_xml_doc(grandchild))
+							grandchild = grandchild.nextSibling
                 
             child = child.nextSibling
         return di
