@@ -17,7 +17,7 @@ from urllib2 import URLError, HTTPError
 from xml.dom import minidom
 
 
-URL = 'http://%s.lvh.me:3000'
+URL = 'https://%s.recurly.com'
 
 # Names of each action and its related request method
 CRUD_METHODS = {
@@ -124,6 +124,8 @@ class Recurly(object):
         args = ''
         if method == 'GET' and kwargs:
             args = "?%s" % (urllib.urlencode(kwargs.items()))
+        elif method == 'DELETE' and kwargs:
+			args = "?%s" % (urllib.urlencode(kwargs.items()))
         
         # Build url from the pieces
         url = (URL % self.subdomain) + '/'.join(urili) + args
@@ -137,7 +139,7 @@ class Recurly(object):
         self._request.add_header('User-Agent', 'Recurly Python Client (v' + __version__ + ')')
         self._request.add_header('Authorization', 'Basic %s' % base64.standard_b64encode('%s:%s' % (self.username, self.password)))
                 
-        try:  
+        try:
             response = opener.open(self._request)
             xml_response = response.read()
         except HTTPError, e:
@@ -180,7 +182,10 @@ class Recurly(object):
         ers = er['error']
         
         # Remove periods from all sentences that have them.
-        self.errors = [e[:-1] if e[-1:] == '.' else e for e in ers]
+        try:
+        	self.errors = [e[:-1] if e[-1:] == '.' else e for e in ers]
+        except:
+            return None
         return '. '.join(self.errors) + '.'
     
     

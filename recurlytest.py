@@ -16,9 +16,9 @@ from recurly import Recurly, RecurlyException, RecurlyConnectionException, Recur
 
 
 # Use your Recurly credentials here.
-USERNAME = ''
-PASSWORD = ''
-SUBDOMAIN = ''
+USERNAME = 'api-test@test1.com'
+PASSWORD = 'e28196f1c2654ea081e56bde85e4cd52'
+SUBDOMAIN = 'test1-test'
 
 # Create 2 plans in the web interface and fill these in.
 PLAN_CODE_A = 'bronze'
