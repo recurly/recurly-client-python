@@ -12,7 +12,7 @@ import unittest
 import types
 import random
 
-from recurly import Recurly, RecurlyException, RecurlyConnectionException, RecurlyValidationException
+from recurly import Recurly, RecurlyException, RecurlyNotFoundException, RecurlyConnectionException, RecurlyValidationException
 
 
 # Use your Recurly credentials here.
@@ -232,14 +232,8 @@ class BillingInfoTestCase(unittest.TestCase):
         update_result = recurly.accounts.billing_info.update(account_code=self.account_code, data=update_data)
         
         clear_result = recurly.accounts.billing_info.delete(account_code=self.account_code)
-        
-        get_result = recurly.accounts.billing_info(account_code=self.account_code)
                 
-        self.assertNotEqual(type(get_result), types.ListType)
-        self.assertNotEqual(get_result['first_name'], update_data['first_name'])
-        self.assertNotEqual(get_result['address1'], update_data['address1'])
-        self.assertNotEqual(get_result['zip'], update_data['zip'])
-
+        self.assertRaises(RecurlyNotFoundException, recurly.accounts.billing_info, account_code=self.account_code)
 
 class ChargeTestCase(unittest.TestCase):
     create_account_data = None
