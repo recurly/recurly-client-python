@@ -276,11 +276,14 @@ class Recurly(object):
                 if di[child.tagName] is None:
                     di[child.tagName] = Recurly._parse_xml_doc(child)
                 elif type(di[child.tagName]) is types.ListType:
-					grandchild = child.firstChild
-					while grandchild is not None:
-						di[child.tagName].append(Recurly._parse_xml_doc(grandchild))
-						grandchild = grandchild.nextSibling
-                
+                    if child.tagName == 'add_ons':
+                        grandchild = child.firstChild
+                        while grandchild is not None:
+                            di[child.tagName].append(Recurly._parse_xml_doc(grandchild))
+                            grandchild = grandchild.nextSibling
+                    else:
+                        di[child.tagName].append(Recurly._parse_xml_doc(child))
+                    
             child = child.nextSibling
         return di
     

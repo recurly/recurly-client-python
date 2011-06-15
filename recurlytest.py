@@ -24,6 +24,10 @@ SUBDOMAIN = ''
 PLAN_CODE_A = 'bronze'
 PLAN_CODE_B = 'trial'
 
+# Create 2 add-ons for PLAN_CODE_A in the web interface and fill these in.
+ADD_ON_1 = 'bronze1'
+ADD_ON_2 = 'bronze2'
+
 # Make or find a user with an invoice and put her account code here.
 ACCOUNT_WITH_INVOICE = ''
 
@@ -286,6 +290,7 @@ class ChargeTestCase(unittest.TestCase):
                 
         self.assertEqual(type(get_result), types.DictType)
         self.assertEqual(type(get_result['charge']), types.ListType)
+        self.assertEqual(type(get_result['charge'][0]), types.DictType)
 
 
 class CreditTestCase(unittest.TestCase):
@@ -370,6 +375,7 @@ class InvoiceTestCase(unittest.TestCase):
         
         self.assertEqual(type(list_result), types.DictType)
         self.assertEqual(type(list_result['invoice']), types.ListType)
+        self.assertEqual(type(list_result['invoice'][0]), types.DictType)
     
     
     def test_get_invoice(self):
@@ -390,6 +396,7 @@ class PlanTestCase(unittest.TestCase):
         
         self.assertEqual(type(list_result), types.DictType)
         self.assertEqual(type(list_result['plan']), types.ListType)
+        self.assertEqual(type(list_result['plan'][0]), types.DictType)
     
     
     def test_get_plans(self):
@@ -463,6 +470,10 @@ class SubscriptionTestCase(unittest.TestCase):
                         },
                     },
                 },
+                'add_ons': [
+                        { 'add_on_code': ADD_ON_1 },
+                        { 'add_on_code': ADD_ON_2, 'quantity': 3, 'unit_amount_in_cents': 499 },
+                ],
             }
         create_subscription_result = recurly.accounts.subscription.create(account_code=self.account_code, data=create_subscription_data)
         
@@ -498,6 +509,19 @@ class SubscriptionTestCase(unittest.TestCase):
         self.create_subscription()
         
         self.assertEqual(type(self.create_subscription_result), types.DictType)
+        
+    def test_create_subscription_with_add_ons(self):
+        self.account_code = str(random.randint(0,10000000))
+
+        self.create_subscription()
+
+        recurly = Recurly(username=USERNAME, password=PASSWORD, subdomain=SUBDOMAIN)
+        
+        get_result = recurly.accounts.subscription(account_code=self.account_code)
+        
+        self.assertEqual(type(get_result['add_ons']), types.ListType)
+        self.assertEqual(type(get_result['add_ons'][0]), types.DictType)
+        self.assertEqual(len(get_result['add_ons']), 2)
     
     
     def test_cancel_subscription(self):
