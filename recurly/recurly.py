@@ -122,7 +122,7 @@ class Recurly(object):
 
         # Build argument list if necessary
         args = ''
-        if method == 'GET' and kwargs:
+        if kwargs:
             args = "?%s" % (urllib.urlencode(kwargs.items()))
         elif method == 'DELETE' and kwargs:
 			args = "?%s" % (urllib.urlencode(kwargs.items()))
