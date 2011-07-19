@@ -31,6 +31,12 @@ ADD_ON_2 = 'bronze2'
 # Make or find a user with an invoice and put her account code here.
 ACCOUNT_WITH_INVOICE = ''
 
+try:
+    from recurlytest_local import *
+except ImportError:
+    pass
+
+
 '''
 
 To run all tests, run this script with no arguments. 
