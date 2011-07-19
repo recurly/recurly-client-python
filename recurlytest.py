@@ -11,6 +11,7 @@ import sys
 import unittest
 import types
 import random
+import datetime
 
 from recurly import Recurly, RecurlyException, RecurlyNotFoundException, RecurlyConnectionException, RecurlyValidationException
 
@@ -660,6 +661,32 @@ class NotificationTestCase(unittest.TestCase):
         self.assertEqual(note_type, 'new_subscription_notification')
         self.assertEqual(note_data['account']['account_code'], '123')
         self.assertEqual(note_data['subscription']['state'], 'pending')
+
+
+class XmlParseTestCase(unittest.TestCase):
+    def test_parse_datetime(self):
+        xml = """
+        <activated_at type="datetime">2010-01-23T21:37:31-08:00</activated_at>
+        """
+        recurly = Recurly()
+        result = recurly.xml_to_dict(xml)
+        self.assertEqual(type(result), datetime.datetime)
+        self.assertEqual(result, datetime.datetime(2010, 1, 24, 5, 37, 31))
+        self.assertEqual(result.tzinfo, None)
+ 
+    def test_parse_datetime_notz(self):
+        """
+        Not sure why, but we have also seen this in the recurly XML output.
+        """
+        xml = """
+        <created_at type="datetime">2011-06-07T16:04:01Z</created_at>
+        """
+        recurly = Recurly()
+        result = recurly.xml_to_dict(xml)
+        self.assertEqual(type(result), datetime.datetime)
+        self.assertEqual(result, datetime.datetime(2011, 6, 7, 16, 4, 1))
+        self.assertEqual(result.tzinfo, None)
+
 
 
 if __name__ == "__main__":

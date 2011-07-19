@@ -8,6 +8,7 @@ __version__ = '1.2-devel'
 
 
 import base64
+import datetime
 import types
 import re
 import urllib
@@ -58,6 +59,16 @@ FORCED_MULTIPLE = [
         'error',
 		'add_ons',
     ]
+
+# Format for strptime
+#          (e.g. 2010-01-23T21:37:31-08:00)
+DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+DATETIME_WITH_TZ_RE = re.compile(
+    r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})([+\-])(\d+):(\d+)')
+# we also see this:
+# <created_at type="datetime">2011-06-07T16:04:01Z</created_at>
+DATETIME_WITHOUT_TZ_RE = re.compile(
+    r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})Z')
 
 class RecurlyException(Exception): pass
 class RecurlyValidationException(RecurlyException): pass
@@ -243,6 +254,42 @@ class Recurly(object):
         return doc.toxml(encoding='utf-8')
 
     @staticmethod
+    def _parse_datetime(dtstring):
+        """
+        Parse a recurly-provided datetime string (with TZ offset) into
+        a naieve datetime.datetime object representing UTC.
+
+        Would be nicer to use pytz or something to provide a proper
+        TZ-aware datetime, but I don't want to add a dependency. You can
+        set tzinfo to UTC later if you need a TZ-aware object.
+        """
+        if not dtstring:
+            return None
+
+        m = DATETIME_WITH_TZ_RE.match(dtstring)
+
+        if m:
+            (datetime_str, tz_plusminus, tz_h, tz_m) = m.groups()
+            dt = datetime.datetime.strptime(m.group(1), DATETIME_FORMAT)
+            utcoffset = datetime.timedelta(hours=int(tz_h, 10),
+                                           minutes=int(tz_m, 10))
+            # add the inverse of the plus/minus sign; if you want to go from
+            # UTC-8 to UTC you need to add 8.
+            if tz_plusminus == "+":
+                dt -= utcoffset
+            else:
+                dt += utcoffset
+
+        else:
+            m2 = DATETIME_WITHOUT_TZ_RE.match(dtstring)
+            if m2:
+                dt = datetime.datetime.strptime(m2.group(1), DATETIME_FORMAT)
+            else:
+                dt = None
+
+        return dt
+
+    @staticmethod
     def _parse_xml_doc(root):
         try:
             attr = root.attributes['type']
@@ -255,6 +302,8 @@ class Recurly(object):
             return None
         elif child.nodeType == minidom.Node.TEXT_NODE:
             # @todo Change this to maintain type (eg. int, string, datetime)
+            if root_type == 'datetime':
+                return Recurly._parse_datetime(child.nodeValue)
             return child.nodeValue
 
         di = {}
@@ -295,5 +344,6 @@ class Recurly(object):
     
  
 __all__ = ['Recurly', 'RecurlyException', 'RecurlyValidationException', 'RecurlyConnectionException', 'RecurlyNotFoundException', 'RecurlyServerException', 'RecurlyServiceUnavailableException']
+
 
 
