@@ -307,9 +307,10 @@ class Recurly(object):
         if not child:
             return None
         elif child.nodeType == minidom.Node.TEXT_NODE:
-            # @todo Change this to maintain type (eg. int, string, datetime)
             if root_type == 'datetime':
                 return Recurly._parse_datetime(child.nodeValue)
+            elif root_type == 'integer':
+                return int(child.nodeValue)
             return child.nodeValue
 
         di = {}

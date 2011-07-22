@@ -282,7 +282,7 @@ class ChargeTestCase(unittest.TestCase):
         create_result = recurly.accounts.charges.create(account_code=self.account_code, data=create_data)
                 
         self.assertEqual(type(create_result), types.DictType)
-        self.assertEqual(create_result['amount_in_cents'], '999')
+        self.assertEqual(create_result['amount_in_cents'], 999)
     
     
     def test_list_charges(self):
@@ -687,6 +687,15 @@ class XmlParseTestCase(unittest.TestCase):
         self.assertEqual(type(result), datetime.datetime)
         self.assertEqual(result, datetime.datetime(2011, 6, 7, 16, 4, 1))
         self.assertEqual(result.tzinfo, None)
+
+    def test_parse_integer(self):
+        xml = """
+        <unit_amount_in_cents type="integer">2990</unit_amount_in_cents>
+        """
+        recurly = Recurly()
+        result = recurly.xml_to_dict(xml)
+        self.assertEqual(type(result), int)
+        self.assertEqual(result, 2990)
 
 
 class TransparentPostTestCase(unittest.TestCase):
