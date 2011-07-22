@@ -20,6 +20,7 @@ from recurly import Recurly, RecurlyException, RecurlyNotFoundException, Recurly
 USERNAME = ''
 PASSWORD = ''
 SUBDOMAIN = ''
+PRIVATE_KEY = ''
 
 # Create 2 plans in the web interface and fill these in.
 PLAN_CODE_A = 'bronze'
@@ -687,6 +688,66 @@ class XmlParseTestCase(unittest.TestCase):
         self.assertEqual(result, datetime.datetime(2011, 6, 7, 16, 4, 1))
         self.assertEqual(result.tzinfo, None)
 
+
+class TransparentPostTestCase(unittest.TestCase):
+    """
+    Test the generation of signed data for transparent POST operations.
+    TODO: these tests don't actually verify that the generated signature
+    correctly follows Recurly's specs. I've tested, manually, that it does.
+    But it would be better to actually generate a transparent POST request
+    and send it to recurly to verify that the signature is accepted.
+    """
+    def setUp(self):
+        self.recurly = Recurly(username=USERNAME,
+                               password=PASSWORD,
+                               subdomain=SUBDOMAIN,
+                               private_key=PRIVATE_KEY)
+        self.trans_post_data = dict(
+            redirect_url='http://your-website.com/subscribe',
+            account=dict(account_code="my_account_code"),
+            subscription=dict(plan_code="my_plan_code"),
+            )
+
+    def test_transparent_post(self):
+        trans_post_sig = self.recurly.transparent_post_encode(
+            self.trans_post_data)
+        parts = trans_post_sig.split("|")
+        self.assertEqual(len(parts), 2)
+        self.assertTrue("time=" in parts[1])
+        self.assertTrue("subscription%5Bplan_code%5D=my_plan_code" in parts[1])
+
+    def test_required_attrs(self):
+        # Grrr... python 2.5 has no "assertRaises"
+        trans_post_sig = self.recurly.transparent_post_encode(
+            self.trans_post_data)
+        self.assertTrue(trans_post_sig)
+
+        data_copy = dict(self.trans_post_data)
+        del data_copy["redirect_url"]
+        try:
+            self.recurly.transparent_post_encode(data_copy)
+        except ValueError:
+            pass
+        else:
+            self.fail("ValueError not thrown.")
+
+        data_copy = dict(self.trans_post_data)
+        del data_copy["account"]
+        try:
+            self.recurly.transparent_post_encode(data_copy)
+        except ValueError:
+            pass
+        else:
+            self.fail("ValueError not thrown.")
+
+        data_copy = dict(self.trans_post_data)
+        del data_copy["account"]["account_code"]
+        try:
+            self.recurly.transparent_post_encode(data_copy)
+        except ValueError:
+            pass
+        else:
+            self.fail("ValueError not thrown.")
 
 
 if __name__ == "__main__":
