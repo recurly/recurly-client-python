@@ -134,6 +134,9 @@ class Recurly(object):
         # Also, remove data from arguments and convert it to XML
         data = kwargs.pop('data', None)
 
+        # Allow caller to request "raw" results
+        get_raw = kwargs.pop('get_raw', None)
+
         if data:
             data = Recurly.dict_to_xml(model, data)
 
@@ -155,9 +158,11 @@ class Recurly(object):
         self._request.add_header('Content-Type', 'application/xml; charset=utf-8')
         self._request.add_header('User-Agent', 'Recurly Python Client (v' + __version__ + ')')
         self._request.add_header('Authorization', 'Basic %s' % base64.standard_b64encode('%s:%s' % (self.username, self.password)))
-                
+
         try:
             response = opener.open(self._request)
+            if get_raw:
+                return response
             xml_response = response.read()
         except HTTPError, e:
             xml_response = e.read()
@@ -196,14 +201,18 @@ class Recurly(object):
             return None
         
         er = Recurly.xml_to_dict(xml)
-        ers = er['error']
-        
-        # Remove periods from all sentences that have them.
-        try:
-        	self.errors = [e[:-1] if e[-1:] == '.' else e for e in ers]
-        except:
-            return None
-        return '. '.join(self.errors) + '.'
+
+        if 'error' in er:
+            ers = er['error']
+
+            # Remove periods from all sentences that have them.
+            try:
+                self.errors = [e[:-1] if e[-1:] == '.' else e for e in ers]
+            except:
+                return None
+            return '. '.join(self.errors) + '.'
+        else:
+            return er
     
     
     def parse_notification(self, xml):
@@ -425,6 +434,34 @@ class Recurly(object):
             subdomain=self.subdomain,
             action=action,
             )
+
+    def transparent_post_result(self, url_params):
+        for k in ("confirm", "result", "status", "type"):
+            if k not in url_params:
+                raise RecurlyValidationException((
+                    "Cannot get transparent post result using url_params %r; "
+                    "missing required key %r.") % (url_params, k))
+        k_confirm = url_params["confirm"]
+        k_result = url_params["result"]
+        k_status = url_params["status"]
+        k_type = url_params["type"]
+        # todo: make a request to "/transparent/results/#{result_key}"
+        # with headers based on type (e.g. subscription)
+
+        # so... the below works, but produces an error result!
+        client = Recurly(self.username, self.password, self.subdomain,
+                         private_key=self.private_key,
+                         uri="/transparent/results/%s" % k_result)
+        try:
+            import ipdb; ipdb.set_trace()
+            
+            response = client(get_raw=True)
+            xml_response = response.read()
+        except HTTPError, e:
+            xml_response = e.read()
+
+        return Recurly.xml_to_dict(xml_response)
+
 
  
 __all__ = ['Recurly', 'RecurlyException', 'RecurlyValidationException', 'RecurlyConnectionException', 'RecurlyNotFoundException', 'RecurlyServerException', 'RecurlyServiceUnavailableException']
