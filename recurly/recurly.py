@@ -429,8 +429,14 @@ class Recurly(object):
                           "transaction",
                           "billing_info"), (
             "Unknown transparent post action %s." % action)
+            
+        if self.subdomain.endswith("-test"):
+            base_url=URL % self.subdomain
+        else:
+            base_url=URL % "api-production"
+
         return "%(base_url)s/transparent/%(subdomain)s/%(action)s" % dict(
-            base_url=URL % self.subdomain,
+            base_url=base_url,
             subdomain=self.subdomain,
             action=action,
             )
