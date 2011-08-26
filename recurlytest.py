@@ -11,6 +11,7 @@ import sys
 import unittest
 import types
 import random
+import datetime
 
 from recurly import Recurly, RecurlyException, RecurlyNotFoundException, RecurlyConnectionException, RecurlyValidationException
 
@@ -19,6 +20,7 @@ from recurly import Recurly, RecurlyException, RecurlyNotFoundException, Recurly
 USERNAME = ''
 PASSWORD = ''
 SUBDOMAIN = ''
+PRIVATE_KEY = ''
 
 # Create 2 plans in the web interface and fill these in.
 PLAN_CODE_A = 'bronze'
@@ -30,6 +32,12 @@ ADD_ON_2 = 'bronze2'
 
 # Make or find a user with an invoice and put her account code here.
 ACCOUNT_WITH_INVOICE = ''
+
+try:
+    from recurlytest_local import *
+except ImportError:
+    pass
+
 
 '''
 
@@ -274,7 +282,7 @@ class ChargeTestCase(unittest.TestCase):
         create_result = recurly.accounts.charges.create(account_code=self.account_code, data=create_data)
                 
         self.assertEqual(type(create_result), types.DictType)
-        self.assertEqual(create_result['amount_in_cents'], '999')
+        self.assertEqual(create_result['amount_in_cents'], 999)
     
     
     def test_list_charges(self):
@@ -654,6 +662,101 @@ class NotificationTestCase(unittest.TestCase):
         self.assertEqual(note_type, 'new_subscription_notification')
         self.assertEqual(note_data['account']['account_code'], '123')
         self.assertEqual(note_data['subscription']['state'], 'pending')
+
+
+class XmlParseTestCase(unittest.TestCase):
+    def test_parse_datetime(self):
+        xml = """
+        <activated_at type="datetime">2010-01-23T21:37:31-08:00</activated_at>
+        """
+        recurly = Recurly()
+        result = recurly.xml_to_dict(xml)
+        self.assertEqual(type(result), datetime.datetime)
+        self.assertEqual(result, datetime.datetime(2010, 1, 24, 5, 37, 31))
+        self.assertEqual(result.tzinfo, None)
+ 
+    def test_parse_datetime_notz(self):
+        """
+        Not sure why, but we have also seen this in the recurly XML output.
+        """
+        xml = """
+        <created_at type="datetime">2011-06-07T16:04:01Z</created_at>
+        """
+        recurly = Recurly()
+        result = recurly.xml_to_dict(xml)
+        self.assertEqual(type(result), datetime.datetime)
+        self.assertEqual(result, datetime.datetime(2011, 6, 7, 16, 4, 1))
+        self.assertEqual(result.tzinfo, None)
+
+    def test_parse_integer(self):
+        xml = """
+        <unit_amount_in_cents type="integer">2990</unit_amount_in_cents>
+        """
+        recurly = Recurly()
+        result = recurly.xml_to_dict(xml)
+        self.assertEqual(type(result), int)
+        self.assertEqual(result, 2990)
+
+
+class TransparentPostTestCase(unittest.TestCase):
+    """
+    Test the generation of signed data for transparent POST operations.
+    TODO: these tests don't actually verify that the generated signature
+    correctly follows Recurly's specs. I've tested, manually, that it does.
+    But it would be better to actually generate a transparent POST request
+    and send it to recurly to verify that the signature is accepted.
+    """
+    def setUp(self):
+        self.recurly = Recurly(username=USERNAME,
+                               password=PASSWORD,
+                               subdomain=SUBDOMAIN,
+                               private_key=PRIVATE_KEY)
+        self.trans_post_data = dict(
+            redirect_url='http://your-website.com/subscribe',
+            account=dict(account_code="my_account_code"),
+            subscription=dict(plan_code="my_plan_code"),
+            )
+
+    def test_transparent_post(self):
+        trans_post_sig = self.recurly.transparent_post_encode(
+            self.trans_post_data)
+        parts = trans_post_sig.split("|")
+        self.assertEqual(len(parts), 2)
+        self.assertTrue("time=" in parts[1])
+        self.assertTrue("subscription%5Bplan_code%5D=my_plan_code" in parts[1])
+
+    def test_required_attrs(self):
+        # Grrr... python 2.5 has no "assertRaises"
+        trans_post_sig = self.recurly.transparent_post_encode(
+            self.trans_post_data)
+        self.assertTrue(trans_post_sig)
+
+        data_copy = dict(self.trans_post_data)
+        del data_copy["redirect_url"]
+        try:
+            self.recurly.transparent_post_encode(data_copy)
+        except ValueError:
+            pass
+        else:
+            self.fail("ValueError not thrown.")
+
+        data_copy = dict(self.trans_post_data)
+        del data_copy["account"]
+        try:
+            self.recurly.transparent_post_encode(data_copy)
+        except ValueError:
+            pass
+        else:
+            self.fail("ValueError not thrown.")
+
+        data_copy = dict(self.trans_post_data)
+        del data_copy["account"]["account_code"]
+        try:
+            self.recurly.transparent_post_encode(data_copy)
+        except ValueError:
+            pass
+        else:
+            self.fail("ValueError not thrown.")
 
 
 if __name__ == "__main__":
