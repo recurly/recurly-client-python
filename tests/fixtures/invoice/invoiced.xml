@@ -2,6 +2,7 @@ POST https://api.recurly.com/v2/accounts/invoicemock/invoices HTTP/1.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/2.0.0
+Content-Length: 0
 
 
 HTTP/1.1 201 Created

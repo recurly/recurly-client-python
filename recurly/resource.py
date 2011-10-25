@@ -128,6 +128,8 @@ class Resource(object):
 
         if isinstance(body, Resource):
             body = ElementTree.tostring(body.to_element(), encoding='UTF-8')
+        if method in ('POST', 'PUT') and body is None:
+            headers['Content-Length'] = '0'
         connection.request(method, url, body, headers)
         resp = connection.getresponse()
 

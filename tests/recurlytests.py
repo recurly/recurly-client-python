@@ -113,19 +113,27 @@ class RecurlyTest(unittest.TestCase):
 
     def setUp(self):
         import recurly
+
+        # Mock everything out unless we have an API key.
         try:
             api_key = os.environ['RECURLY_API_KEY']
-            recurly_host = os.environ['RECURLY_HOST']
         except KeyError:
             # Mock everything out.
             recurly.API_KEY = 'apikey'
             self.test_id = 'mock'
         else:
             recurly.API_KEY = api_key
-            recurly.BASE_URI = 'https://%s/v2/' % recurly_host
             self.mock_request = self.noop_mock_request
             self.mock_sleep = self.noop_mock_sleep
             self.test_id = datetime.now().strftime('%Y%m%d%H%M%S')
+
+        # Update our endpoint if we have a different test host.
+        try:
+            recurly_host = os.environ['RECURLY_HOST']
+        except KeyError:
+            pass
+        else:
+            recurly.BASE_URI = 'https://%s/v2/' % recurly_host
 
         logging.basicConfig(level=logging.INFO)
         logging.getLogger('recurly').setLevel(logging.DEBUG)

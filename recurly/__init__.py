@@ -267,20 +267,20 @@ class Subscription(Resource):
     def cancel(self):
         url = urljoin(self._url, '%s/cancel' % self.uuid)
         response = self.http_request(url, 'PUT')
-        if response.status != 204:
+        if response.status != 200:
             self.raise_http_error(response)
 
     def reactivate(self):
         url = urljoin(self._url, '%s/reactivate' % self.uuid)
         response = self.http_request(url, 'PUT')
-        if response.status != 204:
+        if response.status != 200:
             self.raise_http_error(response)
 
     def terminate(self, refund):
         url = urljoin(self._url, '%s/terminate' % self.uuid)
         url = '%s?%s' % (url, urlencode({'refund': refund}))
         response = self.http_request(url, 'PUT')
-        if response.status != 204:
+        if response.status != 200:
             self.raise_http_error(response)
 
 
