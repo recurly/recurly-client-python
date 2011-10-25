@@ -261,7 +261,6 @@ class Subscription(Resource):
         'currency',
         'subscription_add_ons',
         'account',
-        'billing_info',
     )
     sensitive_attributes = ('number', 'verification_value')
 

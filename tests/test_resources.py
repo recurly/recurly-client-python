@@ -454,19 +454,22 @@ class TestResources(RecurlyTest):
 
                 sub = Subscription(
                     plan_code='basicplan',
-                    billing_info=BillingInfo(
-                        first_name='Verena',
-                        last_name='Example',
-                        address1='123 Main St',
-                        city='San Francisco',
-                        state='CA',
-                        zip='94105',
-                        country='US',
-                        type='credit_card',
-                        number='4111 1111 1111 1111',
-                        verification_value='7777',
-                        year='2015',
-                        month='12',
+                    account=Account(
+                        account_code='subscribe%s' % self.test_id,
+                        billing_info=BillingInfo(
+                            first_name='Verena',
+                            last_name='Example',
+                            address1='123 Main St',
+                            city='San Francisco',
+                            state='CA',
+                            zip='94105',
+                            country='US',
+                            type='credit_card',
+                            number='4111 1111 1111 1111',
+                            verification_value='7777',
+                            year='2015',
+                            month='12',
+                        ),
                     ),
                 )
                 with self.mock_request('subscription/subscribed-billing-info.xml'):
