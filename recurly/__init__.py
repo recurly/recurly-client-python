@@ -7,7 +7,7 @@ from recurly.errors import *
 from recurly.resource import Resource, Money
 
 
-__version__ = '2.0.0'
+__version__ = '2.0.1dev'
 
 BASE_URI = 'https://api.recurly.com/v2/'
 

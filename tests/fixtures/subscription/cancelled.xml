@@ -1,7 +1,7 @@
 PUT https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel HTTP/1.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
-User-Agent: recurly-python/2.0.0
+User-Agent: recurly-python/{version}
 Content-Length: 0
 
 
