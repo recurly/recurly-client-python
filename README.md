@@ -1,20 +1,19 @@
 # Recurly Python Client #
 
-The recurly-client-python library is a minimalist Python interface for Recurly's subscription management API. The library interacts with Recurly's [REST API](http://support.recurly.com/faqs/api).
+Recurly's Python client library is an interface to its [REST API](http://docs.recurly.com/api).
 
 ## Usage ##
 
-Please see **example.py** for a quick example of creating, reading, updated, deleting and listing accounts. For further examples, read through the tests in **recurlytest.py**.
+Set your API key and Recurly.js private key:
 
-## Requirements ##
+    import recurly
 
-- [Python](http://python.org/) (2.5 or greater, but not 3.x)
+    recurly.API_KEY = '012345678901234567890123456789ab'
+    recurly.js.PRIVATE_KEY = '0cc86846024a4c95a5dfd3111a532d13'
+
+    # Set a default currency for your API requests
+    recurly.DEFAULT_CURRENCY = 'USD'
 
 ## API Documentation ##
 
-Please see the [Recurly API](http://support.recurly.com/faqs/api/) for more information.
-
-## About ##
-
-This library was originally written by Drew Yeaton <drew.yeaton@recurly.com> expressly for Recurly, Inc. 
-Please contact support@recurly.com for support.  This library is distributed with the MIT license.
+Please see the [Recurly API](http://docs.recurly.com/api/) for more information.

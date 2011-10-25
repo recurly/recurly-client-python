@@ -1,0 +1,21 @@
+POST https://api.recurly.com/v2/accounts/subscribemock/subscriptions HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/2.0.0
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<subscription>
+  <plan_code>basicplan</plan_code>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+  <currency>USD</currency>
+</subscription>
+
+HTTP/1.1 400 Bad Request
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<error>
+  <symbol>billing_info_required</symbol>
+  <description>Account billing info is required</description>
+</error>

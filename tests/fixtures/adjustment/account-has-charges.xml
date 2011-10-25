@@ -1,0 +1,21 @@
+GET https://api.recurly.com/v2/accounts/chargemock/adjustments HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<adjustments type="array">
+  <adjustment type="charge">
+    <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+    <description>test charge</description>
+    <account_code>chargemock</account_code>
+    <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+    <currency>USD</currency>
+    <start_date type="datetime">2009-11-03T23:27:46Z</start_date>
+    <end_date nil="nil" type="datetime"></end_date>
+    <created_at type="datetime">2009-11-03T23:27:46Z</created_at>
+  </adjustment>
+</adjustments>

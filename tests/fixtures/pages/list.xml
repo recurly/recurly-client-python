@@ -1,0 +1,70 @@
+GET https://api.recurly.com/v2/accounts?per_page=4 HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/2.0.0
+
+
+HTTP/1.1 200 OK
+X-Records: 7
+Link: <https://api.recurly.com/v2/accounts?cursor=1304958672&per_page=4>; rel="next"
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<accounts type="array">
+  <account href="https://api.recurly.com/v2/accounts/pages-mock-7">
+    <adjustments href="https://api.recurly.com/v2/accounts/pages-mock-7/adjustments"/>
+    <billing_info href="https://api.recurly.com/v2/accounts/pages-mock-7/billing_info"/>
+    <invoices href="https://api.recurly.com/v2/accounts/pages-mock-7/invoices"/>
+    <subscriptions href="https://api.recurly.com/v2/accounts/pages-mock-7/subscriptions"/>
+    <transactions href="https://api.recurly.com/v2/accounts/pages-mock-7/transactions"/>
+    <account_code>pages-mock-7</account_code>
+    <username nil="nil"></username>
+    <email nil="nil"></email>
+    <first_name nil="nil"></first_name>
+    <last_name nil="nil"></last_name>
+    <company_name nil="nil"></company_name>
+    <accept_language nil="nil"></accept_language>
+  </account>
+  <account href="https://api.recurly.com/v2/accounts/pages-mock-6">
+    <adjustments href="https://api.recurly.com/v2/accounts/pages-mock-6/adjustments"/>
+    <billing_info href="https://api.recurly.com/v2/accounts/pages-mock-6/billing_info"/>
+    <invoices href="https://api.recurly.com/v2/accounts/pages-mock-6/invoices"/>
+    <subscriptions href="https://api.recurly.com/v2/accounts/pages-mock-6/subscriptions"/>
+    <transactions href="https://api.recurly.com/v2/accounts/pages-mock-6/transactions"/>
+    <account_code>pages-mock-6</account_code>
+    <username nil="nil"></username>
+    <email nil="nil"></email>
+    <first_name nil="nil"></first_name>
+    <last_name nil="nil"></last_name>
+    <company_name nil="nil"></company_name>
+    <accept_language nil="nil"></accept_language>
+  </account>
+  <account href="https://api.recurly.com/v2/accounts/pages-mock-5">
+    <adjustments href="https://api.recurly.com/v2/accounts/pages-mock-5/adjustments"/>
+    <billing_info href="https://api.recurly.com/v2/accounts/pages-mock-5/billing_info"/>
+    <invoices href="https://api.recurly.com/v2/accounts/pages-mock-5/invoices"/>
+    <subscriptions href="https://api.recurly.com/v2/accounts/pages-mock-5/subscriptions"/>
+    <transactions href="https://api.recurly.com/v2/accounts/pages-mock-5/transactions"/>
+    <account_code>pages-mock-5</account_code>
+    <username nil="nil"></username>
+    <email nil="nil"></email>
+    <first_name nil="nil"></first_name>
+    <last_name nil="nil"></last_name>
+    <company_name nil="nil"></company_name>
+    <accept_language nil="nil"></accept_language>
+  </account>
+  <account href="https://api.recurly.com/v2/accounts/pages-mock-4">
+    <adjustments href="https://api.recurly.com/v2/accounts/pages-mock-4/adjustments"/>
+    <billing_info href="https://api.recurly.com/v2/accounts/pages-mock-4/billing_info"/>
+    <invoices href="https://api.recurly.com/v2/accounts/pages-mock-4/invoices"/>
+    <subscriptions href="https://api.recurly.com/v2/accounts/pages-mock-4/subscriptions"/>
+    <transactions href="https://api.recurly.com/v2/accounts/pages-mock-4/transactions"/>
+    <account_code>pages-mock-4</account_code>
+    <username nil="nil"></username>
+    <email nil="nil"></email>
+    <first_name nil="nil"></first_name>
+    <last_name nil="nil"></last_name>
+    <company_name nil="nil"></company_name>
+    <accept_language nil="nil"></accept_language>
+  </account>
+</accounts>

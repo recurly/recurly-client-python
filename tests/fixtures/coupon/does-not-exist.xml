@@ -1,0 +1,14 @@
+GET https://api.recurly.com/v2/coupons/couponmock HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+
+
+HTTP/1.1 404 Not Found
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<error>
+  <symbol>not_found</symbol>
+  <description lang="en-US">Couldn't find Coupon with coupon_code = couponmock</description>
+</error>

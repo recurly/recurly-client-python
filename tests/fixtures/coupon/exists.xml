@@ -1,0 +1,28 @@
+GET https://api.recurly.com/v2/coupons/couponmock HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<coupon href="https://api.dev.recurly.com/v2/coupons/nice">
+  <coupon_code>couponmock</coupon_code>
+  <name>Nice Coupon</name>
+  <discount_type>dollars</discount_type>
+  <discount_percent nil="nil"></discount_percent>
+  <redeem_by_date nil="nil"></redeem_by_date>
+  <single_use type="boolean">false</single_use>
+  <applies_for_months nil="nil"></applies_for_months>
+  <max_redemptions nil="nil"></max_redemptions>
+  <applies_to_all_plans type="boolean">true</applies_to_all_plans>
+  <created_at type="datetime">2011-09-19T19:01:21Z</created_at>
+  <discount_in_cents>
+    <USD type="integer">1000</USD>
+  </discount_in_cents>
+  <plan_codes type="array">
+  </plan_codes>
+  <a name="redeem" href="https://api.recurly.com/v2/coupons/couponmock/redeem" method="put"/>
+</coupon>

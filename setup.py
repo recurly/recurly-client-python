@@ -1,12 +1,9 @@
-#!/usr/bin/env python
+from distutils.core import setup
 
-from setuptools import setup
+setup(
+    name='recurly',
+    version='2.0',
+    packages=['recurly'],
 
-setup(name='recurly-client-python',
-      version='1.2',
-      description='Recurly API client',
-      author='Recurly, Inc.',
-      author_email='support@recurly.com',
-      url='http://www.recurly.com',
-      packages=['recurly'],
-     )
+    requires=['iso8601'],
+)

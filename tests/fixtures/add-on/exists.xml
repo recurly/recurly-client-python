@@ -1,0 +1,20 @@
+GET https://api.recurly.com/v2/plans/planmock/add_ons/addonmock HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/2.0.0
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on href="https://api.recurly.com/v2/plans/planmock/add_ons/addonmock">
+  <plan href="https://api.recurly.com/v2/plans/planmock"/>
+  <add_on_code>addonmock</add_on_code>
+  <name>Mock Add-On</name>
+  <display_quantity type="boolean">false</display_quantity>
+  <default_quantity nil="nil"></default_quantity>
+  <unit_amount_in_cents>
+  </unit_amount_in_cents>
+  <created_at type="datetime">2011-06-28T12:34:56Z</created_at>
+</add_on>
