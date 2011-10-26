@@ -356,30 +356,10 @@ class Subscription(Resource):
     )
     sensitive_attributes = ('number', 'verification_value')
 
-    def cancel(self):
-        """Cancel the subscription."""
-        url = urljoin(self._url, '%s/cancel' % self.uuid)
-        response = self.http_request(url, 'PUT')
-        if response.status != 200:
-            self.raise_http_error(response)
-
-    def reactivate(self):
-        """Reactivate a canceled subscription."""
-        url = urljoin(self._url, '%s/reactivate' % self.uuid)
-        response = self.http_request(url, 'PUT')
-        if response.status != 200:
-            self.raise_http_error(response)
-
-    def terminate(self, refund):
-        """Terminate a subscription with the given refund status (`'none'`, `'full'`, or `'partial'`)."""
-        url = urljoin(self._url, '%s/terminate' % self.uuid)
-        url = '%s?%s' % (url, urlencode({'refund': refund}))
-        response = self.http_request(url, 'PUT')
-        if response.status != 200:
-            self.raise_http_error(response)
-
 
 class Transaction(Resource):
+
+    """An immediate one-time charge made to a customer's account."""
 
     member_path = 'transactions/%s'
     collection_path = 'transactions'
@@ -389,9 +369,10 @@ class Transaction(Resource):
     attributes = (
         'uuid',
         'action',
+        'account',
+        'currency',
         'amount_in_cents',
         'tax_in_cents',
-        'currency',
         'status',
         'reference',
         'test',
@@ -400,9 +381,14 @@ class Transaction(Resource):
         'cvv_result',
         'avs_result',
         'avs_result_street',
+        'avs_result_postal',
         'created_at',
         'details',
+        'type',
     )
+    read_only_attributes = ('created_at',)
+    xml_attribute_attributes = ('type',)
+    sensitive_attributes = ('number', 'verification_value')
 
 
 class Plan(Resource):

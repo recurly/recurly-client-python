@@ -30,4 +30,6 @@ Content-Type: application/xml; charset=utf-8
   <trial_ends_at nil="nil"></trial_ends_at>
   <subscription_add_ons type="array">
   </subscription_add_ons>
+  <a name="reactivate" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/reactivate" method="put"/>
+  <a name="terminate" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/terminate" method="put"/>
 </subscription>

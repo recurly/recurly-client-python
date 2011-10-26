@@ -6,7 +6,7 @@ from urlparse import urljoin
 from xml.etree import ElementTree
 
 import recurly
-from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Subscription
+from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Subscription, Transaction
 from recurly import Money, NotFoundError, ValidationError, BadRequestError
 from recurlytests import RecurlyTest, xml
 
@@ -523,3 +523,69 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('subscription/plan-deleted.xml'):
                 plan.delete()
+
+    def test_transaction(self):
+        logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
+        logger = logging.getLogger('recurly.http.request')
+        logger.setLevel(logging.DEBUG)
+
+        account_code = 'transaction%s' % self.test_id
+
+        log_content = StringIO()
+        log_handler = logging.StreamHandler(log_content)
+        logger.addHandler(log_handler)
+
+        transaction = Transaction(
+            amount_in_cents=1000,
+            currency='USD',
+            account=Account(
+                account_code=account_code,
+                billing_info=BillingInfo(
+                    first_name='Verena',
+                    last_name='Example',
+                    number='4111-1111-1111-1111',
+                    year='2014',
+                    month='7',
+                    verification_value='7777',
+                ),
+            )
+        )
+        with self.mock_request('transaction/created.xml'):
+            transaction.save()
+
+        logger.removeHandler(log_handler)
+
+        with self.mock_request('transaction/account-exists.xml'):
+            account = Account.get(account_code)
+
+        try:
+            log_content = log_content.getvalue()
+            self.assertTrue('<transaction' in log_content)
+            self.assertTrue('<billing_info' in log_content)
+            # See if we redacted our sensitive fields properly.
+            self.assertTrue('4111' not in log_content)
+            self.assertTrue('7777' not in log_content)
+
+            self.assertTrue(transaction.voidable)
+            # TODO: the transaction is voidable but there's no 'void' action?
+            self.assertRaises(AttributeError, lambda: transaction.void)
+
+            transaction_2 = Transaction(
+                amount_in_cents=1000,
+                currency='USD',
+                account=Account(account_code=account_code),
+            )
+            with self.mock_request('transaction/created-again.xml'):
+                transaction_2.save()
+            self.assertNotEqual(transaction_2.uuid, transaction.uuid)
+            self.assertTrue(transaction_2.refundable)
+
+            with self.mock_request('transaction/refunded.xml'):
+                refund_transaction = transaction_2.refund(amount_in_cents=700)
+            self.assertTrue(isinstance(refund_transaction, Transaction))
+            self.assertTrue(not refund_transaction.refundable)
+            self.assertNotEqual(refund_transaction.uuid, transaction_2.uuid)
+
+        finally:
+            with self.mock_request('transaction/account-deleted.xml'):
+                account.delete()

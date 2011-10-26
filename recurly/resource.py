@@ -377,6 +377,28 @@ class Resource(object):
 
         return self
 
+    def _make_actionator(self, url, method):
+        def actionator(**kwargs):
+            if kwargs:
+                full_url = '%s?%s' % (url, urlencode(kwargs))
+            else:
+                full_url = url
+            response = self.http_request(full_url, method)
+            if response.status == 200:
+                response_xml = response.read()
+                logging.getLogger('recurly.http.response').debug(response_xml)
+                return self.update_from_element(ElementTree.fromstring(response_xml))
+            elif response.status == 201:
+                response_xml = response.read()
+                logging.getLogger('recurly.http.response').debug(response_xml)
+                elem = ElementTree.fromstring(response_xml)
+                return self.value_for_element(elem)
+            elif response.status == 204:
+                pass
+            else:
+                self.raise_http_error(response)
+        return actionator
+
     def __getattr__(self, name):
         if name.startswith('_'):
             raise AttributeError(name)
@@ -394,6 +416,13 @@ class Resource(object):
 
         elem = selfnode.find(name)
         if elem is None:
+            # It might be an <a name> link.
+            for anchor_elem in selfnode.findall('a'):
+                if anchor_elem.attrib.get('name') == name:
+                    url = anchor_elem.attrib['href']
+                    method = anchor_elem.attrib['method'].upper()
+                    return self._make_actionator(url, method)
+
             raise AttributeError(name)
 
         # Follow links.

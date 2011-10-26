@@ -1,0 +1,24 @@
+GET https://api.recurly.com/v2/accounts/transactionmock HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/transactionmock">
+  <adjustments href="https://api.recurly.com/v2/accounts/transactionmock/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/transactionmock/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/transactionmock/invoices"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/transactionmock/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/transactionmock/transactions"/>
+  <account_code>transactionmock</account_code>
+  <username nil="nil"></username>
+  <email nil="nil"></email>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <accept_language nil="nil"></accept_language>
+</account>

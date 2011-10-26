@@ -13,7 +13,7 @@ Content-Type: application/xml; charset=utf-8
 
 HTTP/1.1 201 Created
 Content-Type: application/xml; charset=utf-8
-Location: https://api.recurly.com/v2/plans/basicplan
+Location: https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab
 
 <?xml version="1.0" encoding="UTF-8"?>
 <subscription 
@@ -37,4 +37,6 @@ Location: https://api.recurly.com/v2/plans/basicplan
   <trial_ends_at nil="nil"></trial_ends_at>
   <subscription_add_ons type="array">
   </subscription_add_ons>
+  <a name="cancel" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel" method="put"/>
+  <a name="terminate" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/terminate" method="put"/>
 </subscription>
