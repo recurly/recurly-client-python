@@ -7,16 +7,32 @@ from recurly.errors import *
 from recurly.resource import Resource, Money
 
 
+"""
+
+Recurly's Python client library is an interface to its REST API.
+
+Please see the Recurly API documentation for more information:
+
+http://docs.recurly.com/api/
+
+"""
+
+
 __version__ = '2.0.1dev'
 
 BASE_URI = 'https://api.recurly.com/v2/'
+"""The API endpoint to send requests to."""
 
 API_KEY = None
+"""The API key to use when authenticating API requests."""
 
 DEFAULT_CURRENCY = 'USD'
+"""The currency to use creating `Money` instances when one is not specified."""
 
 
 class Account(Resource):
+
+    """A customer account."""
 
     member_path = 'accounts/%s'
     collection_path = 'accounts'
@@ -44,22 +60,47 @@ class Account(Resource):
 
     @classmethod
     def all_active(cls, **kwargs):
+        """Return a `Page` of active customer accounts.
+
+        This is a convenience method for `Account.all(state='active')`.
+
+        """
         return cls.all(state='active', **kwargs)
 
     @classmethod
     def all_closed(cls, **kwargs):
+        """Return a `Page` of closed customer accounts.
+
+        This is a convenience method for `Account.all(state='closed')`.
+
+        """
         return cls.all(state='closed', **kwargs)
 
     @classmethod
     def all_past_due(cls, **kwargs):
+        """Return a `Page` of past-due customer accounts.
+
+        This is a convenience method for `Account.all(state='past_due').
+
+        """
         return cls.all(state='past_due', **kwargs)
 
     @classmethod
     def all_subscribers(cls, **kwargs):
+        """Return a `Page` of customer accounts that are subscribers.
+
+        This is a convenience method for `Account.all(state='subscriber').
+
+        """
         return cls.all(state='subscriber', **kwargs)
 
     @classmethod
     def all_non_subscribers(cls, **kwargs):
+        """Return a `Page` of customer accounts that are not subscribers.
+
+        This is a convenience method for `Account.all(state='non_subscriber').
+
+        """
         return cls.all(state='non_subscriber', **kwargs)
 
     def __getattr__(self, name):
@@ -74,10 +115,12 @@ class Account(Resource):
         return super(Account, self).__getattr__(name)
 
     def charge(self, charge):
+        """Charge (or credit) this account with the given `Adjustment`."""
         url = urljoin(self._url, '%s/adjustments' % self.account_code)
         return charge.post(url)
 
     def invoice(self):
+        """Create an invoice for any outstanding adjustments this account has."""
         url = urljoin(self._url, '%s/invoices' % self.account_code)
 
         response = self.http_request(url, 'POST')
@@ -93,16 +136,20 @@ class Account(Resource):
         return invoice
 
     def subscribe(self, subscription):
+        """Create the given `Subscription` for this existing account."""
         url = urljoin(self._url, '%s/subscriptions' % self.account_code)
         return subscription.post(url)
 
     def update_billing_info(self, billing_info):
+        """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '%s/billing_info' % self.account_code)
         billing_info._url = url
         billing_info._update()
 
 
 class BillingInfo(Resource):
+
+    """A set of billing information for an account."""
 
     nodename = 'billing_info'
 
@@ -139,6 +186,8 @@ class BillingInfo(Resource):
 
 class Coupon(Resource):
 
+    """A coupon for a customer to apply to their account."""
+
     member_path = 'coupons/%s'
     collection_path = 'coupons'
 
@@ -162,18 +211,36 @@ class Coupon(Resource):
 
     @classmethod
     def all_redeemable(cls, **kwargs):
+        """Return a `Page` of redeemable coupons.
+
+        This is a convenience method for `Coupon.all(state='redeemable')`.
+
+        """
         return cls.all(state='redeemable', **kwargs)
 
     @classmethod
     def all_expired(cls, **kwargs):
+        """Return a `Page` of expired coupons.
+
+        This is a convenience method for `Coupon.all(state='expired')`.
+
+        """
         return cls.all(state='expired', **kwargs)
 
     @classmethod
     def all_maxed_out(cls, **kwargs):
+        """Return a `Page` of coupons that have been used the maximum
+        number of times.
+
+        This is a convenience method for `Coupon.all(state='maxed_out')`.
+
+        """
         return cls.all(state='maxed_out', **kwargs)
 
 
 class Adjustment(Resource):
+
+    """A charge or credit applied (or to be applied) to an account's invoice."""
 
     nodename = 'adjustment'
 
@@ -199,6 +266,9 @@ class Adjustment(Resource):
 
 class Invoice(Resource):
 
+    """A payable charge to an account for the customer's charges and
+    subscriptions."""
+
     member_path = 'invoices/%s'
     collection_path = 'invoices'
 
@@ -222,22 +292,44 @@ class Invoice(Resource):
 
     @classmethod
     def all_open(cls, **kwargs):
+        """Return a `Page` of open invoices.
+
+        This is a convenience method for `Invoice.all(state='open')`.
+
+        """
         return cls.all(state='open', **kwargs)
 
     @classmethod
     def all_collected(cls, **kwargs):
+        """Return a `Page` of collected invoices.
+
+        This is a convenience method for `Invoice.all(state='collected')`.
+
+        """
         return cls.all(state='collected', **kwargs)
 
     @classmethod
     def all_failed(cls, **kwargs):
+        """Return a `Page` of failed invoices.
+
+        This is a convenience method for `Invoice.all(state='failed')`.
+
+        """
         return cls.all(state='failed', **kwargs)
 
     @classmethod
     def all_past_due(cls, **kwargs):
+        """Return a `Page` of past-due invoices.
+
+        This is a convenience method for `Invoice.all(state='past_due')`.
+
+        """
         return cls.all(state='past_due', **kwargs)
 
 
 class Subscription(Resource):
+
+    """A customer account's subscription to your service."""
 
     member_path = 'subscriptions/%s'
     collection_path = 'subscriptions'
@@ -265,18 +357,21 @@ class Subscription(Resource):
     sensitive_attributes = ('number', 'verification_value')
 
     def cancel(self):
+        """Cancel the subscription."""
         url = urljoin(self._url, '%s/cancel' % self.uuid)
         response = self.http_request(url, 'PUT')
         if response.status != 200:
             self.raise_http_error(response)
 
     def reactivate(self):
+        """Reactivate a canceled subscription."""
         url = urljoin(self._url, '%s/reactivate' % self.uuid)
         response = self.http_request(url, 'PUT')
         if response.status != 200:
             self.raise_http_error(response)
 
     def terminate(self, refund):
+        """Terminate a subscription with the given refund status (`'none'`, `'full'`, or `'partial'`)."""
         url = urljoin(self._url, '%s/terminate' % self.uuid)
         url = '%s?%s' % (url, urlencode({'refund': refund}))
         response = self.http_request(url, 'PUT')
@@ -312,6 +407,9 @@ class Transaction(Resource):
 
 class Plan(Resource):
 
+    """A service level for your service to which a customer account
+    can subscribe."""
+
     member_path = 'plans/%s'
     collection_path = 'plans'
 
@@ -341,21 +439,27 @@ class Plan(Resource):
     read_only_attributes = ('created_at',)
 
     def add_ons(self, **kwargs):
+        """Return a `Page` of plan add-ons available for this plan."""
         url = urljoin(self._url, '%s/add_ons' % self.plan_code)
         url = '%s?%s' % (url, urlencode(kwargs))
         return Page.page_for_url(url, item_type=AddOn)
 
     def get_add_on(self, add_on_code):
+        """Return the `AddOn` for this plan with the given add-on code."""
         url = urljoin(self._url, '%s/add_ons/%s' % (self.plan_code, add_on_code))
         resp, elem = AddOn.element_for_url(url)
         return AddOn.from_element(elem)
 
     def create_add_on(self, add_on):
+        """Make the given `AddOn` available to subscribers on this plan."""
         url = urljoin(self._url, '%s/add_ons' % self.plan_code)
         return add_on.post(url)
 
 
 class AddOn(Resource):
+
+    """An additional benefit a customer subscribed to a particular plan
+    can also subscribe to."""
 
     nodename = 'add_on'
 

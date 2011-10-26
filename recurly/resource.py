@@ -15,6 +15,8 @@ from recurly.link_header import parse_link_value
 
 class Money(object):
 
+    """An amount of money in one or more currencies."""
+
     def __init__(self, *args, **kwargs):
         if args and kwargs:
             raise ValueError("Money may be single currency or multi-currency but not both")
@@ -58,7 +60,21 @@ class Money(object):
 
 class Page(list):
 
+    """A set of related `Resource` instances retrieved together from
+    the API.
+
+    Use `Page` instances as `list` instances to access their contents.
+
+    """
+
     def next_page(self):
+        """Return the next `Page` after this one in the result sequence
+        it's from.
+
+        If the current page is the last page in the sequence, calling
+        this method raises a `ValueError`.
+
+        """
         try:
             next_url = self.next_url
         except KeyError:
@@ -66,6 +82,13 @@ class Page(list):
         return self.page_for_url(next_url)
 
     def first_page(self):
+        """Return the first `Page` in the result sequence this `Page`
+        instance is from.
+
+        If the current page is already the first page in the sequence,
+        calling this method raises a `ValueError`.
+
+        """
         try:
             start_url = self.start_url
         except KeyError:
@@ -74,6 +97,8 @@ class Page(list):
 
     @classmethod
     def page_for_url(cls, url, item_type=None):
+        """Return a new `Page` containing the items at the given
+        endpoint URL."""
         resp, elem = Resource.element_for_url(url)
         page = cls(Resource.value_for_element(elem))
 
@@ -89,11 +114,27 @@ class Page(list):
 
 class Resource(object):
 
+    """A Recurly API resource.
+
+    This superclass implements the general behavior for all the
+    specific Recurly API resources.
+
+    All method parameters and return values that are XML elements are
+    `xml.etree.ElementTree.Element` instances.
+
+    """
+
     _classes_for_nodename = dict()
 
     read_only_attributes = ()
+    """Attributes that are not sent when submitting a `Resource` of
+    this class in a ``POST`` or ``PUT`` request."""
     sensitive_attributes = ()
+    """Attributes that are not logged with the rest of a `Resource`
+    of this class when submitted in a ``POST`` or ``PUT`` request."""
     xml_attribute_attributes = ()
+    """Attributes of a `Resource` of this class that are not serialized
+    as subelements, but rather attributes of the top level element."""
 
     def __init__(self, **kwargs):
         for key, value in kwargs.iteritems():
@@ -101,6 +142,19 @@ class Resource(object):
 
     @classmethod
     def http_request(cls, url, method='GET', body=None, headers=None):
+        """Make an HTTP request with the given method to the given URL,
+        returning the resulting `httplib.HTTPResponse` instance.
+
+        If the `body` argument is a `Resource` instance, it is serialized
+        to XML by calling its `to_element()` method before submitting it.
+        Requests are authenticated per the Recurly API specification
+        using the ``recurly.API_KEY`` value for the API key.
+
+        Requests and responses are logged at the ``DEBUG`` level to the
+        ``recurly.http.request`` and ``recurly.http.response`` loggers
+        respectively.
+
+        """
         urlparts = urlsplit(url)
         connection_class = httplib.HTTPSConnection if urlparts.scheme == 'https' else httplib.HTTPConnection
         connection = connection_class(urlparts.netloc)
@@ -143,6 +197,13 @@ class Resource(object):
         return resp
 
     def as_log_output(self):
+        """Returns an XML string containing a serialization of this
+        instance suitable for logging.
+
+        Attributes named in the instance's `sensitive_attributes` are
+        redacted.
+
+        """
         elem = self.to_element()
         for attrname in self.sensitive_attributes:
             for sensitive_el in elem.getiterator(attrname):
@@ -166,12 +227,22 @@ class Resource(object):
 
     @classmethod
     def get(cls, uuid):
+        """Return a `Resource` instance of this class identified by
+        the given code or UUID.
+
+        Only `Resource` classes with specified `member_path` attributes
+        can be directly requested with this method. 
+
+        """
         url = urljoin(recurly.BASE_URI, cls.member_path % (uuid,))
         resp, elem = cls.element_for_url(url)
         return cls.from_element(elem)
 
     @classmethod
     def element_for_url(cls, url):
+        """Return the resource at the given URL, as a
+        (`httplib.HTTPResponse`, `xml.etree.ElementTree.Element`) tuple
+        resulting from a ``GET`` request to that URL."""
         response = cls.http_request(url)
         if response.status != 200:
             cls.raise_http_error(response)
@@ -194,6 +265,18 @@ class Resource(object):
 
     @classmethod
     def value_for_element(cls, elem):
+        """Deserialize the given XML `Element` into its representative
+        value.
+
+        Depending on the content of the element, the returned value may be:
+        * a string, integer, or boolean value
+        * a `datetime.datetime` instance
+        * a list of `Resource` instances
+        * a single `Resource` instance
+        * a `Money` instance
+        * ``None``
+
+        """
         log = logging.getLogger('recurly.resource')
         if elem is None:
             log.debug("Converting %r element into None value", elem)
@@ -227,6 +310,18 @@ class Resource(object):
 
     @classmethod
     def element_for_value(cls, attrname, value):
+        """Serialize the given value into an XML `Element` with the
+        given tag name, returning it.
+
+        The value argument may be:
+        * a `Resource` instance
+        * a list or tuple of `Resource` instances
+        * a `Money` instance
+        * a `datetime.datetime` instance
+        * a string, integer, or boolean value
+        * ``None``
+
+        """
         if isinstance(value, Resource):
             return value.to_element()
 
@@ -261,9 +356,13 @@ class Resource(object):
 
     @classmethod
     def from_element(cls, elem):
+        """Return a new instance of this `Resource` class representing
+        the given XML element."""
         return cls().update_from_element(elem)
 
     def update_from_element(self, elem):
+        """Reset this `Resource` instance to represent the values in
+        the given XML element."""
         self._elem = elem
 
         for attrname in self.attributes:
@@ -313,12 +412,29 @@ class Resource(object):
 
     @classmethod
     def all(cls, **kwargs):
+        """Return a `Page` of instances of this `Resource` class from
+        its general collection endpoint.
+
+        Only `Resource` classes with specified `collection_path`
+        endpoints can be requested with this method. Any provided
+        keyword arguments are passed to the API endpoint as query
+        parameters.
+
+        """
         url = urljoin(recurly.BASE_URI, cls.collection_path)
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
         return Page.page_for_url(url, item_type=cls)
 
     def save(self):
+        """Save this `Resource` instance to the service.
+
+        If this is a new instance, it is created through a ``POST``
+        request to its collection endpoint. If this instance already
+        exists in the service, it is updated through a ``PUT`` request
+        to its own URL.
+
+        """
         if hasattr(self, '_url'):
             return self._update()
         return self._create()
@@ -338,6 +454,8 @@ class Resource(object):
         return self.post(url)
 
     def post(self, url):
+        """Sends this `Resource` instance to the service with a
+        ``POST`` request to the given URL."""
         response = self.http_request(url, 'POST', self, {'Content-Type': 'application/xml; charset=utf-8'})
         if response.status != 201:
             self.raise_http_error(response)
@@ -349,6 +467,8 @@ class Resource(object):
         self.update_from_element(ElementTree.fromstring(response_xml))
 
     def delete(self):
+        """Submits a deletion request for this `Resource` instance as
+        a ``DELETE`` request to its URL."""
         url = self._url
 
         response = self.http_request(url, 'DELETE')
@@ -357,12 +477,15 @@ class Resource(object):
 
     @classmethod
     def raise_http_error(cls, response):
+        """Raise a `ResponseError` of the appropriate subclass in
+        reaction to the given `httplib.HTTPResponse`."""
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         exc_class = recurly.errors.error_class_for_http_status(response.status)
         raise exc_class(response_xml)
 
     def to_element(self):
+        """Serialize this `Resource` instance to an XML element."""
         elem = ElementTree.Element(self.nodename)
         for attrname in self.attributes:
             if attrname in self.read_only_attributes:
