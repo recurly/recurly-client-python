@@ -462,4 +462,22 @@ class AddOn(Resource):
     read_only_attributes = ('created_at',)
 
 
+class SubscriptionAddOn(Resource):
+
+    """A plan add-on as added to a customer's subscription.
+
+    Use these instead of `AddOn` instances when specifying a
+    `Subscription` instance's `subscription_add_ons` attribute.
+
+    """
+
+    nodename = 'subscription_add_on'
+
+    attributes = (
+        'add_on_code',
+        'quantity',
+        'unit_amount_in_cents',
+    )
+
+
 Resource._learn_nodenames(locals().values())

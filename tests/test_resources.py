@@ -6,7 +6,7 @@ from urlparse import urljoin
 from xml.etree import ElementTree
 
 import recurly
-from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Subscription, Transaction
+from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Subscription, SubscriptionAddOn, Transaction
 from recurly import Money, NotFoundError, ValidationError, BadRequestError
 from recurlytests import RecurlyTest, xml
 
@@ -522,6 +522,70 @@ class TestResources(RecurlyTest):
 
         finally:
             with self.mock_request('subscription/plan-deleted.xml'):
+                plan.delete()
+
+    def test_subscribe_add_on(self):
+        plan = Plan(
+            plan_code='basicplan',
+            name='Basic Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('subscribe-add-on/plan-created.xml'):
+            plan.save()
+
+        try:
+
+            add_on = AddOn(
+                add_on_code='mock_add_on',
+                name='Mock Add-On',
+                unit_amount_in_cents=Money(100),
+            )
+            with self.mock_request('subscribe-add-on/add-on-created.xml'):
+                plan.create_add_on(add_on)
+
+            second_add_on = AddOn(
+                add_on_code='second_add_on',
+                name='Second Add-On',
+                unit_amount_in_cents=Money(50),
+            )
+            with self.mock_request('subscribe-add-on/second-add-on-created.xml'):
+                plan.create_add_on(second_add_on)
+
+            account_code='sad-on-%s' % self.test_id
+            sub = Subscription(
+                plan_code='basicplan',
+                subscription_add_ons=[
+                    SubscriptionAddOn(
+                        add_on_code='mock_add_on',
+                    ),
+                    SubscriptionAddOn(
+                        add_on_code='second_add_on',
+                    ),
+                ],
+                currency='USD',
+                account=Account(
+                    account_code=account_code,
+                    billing_info=BillingInfo(
+                        first_name='Verena',
+                        last_name='Example',
+                        number='4111 1111 1111 1111',
+                        verification_value='7777',
+                        year='2015',
+                        month='12',
+                    ),
+                ),
+            )
+            with self.mock_request('subscribe-add-on/subscribed.xml'):
+                sub.save()
+
+            with self.mock_request('subscribe-add-on/account-exists.xml'):
+                account = Account.get(account_code)
+            with self.mock_request('subscribe-add-on/account-deleted.xml'):
+                account.delete()
+
+        finally:
+            with self.mock_request('subscribe-add-on/plan-deleted.xml'):
                 plan.delete()
 
     def test_transaction(self):

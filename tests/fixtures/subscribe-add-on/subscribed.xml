@@ -1,0 +1,70 @@
+POST https://api.recurly.com/v2/subscriptions HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<subscription>
+  <plan_code>basicplan</plan_code>
+  <currency>USD</currency>
+  <subscription_add_ons type="array">
+    <subscription_add_on>
+      <add_on_code>mock_add_on</add_on_code>
+    </subscription_add_on>
+    <subscription_add_on>
+      <add_on_code>second_add_on</add_on_code>
+    </subscription_add_on>
+  </subscription_add_ons>
+  <account>
+    <account_code>sad-on-mock</account_code>
+    <billing_info>
+      <first_name>Verena</first_name>
+      <last_name>Example</last_name>
+      <number>4111 1111 1111 1111</number>
+      <verification_value>7777</verification_value>
+      <year>2015</year>
+      <month>12</month>
+    </billing_info>
+  </account>
+</subscription>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab
+
+<?xml version="1.0" encoding="UTF-8"?>
+<subscription 
+    href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab">
+  <uuid>123456789012345678901234567890ab</uuid>
+  <account href="https://api.recurly.com/v2/accounts/sad-on-mock"/>
+  <plan href="https://api.recurly.com/v2/plans/basicplan">
+    <plan_code>basicplan</plan_code>
+    <name>Basic Plan</name>
+  </plan>
+  <state>active</state>
+  <quantity type="integer">1</quantity>
+  <currency>USD</currency>
+  <total_amount_in_cents type="integer">1000</total_amount_in_cents>
+  <activated_at type="datetime">2011-05-27T07:00:00Z</activated_at>
+  <canceled_at nil="nil"></canceled_at>
+  <expires_at nil="nil"></expires_at>
+  <current_period_started_at type="datetime">2011-06-27T07:00:00Z</current_period_started_at>
+  <current_period_ends_at type="datetime">2010-07-27T07:00:00Z</current_period_ends_at>
+  <trial_started_at nil="nil"></trial_started_at>
+  <trial_ends_at nil="nil"></trial_ends_at>
+  <subscription_add_ons type="array">
+    <subscription_add_on>
+      <add_on_code>mock_add_on</add_on_code>
+      <unit_amount_in_cents type="integer">100</unit_amount_in_cents>
+      <quantity type="integer">1</quantity>
+    </subscription_add_on>
+    <subscription_add_on>
+      <add_on_code>second_add_on</add_on_code>
+      <unit_amount_in_cents type="integer">50</unit_amount_in_cents>
+      <quantity type="integer">1</quantity>
+    </subscription_add_on>
+  </subscription_add_ons>
+  <a name="cancel" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel" method="put"/>
+  <a name="terminate" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/terminate" method="put"/>
+</subscription>
