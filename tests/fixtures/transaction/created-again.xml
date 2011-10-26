@@ -63,6 +63,5 @@ Location: https://api.recurly.com/v2/transactions/123456789012345678901234567890
       </billing_info>
     </account>
   </details>
-  <!-- a name="void" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ac/void" method="put"/ -->
   <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ac" method="delete"/>
 </transaction>

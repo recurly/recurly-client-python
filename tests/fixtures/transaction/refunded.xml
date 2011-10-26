@@ -1,4 +1,4 @@
-DELETE https://api.recurly.com/v2/transactions/123456789012345678901234567890ac?amount_in_cents=700 HTTP/1.1
+DELETE https://api.recurly.com/v2/transactions/123456789012345678901234567890ab HTTP/1.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/{version}
@@ -9,12 +9,12 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <transaction 
-    href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ad"
+    href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ae"
     type="credit_card">
   <account href="https://api.recurly.com/v2/accounts/transactionmock"/>
-  <uuid>123456789012345678901234567890ad</uuid>
+  <uuid>123456789012345678901234567890ae</uuid>
   <action>purchase</action>
-  <amount_in_cents type="integer">700</amount_in_cents>
+  <amount_in_cents type="integer">1000</amount_in_cents>
   <tax_in_cents type="integer">0</tax_in_cents>
   <currency>USD</currency>
   <status>success</status>
@@ -53,6 +53,5 @@ Content-Type: application/xml; charset=utf-8
       </billing_info>
     </account>
   </details>
-  <!-- a name="void" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ad/void" method="put"/ -->
-  <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ad/refund" method="put"/>
+  <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ae/refund" method="delete"/>
 </transaction>

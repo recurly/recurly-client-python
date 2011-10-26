@@ -630,9 +630,8 @@ class TestResources(RecurlyTest):
             self.assertTrue('4111' not in log_content)
             self.assertTrue('7777' not in log_content)
 
-            self.assertTrue(transaction.voidable)
-            # TODO: the transaction is voidable but there's no 'void' action?
-            self.assertRaises(AttributeError, lambda: transaction.void)
+            with self.mock_request('transaction/refunded.xml'):
+                refund_transaction = transaction.refund()
 
             transaction_2 = Transaction(
                 amount_in_cents=1000,
@@ -644,7 +643,7 @@ class TestResources(RecurlyTest):
             self.assertNotEqual(transaction_2.uuid, transaction.uuid)
             self.assertTrue(transaction_2.refundable)
 
-            with self.mock_request('transaction/refunded.xml'):
+            with self.mock_request('transaction/partial-refunded.xml'):
                 refund_transaction = transaction_2.refund(amount_in_cents=700)
             self.assertTrue(isinstance(refund_transaction, Transaction))
             self.assertTrue(not refund_transaction.refundable)
