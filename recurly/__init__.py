@@ -361,17 +361,25 @@ class Subscription(Resource):
         'total_amount_in_cents',
         'activated_at',
         'canceled_at',
+        'starts_at',
         'expires_at',
         'current_period_started_at',
         'current_period_ends_at',
         'trial_started_at',
         'trial_ends_at',
         'unit_amount_in_cents',
+        'total_billing_cycles',
+        'timeframe',
         'currency',
         'subscription_add_ons',
         'account',
     )
     sensitive_attributes = ('number', 'verification_value')
+
+    def _update(self):
+        if not hasattr(self, 'timeframe'):
+            self.timeframe = 'now'
+        return super(Subscription, self)._update()
 
 
 class Transaction(Resource):
