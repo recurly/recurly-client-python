@@ -96,11 +96,16 @@ class Page(list):
         return self.page_for_url(start_url)
 
     @classmethod
-    def page_for_url(cls, url, item_type=None):
+    def page_for_url(cls, url):
         """Return a new `Page` containing the items at the given
         endpoint URL."""
         resp, elem = Resource.element_for_url(url)
-        page = cls(Resource.value_for_element(elem))
+        value = Resource.value_for_element(elem)
+        return cls.page_for_value(resp, value)
+
+    @classmethod
+    def page_for_value(cls, resp, value):
+        page = cls(value)
 
         links = parse_link_value(resp.getheader('Link'))
         for url, data in links.iteritems():
@@ -182,6 +187,7 @@ class Resource(object):
 
         if isinstance(body, Resource):
             body = ElementTree.tostring(body.to_element(), encoding='UTF-8')
+            headers['Content-Type'] = 'application/xml; charset=utf-8'
         if method in ('POST', 'PUT') and body is None:
             headers['Content-Length'] = '0'
         connection.request(method, url, body, headers)
@@ -378,12 +384,15 @@ class Resource(object):
         return self
 
     def _make_actionator(self, url, method):
-        def actionator(**kwargs):
+        def actionator(*args, **kwargs):
             if kwargs:
                 full_url = '%s?%s' % (url, urlencode(kwargs))
             else:
                 full_url = url
-            response = self.http_request(full_url, method)
+
+            body = args[0] if args else None
+            response = self.http_request(full_url, method, body)
+
             if response.status == 200:
                 response_xml = response.read()
                 logging.getLogger('recurly.http.response').debug(response_xml)
@@ -427,15 +436,21 @@ class Resource(object):
 
         # Follow links.
         if 'href' in elem.attrib:
-            def make_pagitator(url):
-                def pagitator(**kwargs):
+            def make_relatitator(url):
+                def relatitator(**kwargs):
                     if kwargs:
                         full_url = '%s?%s' % (url, urlencode(kwargs))
                     else:
                         full_url = url
-                    return Page.page_for_url(full_url)
-                return pagitator
-            return make_pagitator(elem.attrib['href'])
+
+                    resp, elem = Resource.element_for_url(url)
+                    value = Resource.value_for_element(elem)
+
+                    if isinstance(value, list):
+                        return Page.page_for_value(resp, value)
+                    return value
+                return relatitator
+            return make_relatitator(elem.attrib['href'])
 
         return self.value_for_element(elem)
 
@@ -453,7 +468,7 @@ class Resource(object):
         url = urljoin(recurly.BASE_URI, cls.collection_path)
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
-        return Page.page_for_url(url, item_type=cls)
+        return Page.page_for_url(url)
 
     def save(self):
         """Save this `Resource` instance to the service.

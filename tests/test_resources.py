@@ -6,7 +6,7 @@ from urlparse import urljoin
 from xml.etree import ElementTree
 
 import recurly
-from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Subscription, SubscriptionAddOn, Transaction
+from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction
 from recurly import Money, NotFoundError, ValidationError, BadRequestError
 from recurlytests import RecurlyTest, xml
 
@@ -248,22 +248,100 @@ class TestResources(RecurlyTest):
             coupon.save()
         self.assertTrue(coupon._url)
 
-        with self.mock_request('coupon/exists.xml'):
-            same_coupon = Coupon.get(coupon_code)
-        self.assertEqual(same_coupon.coupon_code, coupon_code)
-        self.assertEqual(same_coupon.name, 'Nice Coupon')
-        discount = same_coupon.discount_in_cents
-        self.assertEqual(discount['USD'], 1000)
-        self.assertTrue('USD' in discount)
+        try:
 
-        # Delete a coupon?
-        with self.mock_request('coupon/deleted.xml'):
-            coupon.delete()
+            with self.mock_request('coupon/exists.xml'):
+                same_coupon = Coupon.get(coupon_code)
+            self.assertEqual(same_coupon.coupon_code, coupon_code)
+            self.assertEqual(same_coupon.name, 'Nice Coupon')
+            discount = same_coupon.discount_in_cents
+            self.assertEqual(discount['USD'], 1000)
+            self.assertTrue('USD' in discount)
 
-        # Coupons soft-delete so it's still there.
-        with self.mock_request('coupon/exists.xml'):
-            same_coupon = Coupon.get(coupon_code)
-        self.assertEqual(same_coupon.coupon_code, coupon_code)
+            account_code = 'coupon%s' % self.test_id
+            account = Account(account_code=account_code)
+            with self.mock_request('coupon/account-created.xml'):
+                account.save()
+
+            try:
+
+                redemption = Redemption(
+                    account_code=account_code,
+                    currency='USD',
+                )
+                with self.mock_request('coupon/redeemed.xml'):
+                    real_redemption = coupon.redeem(redemption)
+                self.assertTrue(isinstance(real_redemption, Redemption))
+                self.assertEqual(real_redemption.currency, 'USD')
+
+                with self.mock_request('coupon/account-with-redemption.xml'):
+                    account = Account.get(account_code)
+                with self.mock_request('coupon/redemption-exists.xml'):
+                    same_redemption = account.redemption()
+                self.assertEqual(same_redemption._url, real_redemption._url)
+
+                with self.mock_request('coupon/unredeemed.xml'):
+                    real_redemption.delete()
+
+            finally:
+                with self.mock_request('coupon/account-deleted.xml'):
+                    account.delete()
+
+            plan = Plan(
+                plan_code='basicplan',
+                name='Basic Plan',
+                setup_fee_in_cents=Money(0),
+                unit_amount_in_cents=Money(1000),
+            )
+            with self.mock_request('subscription/plan-created.xml'):
+                plan.save()
+
+            try:
+
+                account_code_2 = 'coupon-%s-2' % self.test_id
+                sub = Subscription(
+                    plan_code='basicplan',
+                    coupon_code='coupon%s' % self.test_id,
+                    currency='USD',
+                    account=Account(
+                        account_code=account_code_2,
+                        billing_info=BillingInfo(
+                            first_name='Verena',
+                            last_name='Example',
+                            number='4111 1111 1111 1111',
+                            verification_value='7777',
+                            year='2015',
+                            month='12',
+                        ),
+                    ),
+                )
+                with self.mock_request('coupon/subscribed.xml'):
+                    sub.save()
+
+                with self.mock_request('coupon/second-account-exists.xml'):
+                    account_2 = Account.get(account_code_2)
+
+                try:
+
+                    with self.mock_request('coupon/second-account-redemption.xml'):
+                        redemption_2 = account_2.redemption()
+                    self.assertTrue(isinstance(redemption_2, Redemption))
+                    self.assertEqual(redemption_2.currency, 'USD')
+                    with self.mock_request('coupon/exists.xml'):
+                        same_coupon = redemption_2.coupon()
+                    self.assertEqual(same_coupon.coupon_code, coupon_code)
+
+                finally:
+                    with self.mock_request('coupon/second-account-deleted.xml'):
+                        account_2.delete()
+
+            finally:
+                with self.mock_request('coupon/plan-deleted.xml'):
+                    plan.delete()
+
+        finally:
+            with self.mock_request('coupon/deleted.xml'):
+                coupon.delete()
 
     def test_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)

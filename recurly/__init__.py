@@ -238,6 +238,22 @@ class Coupon(Resource):
         return cls.all(state='maxed_out', **kwargs)
 
 
+class Redemption(Resource):
+
+    """A particular application of a coupon to a customer account."""
+
+    nodename = 'redemption'
+
+    attributes = (
+        'account_code',
+        'single_use',
+        'total_discounted_in_cents',
+        'currency',
+        'created_at',
+    )
+    read_only_attributes = ('created_at',)
+
+
 class Adjustment(Resource):
 
     """A charge or credit applied (or to be applied) to an account's invoice."""
@@ -340,6 +356,7 @@ class Subscription(Resource):
         'uuid',
         'state',
         'plan_code',
+        'coupon_code',
         'quantity',
         'total_amount_in_cents',
         'activated_at',
@@ -423,12 +440,6 @@ class Plan(Resource):
         'setup_fee_in_cents',
     )
     read_only_attributes = ('created_at',)
-
-    def add_ons(self, **kwargs):
-        """Return a `Page` of plan add-ons available for this plan."""
-        url = urljoin(self._url, '%s/add_ons' % self.plan_code)
-        url = '%s?%s' % (url, urlencode(kwargs))
-        return Page.page_for_url(url, item_type=AddOn)
 
     def get_add_on(self, add_on_code):
         """Return the `AddOn` for this plan with the given add-on code."""
