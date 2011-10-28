@@ -33,7 +33,7 @@ class TestJs(RecurlyTest):
         signature = recurly.js.sign_billing_info_update('ABC', timestamp=1312701386)
         self.assertEqual(signature, '94c1af938a64b0d535dab615f7ba62cea9ffbc6f-1312701386')
 
-        signature = recurly.js.sign_transaction('ABC', 5000, 'USD', timestamp=1312701386)
+        signature = recurly.js.sign_transaction(5000, 'USD', account_code='ABC', timestamp=1312701386)
         self.assertEqual(signature, '186138b840da4187a68a66f3d5cd33b6e0034c30-1312701386')
 
     def test_verify(self):

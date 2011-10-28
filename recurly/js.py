@@ -70,12 +70,13 @@ def sign_billing_info_update(account_code, timestamp=None):
     return sign_params('billinginfoupdate', {'account_code': account_code}, timestamp=timestamp)
 
 
-def sign_transaction(account_code, amount_in_cents, currency, timestamp=None):
+def sign_transaction(amount_in_cents, currency=recurly.DEFAULT_CURRENCY, account_code=None, timestamp=None):
     params = {
-        'account_code': account_code,
         'amount_in_cents': amount_in_cents,
         'currency': currency,
     }
+    if account_code:
+        params['account_code'] = account_code
     return sign_params('transactioncreate', params, timestamp=timestamp)
 
 
