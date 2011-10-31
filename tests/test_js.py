@@ -82,3 +82,7 @@ class TestJs(RecurlyTest):
             mocktime.return_value = 1312704987  # +3601
             self.assertRaises(recurly.js.RequestForgeryError,
                 recurly.js.verify_billing_info_update, params)
+
+
+if __name__ == '__main__':
+    unittest.main()

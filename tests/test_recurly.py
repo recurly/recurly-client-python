@@ -15,3 +15,7 @@ class TestRecurly(unittest.TestCase):
         account.username = 'importantbreakfast'
         account_xml = ElementTree.tostring(account.to_element(), encoding='UTF-8')
         self.assertEqual(account_xml, xml('<account><username>importantbreakfast</username></account>'))
+
+
+if __name__ == '__main__':
+    unittest.main()
