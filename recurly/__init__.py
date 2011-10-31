@@ -3,6 +3,7 @@ from urllib import urlencode
 from urlparse import urljoin
 from xml.etree import ElementTree
 
+import recurly.js as js
 from recurly.errors import *
 from recurly.resource import Resource, Money
 
