@@ -109,7 +109,7 @@ def sign_billing_info_update(account_code, timestamp=None):
     return sign_params('billinginfoupdate', {'account_code': account_code}, timestamp=timestamp)
 
 
-def sign_transaction(amount_in_cents, currency=recurly.DEFAULT_CURRENCY, account_code=None, timestamp=None):
+def sign_transaction(amount_in_cents, currency=None, account_code=None, timestamp=None):
     """Sign a transaction creation Recurly.js request for the given amount.
 
     If `currency` is not given, the default currency (as set in
@@ -117,6 +117,8 @@ def sign_transaction(amount_in_cents, currency=recurly.DEFAULT_CURRENCY, account
     the request is signed for a one-time transaction with no account attached.
 
     """
+    if currency is None:
+        currency = recurly.DEFAULT_CURRENCY
     params = {
         'amount_in_cents': amount_in_cents,
         'currency': currency,
