@@ -1,3 +1,11 @@
+## November 4, 2011 ##
+Version 2.0.2
+
+- Fixed recurly.js function to sign requests for transactions without existing accounts.
+- Fixed bug importing the recurly.js module in the documented way.
+- Added missing function to support push notifications.
+
+
 ## October 27, 2011 ##
 Version 2.0.1
 
