@@ -50,7 +50,7 @@ class Account(Resource):
         'accept_language',
         'created_at',
     )
-    sensitive_attributes = ('number', 'verification_value')
+    sensitive_attributes = ('number', 'verification_value',)
     read_only_attributes = ('created_at',)
 
     def to_element(self):
@@ -278,7 +278,7 @@ class Adjustment(Resource):
         'type',
     )
     xml_attribute_attributes = ('type',)
-    read_only_attributes = ('created_at',)
+    read_only_attributes = ('uuid', 'created_at',)
 
 
 class Invoice(Resource):
@@ -305,7 +305,7 @@ class Invoice(Resource):
         'line_items',
         'transactions',
     )
-    read_only_attributes = ('created_at',)
+    read_only_attributes = ('uuid', 'created_at',)
 
     @classmethod
     def all_open(cls, **kwargs):
@@ -375,7 +375,8 @@ class Subscription(Resource):
         'subscription_add_ons',
         'account',
     )
-    sensitive_attributes = ('number', 'verification_value')
+    read_only_attributes = ('uuid',)
+    sensitive_attributes = ('number', 'verification_value',)
 
     def _update(self):
         if not hasattr(self, 'timeframe'):
@@ -412,9 +413,9 @@ class Transaction(Resource):
         'details',
         'type',
     )
-    read_only_attributes = ('created_at',)
+    read_only_attributes = ('uuid', 'created_at',)
     xml_attribute_attributes = ('type',)
-    sensitive_attributes = ('number', 'verification_value')
+    sensitive_attributes = ('number', 'verification_value',)
 
 
 class Plan(Resource):
