@@ -142,6 +142,14 @@ class Resource(object):
     as subelements, but rather attributes of the top level element."""
 
     def __init__(self, **kwargs):
+        try:
+            self.attributes.index('currency') # Test for currency attribute,
+            self.currency                     # and test if it's set.
+        except ValueError:
+            pass
+        except AttributeError:
+            self.currency = recurly.DEFAULT_CURRENCY
+
         for key, value in kwargs.iteritems():
             setattr(self, key, value)
 
