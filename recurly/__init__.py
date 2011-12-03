@@ -382,6 +382,11 @@ class Subscription(Resource):
             self.timeframe = 'now'
         return super(Subscription, self)._update()
 
+    def __getpath__(self, name):
+        if name == 'plan_code':
+            return 'plan/plan_code'
+        else:
+            return name
 
 class Transaction(Resource):
 
