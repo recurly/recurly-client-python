@@ -416,6 +416,10 @@ class Resource(object):
                 self.raise_http_error(response)
         return actionator
 
+    #usually the path is the same as the element name
+    def __getpath__(self, name):
+        return name
+
     def __getattr__(self, name):
         if name.startswith('_'):
             raise AttributeError(name)
@@ -431,7 +435,8 @@ class Resource(object):
             except KeyError:
                 raise AttributeError(name)
 
-        elem = selfnode.find(name)
+        elem = selfnode.find(self.__getpath__(name))
+        
         if elem is None:
             # It might be an <a name> link.
             for anchor_elem in selfnode.findall('a'):
