@@ -389,6 +389,18 @@ class Subscription(Resource):
         else:
             return name
 
+class PendingSubscription(Resource):
+
+    """A pending change to a subscription."""
+
+    nodename = "pending_subscription"
+
+    attributes = (
+        'unit_amount_in_cents',
+        'quantity',
+        'subscription_add_ons'
+    )
+
 class Transaction(Resource):
 
     """An immediate one-time charge made to a customer's account."""
