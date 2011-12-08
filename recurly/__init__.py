@@ -375,7 +375,10 @@ class Subscription(Resource):
         'subscription_add_ons',
         'account',
     )
-    read_only_attributes = ('uuid',)
+    read_only_attributes = ('uuid', 'state', 'activated_at', 'canceled_at',
+                            'starts_at', 'expires_at', 'current_period_started_at',
+                            'current_period_ends_at', 'trial_started_at',
+                            'trial_ends_at', 'total_billing_cycles', 'currency', 'account')
     sensitive_attributes = ('number', 'verification_value',)
 
     def _update(self):
