@@ -375,16 +375,25 @@ class Subscription(Resource):
         'subscription_add_ons',
         'account',
     )
-    read_only_attributes = ('uuid', 'state', 'activated_at', 'canceled_at',
-                            'starts_at', 'expires_at', 'current_period_started_at',
-                            'current_period_ends_at', 'trial_started_at',
-                            'trial_ends_at', 'total_billing_cycles', 'currency', 'account')
+    update_read_only_attributes = ('uuid', 'state', 'activated_at', 'canceled_at',
+                                   'starts_at', 'expires_at', 'current_period_started_at',
+                                   'current_period_ends_at', 'trial_started_at',
+                                   'trial_ends_at', 'total_billing_cycles', 'account', 'currency')
+    create_read_only_attributes = ('uuid', 'state', 'activated_at', 'canceled_at',
+                                   'starts_at', 'expires_at', 'current_period_started_at',
+                                   'current_period_ends_at', 'trial_started_at',
+                                   'trial_ends_at', 'total_billing_cycles', 'account')
     sensitive_attributes = ('number', 'verification_value',)
 
     def _update(self):
         if not hasattr(self, 'timeframe'):
             self.timeframe = 'now'
+        self.read_only_attributes = self.update_read_only_attributes
         return super(Subscription, self)._update()
+
+    def _create(self):
+        self.read_only_attributes = self.create_read_only_attributes
+        return super(Subscription, self)._create()
 
     def __getpath__(self, name):
         if name == 'plan_code':
