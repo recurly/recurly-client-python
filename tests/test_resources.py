@@ -87,6 +87,17 @@ class TestResources(RecurlyTest):
         try:
 
             add_on = AddOn(add_on_code=add_on_code, name='Mock Add-On')
+            with self.mock_request('add-on/need-amount.xml'):
+                try:
+                    plan.create_add_on(add_on)
+                except ValidationError, exc:
+                    pass
+                else:
+                    self.fail("Creating a plan add-on without an amount did not raise a ValidationError")
+            error = exc.errors['add_on.unit_amount_in_cents']
+            self.assertEqual(error.symbol, 'blank')
+
+            add_on = AddOn(add_on_code=add_on_code, name='Mock Add-On', unit_amount_in_cents=Money(40))
             with self.mock_request('add-on/created.xml'):
                 plan.create_add_on(add_on)
             self.assertEqual(add_on.add_on_code, add_on_code)
@@ -98,6 +109,7 @@ class TestResources(RecurlyTest):
                     same_add_on = plan.get_add_on(add_on_code)
                 self.assertEqual(same_add_on.add_on_code, add_on_code)
                 self.assertEqual(same_add_on.name, 'Mock Add-On')
+                self.assertEqual(same_add_on.unit_amount_in_cents['USD'], 40)
 
             finally:
                 with self.mock_request('add-on/deleted.xml'):

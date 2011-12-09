@@ -1,0 +1,19 @@
+POST https://api.recurly.com/v2/plans/planmock/add_ons HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on>
+  <add_on_code>addonmock</add_on_code>
+  <name>Mock Add-On</name>
+</add_on>
+
+HTTP/1.1 422
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<errors>
+  <error field="add_on.unit_amount_in_cents" symbol="blank">can't be blank</error>
+</errors>
