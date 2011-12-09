@@ -1,3 +1,10 @@
+## December 9, 2011 ##
+Version 2.0.3dev
+
+- Send only fields that have changed when updating resources.
+- Subscriptions' plan codes are now available in the `plan_code` attribute.
+
+
 ## November 4, 2011 ##
 Version 2.0.2
 
