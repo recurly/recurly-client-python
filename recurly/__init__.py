@@ -389,6 +389,7 @@ class Subscription(Resource):
         else:
             return name
 
+
 class Transaction(Resource):
 
     """An immediate one-time charge made to a customer's account."""
