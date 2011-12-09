@@ -548,9 +548,13 @@ class Resource(object):
             if attrname in self.read_only_attributes:
                 continue
 
+            # Only use values that have been loaded into the internal
+            # __dict__. For retrieved objects we look into the XML response at
+            # access time, so the internal __dict__ contains only the elements
+            # that have been set on the client side.
             try:
-                value = getattr(self, attrname)
-            except AttributeError:
+                value = self.__dict__[attrname]
+            except KeyError:
                 continue
 
             if attrname in self.xml_attribute_attributes:
