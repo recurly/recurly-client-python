@@ -51,7 +51,6 @@ class Account(Resource):
         'created_at',
     )
     sensitive_attributes = ('number', 'verification_value',)
-    read_only_attributes = ('created_at',)
 
     def to_element(self):
         elem = super(Account, self).to_element()
@@ -208,7 +207,6 @@ class Coupon(Resource):
         'created_at',
         'plan_codes',
     )
-    read_only_attributes = ('created_at',)
 
     @classmethod
     def all_redeemable(cls, **kwargs):
@@ -252,7 +250,6 @@ class Redemption(Resource):
         'currency',
         'created_at',
     )
-    read_only_attributes = ('created_at',)
 
 
 class Adjustment(Resource):
@@ -278,7 +275,6 @@ class Adjustment(Resource):
         'type',
     )
     xml_attribute_attributes = ('type',)
-    read_only_attributes = ('uuid', 'created_at',)
 
 
 class Invoice(Resource):
@@ -305,7 +301,6 @@ class Invoice(Resource):
         'line_items',
         'transactions',
     )
-    read_only_attributes = ('uuid', 'created_at',)
 
     @classmethod
     def all_open(cls, **kwargs):
@@ -375,7 +370,6 @@ class Subscription(Resource):
         'subscription_add_ons',
         'account',
     )
-    read_only_attributes = ('uuid',)
     sensitive_attributes = ('number', 'verification_value',)
 
     def _update(self):
@@ -419,7 +413,6 @@ class Transaction(Resource):
         'details',
         'type',
     )
-    read_only_attributes = ('uuid', 'created_at',)
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
 
@@ -455,7 +448,6 @@ class Plan(Resource):
         'unit_amount_in_cents',
         'setup_fee_in_cents',
     )
-    read_only_attributes = ('created_at',)
 
     def get_add_on(self, add_on_code):
         """Return the `AddOn` for this plan with the given add-on code."""
@@ -486,7 +478,6 @@ class AddOn(Resource):
         'unit_amount_in_cents',
         'created_at',
     )
-    read_only_attributes = ('created_at',)
 
 
 class SubscriptionAddOn(Resource):

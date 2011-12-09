@@ -131,9 +131,6 @@ class Resource(object):
 
     _classes_for_nodename = dict()
 
-    read_only_attributes = ()
-    """Attributes that are not sent when submitting a `Resource` of
-    this class in a ``POST`` or ``PUT`` request."""
     sensitive_attributes = ()
     """Attributes that are not logged with the rest of a `Resource`
     of this class when submitted in a ``POST`` or ``PUT`` request."""
@@ -545,9 +542,6 @@ class Resource(object):
         """Serialize this `Resource` instance to an XML element."""
         elem = ElementTree.Element(self.nodename)
         for attrname in self.attributes:
-            if attrname in self.read_only_attributes:
-                continue
-
             # Only use values that have been loaded into the internal
             # __dict__. For retrieved objects we look into the XML response at
             # access time, so the internal __dict__ contains only the elements
