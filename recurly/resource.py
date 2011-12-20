@@ -272,7 +272,7 @@ class Resource(object):
             return cls._classes_for_nodename[nodename]
         except KeyError:
             raise ValueError("Could not determine resource class for array member with tag %r"
-                % first_child.tag)
+                % nodename)
 
     @classmethod
     def value_for_element(cls, elem):
