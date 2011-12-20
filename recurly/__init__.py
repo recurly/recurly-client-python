@@ -143,8 +143,14 @@ class Account(Resource):
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '%s/billing_info' % self.account_code)
-        billing_info._url = url
-        billing_info._update()
+        response = billing_info.http_request(url, 'PUT', billing_info,
+            {'Content-Type': 'application/xml; charset=utf-8'})
+        if response.status not in (200, 201):
+            billing_info.raise_http_error(response)
+
+        response_xml = response.read()
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        billing_info.update_from_element(ElementTree.fromstring(response_xml))
 
 
 class BillingInfo(Resource):
