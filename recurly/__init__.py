@@ -145,7 +145,11 @@ class Account(Resource):
         url = urljoin(self._url, '%s/billing_info' % self.account_code)
         response = billing_info.http_request(url, 'PUT', billing_info,
             {'Content-Type': 'application/xml; charset=utf-8'})
-        if response.status not in (200, 201):
+        if response.status == 200:
+            pass
+        elif response.status == 201:
+            billing_info._url = response.getheader('Location')
+        else:
             billing_info.raise_http_error(response)
 
         response_xml = response.read()
@@ -375,6 +379,7 @@ class Subscription(Resource):
         'currency',
         'subscription_add_ons',
         'account',
+        'pending_subscription',
     )
     sensitive_attributes = ('number', 'verification_value',)
 

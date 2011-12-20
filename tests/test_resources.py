@@ -535,6 +535,16 @@ class TestResources(RecurlyTest):
                 with self.mock_request('subscription/reactivated.xml'):
                     sub.reactivate()
 
+                # Try modifying the subscription.
+                sub.timeframe = 'renewal'
+                sub.unit_amount_in_cents = 800
+                with self.mock_request('subscription/updated-at-renewal.xml'):
+                    sub.save()
+                pending_sub = sub.pending_subscription
+                self.assertTrue(isinstance(pending_sub, Subscription))
+                self.assertEqual(pending_sub.unit_amount_in_cents, 800)
+                self.assertEqual(sub.unit_amount_in_cents, 1000)
+
                 with self.mock_request('subscription/terminated.xml'):
                     sub.terminate(refund='none')
 

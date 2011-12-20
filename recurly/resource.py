@@ -311,7 +311,18 @@ class Resource(object):
         if attr_type == 'array':
             return [cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem) for sub_elem in elem]
 
-        if len(elem):
+        # Unknown types may be the names of resource classes.
+        if attr_type is not None:
+            try:
+                value_class = cls._subclass_for_nodename(attr_type)
+            except ValueError:
+                log.debug("Not converting %r element with type %r to a resource as that matches no known nodename",
+                    elem.tag, attr_type)
+            else:
+                return value_class.from_element(elem)
+
+        # Untyped complex elements should still be resource instances. Guess from the nodename.
+        if len(elem):  # has children
             value_class = cls._subclass_for_nodename(elem.tag)
             log.debug("Converting %r tag into a %s", elem.tag, value_class.__name__)
             return value_class.from_element(elem)
@@ -501,7 +512,7 @@ class Resource(object):
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
-        self._elem = ElementTree.fromstring(response_xml)
+        self.update_from_element(ElementTree.fromstring(response_xml))
 
     def _create(self):
         url = urljoin(recurly.BASE_URI, self.collection_path)
