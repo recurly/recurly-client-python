@@ -109,6 +109,11 @@ def sign_billing_info_update(account_code, timestamp=None):
     return sign_params('billinginfoupdate', {'account_code': account_code}, timestamp=timestamp)
 
 
+def sign_subscription(plan_code, account_code, timestamp=None):
+    """Sign a subscription create Recurly.js request for the given account code."""
+    return sign_params('subscriptioncreate', {'plan_code': plan_code, 'account_code': account_code}, timestamp=timestamp)
+
+
 def sign_transaction(amount_in_cents, currency=None, account_code=None, timestamp=None):
     """Sign a transaction creation Recurly.js request for the given amount.
 
