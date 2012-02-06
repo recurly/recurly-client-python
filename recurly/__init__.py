@@ -501,6 +501,7 @@ class SubscriptionAddOn(Resource):
     """
 
     nodename = 'subscription_add_on'
+    inherits_currency = True
 
     attributes = (
         'add_on_code',

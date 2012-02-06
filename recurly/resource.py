@@ -137,6 +137,11 @@ class Resource(object):
     xml_attribute_attributes = ()
     """Attributes of a `Resource` of this class that are not serialized
     as subelements, but rather attributes of the top level element."""
+    inherits_currency = False
+    """Whether a `Resource` of this class inherits a currency from a
+    parent `Resource`, and therefore should not use `Money` instances
+    even though this `Resource` class has no ``currency`` attribute of
+    its own."""
 
     def __init__(self, **kwargs):
         try:
@@ -296,7 +301,7 @@ class Resource(object):
             log.debug("Converting %r element with nil attribute into None value", elem.tag)
             return
 
-        if elem.tag.endswith('_in_cents') and 'currency' not in cls.attributes:
+        if elem.tag.endswith('_in_cents') and 'currency' not in cls.attributes and not cls.inherits_currency:
             log.debug("Converting %r element in class with no matching 'currency' into a Money value", elem.tag)
             return Money.from_element(elem)
 

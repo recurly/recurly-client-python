@@ -679,12 +679,17 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscribe-add-on/subscribed.xml'):
                 sub.save()
 
-            # Test that the add-ons' amounts use the parent Subscription's currency.
+            # Subscription amounts are in one real currency, so they aren't Money instances.
+            sub_amount = sub.total_amount_in_cents
+            self.assertTrue(not isinstance(sub_amount, Money))
+            self.assertEqual(sub_amount, 1000)
+
+            # Test that the add-ons' amounts aren't real Money instances either.
             add_on_1, add_on_2 = sub.subscription_add_ons
             self.assertIsInstance(add_on_1, SubscriptionAddOn)
             amount_1 = add_on_1.unit_amount_in_cents
-            self.assertIsInstance(amount_1, Money)
-            self.assertEqual(amount_1[recurly.DEFAULT_CURRENCY], 100)
+            self.assertTrue(not isinstance(amount_1, Money))
+            self.assertEqual(amount_1, 100)
 
             with self.mock_request('subscribe-add-on/account-exists.xml'):
                 account = Account.get(account_code)
