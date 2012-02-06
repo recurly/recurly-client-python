@@ -37,7 +37,7 @@ class TestRecurly(unittest.TestCase):
             </plan>
             <state>active</state>
             <quantity type="integer">2</quantity>
-            <total_amount_in_cents type="integer">2000</total_amount_in_cents>
+            <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
             <activated_at type="datetime">2009-11-22T13:10:38-08:00</activated_at>
             <canceled_at type="datetime"></canceled_at>
             <expires_at type="datetime"></expires_at>

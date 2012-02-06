@@ -680,7 +680,7 @@ class TestResources(RecurlyTest):
                 sub.save()
 
             # Subscription amounts are in one real currency, so they aren't Money instances.
-            sub_amount = sub.total_amount_in_cents
+            sub_amount = sub.unit_amount_in_cents
             self.assertTrue(not isinstance(sub_amount, Money))
             self.assertEqual(sub_amount, 1000)
 

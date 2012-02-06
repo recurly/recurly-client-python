@@ -27,7 +27,7 @@ Location: https://api.recurly.com/v2/subscriptions/12345678901234567890123456789
   <state>active</state>
   <quantity type="integer">1</quantity>
   <currency>EUR</currency>
-  <total_amount_in_cents type="integer">1000</total_amount_in_cents>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
   <activated_at type="datetime">2011-05-27T07:00:00Z</activated_at>
   <canceled_at nil="nil"></canceled_at>
   <expires_at nil="nil"></expires_at>

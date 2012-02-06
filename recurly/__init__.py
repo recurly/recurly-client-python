@@ -364,7 +364,6 @@ class Subscription(Resource):
         'plan_code',
         'coupon_code',
         'quantity',
-        'total_amount_in_cents',
         'activated_at',
         'canceled_at',
         'starts_at',
