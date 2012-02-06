@@ -134,6 +134,16 @@ class Account(Resource):
         invoice = Invoice.from_element(elem)
         invoice._url = response.getheader('Location')
         return invoice
+    
+    def reopen(self):
+        """Reopens the account if it is closed"""
+        url = urljoin(self._url, '%s/reopen' % self.account_code)
+
+        response = self.http_request(url, 'PUT')
+        if response.status != 200:
+            return False
+
+        return True
 
     def subscribe(self, subscription):
         """Create the given `Subscription` for this existing account."""
