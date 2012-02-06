@@ -85,6 +85,18 @@ class TestResources(RecurlyTest):
             active = Account.all_active()
         self.assertTrue(len(active) < 1 or active[0].account_code != account_code)
 
+        # Make sure we can reopen a closed account.
+        with self.mock_request('account/reopened.xml'):
+            account.reopen()
+        try:
+            with self.mock_request('account/list-active.xml'):
+                active = Account.all_active()
+            self.assertTrue(len(active) >= 1)
+            self.assertEqual(active[0].account_code, account_code)
+        finally:
+            with self.mock_request('account/deleted.xml'):
+                account.delete()
+
         # Make sure numeric account codes work.
         if self.test_id == 'mock':
             numeric_test_id = 58

@@ -136,14 +136,15 @@ class Account(Resource):
         return invoice
     
     def reopen(self):
-        """Reopens the account if it is closed"""
+        """Reopen a closed account."""
         url = urljoin(self._url, '%s/reopen' % self.account_code)
-
         response = self.http_request(url, 'PUT')
         if response.status != 200:
-            return False
+            self.raise_http_error(response)
 
-        return True
+        response_xml = response.read()
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        self.update_from_element(ElementTree.fromstring(response_xml))
 
     def subscribe(self, subscription):
         """Create the given `Subscription` for this existing account."""
