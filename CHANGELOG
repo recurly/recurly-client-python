@@ -2,6 +2,10 @@
 Version 2.0.4
 
 - Complete Recurly.js v2 support by adding missing `sign_subscription()` function.
+- Fix access to Subscriptions' add-on amounts, which were erroneously `Money`
+  instances instead of integers.
+- Add missing `reopen()` method to `Account` instances.
+- Improve the message for the error when the API key is not set or incorrect.
 
 
 ## December 20, 2011 ##

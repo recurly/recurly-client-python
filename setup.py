@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='recurly',
-    version='2.0.4dev',
+    version='2.0.4',
     description="Interact with Recurly's REST API for subscription management from your Python website",
     author='Recurly',
     author_email='support@recurly.com',
