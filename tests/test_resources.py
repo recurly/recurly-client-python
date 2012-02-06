@@ -71,6 +71,21 @@ class TestResources(RecurlyTest):
             active = Account.all_active()
         self.assertTrue(len(active) < 1 or active[0].account_code != account_code)
 
+        # Make sure numeric account codes work.
+        if self.test_id == 'mock':
+            numeric_test_id = 58
+        else:
+            numeric_test_id = int(self.test_id)
+
+        account = Account(account_code=numeric_test_id)
+        with self.mock_request('account/numeric-created.xml'):
+            account.save()
+        try:
+            self.assertEqual(account._url, urljoin(recurly.BASE_URI, 'accounts/%d' % numeric_test_id))
+        finally:
+            with self.mock_request('account/numeric-deleted.xml'):
+                account.delete()
+
     def test_add_on(self):
         plan_code = 'plan%s' % self.test_id
         add_on_code = 'addon%s' % self.test_id
