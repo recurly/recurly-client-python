@@ -178,8 +178,9 @@ class Resource(object):
         headers.update({
             'Accept': 'application/xml',
             'User-Agent': 'recurly-python/%s' % recurly.__version__,
-            'Authorization': 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY),
         })
+        if recurly.API_KEY is not None:
+            headers['Authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
 
         log = logging.getLogger('recurly.http.request')
         if log.isEnabledFor(logging.DEBUG):

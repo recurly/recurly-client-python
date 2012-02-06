@@ -79,8 +79,17 @@ class BadRequestError(ClientError):
 
 
 class UnauthorizedError(ClientError):
+
     """An error for a missing or invalid API key (HTTP ``401 Unauthorized``)."""
-    pass
+
+    def __init__(self, response_xml):
+        self.response_text = response_xml
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
+        return unicode(self.response_text)
 
 
 class PaymentRequiredError(ClientError):

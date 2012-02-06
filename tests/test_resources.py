@@ -13,6 +13,20 @@ from recurlytests import RecurlyTest, xml
 
 class TestResources(RecurlyTest):
 
+    def test_authentication(self):
+        recurly.API_KEY = None
+
+        account_code = 'test%s' % self.test_id
+        with self.mock_request('authentication/unauthenticated.xml'):
+            try:
+                Account.get(account_code)
+            except recurly.UnauthorizedError, exc:
+                pass
+            else:
+                self.fail("Updating account with invalid email address did not raise a ValidationError")
+
+        self.assertEqual(unicode(exc).strip(), u'HTTP Basic: Access denied.')
+
     def test_account(self):
         account_code = 'test%s' % self.test_id
         with self.mock_request('account/does-not-exist.xml'):
