@@ -305,7 +305,7 @@ class TestResources(RecurlyTest):
                 setup_fee_in_cents=Money(0),
                 unit_amount_in_cents=Money(1000),
             )
-            with self.mock_request('subscription/plan-created.xml'):
+            with self.mock_request('coupon/plan-created.xml'):
                 plan.save()
 
             try:
