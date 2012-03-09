@@ -7,7 +7,7 @@ from xml.etree import ElementTree
 
 import recurly
 from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction
-from recurly import Money, NotFoundError, ValidationError, BadRequestError
+from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
 
@@ -448,6 +448,11 @@ class TestResources(RecurlyTest):
             self.assertRaises(IndexError, lambda: accounts[4])
             self.assertEqual(accounts[0].account_code, account_code % 7)
             self.assertEqual(accounts[3].account_code, account_code % 4)
+
+            # Test errors, since the first page has no first page.
+            self.assertRaises(PageError, lambda: accounts.first_page())
+            # Make sure PageError is a ValueError.
+            self.assertRaises(ValueError, lambda: accounts.first_page())
 
             with self.mock_request('pages/next-list.xml'):
                 next_accounts = accounts.next_page()

@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 
 import recurly.js as js
 from recurly.errors import *
-from recurly.resource import Resource, Money
+from recurly.resource import Resource, Money, PageError
 
 
 """

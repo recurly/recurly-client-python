@@ -1,7 +1,9 @@
 ## March 9, 2012 ##
 Version 2.0.5
 
-- Added missing docstring for `Page.page_for_value()` method.
+- Add missing docstring for `Page.page_for_value()` method.
+- Raise clearer `PageError` exception when trying to traverse to a pagination
+  page that doesn't exist.
 
 
 ## January 6, 2012 ##

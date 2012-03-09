@@ -58,6 +58,17 @@ class Money(object):
         return name in self.currencies
 
 
+class PageError(ValueError):
+    """An error raised when requesting to continue to a stream page that
+    doesn't exist.
+
+    This error can be raised when requesting the next page for the last page in
+    a series, or the first page for the first page in a series.
+
+    """
+    pass
+
+
 class Page(list):
 
     """A set of related `Resource` instances retrieved together from
@@ -77,8 +88,8 @@ class Page(list):
         """
         try:
             next_url = self.next_url
-        except KeyError:
-            raise ValueError("Page %r has no next page" % self)
+        except AttributeError:
+            raise PageError("Page %r has no next page" % self)
         return self.page_for_url(next_url)
 
     def first_page(self):
@@ -91,8 +102,8 @@ class Page(list):
         """
         try:
             start_url = self.start_url
-        except KeyError:
-            raise ValueError("Page %r is already the first page" % self)
+        except AttributeError:
+            raise PageError("Page %r is already the first page" % self)
         return self.page_for_url(start_url)
 
     @classmethod
