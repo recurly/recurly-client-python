@@ -105,6 +105,14 @@ class Page(list):
 
     @classmethod
     def page_for_value(cls, resp, value):
+        """Return a new `Page` representing the given resource `value`
+        retrieved using the HTTP response `resp`.
+
+        This method records pagination ``Link`` headers present in `resp`, so
+        that the returned `Page` can return their resources from its
+        `next_page()` and `first_page()` methods.
+
+        """
         page = cls(value)
 
         links = parse_link_value(resp.getheader('Link'))
