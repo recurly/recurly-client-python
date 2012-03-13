@@ -24,9 +24,9 @@ def sign(*records):
         raise ValueError("Recurly.js private key is not set.")
     records = list(records)
     try:
-      data = records.pop() if type(records[-1]) is dict else {}
+        data = records.pop() if type(records[-1]) is dict else {}
     except IndexError:
-      data = {}
+        data = {}
     for record in records:
         data[record.__class__.nodename] = record.__dict__
     if 'timestamp' not in data:
