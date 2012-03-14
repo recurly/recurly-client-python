@@ -15,7 +15,7 @@ Content-Type: application/xml; charset=utf-8
     <year>2015</year>
     <month>12</month>
     <address1>123 Main St</address1>
-    <city>San Francisco</city>
+    <city>San José</city>
     <state>CA</state>
     <zip>94105</zip>
     <country>US</country>

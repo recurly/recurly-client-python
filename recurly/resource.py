@@ -397,7 +397,7 @@ class Resource(object):
         elif isinstance(value, Money):
             value.add_to_element(el)
         else:
-            el.text = str(value)
+            el.text = unicode(value)
 
         return el
 

@@ -52,7 +52,7 @@ class TestResources(RecurlyTest):
 
         account.username = 'shmohawk58'
         account.email = 'larry.david'
-        account.first_name = 'Larry'
+        account.first_name = u'L\xe4rry'
         account.last_name = 'David'
         account.company_name = 'Home Box Office'
         account.accept_language = 'en-US'
@@ -188,7 +188,7 @@ class TestResources(RecurlyTest):
                 first_name='Verena',
                 last_name='Example',
                 address1='123 Main St',
-                city='San Francisco',
+                city=u'San Jos\xe9',
                 state='CA',
                 zip='94105',
                 country='US',
@@ -213,6 +213,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('billing-info/exists.xml'):
                 same_binfo = same_account.billing_info
             self.assertEqual(same_binfo.first_name, 'Verena')
+            self.assertEqual(same_binfo.city, u'San Jos\xe9')
 
             with self.mock_request('billing-info/deleted.xml'):
                 binfo.delete()
@@ -229,7 +230,7 @@ class TestResources(RecurlyTest):
             first_name='Verena',
             last_name='Example',
             address1='123 Main St',
-            city='San Francisco',
+            city=u'San Jos\xe9',
             state='CA',
             zip='94105',
             country='US',
@@ -549,7 +550,7 @@ class TestResources(RecurlyTest):
                     first_name='Verena',
                     last_name='Example',
                     address1='123 Main St',
-                    city='San Francisco',
+                    city=u'San Jos\xe9',
                     state='CA',
                     zip='94105',
                     country='US',
@@ -607,7 +608,7 @@ class TestResources(RecurlyTest):
                             first_name='Verena',
                             last_name='Example',
                             address1='123 Main St',
-                            city='San Francisco',
+                            city=u'San Jos\xe9',
                             state='CA',
                             zip='94105',
                             country='US',
@@ -644,7 +645,7 @@ class TestResources(RecurlyTest):
                         first_name='Verena',
                         last_name='Example',
                         address1='123 Main St',
-                        city='San Francisco',
+                        city=u'San Jos\xe9',
                         state='CA',
                         zip='94105',
                         country='US',
