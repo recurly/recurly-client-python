@@ -821,6 +821,91 @@ class TestResources(RecurlyTest):
             with self.mock_request('transaction/account-deleted.xml'):
                 account.delete()
 
+    def test_transaction_with_balance(self):
+        account_code = 'transbalance%s' % self.test_id
+        account = Account(account_code=account_code)
+        with self.mock_request('transaction-balance/account-created.xml'):
+            account.save()
+
+        try:
+            # Try to charge without billing info, should break.
+            transaction = Transaction(
+                amount_in_cents=1000,
+                currency='USD',
+                account=account,
+            )
+            with self.mock_request('transaction-balance/transaction-no-billing-fails.xml'):
+                try:
+                    transaction.save()
+                except ValidationError, error:
+                    pass
+                else:
+                    self.fail("Posting a transaction without billing info did not raise a ValidationError")
+            # TODO: should fail with errors but it doesn't
+            self.assertEquals(len(error.errors), 0)
+
+            binfo = BillingInfo(
+                first_name='Verena',
+                last_name='Example',
+                address1='123 Main St',
+                city=u'San Jos\xe9',
+                state='CA',
+                zip='94105',
+                country='US',
+                type='credit_card',
+                number='4111 1111 1111 1111',
+                verification_value='7777',
+                year='2015',
+                month='12',
+            )
+            with self.mock_request('transaction-balance/set-billing-info.xml'):
+                account.update_billing_info(binfo)
+
+            # Try to charge now, should be okay.
+            transaction = Transaction(
+                amount_in_cents=1000,
+                currency='USD',
+                account=account,
+            )
+            with self.mock_request('transaction-balance/transacted.xml'):
+                transaction.save()
+
+            # Give the account a credit.
+            credit = Adjustment(unit_amount_in_cents=-2000, currency='USD', description='transaction test credit')
+            with self.mock_request('transaction-balance/credited.xml'):
+                # TODO: maybe this should be adjust()?
+                account.charge(credit)
+
+            # Try to charge less than the account balance.
+            # TODO: this fails when it should work (shouldn't it?)
+            transaction = Transaction(
+                amount_in_cents=500,
+                currency='USD',
+                account=account,
+            )
+            with self.mock_request('transaction-balance/transacted-2.xml'):
+                try:
+                    transaction.save()
+                except ValidationError, error:
+                    pass
+                else:
+                    self.fail("Posting a transaction for less than the account's balance did not raise a ValidationError")
+            # TODO: even if it isn't supposed to work, the error should have error messages in it
+            self.assertEqual(len(error.errors), 0)
+
+            # Try to charge more than the account balance, which should work.
+            transaction = Transaction(
+                amount_in_cents=3000,
+                currency='USD',
+                account=account,
+            )
+            with self.mock_request('transaction-balance/transacted-3.xml'):
+                transaction.save()
+
+        finally:
+            with self.mock_request('transaction-balance/account-deleted.xml'):
+                account.delete()
+
 
 if __name__ == '__main__':
     import unittest

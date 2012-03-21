@@ -1,0 +1,28 @@
+POST https://api.recurly.com/v2/accounts/transbalancemock/adjustments HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment>
+  <description>transaction test credit</description>
+  <unit_amount_in_cents type="integer">-2000</unit_amount_in_cents>
+  <currency>USD</currency>
+</adjustment>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/adjustments/4ba1531325014b4f969cd13676f514d9
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment href="https://api.recurly.com/v2/adjustments/4ba1531325014b4f969cd13676f514d9" type="charge">
+  <uuid>4ba1531325014b4f969cd13676f514d9</uuid>
+  <account_code>transbalancemock</account_code>
+  <unit_amount_in_cents type="integer">-2000</unit_amount_in_cents>
+  <currency>USD</currency>
+  <start_date type="datetime">2009-11-03T23:27:46-08:00</start_date>
+  <end_date type="datetime"></end_date>
+  <description>transaction test credit</description>
+  <created_at type="datetime">2009-11-03T23:27:46-08:00</created_at>
+</adjustment>

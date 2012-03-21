@@ -1,0 +1,40 @@
+PUT https://api.recurly.com/v2/accounts/transbalancemock/billing_info HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<billing_info type="credit_card">
+  <first_name>Verena</first_name>
+  <last_name>Example</last_name>
+  <number>4111 1111 1111 1111</number>
+  <verification_value>7777</verification_value>
+  <year>2015</year>
+  <month>12</month>
+  <address1>123 Main St</address1>
+  <city>San José</city>
+  <state>CA</state>
+  <zip>94105</zip>
+  <country>US</country>
+</billing_info>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/transbalancemock/billing_info
+
+<?xml version="1.0" encoding="UTF-8"?>
+<billing_info url="https://api.recurly.com/v2/accounts/transbalancemock/billing_info" type="credit_card">
+  <first_name>Verena</first_name>
+  <last_name>Example</last_name>
+  <address1>123 Main St</address1>
+  <city>San José</city>
+  <state>CA</state>
+  <zip>94105</zip>
+  <country>US</country>
+  <cc_type>visa</cc_type>
+  <year type="integer">2015</year>
+  <month type="integer">12</month>
+  <first_six>411111</first_six>
+  <last_four>1111</last_four>
+</billing_info>

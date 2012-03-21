@@ -54,6 +54,16 @@ class Account(Resource):
 
     def to_element(self):
         elem = super(Account, self).to_element()
+
+        # Make sure the account code is always included in a serialization.
+        if 'account_code' not in self.__dict__:  # not already included
+            try:
+                account_code = self.account_code
+            except AttributeError:
+                pass
+            else:
+                elem.append(self.element_for_value('account_code', account_code))
+
         if 'billing_info' in self.__dict__:
             elem.append(self.billing_info.to_element())
         return elem
