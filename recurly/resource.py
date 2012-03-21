@@ -489,7 +489,7 @@ class Resource(object):
                     else:
                         full_url = url
 
-                    resp, elem = Resource.element_for_url(url)
+                    resp, elem = Resource.element_for_url(full_url)
                     value = Resource.value_for_element(elem)
 
                     if isinstance(value, list):
