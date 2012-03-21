@@ -274,7 +274,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('adjustment/charged.xml'):
                 account.charge(charge)
 
-            with self.mock_request('adjustment/account-has-charges.xml'):
+            with self.mock_request('adjustment/account-has-adjustments.xml'):
                 charges = account.adjustments()
             self.assertEqual(len(charges), 1)
             same_charge = charges[0]
@@ -282,6 +282,15 @@ class TestResources(RecurlyTest):
             self.assertEqual(same_charge.currency, 'USD')
             self.assertEqual(same_charge.description, 'test charge')
             self.assertEqual(same_charge.type, 'charge')
+
+            with self.mock_request('adjustment/account-has-charges.xml'):
+                charges = account.adjustments(type='charge')
+            self.assertEqual(len(charges), 1)
+
+            with self.mock_request('adjustment/account-has-no-credits.xml'):
+                credits = account.adjustments(type='credit')
+            self.assertEqual(len(credits), 0)
+
         finally:
             with self.mock_request('adjustment/account-deleted.xml'):
                 account.delete()

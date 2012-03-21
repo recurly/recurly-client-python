@@ -1,4 +1,4 @@
-GET https://api.recurly.com/v2/accounts/chargemock/adjustments?type=charge HTTP/1.1
+GET https://api.recurly.com/v2/accounts/chargemock/adjustments HTTP/1.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/{version}

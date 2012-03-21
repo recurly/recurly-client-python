@@ -1,0 +1,11 @@
+GET https://api.recurly.com/v2/accounts/chargemock/adjustments?type=credit HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<adjustments type="array">
+</adjustments>
