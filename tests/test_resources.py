@@ -822,6 +822,21 @@ class TestResources(RecurlyTest):
                 account.delete()
 
     def test_transaction_with_balance(self):
+        transaction = Transaction(
+            amount_in_cents=1000,
+            currency='USD',
+            account=Account(),
+        )
+        with self.mock_request('transaction-balance/transaction-no-account.xml'):
+            try:
+                transaction.save()
+            except ValidationError, error:
+                pass
+            else:
+                self.fail("Posting a transaction without an account code did not raise a ValidationError")
+        # TODO: this case should have an error message
+        self.assertEquals(len(error.errors), 0)
+
         account_code = 'transbalance%s' % self.test_id
         account = Account(account_code=account_code)
         with self.mock_request('transaction-balance/account-created.xml'):
@@ -876,8 +891,7 @@ class TestResources(RecurlyTest):
                 # TODO: maybe this should be adjust()?
                 account.charge(credit)
 
-            # Try to charge less than the account balance.
-            # TODO: this fails when it should work (shouldn't it?)
+            # Try to charge less than the account balance, which should fail (not a CC transaction).
             transaction = Transaction(
                 amount_in_cents=500,
                 currency='USD',
