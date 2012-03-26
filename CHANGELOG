@@ -1,13 +1,11 @@
-## March 26, 2012 ##
-Version 2.1.1
+## Version 2.1.1 – March 26, 2012 ##
 
 - Properly handle unicode strings in resource values.
 - Apply requested filters when requesting lists (such as
   `account.adjustments(type='credit')`).
 
 
-## March 13, 2012 ##
-Version 2.1.0
+## Version 2.1.0 – March 13, 2012 ##
 
 - Updated to use Recurly.js 2.1.
 - Raise clearer `PageError` exception when trying to traverse to a pagination
@@ -15,8 +13,7 @@ Version 2.1.0
 - Add missing docstring for `Page.page_for_value()` method.
 
 
-## January 6, 2012 ##
-Version 2.0.4
+## Version 2.0.4 – January 6, 2012 ##
 
 - Complete Recurly.js v2 support by adding missing `sign_subscription()` function.
 - Fix access to Subscriptions' add-on amounts, which were erroneously `Money`
@@ -25,42 +22,36 @@ Version 2.0.4
 - Improve the message for the error when the API key is not set or incorrect.
 
 
-## December 20, 2011 ##
-Version 2.0.3
+## Version 2.0.3 – December 20, 2011 ##
 
 - Send only fields that have changed when updating resources.
 - Subscriptions' plan codes are now available in the `plan_code` attribute.
 - Pending updates to a Subscription are accessible in its `pending_subscription` attribute.
 
 
-## November 4, 2011 ##
-Version 2.0.2
+## Version 2.0.2 – November 4, 2011 ##
 
 - Fixed recurly.js function to sign requests for transactions without existing accounts.
 - Fixed bug importing the recurly.js module in the documented way.
 - Added missing function to support push notifications.
 
 
-## October 27, 2011 ##
-Version 2.0.1
+## Version 2.0.1 – October 27, 2011 ##
 
 - Additional support for subscription and transaction interfaces.
 
 
-## October 25, 2011 ##
-Version 2.0.0
+## Version 2.0.0 – October 25, 2011 ##
 
 - Support for v2 API with a new object-oriented interface.
 
 
-## March 11, 2010 ##
-Version 1.2
+## Version 1.2 – March 11, 2010 ##
 
 - Added 'subdomain' parameter
 - Fix authentication header if the username long
 
 
-## February 23, 2010 ##
-Version 1.1
+## Version 1.1 – February 23, 2010 ##
 
 - Initial release
