@@ -1,0 +1,2 @@
+recursive-include tests *.py *.md *.xml
+include CHANGELOG LICENSE README.md
