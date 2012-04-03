@@ -1,12 +1,19 @@
 from setuptools import setup
 import os.path
+import re
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as README:
     DESCRIPTION = README.read()
+    
+VERSION_RE = re.compile("^__version__ = '(.+)'$",
+                        flags=re.MULTILINE)
+with open(os.path.join(os.path.dirname(__file__),
+                       'recurly', '__init__.py')) as PACKAGE:
+    VERSION = VERSION_RE.search(PACKAGE.read()).group(1)
 
 setup(
     name='recurly',
-    version='2.1.1',
+    version=VERSION,
     description="Interact with Recurly's REST API for subscription management from your Python website",
     long_description=DESCRIPTION,
     author='Recurly',
