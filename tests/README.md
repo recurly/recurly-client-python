@@ -19,7 +19,7 @@ configure your Recurly test account and use its API key in the
 
 The live Recurly API endpoint can also be tested while validating the server
 certificate with the `RECURLY_CA_CERTS_FILE` environment variable, which should
-be the filename of certificate authority X.509 certificates:
+be a filename of concatenated certificate authority X.509 certificates:
 
     $ RECURLY_API_KEY=1274...54e3 RECURLY_CA_CERTS_FILE=/etc/pki/tls/certs/ca-bundle.crt -m unittest tests.test_resources
 
