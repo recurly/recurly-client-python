@@ -1,6 +1,5 @@
 import base64
 from datetime import datetime
-import httplib
 import logging
 from urllib import urlencode
 from urlparse import urlsplit, urljoin
@@ -11,6 +10,7 @@ import iso8601
 import recurly
 import recurly.errors
 from recurly.link_header import parse_link_value
+import https_wrapper
 
 
 class Money(object):
@@ -190,8 +190,11 @@ class Resource(object):
 
         """
         urlparts = urlsplit(url)
-        connection_class = httplib.HTTPSConnection if urlparts.scheme == 'https' else httplib.HTTPConnection
-        connection = connection_class(urlparts.netloc)
+        if urlparts.scheme == 'https':
+            connection = https_wrapper.CertValidatingHTTPSConnection(
+                urlparts.netloc, ca_certs=recurly.CA_CERTS_FILE)
+        else:
+            connection = httplib.HTTPConnection(urlparts.netloc)
 
         headers = {} if headers is None else dict(headers)
         headers.update({

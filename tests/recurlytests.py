@@ -123,6 +123,7 @@ class RecurlyTest(unittest.TestCase):
             self.test_id = 'mock'
         else:
             recurly.API_KEY = api_key
+            recurly.CA_CERTS_FILE = os.environ.get('RECURLY_CA_CERTS_FILE')
             self.mock_request = self.noop_mock_request
             self.mock_sleep = self.noop_mock_sleep
             self.test_id = datetime.now().strftime('%Y%m%d%H%M%S')
