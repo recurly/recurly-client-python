@@ -1,3 +1,9 @@
+## Version 2.1.2 ##
+
+- Switched to packaging with setuptools and included tests in the
+  distribution.
+
+
 ## Version 2.1.1 – March 26, 2012 ##
 
 - Properly handle unicode strings in resource values.
