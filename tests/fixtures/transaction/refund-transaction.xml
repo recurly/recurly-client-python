@@ -1,19 +1,18 @@
-DELETE https://api.recurly.com/v2/transactions/123456789012345678901234567890ac?amount_in_cents=700 HTTP/1.1
+GET https://api.recurly.com/v2/transactions/123456789012345678901234567890ae HTTP/1.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/{version}
 
 
-HTTP/1.1 202 Accepted
-Location: https://api.recurly.com/v2/transactions/123456789012345678901234567890ad
+HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <transaction 
-    href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ac"
+    href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ae"
     type="credit_card">
   <account href="https://api.recurly.com/v2/accounts/transactionmock"/>
-  <uuid>123456789012345678901234567890ac</uuid>
+  <uuid>123456789012345678901234567890ae</uuid>
   <action>purchase</action>
   <amount_in_cents type="integer">1000</amount_in_cents>
   <tax_in_cents type="integer">0</tax_in_cents>
@@ -22,7 +21,7 @@ Content-Type: application/xml; charset=utf-8
   <reference nil="nil"></reference>
   <test type="boolean">true</test>
   <voidable type="boolean">true</voidable>
-  <refundable type="boolean">true</refundable>
+  <refundable type="boolean">false</refundable>
   <cvv_result code="" nil="nil"></cvv_result>
   <avs_result code="" nil="nil"></avs_result>
   <avs_result_street nil="nil"></avs_result_street>
@@ -54,5 +53,5 @@ Content-Type: application/xml; charset=utf-8
       </billing_info>
     </account>
   </details>
-  <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ac" method="delete"/>
+  <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ae/refund" method="delete"/>
 </transaction>
