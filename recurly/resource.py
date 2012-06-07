@@ -424,7 +424,7 @@ class Resource(object):
 
         return self
 
-    def _make_actionator(self, url, method):
+    def _make_actionator(self, url, method, extra_handler=None):
         def actionator(*args, **kwargs):
             if kwargs:
                 full_url = '%s?%s' % (url, urlencode(kwargs))
@@ -445,6 +445,8 @@ class Resource(object):
                 return self.value_for_element(elem)
             elif response.status == 204:
                 pass
+            elif extra_handler is not None:
+                return extra_handler(response)
             else:
                 self.raise_http_error(response)
         return actionator

@@ -1,5 +1,6 @@
 ## Version 2.1.2 ##
 
+- Properly handle refunding transactions.
 - Switched to packaging with setuptools and included tests in the
   distribution.
 

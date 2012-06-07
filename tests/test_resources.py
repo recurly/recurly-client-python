@@ -787,6 +787,13 @@ class TestResources(RecurlyTest):
 
         logger.removeHandler(log_handler)
 
+        try:
+            transaction.get_refund_transaction()
+        except ValueError:
+            pass
+        else:
+            self.fail("Transaction with no refund transaction did not raise a ValueError from get_refund_transaction()")
+
         with self.mock_request('transaction/account-exists.xml'):
             account = Account.get(account_code)
 
@@ -799,7 +806,7 @@ class TestResources(RecurlyTest):
             self.assertTrue('7777' not in log_content)
 
             with self.mock_request('transaction/refunded.xml'):
-                refund_transaction = transaction.refund()
+                refunded_transaction = transaction.refund()
 
             transaction_2 = Transaction(
                 amount_in_cents=1000,
@@ -812,7 +819,11 @@ class TestResources(RecurlyTest):
             self.assertTrue(transaction_2.refundable)
 
             with self.mock_request('transaction/partial-refunded.xml'):
-                refund_transaction = transaction_2.refund(amount_in_cents=700)
+                refunded_transaction = transaction_2.refund(amount_in_cents=700)
+            self.assertTrue(refunded_transaction is transaction_2)
+            self.assertTrue(hasattr(transaction_2, 'get_refund_transaction'))
+            with self.mock_request('transaction/partial-refunded-transaction.xml'):
+                refund_transaction = transaction_2.get_refund_transaction()
             self.assertTrue(isinstance(refund_transaction, Transaction))
             self.assertTrue(not refund_transaction.refundable)
             self.assertNotEqual(refund_transaction.uuid, transaction_2.uuid)
