@@ -223,9 +223,16 @@ class ServiceUnavailableError(ServerError):
 
 
 class UnexpectedStatusError(ResponseError):
+
     """An error resulting from an unexpected status code returned by
     the remote service."""
-    pass
+
+    def __init__(self, status, response_xml):
+        super(UnexpectedStatusError, self).__init__(response_xml)
+        self.status = status
+
+    def __unicode__(self):
+        return unicode(self.status)
 
 
 error_classes = {
@@ -247,7 +254,12 @@ error_classes = {
 def error_class_for_http_status(status):
     """Return the appropriate `ResponseError` subclass for the given
     HTTP status code."""
-    return error_classes.get(status, UnexpectedStatusError)
+    try:
+        return error_classes[status]
+    except KeyError:
+        def new_status_error(xml_response):
+            return UnexpectedStatusError(status, xml_response)
+        return new_status_error
 
 
 __all__ = [x.__name__ for x in error_classes.values()]
