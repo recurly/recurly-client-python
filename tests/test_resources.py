@@ -845,8 +845,8 @@ class TestResources(RecurlyTest):
                 pass
             else:
                 self.fail("Posting a transaction without an account code did not raise a ValidationError")
-        # TODO: this case should have an error message
-        self.assertEquals(len(error.errors), 0)
+        # Make sure there really were errors.
+        self.assertTrue(len(error.errors) > 0)
 
         account_code = 'transbalance%s' % self.test_id
         account = Account(account_code=account_code)
@@ -867,8 +867,8 @@ class TestResources(RecurlyTest):
                     pass
                 else:
                     self.fail("Posting a transaction without billing info did not raise a ValidationError")
-            # TODO: should fail with errors but it doesn't
-            self.assertEquals(len(error.errors), 0)
+            # Make sure there really were errors.
+            self.assertTrue(len(error.errors) > 0)
 
             binfo = BillingInfo(
                 first_name='Verena',
@@ -909,14 +909,9 @@ class TestResources(RecurlyTest):
                 account=account,
             )
             with self.mock_request('transaction-balance/transacted-2.xml'):
-                try:
-                    transaction.save()
-                except ValidationError, error:
-                    pass
-                else:
-                    self.fail("Posting a transaction for less than the account's balance did not raise a ValidationError")
-            # TODO: even if it isn't supposed to work, the error should have error messages in it
-            self.assertEqual(len(error.errors), 0)
+                transaction.save()
+            # The transaction doesn't actually save.
+            self.assertTrue(transaction._url is None)
 
             # Try to charge more than the account balance, which should work.
             transaction = Transaction(
@@ -926,6 +921,8 @@ class TestResources(RecurlyTest):
             )
             with self.mock_request('transaction-balance/transacted-3.xml'):
                 transaction.save()
+            # This transaction should be recorded.
+            self.assertTrue(transaction._url is not None)
 
         finally:
             with self.mock_request('transaction-balance/account-deleted.xml'):
