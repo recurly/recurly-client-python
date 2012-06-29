@@ -549,14 +549,15 @@ class Resource(object):
         """Sends this `Resource` instance to the service with a
         ``POST`` request to the given URL."""
         response = self.http_request(url, 'POST', self, {'Content-Type': 'application/xml; charset=utf-8'})
-        if response.status != 201:
+        if response.status not in (201, 204):
             self.raise_http_error(response)
 
         self._url = response.getheader('Location')
 
-        response_xml = response.read()
-        logging.getLogger('recurly.http.response').debug(response_xml)
-        self.update_from_element(ElementTree.fromstring(response_xml))
+        if response.status == 201:
+            response_xml = response.read()
+            logging.getLogger('recurly.http.response').debug(response_xml)
+            self.update_from_element(ElementTree.fromstring(response_xml))
 
     def delete(self):
         """Submits a deletion request for this `Resource` instance as
