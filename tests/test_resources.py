@@ -398,6 +398,26 @@ class TestResources(RecurlyTest):
                     with self.mock_request('coupon/second-account-deleted.xml'):
                         account_2.delete()
 
+                plan_coupon = Coupon(
+                    coupon_code='plancoupon%s' % self.test_id,
+                    name='Plan Coupon',
+                    discount_in_cents=Money(1000),
+                    applies_to_all_plans=False,
+                    plan_codes=('basicplan',),
+                )
+                with self.mock_request('coupon/plan-coupon-created.xml'):
+                    plan_coupon.save()
+
+                try:
+                    self.assertTrue(plan_coupon._url)
+
+                    coupon_plans = list(plan_coupon.plan_codes)
+                    self.assertEqual(len(coupon_plans), 1)
+                    self.assertEqual(coupon_plans[0], 'basicplan')
+                finally:
+                    with self.mock_request('coupon/plan-coupon-deleted.xml'):
+                        plan_coupon.delete()
+
             finally:
                 with self.mock_request('coupon/plan-deleted.xml'):
                     plan.delete()

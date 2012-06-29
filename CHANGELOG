@@ -1,6 +1,7 @@
 ## Version 2.1.2 ##
 
 - Properly handle refunding transactions.
+- Provide access to plan codes for Coupon resources.
 - Switched to packaging with setuptools and included tests in the
   distribution.
 

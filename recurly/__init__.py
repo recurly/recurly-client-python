@@ -240,6 +240,27 @@ class Coupon(Resource):
     )
 
     @classmethod
+    def value_for_element(cls, elem):
+        if not elem or elem.tag != 'plan_codes' or elem.attrib.get('type') != 'array':
+            return super(Coupon, cls).value_for_element(elem)
+
+        return [code_elem.text for code_elem in elem]
+
+    @classmethod
+    def element_for_value(cls, attrname, value):
+        if attrname != 'plan_codes':
+            return super(Coupon, cls).element_for_value(attrname, value)
+
+        elem = ElementTree.Element(attrname)
+        elem.attrib['type'] = 'array'
+        for code in value:
+            code_el = ElementTree.Element('plan_code')
+            code_el.text = code
+            elem.append(code_el)
+
+        return elem
+
+    @classmethod
     def all_redeemable(cls, **kwargs):
         """Return a `Page` of redeemable coupons.
 
