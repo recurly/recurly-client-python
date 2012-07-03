@@ -27,6 +27,10 @@ BASE_URI = 'https://api.recurly.com/v2/'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
+CA_CERTS_FILE = None
+"""A file contianing a set of concatenated certificate authority certs
+for validating the server against."""
+
 DEFAULT_CURRENCY = 'USD'
 """The currency to use creating `Money` instances when one is not specified."""
 
