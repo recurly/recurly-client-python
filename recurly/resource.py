@@ -1,16 +1,19 @@
 import base64
 from datetime import datetime
+import httplib
 import logging
+import socket
+import ssl
 from urllib import urlencode
 from urlparse import urlsplit, urljoin
 from xml.etree import ElementTree
 
 import iso8601
+import backports.ssl_match_hostname
 
 import recurly
 import recurly.errors
 from recurly.link_header import parse_link_value
-import https_wrapper
 
 
 class Money(object):
@@ -136,6 +139,29 @@ class Page(list):
         return page
 
 
+class _ValidatedHTTPSConnection(httplib.HTTPSConnection):
+
+    """An `httplib.HTTPSConnection` that validates the SSL connection by
+    requiring certificate validation and checking the connection's intended
+    hostname again the validated certificate's possible hosts."""
+
+    def connect(self):
+        sock = socket.create_connection((self.host, self.port),
+                                        self.timeout, self.source_address)
+        if self._tunnel_host:
+            self.sock = sock
+            self._tunnel()
+
+        ssl_sock = ssl.wrap_socket(sock, self.key_file, self.cert_file,
+            ssl_version=ssl.PROTOCOL_SSLv3, cert_reqs=ssl.CERT_REQUIRED,
+            ca_certs=recurly.CA_CERTS_FILE)
+
+        # Let the CertificateError for failure be raised to the caller.
+        backports.ssl_match_hostname.match_hostname(ssl_sock.getpeercert(), self.host)
+
+        self.sock = ssl_sock
+
+
 class Resource(object):
 
     """A Recurly API resource.
@@ -190,11 +216,12 @@ class Resource(object):
 
         """
         urlparts = urlsplit(url)
-        if urlparts.scheme == 'https':
-            connection = https_wrapper.CertValidatingHTTPSConnection(
-                urlparts.netloc, ca_certs=recurly.CA_CERTS_FILE)
-        else:
+        if urlparts.scheme != 'https':
             connection = httplib.HTTPConnection(urlparts.netloc)
+        elif recurly.CA_CERTS_FILE is None:
+            connection = httplib.HTTPSConnection(urlparts.netloc)
+        else:
+            connection = _ValidatedHTTPSConnection(urlparts.netloc)
 
         headers = {} if headers is None else dict(headers)
         headers.update({

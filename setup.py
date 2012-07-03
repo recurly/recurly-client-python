@@ -29,7 +29,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
     ],
     packages=['recurly'],
-    install_requires=['iso8601'],
+    install_requires=['iso8601', 'ssl', 'backports.ssl_match_hostname'],
     tests_require=['mock',
                    'unittest2'],
     test_suite='unittest2.collector',
