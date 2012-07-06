@@ -11,6 +11,12 @@ with open(os.path.join(os.path.dirname(__file__),
                        'recurly', '__init__.py')) as PACKAGE:
     VERSION = VERSION_RE.search(PACKAGE.read()).group(1)
 
+more_install_requires = list()
+try:
+    import ssl
+except ImportError:
+    more_install_requires.append('ssl')
+
 setup(
     name='recurly',
     version=VERSION,
@@ -29,7 +35,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
     ],
     packages=['recurly'],
-    install_requires=['iso8601', 'ssl', 'backports.ssl_match_hostname'],
+    install_requires=['iso8601', 'backports.ssl_match_hostname'] + more_install_requires,
     tests_require=['mock',
                    'unittest2'],
     test_suite='unittest2.collector',
