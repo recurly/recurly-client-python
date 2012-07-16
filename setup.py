@@ -2,7 +2,7 @@ from setuptools import setup
 import os.path
 import re
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as README:
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as README:
     DESCRIPTION = README.read()
     
 VERSION_RE = re.compile("^__version__ = '(.+)'$",
