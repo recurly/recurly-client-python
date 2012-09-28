@@ -148,7 +148,7 @@ class Account(Resource):
         invoice = Invoice.from_element(elem)
         invoice._url = response.getheader('Location')
         return invoice
-    
+
     def reopen(self):
         """Reopen a closed account."""
         url = urljoin(self._url, '%s/reopen' % self.account_code)
@@ -468,6 +468,7 @@ class Transaction(Resource):
         'avs_result_postal',
         'created_at',
         'details',
+        'transaction_error',
         'type',
     )
     xml_attribute_attributes = ('type',)
