@@ -12,6 +12,7 @@ authority certificate file and default currency::
 
    import recurly
 
+   recurly.SUBDOMAIN = 'your-subdomain'
    recurly.API_KEY = '012345678901234567890123456789ab'
    recurly.js.PRIVATE_KEY = '0cc86846024a4c95a5dfd3111a532d13'
 

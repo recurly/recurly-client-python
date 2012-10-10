@@ -21,8 +21,11 @@ http://docs.recurly.com/api/
 
 __version__ = '2.1.8'
 
-BASE_URI = 'https://api.recurly.com/v2/'
+BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
+
+SUBDOMAIN = 'api'
+"""The subdomain of the site authenticating API requests."""
 
 API_KEY = None
 """The API key to use when authenticating API requests."""
@@ -33,6 +36,13 @@ for validating the server against."""
 
 DEFAULT_CURRENCY = 'USD'
 """The currency to use creating `Money` instances when one is not specified."""
+
+
+def base_uri():
+    if SUBDOMAIN is None:
+        raise ValueError('recurly.SUBDOMAIN not set')
+
+    return BASE_URI % SUBDOMAIN
 
 
 class Account(Resource):

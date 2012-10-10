@@ -259,8 +259,9 @@ class Resource(object):
             'Accept': 'application/xml',
             'User-Agent': 'recurly-python/%s' % recurly.__version__,
         })
-        if recurly.API_KEY is not None:
-            headers['Authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
+        if recurly.API_KEY is None:
+            raise recurly.UnauthorizedError('recurly.API_KEY not set')
+        headers['Authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
 
         log = logging.getLogger('recurly.http.request')
         if log.isEnabledFor(logging.DEBUG):
@@ -328,10 +329,10 @@ class Resource(object):
         the given code or UUID.
 
         Only `Resource` classes with specified `member_path` attributes
-        can be directly requested with this method. 
+        can be directly requested with this method.
 
         """
-        url = urljoin(recurly.BASE_URI, cls.member_path % (uuid,))
+        url = urljoin(recurly.base_uri(), cls.member_path % (uuid,))
         resp, elem = cls.element_for_url(url)
         return cls.from_element(elem)
 
@@ -574,7 +575,7 @@ class Resource(object):
         parameters.
 
         """
-        url = urljoin(recurly.BASE_URI, cls.collection_path)
+        url = urljoin(recurly.base_uri(), cls.collection_path)
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
         return Page.page_for_url(url)
@@ -603,7 +604,7 @@ class Resource(object):
         self.update_from_element(ElementTree.fromstring(response_xml))
 
     def _create(self):
-        url = urljoin(recurly.BASE_URI, self.collection_path)
+        url = urljoin(recurly.base_uri(), self.collection_path)
         return self.post(url)
 
     def post(self, url):

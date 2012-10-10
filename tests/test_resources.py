@@ -10,6 +10,8 @@ from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Redem
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
+recurly.SUBDOMAIN = 'api'
+
 
 class TestResources(RecurlyTest):
 
@@ -17,15 +19,12 @@ class TestResources(RecurlyTest):
         recurly.API_KEY = None
 
         account_code = 'test%s' % self.test_id
-        with self.mock_request('authentication/unauthenticated.xml'):
-            try:
-                Account.get(account_code)
-            except recurly.UnauthorizedError, exc:
-                pass
-            else:
-                self.fail("Updating account with invalid email address did not raise a ValidationError")
-
-        self.assertEqual(unicode(exc).strip(), u'HTTP Basic: Access denied.')
+        try:
+            Account.get(account_code)
+        except recurly.UnauthorizedError, exc:
+            pass
+        else:
+            self.fail("Updating account with invalid email address did not raise a ValidationError")
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
@@ -35,7 +34,7 @@ class TestResources(RecurlyTest):
         account = Account(account_code=account_code)
         with self.mock_request('account/created.xml'):
             account.save()
-        self.assertEqual(account._url, urljoin(recurly.BASE_URI, 'accounts/%s' % account_code))
+        self.assertEqual(account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
 
         with self.mock_request('account/list-active.xml'):
             active = Account.all_active()
@@ -48,7 +47,7 @@ class TestResources(RecurlyTest):
         self.assertTrue(same_account is not account)
         self.assertEqual(same_account.account_code, account_code)
         self.assertTrue(same_account.first_name is None)
-        self.assertEqual(same_account._url, urljoin(recurly.BASE_URI, 'accounts/%s' % account_code))
+        self.assertEqual(same_account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
 
         account.username = 'shmohawk58'
         account.email = 'larry.david'
@@ -107,7 +106,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('account/numeric-created.xml'):
             account.save()
         try:
-            self.assertEqual(account._url, urljoin(recurly.BASE_URI, 'accounts/%d' % numeric_test_id))
+            self.assertEqual(account._url, urljoin(recurly.base_uri(), 'accounts/%d' % numeric_test_id))
         finally:
             with self.mock_request('account/numeric-deleted.xml'):
                 account.delete()
