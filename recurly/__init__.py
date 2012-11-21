@@ -461,6 +461,7 @@ class Transaction(Resource):
         'reference',
         'test',
         'voidable',
+        'description',
         'refundable',
         'cvv_result',
         'avs_result',
