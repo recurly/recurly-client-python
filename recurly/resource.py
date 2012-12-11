@@ -80,6 +80,17 @@ class Page(list):
     Use `Page` instances as `list` instances to access their contents.
 
     """
+    def __iter__(self):
+	if not self:
+	    raise StopIteration
+	page = self
+	while page:
+	    for x in list.__iter__(page):
+		yield x
+	    try:
+		page = page.next_page()                                                                                                                          
+	    except:
+		raise StopIteration
 
     def next_page(self):
         """Return the next `Page` after this one in the result sequence
