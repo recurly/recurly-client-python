@@ -80,6 +80,27 @@ class Page(list):
     Use `Page` instances as `list` instances to access their contents.
 
     """
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        page = self
+        while page:
+            for x in list.__iter__(page):
+                yield x
+            try:
+                page = page.next_page()                                                                                                                          
+            except PageError:
+                raise StopIteration
+
+    def __len__(self):
+        try:
+            if not self.record_size:
+                return 0
+            else:
+                return int(self.record_size)
+        except AttributeError:
+            return 0
+
 
     def next_page(self):
         """Return the next `Page` after this one in the result sequence
@@ -128,7 +149,7 @@ class Page(list):
 
         """
         page = cls(value)
-
+        page.record_size = resp.getheader('X-Records')
         links = parse_link_value(resp.getheader('Link'))
         for url, data in links.iteritems():
             if data.get('rel') == 'start':
