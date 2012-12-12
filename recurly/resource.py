@@ -32,13 +32,6 @@ class Money(object):
         else:
             self.currencies = dict()
 
-    def __len__(self):                                                                                                                                                   
-        if not self.record_size:
-                return 0
-        else:
-                return int(self.record_size)
-
-
     @classmethod
     def from_element(cls, elem):
         currency = dict()
@@ -88,16 +81,26 @@ class Page(list):
 
     """
     def __iter__(self):
-	if not self:
-	    raise StopIteration
-	page = self
-	while page:
-	    for x in list.__iter__(page):
-		yield x
-	    try:
-		page = page.next_page()                                                                                                                          
-	    except:
-		raise StopIteration
+        if not self:
+            raise StopIteration
+        page = self
+        while page:
+            for x in list.__iter__(page):
+                yield x
+            try:
+                page = page.next_page()                                                                                                                          
+            except PageError:
+                raise StopIteration
+
+    def __len__(self):
+        try:
+            if not self.record_size:
+                return 0
+            else:
+                return int(self.record_size)
+        except AttributeError:
+            return 0
+
 
     def next_page(self):
         """Return the next `Page` after this one in the result sequence
