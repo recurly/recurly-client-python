@@ -149,7 +149,7 @@ class Page(list):
 
         """
         page = cls(value)
-	page.record_size = resp.getheader('X-Records')
+        page.record_size = resp.getheader('X-Records')
         links = parse_link_value(resp.getheader('Link'))
         for url, data in links.iteritems():
             if data.get('rel') == 'start':
