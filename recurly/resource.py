@@ -4,6 +4,7 @@ import httplib
 import logging
 import socket
 import ssl
+import sys
 from urllib import urlencode
 from urlparse import urlsplit, urljoin
 from xml.etree import ElementTree
@@ -168,8 +169,13 @@ class _ValidatedHTTPSConnection(httplib.HTTPSConnection):
     hostname again the validated certificate's possible hosts."""
 
     def connect(self):
-        sock = socket.create_connection((self.host, self.port),
+        if sys.version_info < (2, 7):
+            sock = socket.create_connection((self.host, self.port),
+                                        self.timeout)
+        else:
+            sock = socket.create_connection((self.host, self.port),
                                         self.timeout, self.source_address)
+
         if self._tunnel_host:
             self.sock = sock
             self._tunnel()
