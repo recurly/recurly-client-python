@@ -90,7 +90,10 @@ class Page(list):
             try:
                 page = page.next_page()                                                                                                                          
             except PageError:
-                del self.next_url
+                try:
+                    del self.next_url
+		except AttributeError:
+                    pass
                 raise StopIteration
 
     def __len__(self):
