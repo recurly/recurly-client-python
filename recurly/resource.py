@@ -88,11 +88,11 @@ class Page(list):
             for x in list.__iter__(page):
                 yield x
             try:
-                page = page.next_page()                                                                                                                          
+                page = page.next_page()
             except PageError:
                 try:
                     del self.next_url
-		except AttributeError:
+                except AttributeError:
                     pass
                 raise StopIteration
 

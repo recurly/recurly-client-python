@@ -473,6 +473,7 @@ class TestResources(RecurlyTest):
 
             with self.mock_request('pages/list.xml'):
                 accounts = Account.all(per_page=4)
+            self.assertEqual(len(accounts), 4)
             self.assertTrue(isinstance(accounts[0], Account))
             self.assertRaises(IndexError, lambda: accounts[4])
 
@@ -485,11 +486,13 @@ class TestResources(RecurlyTest):
                 next_accounts = accounts.next_page()
             # We asked for all the accounts, which may include closed accounts
             # from previous tests or data, not just the three we created.
+            self.assertTrue(len(next_accounts) <= 4)
             self.assertTrue(isinstance(next_accounts[0], Account))
             self.assertRaises(IndexError, lambda: next_accounts[4])
 
             with self.mock_request('pages/list.xml'):  # should be just like the first
                 first_accounts = next_accounts.first_page()
+            self.assertEqual(len(first_accounts), 4)
             self.assertTrue(isinstance(first_accounts[0], Account))
 
         finally:
