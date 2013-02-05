@@ -6,6 +6,7 @@ User-Agent: recurly-python/{version}
 
 HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
+X-Records: 1
 
 <adjustments type="array">
   <adjustment type="charge">

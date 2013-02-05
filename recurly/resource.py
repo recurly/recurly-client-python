@@ -89,9 +89,12 @@ class Page(list):
             for x in list.__iter__(page):
                 yield x
             try:
-                page = page.next_page()                                                                                                                          
+                page = page.next_page()
             except PageError:
-                del self.next_url
+                try:
+                    del self.next_url
+                except AttributeError:
+                    pass
                 raise StopIteration
 
     def __len__(self):

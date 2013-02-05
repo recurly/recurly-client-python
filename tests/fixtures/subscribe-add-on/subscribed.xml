@@ -25,6 +25,12 @@ Content-Type: application/xml; charset=utf-8
       <verification_value>7777</verification_value>
       <year>2015</year>
       <month>12</month>
+      <address1>123 Main St.</address1>
+      <address2 nil="nil"></address2>
+      <city>San Francisco</city>
+      <state>CA</state>
+      <zip>94105</zip>
+      <country>US</country>
     </billing_info>
   </account>
 </subscription>
