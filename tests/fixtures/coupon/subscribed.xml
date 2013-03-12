@@ -15,15 +15,14 @@ Content-Type: application/xml; charset=utf-8
       <first_name>Verena</first_name>
       <last_name>Example</last_name>
       <number>4111 1111 1111 1111</number>
-      <address1>123 Main St.</address1>
-      <address2 nil="nil"></address2>
+      <verification_value>7777</verification_value>
+      <year>2015</year>
+      <month>12</month>
+      <address1>123 Main St</address1>
       <city>San Francisco</city>
       <state>CA</state>
       <zip>94105</zip>
       <country>US</country>
-      <verification_value>7777</verification_value>
-      <year>2015</year>
-      <month>12</month>
     </billing_info>
   </account>
 </subscription>
