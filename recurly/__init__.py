@@ -19,7 +19,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.1.8'
+__version__ = '2.1.9'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
@@ -159,6 +159,11 @@ class Account(Resource):
         invoice._url = response.getheader('Location')
         return invoice
 
+    def notes(self):
+        """Fetch Notes for this account."""
+        url = urljoin(self._url, '%s/notes' % self.account_code)
+        return Note.paginated(url)
+
     def reopen(self):
         """Reopen a closed account."""
         url = urljoin(self._url, '%s/reopen' % self.account_code)
@@ -227,7 +232,6 @@ class BillingInfo(Resource):
     )
     sensitive_attributes = ('number', 'verification_value')
     xml_attribute_attributes = ('type',)
-
 
 class Coupon(Resource):
 
@@ -617,6 +621,26 @@ class SubscriptionAddOn(Resource):
         'unit_amount_in_cents',
     )
 
+class Note(Resource):
+
+    """A customer account's notes."""
+
+    nodename = 'note'
+    collection_path = 'notes'
+
+    attributes = (
+        'message',
+        'created_at',
+    )
+
+    @classmethod
+    def from_element(cls, elem):
+        new_note = Note()
+        for child_el in elem:
+            if not child_el.tag:
+                continue
+            setattr(new_note, child_el.tag, child_el.text)
+        return new_note
 
 Resource._learn_nodenames(locals().values())
 
