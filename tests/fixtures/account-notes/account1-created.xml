@@ -1,0 +1,30 @@
+POST https://api.recurly.com/v2/accounts HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <account_code>notemock</account_code>
+</account>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/notemock
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/notemock">
+  <adjustments href="https://api.recurly.com/v2/accounts/notemock/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/notemock/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/notemock/invoices"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/notemock/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/notemock/transactions"/>
+  <account_code>notemock</account_code>
+  <username nil="nil"></username>
+  <email nil="nil"></email>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <accept_language nil="nil"></accept_language>
+</account>
