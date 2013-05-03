@@ -775,6 +775,35 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscribe-add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_account_notes(self):
+        account1 = Account(account_code='note%s' % self.test_id)
+        account2 = Account(account_code='note%s' % self.test_id)
+
+        with self.mock_request('account-notes/account1-created.xml'):
+            account1.save()
+        with self.mock_request('account-notes/account2-created.xml'):
+            account2.save()
+        try:
+            with self.mock_request('account-notes/account1-note-list.xml'):
+                notes1 = account1.notes()
+            with self.mock_request('account-notes/account2-note-list.xml'):
+                notes2 = account2.notes()
+
+            # assert accounts don't share notes
+            self.assertNotEqual(notes1, notes2)
+
+            # assert contains the proper notes
+            self.assertEqual(notes1[0].message, "Python Madness")
+            self.assertEqual(notes1[1].message, "Some message")
+            self.assertEqual(notes2[0].message, "Foo Bar")
+            self.assertEqual(notes2[1].message, "Baz Boo Bop")
+
+        finally:
+            with self.mock_request('account-notes/account1-deleted.xml'):
+                account1.delete()
+            with self.mock_request('account-notes/account2-deleted.xml'):
+                account2.delete()
+
     def test_transaction(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')

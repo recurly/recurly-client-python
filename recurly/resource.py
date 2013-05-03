@@ -140,7 +140,9 @@ class Page(list):
         """Return a new `Page` containing the items at the given
         endpoint URL."""
         resp, elem = Resource.element_for_url(url)
+        
         value = Resource.value_for_element(elem)
+
         return cls.page_for_value(resp, value)
 
     @classmethod
@@ -379,6 +381,7 @@ class Resource(object):
         if elem is None:
             log.debug("Converting %r element into None value", elem)
             return
+
         if elem.attrib.get('nil') is not None:
             log.debug("Converting %r element with nil attribute into None value", elem.tag)
             return
@@ -462,6 +465,11 @@ class Resource(object):
             el.text = unicode(value)
 
         return el
+
+    @classmethod
+    def paginated(self, url):
+        """ Exposes Page.page_for_url in Resource """
+        return Page.page_for_url(url)
 
     @classmethod
     def from_element(cls, elem):
