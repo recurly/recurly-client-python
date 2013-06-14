@@ -39,7 +39,7 @@ def sign(*records):
 
 
 def fetch(token):
-    url = urljoin(recurly.BASE_URI, 'recurly_js/result/%s' % token)
+    url = urljoin(recurly.base_uri(), 'recurly_js/result/%s' % token)
     resp, elem = recurly.Resource.element_for_url(url)
     cls = recurly.Resource.value_for_element(elem)
     return cls.from_element(elem)
