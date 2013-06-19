@@ -234,7 +234,7 @@ class Resource(object):
             setattr(self, key, value)
 
     @classmethod
-    def http_request(cls, url, method='GET', body=None, headers=None):
+    def http_request(cls, url, method='GET', body=None, _headers=None):
         """Make an HTTP request with the given method to the given URL,
         returning the resulting `httplib.HTTPResponse` instance.
 
@@ -256,11 +256,12 @@ class Resource(object):
         else:
             connection = _ValidatedHTTPSConnection(urlparts.netloc)
 
-        headers = {} if headers is None else dict(headers)
-        headers.update({
-            'Accept': 'application/xml',
-            'User-Agent': 'recurly-python/%s' % recurly.__version__,
-        })
+        headers = {'Accept': 'application/xml',
+            'User-Agent': 'recurly-python/%s' % recurly.__version__, }
+
+        if _headers is not None:
+            headers.update(dict(_headers))
+
         if recurly.API_KEY is None:
             raise recurly.UnauthorizedError('recurly.API_KEY not set')
         headers['Authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
