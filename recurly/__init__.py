@@ -5,6 +5,7 @@ from xml.etree import ElementTree
 
 import recurly.js as js
 from recurly.errors import *
+from recurly.errors import UnexpectedStatusError
 from recurly.resource import Resource, Money, PageError
 
 
@@ -411,16 +412,14 @@ class Invoice(Resource):
     def pdf(self, accept_language='en-US'):
         """Create an invoice for any outstanding adjustments this account has."""
         url = urljoin(self._url, '%s' % (self.invoice_number))
-        print url
 
         headers = {'Accept': 'application/pdf', 'Accept-Language': accept_language}
         response = self.http_request(url, 'GET', '', headers)
 
         if response.status != 200:
-            raise recurly.errors.UnexpectedStatusError
+            raise UnexpectedStatusError(response.status, '')
 
         response_pdf = response.read()
-        print response_pdf
         logging.getLogger('recurly.http.response').debug(response_pdf)
         return response_pdf
 
