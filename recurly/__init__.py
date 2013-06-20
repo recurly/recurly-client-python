@@ -413,7 +413,7 @@ class Invoice(Resource):
         url = urljoin(self._url, '%s' % (self.invoice_number))
         print url
 
-        headers = {'Accept': 'application/pdff', 'Accept-Language': accept_language}
+        headers = {'Accept': 'application/pdf', 'Accept-Language': accept_language}
         response = self.http_request(url, 'GET', '', headers)
 
         if response.status != 200:
