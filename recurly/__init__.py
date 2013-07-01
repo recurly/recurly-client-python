@@ -439,6 +439,9 @@ class Subscription(Resource):
         'subscription_add_ons',
         'account',
         'pending_subscription',
+        'net_terms',
+        'collection_method',
+        'po_number',
         'first_renewal_date',
     )
     sensitive_attributes = ('number', 'verification_value',)
