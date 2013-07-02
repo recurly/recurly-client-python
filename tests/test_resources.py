@@ -593,16 +593,16 @@ class TestResources(RecurlyTest):
                 manualsub = Subscription(
                     plan_code='basicplan',
                     currency='USD',
-		    net_terms=10,
-		    po_number='1000',
-		    collection_method='manual'
+            net_terms=10,
+            po_number='1000',
+            collection_method='manual'
                 )
                 with self.mock_request('subscription/subscribed-manual.xml'):
                     account.subscribe(manualsub)
                 self.assertTrue(manualsub._url)
-		self.assertEqual(manualsub.net_terms, 10)
-		self.assertEqual(manualsub.collection_method, 'manual')
-		self.assertEqual(manualsub.po_number, '1000')
+        self.assertEqual(manualsub.net_terms, 10)
+        self.assertEqual(manualsub.collection_method, 'manual')
+        self.assertEqual(manualsub.po_number, '1000')
 
                 with self.mock_request('subscription/account-subscriptions.xml'):
                     subs = account.subscriptions()
