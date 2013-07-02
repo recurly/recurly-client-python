@@ -19,7 +19,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.1.10'
+__version__ = '2.1.11'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
@@ -439,6 +439,9 @@ class Subscription(Resource):
         'subscription_add_ons',
         'account',
         'pending_subscription',
+        'net_terms',
+        'collection_method',
+        'po_number',
         'first_renewal_date',
     )
     sensitive_attributes = ('number', 'verification_value',)
