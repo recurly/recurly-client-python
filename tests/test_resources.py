@@ -32,9 +32,11 @@ class TestResources(RecurlyTest):
             self.assertRaises(NotFoundError, Account.get, account_code)
 
         account = Account(account_code=account_code)
+        account.vat_number = '444444-UK'
         with self.mock_request('account/created.xml'):
             account.save()
         self.assertEqual(account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
+        self.assertEqual(account.vat_number, '444444-UK')
 
         with self.mock_request('account/list-active.xml'):
             active = Account.all_active()
@@ -110,6 +112,27 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('account/numeric-deleted.xml'):
                 account.delete()
+
+        """Create an account with an account level address"""
+        account = Account(account_code=account_code)
+        account.address.address1 = '123 Main St'
+        account.address.city = 'San Francisco'
+        account.address.zip = '94105'
+        account.address.state = 'CA'
+        account.address.country = 'US'
+        account.address.phone = '8015559876'
+        with self.mock_request('account/created-with-address.xml'):
+            account.save()
+        self.assertEqual(account.address.address1, '123 Main St')
+        self.assertEqual(account.address.city, 'San Francisco')
+        self.assertEqual(account.address.zip, '94105')
+        self.assertEqual(account.address.state, 'CA')
+        self.assertEqual(account.address.country, 'US')
+        self.assertEqual(account.address.phone, '8015559876')
+
+        """Fetch an account with account level address"""
+        
+
 
     def test_add_on(self):
         plan_code = 'plan%s' % self.test_id
