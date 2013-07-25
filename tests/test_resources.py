@@ -130,9 +130,6 @@ class TestResources(RecurlyTest):
         self.assertEqual(account.address.country, 'US')
         self.assertEqual(account.address.phone, '8015559876')
 
-        """Fetch an account with account level address"""
-        
-
 
     def test_add_on(self):
         plan_code = 'plan%s' % self.test_id
