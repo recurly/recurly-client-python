@@ -4,6 +4,7 @@ import logging
 import time
 from urlparse import urljoin
 from xml.etree import ElementTree
+from mock import Mock
 
 import recurly
 from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction
@@ -110,6 +111,17 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('account/numeric-deleted.xml'):
                 account.delete()
+
+    def test_account__colon_in_name(self):
+        account_code = "account:123"
+        account = Account(account_code=account_code)
+        with self.mock_request('account/created_with_colon.xml'):
+            account.save()
+        mockCharge = Mock()
+
+        account.charge(mockCharge)
+
+        mockCharge.post.assert_called_with('https://api.recurly.com/v2/accounts/account%3A123/adjustments')
 
     def test_add_on(self):
         plan_code = 'plan%s' % self.test_id

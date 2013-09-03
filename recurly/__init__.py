@@ -1,5 +1,5 @@
 import logging
-from urllib import urlencode
+from urllib import quote
 from urlparse import urljoin
 from xml.etree import ElementTree
 
@@ -140,12 +140,12 @@ class Account(Resource):
 
     def charge(self, charge):
         """Charge (or credit) this account with the given `Adjustment`."""
-        url = urljoin(self._url, '%s/adjustments' % self.account_code)
+        url = urljoin(self._url, '%s/adjustments' % quote(self.account_code))
         return charge.post(url)
 
     def invoice(self):
         """Create an invoice for any outstanding adjustments this account has."""
-        url = urljoin(self._url, '%s/invoices' % self.account_code)
+        url = urljoin(self._url, '%s/invoices' % quote(self.account_code))
 
         response = self.http_request(url, 'POST')
         if response.status != 201:
@@ -161,12 +161,12 @@ class Account(Resource):
 
     def notes(self):
         """Fetch Notes for this account."""
-        url = urljoin(self._url, '%s/notes' % self.account_code)
+        url = urljoin(self._url, '%s/notes' % quote(self.account_code))
         return Note.paginated(url)
 
     def reopen(self):
         """Reopen a closed account."""
-        url = urljoin(self._url, '%s/reopen' % self.account_code)
+        url = urljoin(self._url, '%s/reopen' % quote(self.account_code))
         response = self.http_request(url, 'PUT')
         if response.status != 200:
             self.raise_http_error(response)
@@ -177,12 +177,12 @@ class Account(Resource):
 
     def subscribe(self, subscription):
         """Create the given `Subscription` for this existing account."""
-        url = urljoin(self._url, '%s/subscriptions' % self.account_code)
+        url = urljoin(self._url, '%s/subscriptions' % quote(self.account_code))
         return subscription.post(url)
 
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
-        url = urljoin(self._url, '%s/billing_info' % self.account_code)
+        url = urljoin(self._url, '%s/billing_info' % quote(self.account_code))
         response = billing_info.http_request(url, 'PUT', billing_info,
             {'Content-Type': 'application/xml; charset=utf-8'})
         if response.status == 200:
