@@ -47,6 +47,11 @@ class TestResources(RecurlyTest):
         self.assertTrue(same_account is not account)
         self.assertEqual(same_account.account_code, account_code)
         self.assertTrue(same_account.first_name is None)
+        #test balance_in_cents fields
+        self.assertTrue(same_account.balance_in_cents_invoiced['USD'], 1000)
+        self.assertTrue(same_account.balance_in_cents_invoiced['EUR'], 800)
+        self.assertTrue(same_account.balance_in_cents_uninvoiced['USD'], 1200)
+        self.assertTrue(same_account.balance_in_cents_uninvoiced['EUR'], 700)
         self.assertEqual(same_account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
 
         account.username = 'shmohawk58'

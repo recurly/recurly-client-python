@@ -66,6 +66,11 @@ class Account(Resource):
     )
     sensitive_attributes = ('number', 'verification_value',)
 
+    _classes_for_nodename = {
+        'balance_in_cents_invoiced': Money,
+        'balance_in_cents_uninvoiced': Money
+    }
+
     def to_element(self):
         elem = super(Account, self).to_element()
 
