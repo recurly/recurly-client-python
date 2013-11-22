@@ -255,6 +255,7 @@ class Coupon(Resource):
         'applies_to_all_plans',
         'created_at',
         'plan_codes',
+        'hosted_description',
     )
 
     @classmethod
