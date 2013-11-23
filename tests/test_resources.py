@@ -305,6 +305,7 @@ class TestResources(RecurlyTest):
             coupon_code=coupon_code,
             name='Nice Coupon',
             discount_in_cents=Money(1000),
+            hosted_description="Nice Description"
         )
         with self.mock_request('coupon/created.xml'):
             coupon.save()
@@ -319,6 +320,7 @@ class TestResources(RecurlyTest):
             discount = same_coupon.discount_in_cents
             self.assertEqual(discount['USD'], 1000)
             self.assertTrue('USD' in discount)
+            self.assertIsNotNone(same_coupon.hosted_description)
 
             account_code = 'coupon%s' % self.test_id
             account = Account(account_code=account_code)
