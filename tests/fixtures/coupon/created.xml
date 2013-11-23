@@ -22,6 +22,7 @@ Location: https://api.recurly.com/v2/coupons/couponmock
   <coupon_code>couponmock</coupon_code>
   <name>Nice Coupon</name>
   <discount_type>dollars</discount_type>
+  <hosted_description>Nice Description</hosted_description>
   <discount_percent nil="nil"></discount_percent>
   <redeem_by_date nil="nil"></redeem_by_date>
   <single_use type="boolean">false</single_use>

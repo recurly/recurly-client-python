@@ -11,6 +11,7 @@ Content-Type: application/xml; charset=utf-8
 <coupon href="https://api.dev.recurly.com/v2/coupons/nice">
   <coupon_code>couponmock</coupon_code>
   <name>Nice Coupon</name>
+  <hosted_description>Nice Description</hosted_description>
   <discount_type>dollars</discount_type>
   <discount_percent nil="nil"></discount_percent>
   <redeem_by_date nil="nil"></redeem_by_date>
