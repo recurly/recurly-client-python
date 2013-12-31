@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/recurly/recurly-client-python.png?branch=master
+:target: https://travis-ci.org/recurly/recurly-client-python
+
 Recurly Python Client
 =====================
 
