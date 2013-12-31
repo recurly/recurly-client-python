@@ -155,11 +155,14 @@ class Account(Resource):
                 raise AttributeError(name)
             resp, elem = BillingInfo.element_for_url(billing_info_url)
             return BillingInfo.from_element(elem)
-        if name == 'address':
-            if 'address' not in self.__dict__:
+        try:
+            return super(Account, self).__getattr__(name)
+        except AttributeError:
+            if name == 'address':
                 self.address = Address()
-            return self.address
-        return super(Account, self).__getattr__(name)
+                return self.address
+            else:
+              raise AttributeError(name)
 
     def charge(self, charge):
         """Charge (or credit) this account with the given `Adjustment`."""
