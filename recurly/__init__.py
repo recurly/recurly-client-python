@@ -19,7 +19,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.1.11'
+__version__ = '2.1.12'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
@@ -45,6 +45,21 @@ def base_uri():
     return BASE_URI % SUBDOMAIN
 
 
+class Address(Resource):
+
+    nodename = 'address'
+
+    attributes = (
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'zip',
+        'country',
+        'phone'
+    )
+
+
 class Account(Resource):
 
     """A customer account."""
@@ -61,9 +76,13 @@ class Account(Resource):
         'first_name',
         'last_name',
         'company_name',
+        'vat_number',
         'accept_language',
         'created_at',
     )
+
+    _classes_for_nodename = {'address': Address}
+
     sensitive_attributes = ('number', 'verification_value',)
 
     def to_element(self):
@@ -77,9 +96,10 @@ class Account(Resource):
                 pass
             else:
                 elem.append(self.element_for_value('account_code', account_code))
-
         if 'billing_info' in self.__dict__:
             elem.append(self.billing_info.to_element())
+        if 'address' in self.__dict__:
+            elem.append(self.address.to_element())
         return elem
 
     @classmethod
@@ -135,8 +155,14 @@ class Account(Resource):
                 raise AttributeError(name)
             resp, elem = BillingInfo.element_for_url(billing_info_url)
             return BillingInfo.from_element(elem)
-
-        return super(Account, self).__getattr__(name)
+        try:
+            return super(Account, self).__getattr__(name)
+        except AttributeError:
+            if name == 'address':
+                self.address = Address()
+                return self.address
+            else:
+              raise AttributeError(name)
 
     def charge(self, charge):
         """Charge (or credit) this account with the given `Adjustment`."""
