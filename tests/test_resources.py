@@ -1,11 +1,16 @@
-from cStringIO import StringIO
 import collections
 import logging
 import time
-from urlparse import urljoin
 from xml.etree import ElementTree
 
+import six
 import recurly
+
+from six import StringIO
+from six.moves import urllib, http_client
+from six.moves.urllib.parse import urljoin
+
+
 from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
@@ -21,7 +26,7 @@ class TestResources(RecurlyTest):
         account_code = 'test%s' % self.test_id
         try:
             Account.get(account_code)
-        except recurly.UnauthorizedError, exc:
+        except recurly.UnauthorizedError as exc:
             pass
         else:
             self.fail("Updating account with invalid email address did not raise a ValidationError")
@@ -53,20 +58,20 @@ class TestResources(RecurlyTest):
 
         account.username = 'shmohawk58'
         account.email = 'larry.david'
-        account.first_name = u'L\xe4rry'
+        account.first_name = six.u('L\xe4rry')
         account.last_name = 'David'
         account.company_name = 'Home Box Office'
         account.accept_language = 'en-US'
         with self.mock_request('account/update-bad-email.xml'):
             try:
                 account.save()
-            except ValidationError, exc:
+            except ValidationError as exc:
                 self.assertTrue(isinstance(exc.errors, collections.Mapping))
                 self.assertTrue('account.email' in exc.errors)
                 suberror = exc.errors['account.email']
                 self.assertEqual(suberror.symbol, 'invalid_email')
                 self.assertTrue(suberror.message)
-                self.assertEqual(suberror.message, str(suberror))
+                self.assertEqual(suberror.message, suberror.message)
             else:
                 self.fail("Updating account with invalid email address did not raise a ValidationError")
 
@@ -147,11 +152,12 @@ class TestResources(RecurlyTest):
         try:
 
             add_on = AddOn(add_on_code=add_on_code, name='Mock Add-On')
+            exc = None
             with self.mock_request('add-on/need-amount.xml'):
                 try:
                     plan.create_add_on(add_on)
-                except ValidationError, exc:
-                    pass
+                except ValidationError as _exc:
+                    exc = _exc
                 else:
                     self.fail("Creating a plan add-on without an amount did not raise a ValidationError")
             error = exc.errors['add_on.unit_amount_in_cents']
@@ -207,7 +213,7 @@ class TestResources(RecurlyTest):
                 first_name='Verena',
                 last_name='Example',
                 address1='123 Main St',
-                city=u'San Jos\xe9',
+                city=six.u('San Jos\xe9'),
                 state='CA',
                 zip='94105',
                 country='US',
@@ -232,7 +238,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('billing-info/exists.xml'):
                 same_binfo = same_account.billing_info
             self.assertEqual(same_binfo.first_name, 'Verena')
-            self.assertEqual(same_binfo.city, u'San Jos\xe9')
+            self.assertEqual(same_binfo.city, six.u('San Jos\xe9'))
 
             with self.mock_request('billing-info/deleted.xml'):
                 binfo.delete()
@@ -249,7 +255,7 @@ class TestResources(RecurlyTest):
             first_name='Verena',
             last_name='Example',
             address1='123 Main St',
-            city=u'San Jos\xe9',
+            city=six.u('San Jos\xe9'),
             state='CA',
             zip='94105',
             country='US',
@@ -465,7 +471,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('invoice/error-no-charges.xml'):
                 try:
                     account.invoice()
-                except ValidationError, exc:
+                except ValidationError as exc:
                     error = exc
                 else:
                     self.fail("Invoicing an account with no charges did not raise a ValidationError")
@@ -585,7 +591,7 @@ class TestResources(RecurlyTest):
                 with self.mock_request('subscription/error-no-billing-info.xml'):
                     try:
                         account.subscribe(sub)
-                    except BadRequestError, exc:
+                    except BadRequestError as exc:
                         error = exc
                     else:
                         self.fail("Subscribing with no billing info did not raise a BadRequestError")
@@ -595,7 +601,7 @@ class TestResources(RecurlyTest):
                     first_name='Verena',
                     last_name='Example',
                     address1='123 Main St',
-                    city=u'San Jos\xe9',
+                    city=six.u('San Jos\xe9'),
                     state='CA',
                     zip='94105',
                     country='US',
@@ -667,7 +673,7 @@ class TestResources(RecurlyTest):
                             first_name='Verena',
                             last_name='Example',
                             address1='123 Main St',
-                            city=u'San Jos\xe9',
+                            city=six.u('San Jos\xe9'),
                             state='CA',
                             zip='94105',
                             country='US',
@@ -704,7 +710,7 @@ class TestResources(RecurlyTest):
                         first_name='Verena',
                         last_name='Example',
                         address1='123 Main St',
-                        city=u'San Jos\xe9',
+                        city=six.u('San Jos\xe9'),
                         state='CA',
                         zip='94105',
                         country='US',
@@ -927,11 +933,12 @@ class TestResources(RecurlyTest):
             currency='USD',
             account=Account(),
         )
+        error = None
         with self.mock_request('transaction-balance/transaction-no-account.xml'):
             try:
                 transaction.save()
-            except ValidationError, error:
-                pass
+            except ValidationError as _error:
+                error = _error
             else:
                 self.fail("Posting a transaction without an account code did not raise a ValidationError")
         # Make sure there really were errors.
@@ -949,11 +956,12 @@ class TestResources(RecurlyTest):
                 currency='USD',
                 account=account,
             )
+            error = None
             with self.mock_request('transaction-balance/transaction-no-billing-fails.xml'):
                 try:
                     transaction.save()
-                except ValidationError, error:
-                    pass
+                except ValidationError as _error:
+                    error = _error
                 else:
                     self.fail("Posting a transaction without billing info did not raise a ValidationError")
             # Make sure there really were errors.
@@ -963,7 +971,7 @@ class TestResources(RecurlyTest):
                 first_name='Verena',
                 last_name='Example',
                 address1='123 Main St',
-                city=u'San Jos\xe9',
+                city=six.u('San Jos\xe9'),
                 state='CA',
                 zip='94105',
                 country='US',

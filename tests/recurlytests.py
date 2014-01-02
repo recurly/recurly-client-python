@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 from datetime import datetime
-import httplib
+import email
 import logging
 import os
 from os.path import join, dirname
@@ -9,6 +9,9 @@ import unittest
 from xml.etree import ElementTree
 
 import mock
+import six
+
+from six.moves import http_client
 
 
 def xml(text):
@@ -27,7 +30,7 @@ class MockRequestManager(object):
         self.fixture = fixture
 
     def __enter__(self):
-        self.request_context = mock.patch.object(httplib.HTTPConnection, 'request')
+        self.request_context = mock.patch.object(http_client.HTTPConnection, 'request')
         self.request_context.return_value = None
         self.request_mock = self.request_context.__enter__()
 
@@ -37,11 +40,32 @@ class MockRequestManager(object):
         preamble_line = self.fixture_file.readline().strip()
         try:
             self.method, self.uri, http_version = preamble_line.split(None, 2)
+            self.method = self.method.decode()
+            self.uri = self.uri.decode()
         except ValueError:
             raise ValueError("Couldn't parse preamble line from fixture file %r; does it have a fixture in it?"
                 % self.fixture)
-        msg = httplib.HTTPMessage(self.fixture_file, 0)
-        self.headers = dict((k, v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
+
+        # Read request headers
+        def read_headers(fp):
+            while True:
+                try:
+                    line = fp.readline()
+                except EOFError:
+                    return
+                if not line or line == six.b('\n'):
+                    return
+                yield line
+
+        if six.PY2:
+            msg = http_client.HTTPMessage(self.fixture_file, 0)
+            self.headers = dict((k, v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
+        else:
+            # http.client.HTTPMessage doesn't have importing headers from file
+            msg = http_client.HTTPMessage()
+            headers = email.message_from_bytes(six.b('').join(read_headers(self.fixture_file)))
+            self.headers = dict((k, v.strip()) for k, v in headers._headers)
+            # self.headers = {k: v for k, v in headers._headers}
         msg.fp = None
 
         # Read through to the vertical space.
@@ -51,11 +75,11 @@ class MockRequestManager(object):
                     line = fp.readline()
                 except EOFError:
                     return
-                if not line or line.startswith('\x16'):
+                if not line or line.startswith(six.b('\x16')):
                     return
                 yield line
 
-        body = ''.join(nextline(self.fixture_file))  # exhaust the request either way
+        body = six.b('').join(nextline(self.fixture_file))  # exhaust the request either way
         self.body = None
         if self.method in ('PUT', 'POST'):
             if 'Content-Type' in self.headers:
@@ -67,10 +91,10 @@ class MockRequestManager(object):
         # Set up the response returner.
         sock = mock.Mock()
         sock.makefile = mock.Mock(return_value=self.fixture_file)
-        response = httplib.HTTPResponse(sock, method=self.method)
+        response = http_client.HTTPResponse(sock, method=self.method)
         response.begin()
 
-        self.response_context = mock.patch.object(httplib.HTTPConnection, 'getresponse', lambda self: response)
+        self.response_context = mock.patch.object(http_client.HTTPConnection, 'getresponse', lambda self: response)
         self.response_mock = self.response_context.__enter__()
 
         return self

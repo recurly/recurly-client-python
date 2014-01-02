@@ -1,6 +1,5 @@
 import logging
-from urllib import urlencode
-from urlparse import urljoin
+from six.moves.urllib.parse import urljoin
 from xml.etree import ElementTree
 
 import recurly.js as js

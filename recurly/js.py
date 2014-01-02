@@ -4,8 +4,8 @@ import hmac
 import os
 import re
 import time
-import urllib
-from urlparse import urlsplit, urljoin
+import six
+from six.moves.urllib.parse import urljoin, quote_plus
 
 import recurly
 
@@ -32,9 +32,9 @@ def sign(*records):
     if 'timestamp' not in data:
         data['timestamp'] = int(time.time())
     if 'nonce' not in data:
-        data['nonce'] = re.sub('\W+', '', base64.b64encode(os.urandom(32)))
+        data['nonce'] = re.sub(six.b('\W+'), six.b(''), base64.b64encode(os.urandom(32)))
     unsigned = to_query(data)
-    signed = hmac.new(PRIVATE_KEY, unsigned, hashlib.sha1).hexdigest()
+    signed = hmac.new(six.b(PRIVATE_KEY), six.b(unsigned), hashlib.sha1).hexdigest()
     return '|'.join([signed, unsigned])
 
 
@@ -53,4 +53,4 @@ def to_query(object, key=None):
     elif object_type in (list, tuple):
         return '&'.join([to_query(o, '%s[]' % key) for o in object])
     else:
-        return '%s=%s' % (urllib.quote_plus(str(key)), urllib.quote_plus(str(object)))
+        return '%s=%s' % (quote_plus(str(key)), quote_plus(str(object)))

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # source: https://gist.github.com/1103172
+from __future__ import print_function
 
 """
 HTTP Link Header Parsing
@@ -47,7 +48,7 @@ def _unquotestring(instr):
 
 
 def _splitstring(instr, item, split):
-    if not instr: 
+    if not instr:
         return []
     return [h.strip() for h in re.findall(r'%s(?=%s|\s*$)' % (item, split), instr)]
 
@@ -72,7 +73,7 @@ def parse_link_value(instr):
     
     """
     out = {}
-    if not instr: 
+    if not instr:
         return out
     for link in [h.strip() for h in link_splitter.findall(instr)]:
         url, params = link.split(">", 1)
@@ -91,4 +92,4 @@ def parse_link_value(instr):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
-        print parse_link_value(sys.argv[1])
+        print(parse_link_value(sys.argv[1]))
