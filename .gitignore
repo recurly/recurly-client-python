@@ -1,6 +1,6 @@
 *.egg
 *.egg-info
 *.pyc
-.*
+.yardoc
 build
 dist
