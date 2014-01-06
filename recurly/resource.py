@@ -1,20 +1,25 @@
 import base64
 from datetime import datetime
-import httplib
 import logging
 import socket
 import ssl
 import sys
-from urllib import urlencode
-from urlparse import urlsplit, urljoin
 from xml.etree import ElementTree
 
 import iso8601
-import backports.ssl_match_hostname
+import six
 
 import recurly
 import recurly.errors
 from recurly.link_header import parse_link_value
+from six.moves import http_client
+from six.moves.urllib.parse import urlencode, urljoin, urlsplit
+
+
+if six.PY3:
+    from ssl import match_hostname
+else:
+    from backports.ssl_match_hostname import match_hostname
 
 
 class Money(object):
@@ -46,7 +51,7 @@ class Money(object):
         for currency, amount in self.currencies.items():
             currency_el = ElementTree.Element(currency)
             currency_el.attrib['type'] = 'integer'
-            currency_el.text = unicode(amount)
+            currency_el.text = six.text_type(amount)
             elem.append(currency_el)
 
     def __getitem__(self, name):
@@ -158,7 +163,7 @@ class Page(list):
         page = cls(value)
         page.record_size = resp.getheader('X-Records')
         links = parse_link_value(resp.getheader('Link'))
-        for url, data in links.iteritems():
+        for url, data in six.iteritems(links):
             if data.get('rel') == 'start':
                 page.start_url = url
             if data.get('rel') == 'next':
@@ -167,9 +172,9 @@ class Page(list):
         return page
 
 
-class _ValidatedHTTPSConnection(httplib.HTTPSConnection):
+class _ValidatedHTTPSConnection(http_client.HTTPSConnection):
 
-    """An `httplib.HTTPSConnection` that validates the SSL connection by
+    """An `http_client.HTTPSConnection` that validates the SSL connection by
     requiring certificate validation and checking the connection's intended
     hostname again the validated certificate's possible hosts."""
 
@@ -190,7 +195,7 @@ class _ValidatedHTTPSConnection(httplib.HTTPSConnection):
             ca_certs=recurly.CA_CERTS_FILE)
 
         # Let the CertificateError for failure be raised to the caller.
-        backports.ssl_match_hostname.match_hostname(ssl_sock.getpeercert(), self.host)
+        match_hostname(ssl_sock.getpeercert(), self.host)
 
         self.sock = ssl_sock
 
@@ -230,13 +235,13 @@ class Resource(object):
         except AttributeError:
             self.currency = recurly.DEFAULT_CURRENCY
 
-        for key, value in kwargs.iteritems():
+        for key, value in six.iteritems(kwargs):
             setattr(self, key, value)
 
     @classmethod
     def http_request(cls, url, method='GET', body=None, headers=None):
         """Make an HTTP request with the given method to the given URL,
-        returning the resulting `httplib.HTTPResponse` instance.
+        returning the resulting `http_client.HTTPResponse` instance.
 
         If the `body` argument is a `Resource` instance, it is serialized
         to XML by calling its `to_element()` method before submitting it.
@@ -250,9 +255,9 @@ class Resource(object):
         """
         urlparts = urlsplit(url)
         if urlparts.scheme != 'https':
-            connection = httplib.HTTPConnection(urlparts.netloc)
+            connection = http_client.HTTPConnection(urlparts.netloc)
         elif recurly.CA_CERTS_FILE is None:
-            connection = httplib.HTTPSConnection(urlparts.netloc)
+            connection = http_client.HTTPSConnection(urlparts.netloc)
         else:
             connection = _ValidatedHTTPSConnection(urlparts.netloc)
 
@@ -263,12 +268,12 @@ class Resource(object):
         })
         if recurly.API_KEY is None:
             raise recurly.UnauthorizedError('recurly.API_KEY not set')
-        headers['Authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
+        headers['Authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
 
         log = logging.getLogger('recurly.http.request')
         if log.isEnabledFor(logging.DEBUG):
             log.debug("%s %s HTTP/1.1", method, url)
-            for header, value in headers.iteritems():
+            for header, value in six.iteritems(headers):
                 if header == 'Authorization':
                     value = '<redacted>'
                 log.debug("%s: %s", header, value)
@@ -290,8 +295,11 @@ class Resource(object):
         log = logging.getLogger('recurly.http.response')
         if log.isEnabledFor(logging.DEBUG):
             log.debug("HTTP/1.1 %d %s", resp.status, resp.reason)
-            for header in resp.msg.headers:
-                log.debug(header.rstrip('\n'))
+            if six.PY2:
+                for header in resp.msg.headers:
+                    log.debug(header.rstrip('\n'))
+            else:
+                log.debug(resp.msg._headers)
             log.debug('')
 
         return resp
@@ -306,7 +314,7 @@ class Resource(object):
         """
         elem = self.to_element()
         for attrname in self.sensitive_attributes:
-            for sensitive_el in elem.getiterator(attrname):
+            for sensitive_el in elem.iter(attrname):
                 sensitive_el.text = 'XXXXXXXXXXXXXXXX'
         return ElementTree.tostring(elem, encoding='UTF-8')
 
@@ -341,7 +349,7 @@ class Resource(object):
     @classmethod
     def element_for_url(cls, url):
         """Return the resource at the given URL, as a
-        (`httplib.HTTPResponse`, `xml.etree.ElementTree.Element`) tuple
+        (`http_client.HTTPResponse`, `xml.etree.ElementTree.Element`) tuple
         resulting from a ``GET`` request to that URL."""
         response = cls.http_request(url)
         if response.status != 200:
@@ -462,7 +470,7 @@ class Resource(object):
         elif isinstance(value, Money):
             value.add_to_element(el)
         else:
-            el.text = unicode(value)
+            el.text = six.text_type(value)
 
         return el
 
@@ -641,7 +649,7 @@ class Resource(object):
     @classmethod
     def raise_http_error(cls, response):
         """Raise a `ResponseError` of the appropriate subclass in
-        reaction to the given `httplib.HTTPResponse`."""
+        reaction to the given `http_client.HTTPResponse`."""
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         exc_class = recurly.errors.error_class_for_http_status(response.status)
@@ -661,7 +669,7 @@ class Resource(object):
                 continue
 
             if attrname in self.xml_attribute_attributes:
-                elem.attrib[attrname] = unicode(value)
+                elem.attrib[attrname] = six.text_type(value)
             else:
                 sub_elem = self.element_for_value(attrname, value)
                 elem.append(sub_elem)

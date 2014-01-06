@@ -1,5 +1,6 @@
-import httplib
+from six.moves import http_client as httplib
 from xml.etree import ElementTree
+import six
 
 
 class ResponseError(Exception):
@@ -49,7 +50,7 @@ class ResponseError(Exception):
             return el.text
 
     def __str__(self):
-        return unicode(self).encode('utf8')
+        return six.text_type(self).encode('utf8')
 
     def __unicode__(self):
         symbol = self.symbol
@@ -57,8 +58,8 @@ class ResponseError(Exception):
             return self.error
         details = self.details
         if details is not None:
-            return u'%s: %s %s' % (symbol, self.message, details)
-        return u'%s: %s' % (symbol, self.message)
+            return six.u('%s: %s %s') % (symbol, self.message, details)
+        return six.u('%s: %s') % (symbol, self.message)
 
 
 class ClientError(ResponseError):
@@ -86,10 +87,10 @@ class UnauthorizedError(ClientError):
         self.response_text = response_xml
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return six.text_type(self).encode('utf-8')
 
     def __unicode__(self):
-        return unicode(self.response_text)
+        return six.text_type(self.response_text)
 
 
 class PaymentRequiredError(ClientError):
@@ -158,7 +159,7 @@ class ValidationError(ClientError):
             return self.message.encode('utf8')
 
         def __unicode__(self):
-            return u'%s: %s %s' % (self.symbol, self.field, self.message)
+            return six.u('%s: %s %s') % (self.symbol, self.field, self.message)
 
     @property
     def errors(self):
@@ -186,7 +187,7 @@ class ValidationError(ClientError):
         return suberrors
 
     def __unicode__(self):
-        return u'; '.join(unicode(error) for error in self.errors.itervalues())
+        return six.u('; ').join(six.text_type(error) for error in self.errors.itervalues())
 
 
 class ServerError(ResponseError):
@@ -232,7 +233,7 @@ class UnexpectedStatusError(ResponseError):
         self.status = status
 
     def __unicode__(self):
-        return unicode(self.status)
+        return six.text_type(self.status)
 
 
 error_classes = {
