@@ -20,7 +20,7 @@ except ImportError:
 setup(
     name='recurly',
     version=VERSION,
-    description="Interact with Recurly's REST API for subscription management from your Python website",
+    description="The official Recurly API client",
     long_description=DESCRIPTION,
     author='Recurly',
     author_email='support@recurly.com',
