@@ -790,11 +790,14 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscription/plan-deleted.xml'):
                 plan.delete()
 
-        """Test taxed subscription"""
-        with self.mock_request('subscription/show-taxed.xml'):
+        with self.mock_request('subscription/show.xml'):
             sub = account.subscriptions()[0]
             self.assertEqual(sub.tax_in_cents, 0)
             self.assertEqual(sub.tax_type, 'usst')
+
+        with self.mock_request('subscription/show.xml'):
+            sub = account.subscriptions()[0]
+            self.assertRaises(Exception, sub.preview)
 
     def test_subscribe_add_on(self):
         plan = Plan(

@@ -2,6 +2,7 @@ import logging
 from six.moves.urllib.parse import urljoin
 from xml.etree import ElementTree
 
+import recurly
 import recurly.js as js
 from recurly.errors import *
 from recurly.resource import Resource, Money, PageError
@@ -513,6 +514,12 @@ class Subscription(Resource):
         'first_renewal_date',
     )
     sensitive_attributes = ('number', 'verification_value',)
+
+    def preview(self):
+        if hasattr(self, '_url'):
+            raise Exception('Cannot preview an existing subscription')
+        url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
+        return self.post(url)
 
     def _update(self):
         if not hasattr(self, 'timeframe'):
