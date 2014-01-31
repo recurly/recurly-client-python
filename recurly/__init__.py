@@ -352,6 +352,19 @@ class Redemption(Resource):
         'created_at',
     )
 
+class TaxDetail(Resource):
+
+    """A charge's tax breakdown"""
+
+    nodename = 'taxdetail'
+    inherits_currency = True
+
+    attributes = (
+        'name',
+        'type',
+        'tax_rate',
+        'tax_in_cents',
+    )
 
 class Adjustment(Resource):
 
@@ -371,12 +384,14 @@ class Adjustment(Resource):
         'total_in_cents',
         'currency',
         'tax_exempt',
+        'tax_details',
         'start_date',
         'end_date',
         'created_at',
         'type',
     )
     xml_attribute_attributes = ('type',)
+    _classes_for_nodename = {'tax_detail': TaxDetail,}
 
 
 class Invoice(Resource):

@@ -405,6 +405,8 @@ class Resource(object):
         log.debug("Converting %r element with type %r", elem.tag, attr_type)
         if attr_type == 'integer':
             return int(elem.text.strip())
+        if attr_type == 'float':
+            return float(elem.text.strip())
         if attr_type == 'boolean':
             return elem.text.strip() == 'true'
         if attr_type == 'datetime':

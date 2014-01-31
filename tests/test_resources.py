@@ -325,9 +325,24 @@ class TestResources(RecurlyTest):
             self.assertEqual(len(charges), 1)
             same_charge = charges[0]
             self.assertEqual(same_charge.unit_amount_in_cents, 1000)
+            self.assertEqual(same_charge.tax_in_cents, 5000)
             self.assertEqual(same_charge.currency, 'USD')
             self.assertEqual(same_charge.description, 'test charge')
             self.assertEqual(same_charge.type, 'charge')
+
+            tax_details = same_charge.tax_details
+            state, county = tax_details
+
+            self.assertEqual(len(tax_details), 2)
+            self.assertEqual(state.name, 'california')
+            self.assertEqual(state.type, 'state')
+            self.assertEqual(state.tax_rate, 0.065)
+            self.assertEqual(state.tax_in_cents, 3000)
+
+            self.assertEqual(county.name, 'san francisco')
+            self.assertEqual(county.type, 'county')
+            self.assertEqual(county.tax_rate, 0.02)
+            self.assertEqual(county.tax_in_cents, 2000)
 
             with self.mock_request('adjustment/account-has-charges.xml'):
                 charges = account.adjustments(type='charge')
