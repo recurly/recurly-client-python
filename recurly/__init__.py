@@ -353,6 +353,7 @@ class Adjustment(Resource):
     """A charge or credit applied (or to be applied) to an account's invoice."""
 
     nodename = 'adjustment'
+    member_path = 'adjustments/%s'
 
     attributes = (
         'uuid',
