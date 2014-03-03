@@ -145,7 +145,7 @@ class Page(list):
         """Return a new `Page` containing the items at the given
         endpoint URL."""
         resp, elem = Resource.element_for_url(url)
-        
+
         value = Resource.value_for_element(elem)
 
         return cls.page_for_value(resp, value)
@@ -179,12 +179,13 @@ class _ValidatedHTTPSConnection(http_client.HTTPSConnection):
     hostname again the validated certificate's possible hosts."""
 
     def connect(self):
+        socket_timeout = getattr(recurly, 'SOCKET_TIMEOUT_SECONDS') or self.timeout
         if sys.version_info < (2, 7):
             sock = socket.create_connection((self.host, self.port),
-                                        self.timeout)
+                                            socket_timeout)
         else:
             sock = socket.create_connection((self.host, self.port),
-                                        self.timeout, self.source_address)
+                                            socket_timeout, self.source_address)
 
         if self._tunnel_host:
             self.sock = sock
@@ -549,7 +550,7 @@ class Resource(object):
                 raise AttributeError(name)
 
         elem = selfnode.find(self.__getpath__(name))
-        
+
         if elem is None:
             # It might be an <a name> link.
             for anchor_elem in selfnode.findall('a'):
