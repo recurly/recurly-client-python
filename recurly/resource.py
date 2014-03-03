@@ -179,7 +179,7 @@ class _ValidatedHTTPSConnection(http_client.HTTPSConnection):
     hostname again the validated certificate's possible hosts."""
 
     def connect(self):
-        socket_timeout = getattr(recurly, 'SOCKET_TIMEOUT_SECONDS') or self.timeout
+        socket_timeout = recurly.SOCKET_TIMEOUT_SECONDS or self.timeout
         if sys.version_info < (2, 7):
             sock = socket.create_connection((self.host, self.port),
                                             socket_timeout)
