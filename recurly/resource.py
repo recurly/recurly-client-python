@@ -291,6 +291,8 @@ class Resource(object):
         if method in ('POST', 'PUT') and body is None:
             headers['Content-Length'] = '0'
         connection.request(method, url, body, headers)
+        if recurly.SOCKET_TIMEOUT_SECONDS:
+            connection.sock.settimeout(recurly.SOCKET_TIMEOUT_SECONDS)
         resp = connection.getresponse()
 
         log = logging.getLogger('recurly.http.response')
