@@ -30,3 +30,17 @@ API Documentation
 -----------------
 
 Please see the `Recurly API <http://docs.recurly.com/api/>`_ for more information.
+
+
+Support
+-------
+
+- `https://support.recurly.com <https://support.recurly.com>`_
+- `stackoverflow <http://stackoverflow.com/questions/tagged/recurly>`_
+
+
+Announcements
+-------------
+
+- `@recurly <https://twitter.com/recurly>`_
+- `Google Group Announcements <https://groups.google.com/group/recurly-api>`_
