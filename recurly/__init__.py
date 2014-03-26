@@ -435,6 +435,21 @@ class Invoice(Resource):
         """
         return cls.all(state='past_due', **kwargs)
 
+    @classmethod
+    def pdf(cls, uuid):
+        """Return a PDF of the invoice identified by the UUID
+
+        This is a raw string, which can be written to a file with:
+        `
+            with open('invoice.pdf', 'w') as invoice_file:
+                invoice_file.write(recurly.Invoice.pdf(uuid))
+        `
+
+        """
+        url = urljoin(base_uri(), cls.member_path % (uuid,))
+        pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
+        return pdf_response.read()
+
 
 class Subscription(Resource):
 

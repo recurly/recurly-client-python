@@ -262,8 +262,8 @@ class Resource(object):
             connection = _ValidatedHTTPSConnection(urlparts.netloc)
 
         headers = {} if headers is None else dict(headers)
+        headers.setdefault('Accept', 'application/xml')
         headers.update({
-            'Accept': 'application/xml',
             'User-Agent': 'recurly-python/%s' % recurly.__version__,
         })
         if recurly.API_KEY is None:
