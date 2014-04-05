@@ -36,6 +36,9 @@ for validating the server against."""
 DEFAULT_CURRENCY = 'USD'
 """The currency to use creating `Money` instances when one is not specified."""
 
+SOCKET_TIMEOUT_SECONDS = None
+"""The number of seconds after which to timeout requests to the Recurly API.
+If unspecified, the global default timeout is used."""
 
 def base_uri():
     if SUBDOMAIN is None:
