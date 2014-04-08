@@ -1,3 +1,8 @@
+## Version 2.1.14 April 8, 2014
+
+- Added support for downloading invoices as PDF
+- Bug fix: set timeout specific to Recurly module
+
 ## Version 2.1.13 February 20, 2014
 
 - Bug fix: Adjustment.get(uuid) now supported
