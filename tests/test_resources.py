@@ -246,6 +246,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('billing-info/account-deleted.xml'):
                 account.delete()
 
+        # Credit Card
         log_content = StringIO()
         log_handler = logging.StreamHandler(log_content)
         logger.addHandler(log_handler)
@@ -284,6 +285,21 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('billing-info/account-embed-deleted.xml'):
                 account.delete()
+
+        # Token
+        log_content = StringIO()
+        log_handler = logging.StreamHandler(log_content)
+        logger.addHandler(log_handler)
+
+        account = Account(account_code='binfo-%s-3' % self.test_id)
+        account.billing_info = BillingInfo(token_id = 'abc123')
+        with self.mock_request('billing-info/account-embed-token.xml'):
+            account.save()
+
+        logger.removeHandler(log_handler)
+        log_content = log_content.getvalue()
+        self.assertTrue('<billing_info' in log_content)
+        self.assertTrue('<token_id' in log_content)
 
     def test_charge(self):
         account = Account(account_code='charge%s' % self.test_id)
