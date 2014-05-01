@@ -257,6 +257,7 @@ class BillingInfo(Resource):
         'first_six',
         'last_four',
         'billing_agreement_id',
+        'token_id'
     )
     sensitive_attributes = ('number', 'verification_value')
     xml_attribute_attributes = ('type',)
