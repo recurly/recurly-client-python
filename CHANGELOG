@@ -1,3 +1,7 @@
+## Version 2.1.15 April 8, 2014
+
+- Added token_id support to BillingInfo
+
 ## Version 2.1.14 April 8, 2014
 
 - Added support for downloading invoices as PDF
