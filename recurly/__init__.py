@@ -18,7 +18,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.1.15'
+__version__ = '2.2.0'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
@@ -79,6 +79,7 @@ class Account(Resource):
         'last_name',
         'company_name',
         'vat_number',
+        'tax_exempt',
         'accept_language',
         'created_at',
     )
@@ -351,6 +352,19 @@ class Redemption(Resource):
         'created_at',
     )
 
+class TaxDetail(Resource):
+
+    """A charge's tax breakdown"""
+
+    nodename = 'taxdetail'
+    inherits_currency = True
+
+    attributes = (
+        'name',
+        'type',
+        'tax_rate',
+        'tax_in_cents',
+    )
 
 class Adjustment(Resource):
 
@@ -369,13 +383,15 @@ class Adjustment(Resource):
         'tax_in_cents',
         'total_in_cents',
         'currency',
-        'taxable',
+        'tax_exempt',
+        'tax_details',
         'start_date',
         'end_date',
         'created_at',
         'type',
     )
     xml_attribute_attributes = ('type',)
+    _classes_for_nodename = {'tax_detail': TaxDetail,}
 
 
 class Invoice(Resource):
@@ -396,6 +412,8 @@ class Invoice(Resource):
         'vat_number',
         'subtotal_in_cents',
         'tax_in_cents',
+        'tax_type',
+        'tax_rate',
         'total_in_cents',
         'currency',
         'created_at',
@@ -479,6 +497,9 @@ class Subscription(Resource):
         'trial_started_at',
         'trial_ends_at',
         'unit_amount_in_cents',
+        'tax_in_cents',
+        'tax_type',
+        'tax_rate',
         'total_billing_cycles',
         'timeframe',
         'currency',
@@ -617,6 +638,7 @@ class Plan(Resource):
         'trial_interval_unit',
         'accounting_code',
         'created_at',
+        'tax_exempt',
         'unit_amount_in_cents',
         'setup_fee_in_cents',
     )

@@ -135,6 +135,11 @@ class TestResources(RecurlyTest):
         self.assertEqual(account.address.country, 'US')
         self.assertEqual(account.address.phone, '8015559876')
 
+        """Get taxed account"""
+        with self.mock_request('account/show-taxed.xml'):
+            account = Account.get(account_code)
+            self.assertTrue(account.tax_exempt)
+
 
     def test_add_on(self):
         plan_code = 'plan%s' % self.test_id
@@ -320,9 +325,24 @@ class TestResources(RecurlyTest):
             self.assertEqual(len(charges), 1)
             same_charge = charges[0]
             self.assertEqual(same_charge.unit_amount_in_cents, 1000)
+            self.assertEqual(same_charge.tax_in_cents, 5000)
             self.assertEqual(same_charge.currency, 'USD')
             self.assertEqual(same_charge.description, 'test charge')
             self.assertEqual(same_charge.type, 'charge')
+
+            tax_details = same_charge.tax_details
+            state, county = tax_details
+
+            self.assertEqual(len(tax_details), 2)
+            self.assertEqual(state.name, 'california')
+            self.assertEqual(state.type, 'state')
+            self.assertEqual(state.tax_rate, 0.065)
+            self.assertEqual(state.tax_in_cents, 3000)
+
+            self.assertEqual(county.name, 'san francisco')
+            self.assertEqual(county.type, 'county')
+            self.assertEqual(county.tax_rate, 0.02)
+            self.assertEqual(county.tax_in_cents, 2000)
 
             with self.mock_request('adjustment/account-has-charges.xml'):
                 charges = account.adjustments(type='charge')
@@ -335,6 +355,11 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('adjustment/account-deleted.xml'):
                 account.delete()
+
+        """Test taxed adjustments"""
+        with self.mock_request('adjustment/show-taxed.xml'):
+            charge = account.adjustments()[0]
+            self.assertFalse(charge.tax_exempt)
 
     def test_coupon(self):
         # Check that a coupon may not exist.
@@ -507,6 +532,11 @@ class TestResources(RecurlyTest):
             with self.mock_request('invoice/account-deleted.xml'):
                 account.delete()
 
+        """Test taxed invoice"""
+        with self.mock_request('invoice/show-taxed.xml'):
+            invoice = account.invoices()[0]
+            self.assertEqual(invoice.tax_type, 'usst')
+
     def test_pages(self):
         account_code = 'pages-%s-%%d' % self.test_id
         all_test_accounts = list()
@@ -576,6 +606,11 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('plan/deleted.xml'):
                 plan.delete()
+
+        """Test taxed plan"""
+        with self.mock_request('plan/show-taxed.xml'):
+            plan = Plan.get(plan_code)
+            self.assertTrue(plan.tax_exempt)
 
     def test_subscribe(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
@@ -751,6 +786,12 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('subscription/plan-deleted.xml'):
                 plan.delete()
+
+        """Test taxed subscription"""
+        with self.mock_request('subscription/show-taxed.xml'):
+            sub = account.subscriptions()[0]
+            self.assertEqual(sub.tax_in_cents, 0)
+            self.assertEqual(sub.tax_type, 'usst')
 
     def test_subscribe_add_on(self):
         plan = Plan(
