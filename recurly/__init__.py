@@ -279,6 +279,7 @@ class Coupon(Resource):
         'discount_percent',
         'discount_in_cents',
         'redeem_by_date',
+        'invoice_description',
         'single_use',
         'applies_for_months',
         'max_redemptions',
