@@ -372,7 +372,8 @@ class TestResources(RecurlyTest):
             coupon_code=coupon_code,
             name='Nice Coupon',
             discount_in_cents=Money(1000),
-            hosted_description="Nice Description"
+            hosted_description='Nice Description',
+            invoice_description='Invoice description'
         )
         with self.mock_request('coupon/created.xml'):
             coupon.save()
@@ -384,6 +385,7 @@ class TestResources(RecurlyTest):
                 same_coupon = Coupon.get(coupon_code)
             self.assertEqual(same_coupon.coupon_code, coupon_code)
             self.assertEqual(same_coupon.name, 'Nice Coupon')
+            self.assertEqual(same_coupon.invoice_description, 'Invoice description')
             discount = same_coupon.discount_in_cents
             self.assertEqual(discount['USD'], 1000)
             self.assertTrue('USD' in discount)
@@ -475,6 +477,7 @@ class TestResources(RecurlyTest):
                     coupon_code='plancoupon%s' % self.test_id,
                     name='Plan Coupon',
                     discount_in_cents=Money(1000),
+                    invoice_description='Invoice description',
                     applies_to_all_plans=False,
                     plan_codes=('basicplan',),
                 )

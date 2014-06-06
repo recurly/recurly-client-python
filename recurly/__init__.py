@@ -18,7 +18,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.2.0'
+__version__ = '2.2.1'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
@@ -279,6 +279,7 @@ class Coupon(Resource):
         'discount_percent',
         'discount_in_cents',
         'redeem_by_date',
+        'invoice_description',
         'single_use',
         'applies_for_months',
         'max_redemptions',
