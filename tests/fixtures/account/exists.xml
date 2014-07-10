@@ -20,5 +20,13 @@ Content-Type: application/xml; charset=utf-8
   <first_name nil="nil"></first_name>
   <last_name nil="nil"></last_name>
   <company_name nil="nil"></company_name>
+  <balance_in_cents_invoiced>
+    <USD type="integer">1000</USD>
+    <EUR type="integer">800</EUR>
+  </balance_in_cents_invoiced>
+  <balance_in_cents_uninvoiced>
+    <USD type="integer">1200</USD>
+    <EUR type="integer">700</EUR>
+  </balance_in_cents_uninvoiced>
   <accept_language nil="nil"></accept_language>
 </account>
