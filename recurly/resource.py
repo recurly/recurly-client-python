@@ -615,7 +615,15 @@ class Resource(object):
         return self._create()
 
     def _update(self):
-        url = self._url
+        return self.put(self._url)
+
+    def _create(self):
+        url = urljoin(recurly.base_uri(), self.collection_path)
+        return self.post(url)
+
+    def put(self, url):
+        """Sends this `Resource` instance to the service with a
+        ``PUT`` request to the given URL."""
         response = self.http_request(url, 'PUT', self, {'Content-Type': 'application/xml; charset=utf-8'})
         if response.status != 200:
             self.raise_http_error(response)
@@ -623,10 +631,6 @@ class Resource(object):
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         self.update_from_element(ElementTree.fromstring(response_xml))
-
-    def _create(self):
-        url = urljoin(recurly.base_uri(), self.collection_path)
-        return self.post(url)
 
     def post(self, url):
         """Sends this `Resource` instance to the service with a

@@ -517,9 +517,11 @@ class Subscription(Resource):
 
     def preview(self):
         if hasattr(self, '_url'):
-            raise Exception('Cannot preview an existing subscription')
-        url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
-        return self.post(url)
+            url = self._url + '/preview'
+            return self.post(url)
+        else:
+            url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
+            return self.post(url)
 
     def _update(self):
         if not hasattr(self, 'timeframe'):
