@@ -503,6 +503,7 @@ class Subscription(Resource):
         'tax_type',
         'tax_rate',
         'total_billing_cycles',
+        'remaining_billing_cycles',
         'timeframe',
         'currency',
         'subscription_add_ons',
