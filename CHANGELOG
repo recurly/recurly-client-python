@@ -1,5 +1,6 @@
-## Unreleased
+## Version 2.2.3 August 5, 2014
 
+- Added subscription change preview
 - Added `remaining_billing_cycles` to subscriptions
 
 ## Version 2.2.2 June 25, 2014
