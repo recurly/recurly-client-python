@@ -9,6 +9,7 @@ Content-Type: application/xml; charset=utf-8
   <plan_code>basicplan</plan_code>
   <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
   <currency>USD</currency>
+  <bulk type="boolean">true</bulk>
 </subscription>
 
 HTTP/1.1 400 Bad Request
