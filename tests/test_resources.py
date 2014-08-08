@@ -640,6 +640,7 @@ class TestResources(RecurlyTest):
                     plan_code='basicplan',
                     currency='USD',
                     unit_amount_in_cents=1000,
+                    bulk=True
                 )
 
                 with self.mock_request('subscription/error-no-billing-info.xml'):

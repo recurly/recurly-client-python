@@ -513,8 +513,9 @@ class Subscription(Resource):
         'collection_method',
         'po_number',
         'first_renewal_date',
+        'bulk'
     )
-    sensitive_attributes = ('number', 'verification_value',)
+    sensitive_attributes = ('number', 'verification_value', 'bulk')
 
     def preview(self):
         if hasattr(self, '_url'):
