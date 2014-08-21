@@ -81,6 +81,7 @@ class Account(Resource):
         'company_name',
         'vat_number',
         'tax_exempt',
+        'entity_use_code',
         'accept_language',
         'created_at',
     )

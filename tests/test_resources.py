@@ -54,6 +54,7 @@ class TestResources(RecurlyTest):
         self.assertTrue(same_account is not account)
         self.assertEqual(same_account.account_code, account_code)
         self.assertTrue(same_account.first_name is None)
+        self.assertTrue(same_account.entity_use_code == 'I')
         self.assertEqual(same_account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
 
         account.username = 'shmohawk58'
