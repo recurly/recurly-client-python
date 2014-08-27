@@ -1,3 +1,7 @@
+## Unreleased
+
+- Added account entity use code: `account.entity_use_code`
+
 ## Version 2.2.3 August 5, 2014
 
 - Added subscription change preview
