@@ -1,6 +1,8 @@
-## Unreleased
+## Version 2.2.4 September 9, 2014
 
 - Added account entity use code: `account.entity_use_code`
+- Added bulk parameter
+- Added billing agreement support to BillingInfo
 
 ## Version 2.2.3 August 5, 2014
 
