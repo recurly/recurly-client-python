@@ -190,6 +190,21 @@ class Account(Resource):
         invoice._url = response.getheader('Location')
         return invoice
 
+    def build_invoice(self):
+        """Preview an invoice for any outstanding adjustments this account has."""
+        url = urljoin(self._url, '%s/invoices/preview' % self.account_code)
+
+        response = self.http_request(url, 'POST')
+        if response.status != 200:
+            self.raise_http_error(response)
+
+        response_xml = response.read()
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        elem = ElementTree.fromstring(response_xml)
+
+        invoice = Invoice.from_element(elem)
+        return invoice
+
     def notes(self):
         """Fetch Notes for this account."""
         url = urljoin(self._url, '%s/notes' % self.account_code)
