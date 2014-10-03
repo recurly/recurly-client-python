@@ -1,3 +1,7 @@
+## Unreleased
+
+- Added invoice previews: `account.build_invoice()`
+
 ## Version 2.2.4 September 9, 2014
 
 - Added account entity use code: `account.entity_use_code`
