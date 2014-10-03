@@ -541,6 +541,31 @@ class TestResources(RecurlyTest):
             invoice = account.invoices()[0]
             self.assertEqual(invoice.tax_type, 'usst')
 
+    def test_build_invoice(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        try:
+            with self.mock_request('invoice/preview-error-no-charges.xml'):
+                try:
+                    account.build_invoice()
+                except ValidationError as exc:
+                    error = exc
+                else:
+                    self.fail("Invoicing an account with no charges did not raise a ValidationError")
+            self.assertEqual(error.symbol, 'will_not_invoice')
+
+            charge = Adjustment(unit_amount_in_cents=1000, currency='USD', description='test charge', type='charge')
+            with self.mock_request('invoice/charged.xml'):
+                account.charge(charge)
+
+            with self.mock_request('invoice/preview-invoice.xml'):
+                account.build_invoice()
+        finally:
+            with self.mock_request('invoice/account-deleted.xml'):
+                account.delete()
+
     def test_pages(self):
         account_code = 'pages-%s-%%d' % self.test_id
         all_test_accounts = list()
