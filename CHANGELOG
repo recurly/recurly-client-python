@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.5 October 21, 2014
+
 - Added invoice previews: `account.build_invoice()`
 
 ## Version 2.2.4 September 9, 2014
