@@ -1,5 +1,6 @@
 from six.moves import http_client as httplib
 from xml.etree import ElementTree
+import defusedxml.ElementTree
 import six
 
 
@@ -17,7 +18,8 @@ class ResponseError(Exception):
         try:
             return self.__dict__['response_doc']
         except KeyError:
-            self.__dict__['response_doc'] = ElementTree.fromstring(self.response_xml)
+            self.__dict__['response_doc'] = defusedxml.ElementTree.fromstring(
+                self.response_xml)
             return self.__dict__['response_doc']
 
     @property

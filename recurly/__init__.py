@@ -1,6 +1,7 @@
 import logging
 from six.moves.urllib.parse import urljoin
 from xml.etree import ElementTree
+import defusedxml.ElementTree
 
 import recurly
 import recurly.js as js
@@ -184,7 +185,7 @@ class Account(Resource):
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
-        elem = ElementTree.fromstring(response_xml)
+        elem = defusedxml.ElementTree.fromstring(response_xml)
 
         invoice = Invoice.from_element(elem)
         invoice._url = response.getheader('Location')
@@ -219,7 +220,8 @@ class Account(Resource):
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
-        self.update_from_element(ElementTree.fromstring(response_xml))
+        self.update_from_element(
+            defusedxml.ElementTree.fromstring(response_xml))
 
     def subscribe(self, subscription):
         """Create the given `Subscription` for this existing account."""
@@ -240,7 +242,8 @@ class Account(Resource):
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
-        billing_info.update_from_element(ElementTree.fromstring(response_xml))
+        billing_info.update_from_element(
+            defusedxml.ElementTree.fromstring(response_xml))
 
 
 class BillingInfo(Resource):
@@ -753,7 +756,7 @@ def objects_for_push_notification(notification):
     member of the returned dictionary.
 
     """
-    notification_el = ElementTree.fromstring(notification)
+    notification_el = defusedxml.ElementTree.fromstring(notification)
     objects = {'type': notification_el.tag}
     for child_el in notification_el:
         tag = child_el.tag
