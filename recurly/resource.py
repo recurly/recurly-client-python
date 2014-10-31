@@ -5,6 +5,7 @@ import socket
 import ssl
 import sys
 from xml.etree import ElementTree
+import defusedxml.ElementTree
 
 import iso8601
 import six
@@ -362,7 +363,7 @@ class Resource(object):
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
-        response_doc = ElementTree.fromstring(response_xml)
+        response_doc = defusedxml.ElementTree.fromstring(response_xml)
 
         return response, response_doc
 
@@ -520,11 +521,12 @@ class Resource(object):
             if response.status == 200:
                 response_xml = response.read()
                 logging.getLogger('recurly.http.response').debug(response_xml)
-                return self.update_from_element(ElementTree.fromstring(response_xml))
+                return self.update_from_element(
+                    defusedxml.ElementTree.fromstring(response_xml))
             elif response.status == 201:
                 response_xml = response.read()
                 logging.getLogger('recurly.http.response').debug(response_xml)
-                elem = ElementTree.fromstring(response_xml)
+                elem = defusedxml.ElementTree.fromstring(response_xml)
                 return self.value_for_element(elem)
             elif response.status == 204:
                 pass
@@ -636,7 +638,8 @@ class Resource(object):
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
-        self.update_from_element(ElementTree.fromstring(response_xml))
+        self.update_from_element(
+            defusedxml.ElementTree.fromstring(response_xml))
 
     def post(self, url):
         """Sends this `Resource` instance to the service with a
@@ -650,7 +653,8 @@ class Resource(object):
         if response.status in (200, 201):
             response_xml = response.read()
             logging.getLogger('recurly.http.response').debug(response_xml)
-            self.update_from_element(ElementTree.fromstring(response_xml))
+            self.update_from_element(
+                defusedxml.ElementTree.fromstring(response_xml))
 
     def delete(self):
         """Submits a deletion request for this `Resource` instance as

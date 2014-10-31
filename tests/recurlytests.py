@@ -7,6 +7,7 @@ from os.path import join, dirname
 import time
 import unittest
 from xml.etree import ElementTree
+import defusedxml.ElementTree
 
 import mock
 import six
@@ -15,7 +16,7 @@ from six.moves import http_client
 
 
 def xml(text):
-    doc = ElementTree.fromstring(text)
+    doc = defusedxml.ElementTree.fromstring(text)
     for el in doc.iter():
         if el.text and el.text.isspace():
             el.text = ''
