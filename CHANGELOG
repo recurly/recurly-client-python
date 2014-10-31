@@ -1,5 +1,10 @@
 ## Unreleased
 
+## Version 2.2.6 October 31, 2014
+
+- Bug fix: `subscription.invoice` now returns the invoice for subscription
+change previewing
+
 ## Version 2.2.5 October 21, 2014
 
 - Added invoice previews: `account.build_invoice()`
