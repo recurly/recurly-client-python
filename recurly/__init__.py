@@ -19,7 +19,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.2.5'
+__version__ = '2.2.6'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
