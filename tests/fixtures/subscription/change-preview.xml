@@ -1,11 +1,15 @@
-GET https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab HTTP/1.1
+POST https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/preview HTTP/1.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
 
+<?xml version='1.0' encoding='UTF-8'?>
+<subscription>
+  <quantity type="integer">2</quantity>
+</subscription>
 
 HTTP/1.1 200 OK
-X-Records: 1
 Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -32,4 +36,26 @@ Content-Type: application/xml; charset=utf-8
   <tax_type>usst</tax_type>
   <subscription_add_ons type="array">
   </subscription_add_ons>
+  <invoice href="">
+    <account href="https://api.recurly.com/v2/accounts/subscribemock"/>
+    <subscription href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab"/>
+    <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+    <account_code>subscribemock</account_code>
+    <total_in_cents>2000</total_in_cents>
+    <created_at type="nil"></created_at>
+    <line_items type="array">
+      <adjustment>
+        <uuid>4ba1531325014b4f969cd13676f51438</uuid>
+        <account_code>chargemock</account_code>
+        <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+        <amount_in_cents type="integer">2000</amount_in_cents>
+        <quantity>2</quantity>
+        <currency>USD</currency>
+        <start_date type="datetime">2011-06-27T07:00:00Z</start_date>
+        <end_date type="datetime">2010-07-27T07:00:00Z</end_date>
+        <description>Basic Plan charge</description>
+        <created_at type="nil"></created_at>
+      </adjustment>
+    </line_items>
+  </invoice>
 </subscription>

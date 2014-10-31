@@ -641,6 +641,15 @@ class TestResources(RecurlyTest):
             plan = Plan.get(plan_code)
             self.assertTrue(plan.tax_exempt)
 
+    def test_preview_subscription_change(self):
+        with self.mock_request('subscription/show.xml'):
+            sub = Subscription.get('123456789012345678901234567890ab')
+
+            with self.mock_request('subscription/change-preview.xml'):
+                sub.quantity = 2
+                sub.preview()
+                self.assertTrue(sub.invoice.line_items[0].amount_in_cents, 2000)
+
     def test_subscribe(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')
@@ -818,7 +827,7 @@ class TestResources(RecurlyTest):
                 plan.delete()
 
         with self.mock_request('subscription/show.xml'):
-            sub = account.subscriptions()[0]
+            sub = Subscription.get('123456789012345678901234567890ab')
             self.assertEqual(sub.tax_in_cents, 0)
             self.assertEqual(sub.tax_type, 'usst')
 

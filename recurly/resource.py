@@ -581,7 +581,13 @@ class Resource(object):
                         return Page.page_for_value(resp, value)
                     return value
                 return relatitator
-            return make_relatitator(elem.attrib['href'])
+
+            url = elem.attrib['href']
+
+            if url is '':
+                return Resource.value_for_element(elem)
+            else:
+                return make_relatitator(url)
 
         return self.value_for_element(elem)
 
