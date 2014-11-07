@@ -541,6 +541,19 @@ class TestResources(RecurlyTest):
             invoice = account.invoices()[0]
             self.assertEqual(invoice.tax_type, 'usst')
 
+    def test_invoice_with_optionals(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced-with-optionals.xml'):
+            invoice = account.invoice(terms_and_conditions='Some Terms and Conditions',
+                    customer_notes='Some Customer Notes')
+
+        self.assertEqual(type(invoice), recurly.Invoice)
+        self.assertEqual(invoice.terms_and_conditions, 'Some Terms and Conditions')
+        self.assertEqual(invoice.customer_notes, 'Some Customer Notes')
+
     def test_build_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):
@@ -675,7 +688,9 @@ class TestResources(RecurlyTest):
                     plan_code='basicplan',
                     currency='USD',
                     unit_amount_in_cents=1000,
-                    bulk=True
+                    bulk=True,
+                    terms_and_conditions='Some Terms and Conditions',
+                    customer_notes='Some Customer Notes'
                 )
 
                 with self.mock_request('subscription/error-no-billing-info.xml'):

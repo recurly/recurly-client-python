@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Added ability to read and write invoice notes
+
 ## Version 2.2.6 October 31, 2014
 
 - Bug fix: `subscription.invoice` now returns the invoice for subscription
