@@ -554,6 +554,57 @@ class Subscription(Resource):
             return name
 
 
+class TransactionBillingInfo(recurly.Resource):
+    node_name = 'billing_info'
+    attributes = (
+        'first_name',
+        'last_name',
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'country',
+        'zip',
+        'phone',
+        'vat_number',
+        'first_six',
+        'last_four',
+        'card_type',
+        'month',
+        'year',
+        'transaction_uuid'
+    )
+
+
+class TransactionAccount(recurly.Resource):
+    node_name = 'account'
+    attributes = (
+        'first_name',
+        'last_name',
+        'company',
+        'email',
+        'account_code'
+    )
+    _classes_for_nodename = {'billing_info': TransactionBillingInfo}
+
+
+class TransactionDetails(recurly.Resource):
+    node_name = 'details'
+    attributes = ('account')
+    _classes_for_nodename = {'account': TransactionAccount}
+
+
+class TransactionError(recurly.Resource):
+    node_name = 'transaction_error'
+    attributes = (
+        'id',
+        'merchant_message',
+        'error_caterogy',
+        'customer_message',
+        'error_code'
+    )
+
+
 class Transaction(Resource):
 
     """An immediate one-time charge made to a customer's account."""
@@ -587,6 +638,10 @@ class Transaction(Resource):
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
+    _classes_for_nodename = {
+        'details': TransactionDetails,
+        'transaction_error': TransactionError
+    }
 
     def _handle_refund_accepted(self, response):
         if response.status != 202:
