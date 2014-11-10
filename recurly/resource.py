@@ -616,9 +616,9 @@ class Resource(object):
         to its own URL.
 
         """
-        if hasattr(self, '_url'):
-            return self._update()
-        return self._create()
+        if self.is_new():
+            return self._create()
+        return self._update()
 
     def _update(self):
         return self.put(self._url)
@@ -689,3 +689,6 @@ class Resource(object):
                 sub_elem = self.element_for_value(attrname, value)
                 elem.append(sub_elem)
         return elem
+
+    def is_new(self):
+        return not hasattr(self, '_url')
