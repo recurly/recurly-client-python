@@ -694,6 +694,9 @@ class Transaction(Resource):
         return actionator(**kwargs)
 
 
+Transaction._classes_for_nodename['transaction'] = Transaction
+
+
 class Plan(Resource):
 
     """A service level for your service to which a customer account
