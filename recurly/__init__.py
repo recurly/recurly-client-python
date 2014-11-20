@@ -403,6 +403,7 @@ class Adjustment(Resource):
         'total_in_cents',
         'currency',
         'tax_exempt',
+        'tax_code',
         'tax_details',
         'start_date',
         'end_date',
@@ -726,6 +727,7 @@ class Plan(Resource):
         'accounting_code',
         'created_at',
         'tax_exempt',
+        'tax_code',
         'unit_amount_in_cents',
         'setup_fee_in_cents',
     )
@@ -757,6 +759,7 @@ class AddOn(Resource):
         'default_quantity',
         'accounting_code',
         'unit_amount_in_cents',
+        'tax_code',
         'created_at',
     )
 
