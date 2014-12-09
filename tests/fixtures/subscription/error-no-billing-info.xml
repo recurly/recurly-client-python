@@ -10,6 +10,8 @@ Content-Type: application/xml; charset=utf-8
   <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
   <currency>USD</currency>
   <bulk type="boolean">true</bulk>
+  <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
+  <customer_notes>Some Customer Notes</customer_notes>
 </subscription>
 
 HTTP/1.1 400 Bad Request

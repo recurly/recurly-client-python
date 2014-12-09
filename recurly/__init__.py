@@ -174,11 +174,16 @@ class Account(Resource):
         url = urljoin(self._url, '%s/adjustments' % self.account_code)
         return charge.post(url)
 
-    def invoice(self):
+    def invoice(self, **kwargs):
         """Create an invoice for any outstanding adjustments this account has."""
         url = urljoin(self._url, '%s/invoices' % self.account_code)
 
-        response = self.http_request(url, 'POST')
+        if kwargs:
+            response = self.http_request(url, 'POST', Invoice(**kwargs), {'Content-Type':
+                'application/xml; charset=utf-8'})
+        else:
+            response = self.http_request(url, 'POST')
+
         if response.status != 201:
             self.raise_http_error(response)
 
@@ -439,7 +444,17 @@ class Invoice(Resource):
         'created_at',
         'line_items',
         'transactions',
+        'terms_and_conditions',
+        'customer_notes',
     )
+
+    blacklist_attributes = (
+        'currency',
+    )
+
+    def serializable_attributes(self):
+        return [attr for attr in self.attributes if attr not in
+                self.blacklist_attributes]
 
     @classmethod
     def all_open(cls, **kwargs):
@@ -531,7 +546,9 @@ class Subscription(Resource):
         'collection_method',
         'po_number',
         'first_renewal_date',
-        'bulk'
+        'bulk',
+        'terms_and_conditions',
+        'customer_notes',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

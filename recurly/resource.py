@@ -227,6 +227,13 @@ class Resource(object):
     even though this `Resource` class has no ``currency`` attribute of
     its own."""
 
+    def serializable_attributes(self):
+        """ Attributes to be serialized in a ``POST`` or ``PUT`` request.
+        Returns all attributes by default. Can be overriden on the child class.
+        """
+
+        return self.attributes
+
     def __init__(self, **kwargs):
         try:
             self.attributes.index('currency') # Test for currency attribute,
@@ -673,7 +680,7 @@ class Resource(object):
     def to_element(self):
         """Serialize this `Resource` instance to an XML element."""
         elem = ElementTree.Element(self.nodename)
-        for attrname in self.attributes:
+        for attrname in self.serializable_attributes():
             # Only use values that have been loaded into the internal
             # __dict__. For retrieved objects we look into the XML response at
             # access time, so the internal __dict__ contains only the elements
