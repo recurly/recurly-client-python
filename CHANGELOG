@@ -1,6 +1,12 @@
 ## Unreleased
 
+## Version 2.2.7 December 8, 2014
+
 - Added ability to read and write invoice notes
+- Added `tax_code` to `plan`, `add_ons`, and `adjustment`
+- Added inspection on the details of a `transaction`: `transaction.details`
+and `transaction.transaction_error`
+- Removed support for SSLv3
 
 ## Version 2.2.6 October 31, 2014
 
