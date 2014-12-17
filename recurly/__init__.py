@@ -446,6 +446,7 @@ class Invoice(Resource):
         'transactions',
         'terms_and_conditions',
         'customer_notes',
+        'address',
     )
 
     blacklist_attributes = (
@@ -797,6 +798,7 @@ class SubscriptionAddOn(Resource):
         'add_on_code',
         'quantity',
         'unit_amount_in_cents',
+        'address',
     )
 
 class Note(Resource):

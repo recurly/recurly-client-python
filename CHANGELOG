@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add address attribute into preview calls and update invoice notes path
+
 ## Version 2.2.7 December 8, 2014
 
 - Added ability to read and write invoice notes
