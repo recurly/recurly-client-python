@@ -42,6 +42,7 @@ class TestResources(RecurlyTest):
             account.save()
         self.assertEqual(account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
         self.assertEqual(account.vat_number, '444444-UK')
+        self.assertEqual(account.vat_location_enabled, True)
 
         with self.mock_request('account/list-active.xml'):
             active = Account.all_active()
