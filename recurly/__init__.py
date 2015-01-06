@@ -457,10 +457,6 @@ class Invoice(Resource):
     def invoice_number_with_prefix(self):
         return '%s%s' % (self.invoice_number_prefix, self.invoice_number)
 
-    def serializable_attributes(self):
-        return [attr for attr in self.attributes if attr not in
-                self.blacklist_attributes]
-
     @classmethod
     def all_open(cls, **kwargs):
         """Return a `Page` of open invoices.
@@ -554,6 +550,7 @@ class Subscription(Resource):
         'bulk',
         'terms_and_conditions',
         'customer_notes',
+        'vat_reverse_charge_notes',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -564,6 +561,13 @@ class Subscription(Resource):
         else:
             url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
             return self.post(url)
+
+    def update_notes(self, **kwargs):
+        """Updates the notes on the subscription without generating a change"""
+        for key, val in kwargs.iteritems():
+            setattr(self, key, val)
+        url = urljoin(self._url, '%s/notes' % self.uuid)
+        self.put(url)
 
     def _update(self):
         if not hasattr(self, 'timeframe'):
