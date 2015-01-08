@@ -38,4 +38,5 @@ Location: https://api.recurly.com/v2/accounts/testmock
     <phone>8015559876</phone>
   </address>
   <accept_language nil="nil"></accept_language>
+  <vat_location_enabled type="boolean">true</vat_location_enabled>
 </account>

@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add address attribute into preview calls and update invoice notes path
+- Added tests for new read-only attribute `vat_location_valid` on `Account`
 
 ## Version 2.2.7 December 8, 2014
 
