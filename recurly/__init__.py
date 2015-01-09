@@ -433,6 +433,7 @@ class Invoice(Resource):
         'uuid',
         'state',
         'invoice_number',
+        'invoice_number_prefix',
         'po_number',
         'vat_number',
         'subtotal_in_cents',
@@ -452,6 +453,9 @@ class Invoice(Resource):
     blacklist_attributes = (
         'currency',
     )
+
+    def invoice_number_with_prefix(self):
+        return '%s%s' % (self.invoice_number_prefix, self.invoice_number)
 
     def serializable_attributes(self):
         return [attr for attr in self.attributes if attr not in

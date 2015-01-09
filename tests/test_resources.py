@@ -542,6 +542,13 @@ class TestResources(RecurlyTest):
             invoice = account.invoices()[0]
             self.assertEqual(invoice.tax_type, 'usst')
 
+        """Test invoice with prefix"""
+        with self.mock_request('invoice/show-with-prefix.xml'):
+            invoice = account.invoices()[0]
+            self.assertEqual(invoice.invoice_number, 1001)
+            self.assertEqual(invoice.invoice_number_prefix, 'GB')
+            self.assertEqual(invoice.invoice_number_with_prefix(), 'GB1001')
+
     def test_invoice_with_optionals(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):
