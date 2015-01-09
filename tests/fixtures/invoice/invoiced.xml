@@ -13,6 +13,8 @@ Location: https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8
 <invoice href="https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8">
   <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
   <account_code>invoicemock</account_code>
+  <invoice_number type="integer">1001</invoice_number>
+  <invoice_number_prefix></invoice_number_prefix>
   <amount_in_cents>
     <USD type="integer">1000</USD>
   </amount_in_cents>
