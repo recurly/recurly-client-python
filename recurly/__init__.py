@@ -508,6 +508,44 @@ class Invoice(Resource):
         pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
         return pdf_response.read()
 
+    def refund_amount(self, amount_in_cents):
+        amount_element = self.refund_open_amount_xml(amount_in_cents)
+        return self._create_refund_invoice(amount_element)
+
+    def refund(self, adjustments):
+        adjustments_element = self.refund_line_items_xml(adjustments)
+        return self._create_refund_invoice(adjustments_element)
+
+    def refund_open_amount_xml(self, amount_in_cents):
+        elem = ElementTree.Element(self.nodename)
+        elem.append(Resource.element_for_value('amount_in_cents',
+            amount_in_cents))
+        return elem
+
+    def refund_line_items_xml(self, line_items):
+        elem = ElementTree.Element(self.nodename)
+        line_items_elem = ElementTree.Element('line_items')
+
+        for item in line_items:
+            adj_elem = ElementTree.Element('adjustment')
+            adj_elem.append(Resource.element_for_value('uuid',
+                item['adjustment'].uuid))
+            adj_elem.append(Resource.element_for_value('quantity',
+            item['quantity']))
+            adj_elem.append(Resource.element_for_value('prorate', item['prorate']))
+            line_items_elem.append(adj_elem)
+
+        elem.append(line_items_elem)
+        return elem
+
+    def _create_refund_invoice(self, element):
+        url = urljoin(self._url, '%s/refund' % (self.invoice_number, ))
+        body = ElementTree.tostring(element, encoding='UTF-8')
+
+        refund_invoice = Invoice()
+        refund_invoice.post(url, body)
+
+        return refund_invoice
 
 class Subscription(Resource):
 

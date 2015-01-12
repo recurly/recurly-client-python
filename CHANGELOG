@@ -5,6 +5,8 @@
 - Added `invoice_number_prefix` and `invoice_number_with_prefix()` on
 `Invoice` for use with the Country Invoice Sequencing feature
 - Added support for update_notes path on Subscription
+- Added `refund_amount` (open amount refunds) to `Invoice`
+- Added `refund` (line item refunds) to `Invoice`
 
 ## Version 2.2.7 December 8, 2014
 

@@ -549,6 +549,32 @@ class TestResources(RecurlyTest):
             self.assertEqual(invoice.invoice_number_prefix, 'GB')
             self.assertEqual(invoice.invoice_number_with_prefix(), 'GB1001')
 
+    def test_invoice_refund_amount(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced.xml'):
+            invoice = account.invoice()
+
+        with self.mock_request('invoice/refunded.xml'):
+            refund_invoice = invoice.refund_amount(1000)
+        self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
+
+    def test_invoice_refund(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced-line-items.xml'):
+            invoice = account.invoice()
+
+        with self.mock_request('invoice/line-item-refunded.xml'):
+            line_items = [{ 'adjustment': invoice.line_items[0], 'quantity': 1,
+                'prorate': False }]
+            refund_invoice = invoice.refund(line_items)
+        self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
+
     def test_invoice_with_optionals(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):

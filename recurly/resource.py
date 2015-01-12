@@ -650,10 +650,10 @@ class Resource(object):
         logging.getLogger('recurly.http.response').debug(response_xml)
         self.update_from_element(ElementTree.fromstring(response_xml))
 
-    def post(self, url):
+    def post(self, url, body=None):
         """Sends this `Resource` instance to the service with a
-        ``POST`` request to the given URL."""
-        response = self.http_request(url, 'POST', self, {'Content-Type': 'application/xml; charset=utf-8'})
+        ``POST`` request to the given URL. Takes an optional body"""
+        response = self.http_request(url, 'POST', body or self, {'Content-Type': 'application/xml; charset=utf-8'})
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
