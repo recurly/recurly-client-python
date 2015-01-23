@@ -229,10 +229,15 @@ class Resource(object):
 
     def serializable_attributes(self):
         """ Attributes to be serialized in a ``POST`` or ``PUT`` request.
-        Returns all attributes by default. Can be overriden on the child class.
+        Returns all attributes unless a blacklist is specified
         """
 
-        return self.attributes
+        if hasattr(self, 'blacklist_attributes'):
+            return [attr for attr in self.attributes if attr not in
+                    self.blacklist_attributes]
+        else:
+            return self.attributes
+
 
     def __init__(self, **kwargs):
         try:

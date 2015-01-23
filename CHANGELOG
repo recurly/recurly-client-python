@@ -4,6 +4,7 @@
 - Added tests for new read-only attribute `vat_location_valid` on `Account`
 - Added `invoice_number_prefix` and `invoice_number_with_prefix()` on
 `Invoice` for use with the Country Invoice Sequencing feature
+- Added support for update_notes path on Subscription
 
 ## Version 2.2.7 December 8, 2014
 
