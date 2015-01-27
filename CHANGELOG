@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.8 January 27, 2015
+
 - Added address attribute into preview calls and update invoice notes path
 - Added tests for new read-only attribute `vat_location_valid` on `Account`
 - Added `invoice_number_prefix` and `invoice_number_with_prefix()` on
