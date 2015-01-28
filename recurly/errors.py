@@ -10,6 +10,7 @@ class ResponseError(Exception):
 
     def __init__(self, response_xml):
         self.response_xml = response_xml
+        Exception.__init__(self, response_xml)
 
     @property
     def response_doc(self):
@@ -85,6 +86,7 @@ class UnauthorizedError(ClientError):
 
     def __init__(self, response_xml):
         self.response_text = response_xml
+        Exception.__init__(self, response_xml)
 
     def __str__(self):
         return six.text_type(self).encode('utf-8')
@@ -154,6 +156,7 @@ class ValidationError(ClientError):
             self.field = field
             self.symbol = symbol
             self.message = message
+            Exception.__init__(self, field, symbol, message)
 
         def __str__(self):
             return self.message.encode('utf8')
@@ -231,6 +234,7 @@ class UnexpectedStatusError(ResponseError):
     def __init__(self, status, response_xml):
         super(UnexpectedStatusError, self).__init__(response_xml)
         self.status = status
+        Exception.__init__(self, status, response_xml)
 
     def __unicode__(self):
         return six.text_type(self.status)
