@@ -418,6 +418,18 @@ class Adjustment(Resource):
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {'tax_detail': TaxDetail,}
 
+    # This can be removed when the `original_adjustment_uuid` is moved to a link
+    def __getattr__(self, name):
+        if name == 'original_adjustment':
+            try:
+                uuid = super(Adjustment, self).__getattr__('original_adjustment_uuid')
+            except (AttributeError):
+                return super(Adjustment, self).__getattr__(name)
+
+            return lambda: Adjustment.get(uuid)
+        else:
+            return super(Adjustment, self).__getattr__(name)
+
 
 class Invoice(Resource):
 

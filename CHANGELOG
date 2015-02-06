@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Added `original_adjustment()` to `Adjustment` for retrieving the linked
+adjustment where the other came from for better accounting purposes
+
 ## Version 2.2.8 January 27, 2015
 
 - Added address attribute into preview calls and update invoice notes path

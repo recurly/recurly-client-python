@@ -1,0 +1,34 @@
+GET https://api.recurly.com/v2/adjustments/2c06b94abe047189b225d94dd0adb71f HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+X-Records: 1
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment href="http://api.recurly.com/v2/adjustments/2c06b94abe047189b225d94dd0adb71f" type="charge">
+  <account href="https://api.recurly.com/v2/accounts/chargemock"/>
+  <invoice href="https://api.recurly.com/v2/invoices/1075"/>
+  <uuid>2c06b94abe047189b225d94dd0adb71f</uuid>
+  <state>invoiced</state>
+  <description>test charge</description>
+  <accounting_code></accounting_code>
+  <product_code></product_code>
+  <origin>add_on</origin>
+  <unit_amount_in_cents type="integer">3387</unit_amount_in_cents>
+  <quantity type="integer">-1</quantity>
+  <quantity_remaining type="integer">0</quantity_remaining>
+  <original_adjustment href="https://api.recurly.com/v2/adjustments/2bd3381e9ffb7fddc18128454d835e83"/>
+  <discount_in_cents type="integer">0</discount_in_cents>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <total_in_cents type="integer">-3387</total_in_cents>
+  <currency>USD</currency>
+  <taxable type="boolean">false</taxable>
+  <tax_exempt type="boolean">false</tax_exempt>
+  <start_date type="datetime">2014-12-29T21:22:47Z</start_date>
+  <end_date type="datetime">2015-01-19T21:21:04Z</end_date>
+  <created_at type="datetime">2014-12-29T21:22:47Z</created_at>
+</adjustment>
