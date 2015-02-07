@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.9 February 6, 2015
+
 - Added `original_adjustment()` to `Adjustment` for retrieving the linked
 adjustment where the other came from for better accounting purposes
 
