@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `tax_type`, `tax_rate`, `tax_region` to `Adjustment`
+
 ## Version 2.2.9 February 6, 2015
 
 - Added `original_adjustment()` to `Adjustment` for retrieving the linked

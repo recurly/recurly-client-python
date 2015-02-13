@@ -14,6 +14,9 @@ X-Records: 1
     <description>test charge</description>
     <account_code>chargemock</account_code>
     <tax_in_cents type="integer">5000</tax_in_cents>
+    <tax_type>usst</tax_type>
+    <tax_region>CA</tax_region>
+    <tax_rate type="float">0.0875</tax_rate>
     <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
     <currency>USD</currency>
     <tax_details type="array">

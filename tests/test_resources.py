@@ -328,6 +328,9 @@ class TestResources(RecurlyTest):
             same_charge = charges[0]
             self.assertEqual(same_charge.unit_amount_in_cents, 1000)
             self.assertEqual(same_charge.tax_in_cents, 5000)
+            self.assertEqual(same_charge.tax_type, 'usst')
+            self.assertEqual(same_charge.tax_rate, 0.0875)
+            self.assertEqual(same_charge.tax_region, 'CA')
             self.assertEqual(same_charge.currency, 'USD')
             self.assertEqual(same_charge.description, 'test charge')
             self.assertEqual(same_charge.type, 'charge')
