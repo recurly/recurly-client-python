@@ -1,6 +1,11 @@
 ## Unreleased
 
 - Add `tax_type`, `tax_rate`, `tax_region` to `Adjustment`
+- Added `bank_account` type and attributes to `BillingInfo`, these include:
+	- `name_on_account`
+	- `account_type` (`checking` or `savings`)
+	- `last_four`
+	- `routing_number`
 
 ## Version 2.2.9 February 6, 2015
 

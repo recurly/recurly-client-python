@@ -256,6 +256,7 @@ class BillingInfo(Resource):
 
     attributes = (
         'type',
+        'name_on_account',
         'first_name',
         'last_name',
         'number',
@@ -282,8 +283,11 @@ class BillingInfo(Resource):
         'paypal_billing_agreement_id',
         'amazon_billing_agreement_id',
         'token_id',
+        'account_type',
+        'routing_number',
+        'account_number',
     )
-    sensitive_attributes = ('number', 'verification_value')
+    sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
 
 class Coupon(Resource):
