@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.10 April 28, 2015
+
 - Add `tax_type`, `tax_rate`, `tax_region` to `Adjustment`
 - Added `bank_account` type and attributes to `BillingInfo`, these include:
 	- `name_on_account`
