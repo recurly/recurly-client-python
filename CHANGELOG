@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.11 May 6, 2015
+
 - Add `bank_account_authorized_at` to `Subscription`
 
 ## Version 2.2.10 April 28, 2015
