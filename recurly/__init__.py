@@ -608,6 +608,7 @@ class Subscription(Resource):
         'terms_and_conditions',
         'customer_notes',
         'vat_reverse_charge_notes',
+        'bank_account_authorized_at',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

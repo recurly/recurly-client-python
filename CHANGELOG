@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `bank_account_authorized_at` to `Subscription`
+
 ## Version 2.2.10 April 28, 2015
 
 - Add `tax_type`, `tax_rate`, `tax_region` to `Adjustment`
