@@ -806,6 +806,7 @@ class Plan(Resource):
         'payment_page_tos_link',
         'plan_interval_length',
         'plan_interval_unit',
+        'total_billing_cycles',
         'trial_interval_length',
         'trial_interval_unit',
         'accounting_code',
