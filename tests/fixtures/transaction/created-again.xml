@@ -32,6 +32,7 @@ Location: https://api.recurly.com/v2/transactions/123456789012345678901234567890
   <test type="boolean">true</test>
   <voidable type="boolean">true</voidable>
   <refundable type="boolean">true</refundable>
+  <ip_address>127.0.0.1</ip_address>
   <cvv_result code="" nil="nil"></cvv_result>
   <avs_result code="" nil="nil"></avs_result>
   <avs_result_street nil="nil"></avs_result_street>

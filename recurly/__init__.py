@@ -720,6 +720,7 @@ class Transaction(Resource):
         'details',
         'transaction_error',
         'type',
+        'ip_address',
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
