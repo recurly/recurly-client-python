@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Support for the creation of plans with a fixed number of billing cycles.
+
 ## Version 2.2.11 May 6, 2015
 
 - Add `bank_account_authorized_at` to `Subscription`
