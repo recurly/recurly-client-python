@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add `ip_address` to `Transaction`
+- Add `closed_at` to `Invoice`
 
 ## Version 2.2.11 May 6, 2015
 
