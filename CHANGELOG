@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.12 June 25, 2015
+
 - Add `ip_address` to `Transaction`
 - Add `closed_at` to `Invoice`
 - Add `refund_apply_order` to `Invoice` for specifying credits or transactions
