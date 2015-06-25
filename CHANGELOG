@@ -2,6 +2,8 @@
 
 - Add `ip_address` to `Transaction`
 - Add `closed_at` to `Invoice`
+- Add `refund_apply_order` to `Invoice` for specifying credits or transactions
+to be refunded first
 
 ## Version 2.2.11 May 6, 2015
 

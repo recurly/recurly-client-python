@@ -528,22 +528,25 @@ class Invoice(Resource):
         pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
         return pdf_response.read()
 
-    def refund_amount(self, amount_in_cents):
-        amount_element = self.refund_open_amount_xml(amount_in_cents)
+    def refund_amount(self, amount_in_cents, refund_apply_order = 'credit'):
+        amount_element = self.refund_open_amount_xml(amount_in_cents, refund_apply_order)
         return self._create_refund_invoice(amount_element)
 
-    def refund(self, adjustments):
-        adjustments_element = self.refund_line_items_xml(adjustments)
+    def refund(self, adjustments, refund_apply_order = 'credit'):
+        adjustments_element = self.refund_line_items_xml(adjustments, refund_apply_order)
         return self._create_refund_invoice(adjustments_element)
 
-    def refund_open_amount_xml(self, amount_in_cents):
+    def refund_open_amount_xml(self, amount_in_cents, refund_apply_order):
         elem = ElementTree.Element(self.nodename)
+        elem.append(Resource.element_for_value('refund_apply_order', refund_apply_order))
         elem.append(Resource.element_for_value('amount_in_cents',
             amount_in_cents))
         return elem
 
-    def refund_line_items_xml(self, line_items):
+    def refund_line_items_xml(self, line_items, refund_apply_order):
         elem = ElementTree.Element(self.nodename)
+        elem.append(Resource.element_for_value('refund_apply_order', refund_apply_order))
+
         line_items_elem = ElementTree.Element('line_items')
 
         for item in line_items:
