@@ -725,6 +725,9 @@ class Transaction(Resource):
         'transaction_error',
         'type',
         'ip_address',
+        'tax_exempt',
+        'tax_code',
+        'accounting_code',
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
