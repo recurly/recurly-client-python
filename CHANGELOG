@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Require a version of six library >= 1.4.0
+- Add `tax_exempt`, `tax_code`, `accounting_code` to `Transaction`
 
 ## Version 2.2.12 June 25, 2015
 
