@@ -1,4 +1,5 @@
 PUT https://api.recurly.com/v2/coupons/couponmock/redeem HTTP/1.1
+X-Api-Version: 2.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/{version}
@@ -18,6 +19,7 @@ Location: https://api.recurly.com/v2/accounts/couponmock/redemption
 <redemption href="https://api.recurly.com/v2/accounts/couponmock/redemption">
   <coupon href="https://api.recurly.com/v2/coupons/couponmock"/>
   <account href="https://api.recurly.com/v2/accounts/couponmock"/>
+  <uuid>301bc7686bc4b4bb383f9e4218acaac5</uuid>
   <single_use type="boolean">false</single_use>
   <total_discounted_in_cents type="integer">0</total_discounted_in_cents>
   <currency>USD</currency>

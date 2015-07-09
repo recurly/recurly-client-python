@@ -280,6 +280,7 @@ class Resource(object):
         headers.update({
             'User-Agent': 'recurly-python/%s' % recurly.__version__,
         })
+        headers['X-Api-Version'] = recurly.api_version()
         if recurly.API_KEY is None:
             raise recurly.UnauthorizedError('recurly.API_KEY not set')
         headers['Authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
@@ -666,11 +667,14 @@ class Resource(object):
     def delete(self):
         """Submits a deletion request for this `Resource` instance as
         a ``DELETE`` request to its URL."""
-        url = self._url
+        url = self.delete_url()
 
         response = self.http_request(url, 'DELETE')
         if response.status != 204:
             self.raise_http_error(response)
+
+    def delete_url(self):
+      return self._url
 
     @classmethod
     def raise_http_error(cls, response):

@@ -7,6 +7,10 @@
 
 - Add `gateway_error_code` to `TransactionError`
 - Add `redemption_resource` to `Coupon`
+- Adding X-Api-Version support
+- Setting X-Api-Version to 2.1
+- Adding `redemptions` to `Account`
+- Adding `uuid` to `CouponRedemption`
 
 - Add `applies_to_non_plan_charges` to `Coupon`
 

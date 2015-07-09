@@ -30,6 +30,9 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
+API_VERSION = '2.1'
+"""The API version to use when making API requests."""
+
 CA_CERTS_FILE = None
 """A file contianing a set of concatenated certificate authority certs
 for validating the server against."""
@@ -47,6 +50,8 @@ def base_uri():
 
     return BASE_URI % SUBDOMAIN
 
+def api_version():
+    return API_VERSION
 
 class Address(Resource):
 
@@ -214,6 +219,12 @@ class Account(Resource):
         """Fetch Notes for this account."""
         url = urljoin(self._url, '%s/notes' % self.account_code)
         return Note.paginated(url)
+
+    def redemption(self):
+      try:
+        return self.redemptions()[0]
+      except AttributeError:
+        raise AttributeError("redemption")
 
     def reopen(self):
         """Reopen a closed account."""
@@ -388,6 +399,10 @@ class Redemption(Resource):
         'currency',
         'created_at',
     )
+
+    def delete_url(self):
+      return self._url + "s/" + self.uuid
+
 
 class TaxDetail(Resource):
 
