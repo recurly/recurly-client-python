@@ -1,4 +1,5 @@
 import base64
+import re
 from datetime import datetime
 import logging
 import socket
@@ -452,11 +453,11 @@ class Resource(object):
 
         The value argument may be:
         * a `Resource` instance
-        * a list or tuple of `Resource` instances
         * a `Money` instance
         * a `datetime.datetime` instance
         * a string, integer, or boolean value
         * ``None``
+        * a list or tuple of these values
 
         """
         if isinstance(value, Resource):
@@ -478,12 +479,10 @@ class Resource(object):
         elif isinstance(value, list) or isinstance(value, tuple):
             el.attrib['type'] = 'array'
             for sub_resource in value:
-                try:
-                    elementize = sub_resource.to_element
-                except AttributeError:
-                    raise ValueError("Could not serialize member %r of list %r as a Resource instance"
-                        % (sub_resource, attrname))
-                el.append(elementize())
+                if hasattr(sub_resource, 'to_element'):
+                  el.append(sub_resource.to_element())
+                else:
+                  el.append(cls.element_for_value(re.sub(r"s$", "", attrname), sub_resource))
         elif isinstance(value, Money):
             value.add_to_element(el)
         else:

@@ -17,6 +17,7 @@
 - Add `duration` to `Coupon`
 - Add `temporal_unit` to `Coupon`
 - Add `temporal_amount` to `Coupon`
+- Add `coupon_codes` to `Subscription`
 
 ## Version 2.2.12 June 25, 2015
 

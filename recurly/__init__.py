@@ -593,6 +593,7 @@ class Subscription(Resource):
         'state',
         'plan_code',
         'coupon_code',
+        'coupon_codes',
         'quantity',
         'activated_at',
         'canceled_at',
