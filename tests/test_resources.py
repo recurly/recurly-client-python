@@ -503,6 +503,7 @@ class TestResources(RecurlyTest):
                     invoice_description='Invoice description',
                     applies_to_all_plans=False,
                     plan_codes=('basicplan',),
+                    applies_to_non_plan_charges=True,
                 )
                 with self.mock_request('coupon/plan-coupon-created.xml'):
                     plan_coupon.save()

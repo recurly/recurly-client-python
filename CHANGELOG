@@ -7,6 +7,8 @@
 
 - Add `gateway_error_code` to `TransactionError`
 
+- Add `applies_to_non_plan_charges` to `Coupon`
+
 ## Version 2.2.13 July 31, 2015
 
 - Require a version of six library >= 1.4.0

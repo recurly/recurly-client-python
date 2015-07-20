@@ -36,6 +36,7 @@ Location: https://api.recurly.com/v2/coupons/couponmock
   <duration>forever</duration>
   <temporal_unit></temporal_unit>
   <temporal_amount type="integer"></temporal_amount>
+  <applies_to_non_plan_charges type="boolean">true</applies_to_non_plan_charges>
   <discount_in_cents>
     <USD type="integer">1000</USD>
   </discount_in_cents>

@@ -314,6 +314,7 @@ class Coupon(Resource):
         'temporal_amount',
         'max_redemptions',
         'applies_to_all_plans',
+        'applies_to_non_plan_charges',
         'created_at',
         'plan_codes',
         'hosted_description',
