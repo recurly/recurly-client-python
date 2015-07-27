@@ -41,6 +41,7 @@ Location: https://api.recurly.com/v2/coupons/couponmock
   <discount_in_cents>
     <USD type="integer">1000</USD>
   </discount_in_cents>
+  <max_redemptions_per_account type="integer">1</max_redemptions_per_account>
   <plan_codes type="array">
   </plan_codes>
   <a name="redeem" href="https://api.recurly.com/v2/coupons/couponmock/redeem" method="put"/>

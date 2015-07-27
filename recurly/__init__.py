@@ -319,6 +319,7 @@ class Coupon(Resource):
         'created_at',
         'plan_codes',
         'hosted_description',
+        'max_redemptions_per_account',
     )
 
     @classmethod
@@ -369,6 +370,9 @@ class Coupon(Resource):
 
         """
         return cls.all(state='maxed_out', **kwargs)
+
+    def has_unlimited_redemptions_per_account(self):
+        return self.max_redemptions_per_account == None
 
 
 class Redemption(Resource):

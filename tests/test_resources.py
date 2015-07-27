@@ -505,12 +505,14 @@ class TestResources(RecurlyTest):
                     plan_codes=('basicplan',),
                     applies_to_non_plan_charges=True,
                     redemption_resource='subscription',
+                    max_redemptions_per_account=1,
                 )
                 with self.mock_request('coupon/plan-coupon-created.xml'):
                     plan_coupon.save()
 
                 try:
                     self.assertTrue(plan_coupon._url)
+                    self.assertFalse(plan_coupon.has_unlimited_redemptions_per_account())
 
                     coupon_plans = list(plan_coupon.plan_codes)
                     self.assertEqual(len(coupon_plans), 1)
