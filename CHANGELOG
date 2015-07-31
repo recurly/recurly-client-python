@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.13 July 31, 2015
+
 - Require a version of six library >= 1.4.0
 - Add `tax_exempt`, `tax_code`, `accounting_code` to `Transaction`
 - Add `duration` to `Coupon`
