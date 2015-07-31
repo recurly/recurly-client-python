@@ -33,6 +33,9 @@ Location: https://api.recurly.com/v2/coupons/couponmock
   <max_redemptions nil="nil"></max_redemptions>
   <applies_to_all_plans type="boolean">true</applies_to_all_plans>
   <created_at type="datetime">2011-09-19T19:01:21Z</created_at>
+  <duration>forever</duration>
+  <temporal_unit></temporal_unit>
+  <temporal_amount type="integer"></temporal_amount>
   <discount_in_cents>
     <USD type="integer">1000</USD>
   </discount_in_cents>
