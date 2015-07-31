@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `gateway_error_code` to `TransactionError`
+
 ## Version 2.2.13 July 31, 2015
 
 - Require a version of six library >= 1.4.0

@@ -1092,6 +1092,28 @@ class TestResources(RecurlyTest):
             with self.mock_request('transaction/account-deleted.xml'):
                 account.delete()
 
+    def failed_transaction(self):
+        transaction = Transaction(
+            amount_in_cents=1000,
+            currency='USD',
+            account=Account(),
+        )
+
+        with self.mock_request('transaction/declined-stransaction.xml'):
+            try:
+                transaction.save()
+            except ValidationError as _error:
+                error = _error
+            else:
+                self.fail("Posting a transaction without an account code did not raise a ValidationError")
+
+        self.assertEqual(transaction.error_code, 'insufficient_funds')
+        self.assertEqual(transaction.error_category, 'soft')
+        self.assertEqual(transaction.customer_message, 'The transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.')
+        self.assertEqual(transaction.merchant_message, 'The card has insufficient funds to cover the cost of the transaction.')
+        self.assertEqual(transaction.gateway_error_code, '123')
+
+
     def test_transaction_with_balance(self):
         transaction = Transaction(
             amount_in_cents=1000,
