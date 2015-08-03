@@ -4,7 +4,7 @@ import re
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as README:
     DESCRIPTION = README.read()
-    
+
 VERSION_RE = re.compile("^__version__ = '(.+)'$",
                         flags=re.MULTILINE)
 with open(os.path.join(os.path.dirname(__file__),
@@ -24,7 +24,7 @@ setup(
     long_description=DESCRIPTION,
     author='Recurly',
     author_email='support@recurly.com',
-    url='http://docs.recurly.com/client-libraries/python',
+    url='https://recurly.readme.io/v2.0/page/python',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

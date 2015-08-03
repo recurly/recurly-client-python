@@ -14,7 +14,7 @@ Recurly's Python client library is an interface to its REST API.
 
 Please see the Recurly API documentation for more information:
 
-http://docs.recurly.com/api/
+https://dev.recurly.com/docs/getting-started
 
 """
 
