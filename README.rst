@@ -4,7 +4,7 @@
 Recurly Python Client
 =====================
 
-Recurly's Python client library is an interface to its `REST API <http://docs.recurly.com/api>`_.
+Recurly's Python client library is an interface to its `REST API <https://dev.recurly.com`_.
 
 
 Usage
@@ -28,7 +28,7 @@ authority certificate file and default currency::
 API Documentation
 -----------------
 
-Please see the `Recurly API <http://docs.recurly.com/api/>`_ for more information.
+Please see the `Recurly API <https://dev.recurly.com/docs/getting-started>`_ for more information.
 
 
 Support
