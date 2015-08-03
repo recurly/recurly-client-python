@@ -59,7 +59,7 @@ class Address(Resource):
         'state',
         'zip',
         'country',
-        'phone'
+        'phone',
     )
 
 
@@ -664,7 +664,7 @@ class TransactionBillingInfo(recurly.Resource):
         'card_type',
         'month',
         'year',
-        'transaction_uuid'
+        'transaction_uuid',
     )
 
 
@@ -675,7 +675,7 @@ class TransactionAccount(recurly.Resource):
         'last_name',
         'company',
         'email',
-        'account_code'
+        'account_code',
     )
     _classes_for_nodename = {'billing_info': TransactionBillingInfo}
 
@@ -693,7 +693,8 @@ class TransactionError(recurly.Resource):
         'merchant_message',
         'error_caterogy',
         'customer_message',
-        'error_code'
+        'error_code',
+        'gateway_error_code',
     )
 
 

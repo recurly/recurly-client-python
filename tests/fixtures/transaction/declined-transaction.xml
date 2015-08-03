@@ -1,0 +1,26 @@
+POST https://api.recurly.com/v2/transactions HTTP/1.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction>
+  <account>
+    <account_code>transactionmock</account_code>
+  </account>
+  <currency>USD</currency>
+  <amount_in_cents type="integer">1000</amount_in_cents>
+</transaction>
+
+HTTP/1.1 422
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction_error>
+  <error_code>insufficient_funds</error_code>
+  <error_category>soft</error_category>
+  <customer_message lang="en-US">The transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.</customer_message>
+  <merchant_message lang="en-US">The card has insufficient funds to cover the cost of the transaction.</merchant_message>
+  <gateway_error_code>123</gateway_error_code>
+</transaction_error>
