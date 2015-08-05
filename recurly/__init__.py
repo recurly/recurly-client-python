@@ -315,6 +315,7 @@ class Coupon(Resource):
         'max_redemptions',
         'applies_to_all_plans',
         'applies_to_non_plan_charges',
+        'redemption_resource',
         'created_at',
         'plan_codes',
         'hosted_description',

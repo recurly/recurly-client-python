@@ -14,6 +14,7 @@ Content-Type: application/xml; charset=utf-8
     <invoice_description>Invoice description</invoice_description>
     <applies_to_all_plans type="boolean">false</applies_to_all_plans>
     <applies_to_non_plan_charges type="boolean">true</applies_to_non_plan_charges>
+    <redemption_resource>subscription</redemption_resource>
     <plan_codes type="array">
       <plan_code>basicplan</plan_code>
     </plan_codes>
@@ -39,6 +40,7 @@ Location: https://api.recurly.com/v2/coupons/plancouponmock
   <temporal_unit></temporal_unit>
   <temporal_amount type="integer"></temporal_amount>
   <applies_to_non_plan_charges type="boolean">true</applies_to_non_plan_charges>
+  <redemption_resource>subscription</redemption_resource>
   <discount_in_cents>
     <USD type="integer">1000</USD>
   </discount_in_cents>

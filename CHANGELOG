@@ -6,6 +6,7 @@
 ## Version 2.2.14 August 10, 2015
 
 - Add `gateway_error_code` to `TransactionError`
+- Add `redemption_resource` to `Coupon`
 
 - Add `applies_to_non_plan_charges` to `Coupon`
 

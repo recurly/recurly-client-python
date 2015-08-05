@@ -504,6 +504,7 @@ class TestResources(RecurlyTest):
                     applies_to_all_plans=False,
                     plan_codes=('basicplan',),
                     applies_to_non_plan_charges=True,
+                    redemption_resource='subscription',
                 )
                 with self.mock_request('coupon/plan-coupon-created.xml'):
                     plan_coupon.save()

@@ -37,6 +37,7 @@ Location: https://api.recurly.com/v2/coupons/couponmock
   <temporal_unit></temporal_unit>
   <temporal_amount type="integer"></temporal_amount>
   <applies_to_non_plan_charges type="boolean">true</applies_to_non_plan_charges>
+  <redemption_resource>account</redemption_resource>
   <discount_in_cents>
     <USD type="integer">1000</USD>
   </discount_in_cents>
