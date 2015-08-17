@@ -396,6 +396,7 @@ class Redemption(Resource):
         'account_code',
         'single_use',
         'total_discounted_in_cents',
+        'subscription_uuid',
         'currency',
         'created_at',
     )
