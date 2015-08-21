@@ -1,4 +1,5 @@
 ## Unreleased
+- Adding `setup_fee_accounting_code` to `Plan`
 
 ## Version 2.2.14 August 10, 2015
 

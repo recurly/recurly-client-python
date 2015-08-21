@@ -697,7 +697,8 @@ class TestResources(RecurlyTest):
             plan.plan_interval_length = 2
             plan.plan_interval_unit = 'months'
             plan.unit_amount_in_cents = Money(USD=2000)
-            plan.setup_fee_in_cents = Money(USD=0)
+            plan.setup_fee_in_cents = Money(USD=200)
+            plan.setup_fee_accounting_code = 'Setup Fee AC'
             with self.mock_request('plan/updated.xml'):
                 plan.save()
         finally:

@@ -8,11 +8,12 @@ Content-Type: application/xml; charset=utf-8
 <plan>
   <plan_interval_length type="integer">2</plan_interval_length>
   <plan_interval_unit>months</plan_interval_unit>
+  <setup_fee_accounting_code>Setup Fee AC</setup_fee_accounting_code>
   <unit_amount_in_cents>
     <USD type="integer">2000</USD>
   </unit_amount_in_cents>
   <setup_fee_in_cents>
-    <USD type="integer">0</USD>
+    <USD type="integer">200</USD>
   </setup_fee_in_cents>
 </plan>
 
@@ -37,11 +38,12 @@ Content-Type: application/xml; charset=utf-8
   <plan_interval_unit>months</plan_interval_unit>
   <trial_interval_length type="integer">0</trial_interval_length>
   <trial_interval_unit>days</trial_interval_unit>
+  <setup_fee_accounting_code>Setup Fee AC</setup_fee_accounting_code>
   <created_at type="datetime">2011-10-03T22:23:12Z</created_at>
   <unit_amount_in_cents>
     <USD type="integer">2000</USD>
   </unit_amount_in_cents>
   <setup_fee_in_cents>
-    <USD type="integer">0</USD>
+    <USD type="integer">200</USD>
   </setup_fee_in_cents>
 </plan>

@@ -821,6 +821,7 @@ class Plan(Resource):
         'trial_interval_length',
         'trial_interval_unit',
         'accounting_code',
+        'setup_fee_accounting_code',
         'created_at',
         'tax_exempt',
         'tax_code',
