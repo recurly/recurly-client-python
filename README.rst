@@ -1,17 +1,25 @@
-.. image:: https://travis-ci.org/recurly/recurly-client-python.png?branch=master
-:target: https://travis-ci.org/recurly/recurly-client-python
-
+*********************
 Recurly Python Client
-=====================
+*********************
+.. image:: https://travis-ci.org/recurly/recurly-client-python.png?branch=master
+ :target: https://travis-ci.org/recurly/recurly-client-python
 
-Recurly's Python client library is an interface to its `REST API <https://dev.recurly.com`_.
+Recurly's Python client library is an interface to its `REST API <https://dev.recurly.com>`_.
 
 
-Usage
------
+Installation
+------------
 
-Set your API key and optionally set a certificate
-authority certificate file and default currency::
+Recurly is packaged as a Python package. We recommend you install it with
+`PyPI <https://pypi.python.org/pypi>`_ by adding it to your ``requirements.txt``::
+
+   pip install recurly
+
+
+Configuration
+-------------
+
+Set your API key and optionally set a certificate authority certificate file and default currency::
 
    import recurly
 
@@ -52,8 +60,8 @@ be a filename of concatenated certificate authority X.509 certificates:
     $ RECURLY_API_KEY=1274...54e3 RECURLY_CA_CERTS_FILE=/etc/pki/tls/certs/ca-bundle.crt -m unittest tests.test_resources
 
 
-API Documentation
------------------
+Usage
+-----
 
 Please see the `Recurly API <https://dev.recurly.com/docs/getting-started>`_ for more information.
 
