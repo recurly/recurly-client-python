@@ -25,6 +25,7 @@ Content-Type: application/xml; charset=utf-8
   <plan_interval_unit>months</plan_interval_unit>
   <trial_interval_length type="integer">0</trial_interval_length>
   <trial_interval_unit>days</trial_interval_unit>
+  <total_billing_cycles type="integer">10</total_billing_cycles>
   <created_at type="datetime">2011-10-03T22:23:12Z</created_at>
   <unit_amount_in_cents>
   </unit_amount_in_cents>

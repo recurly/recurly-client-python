@@ -826,6 +826,7 @@ class Plan(Resource):
         'tax_code',
         'unit_amount_in_cents',
         'setup_fee_in_cents',
+        'total_billing_cycles',
     )
 
     def get_add_on(self, add_on_code):
