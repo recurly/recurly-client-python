@@ -45,6 +45,6 @@ Location: https://api.recurly.com/v2/plans/planmock
     <USD type="integer">1000</USD>
   </unit_amount_in_cents>
   <setup_fee_in_cents>
-    <USD type="integer">0</USD>
+    <USD type="integer">200</USD>
   </setup_fee_in_cents>
 </plan>
