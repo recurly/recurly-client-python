@@ -682,6 +682,7 @@ class TestResources(RecurlyTest):
             name='Mock Plan',
             setup_fee_in_cents=Money(0),
             unit_amount_in_cents=Money(1000),
+            total_billing_cycles=10
         )
         with self.mock_request('plan/created.xml'):
             plan.save()
@@ -693,6 +694,7 @@ class TestResources(RecurlyTest):
                 same_plan = Plan.get(plan_code)
             self.assertEqual(same_plan.plan_code, plan_code)
             self.assertEqual(same_plan.name, 'Mock Plan')
+            self.assertEqual(same_plan.total_billing_cycles, 10)
 
             plan.plan_interval_length = 2
             plan.plan_interval_unit = 'months'
