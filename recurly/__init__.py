@@ -639,6 +639,7 @@ class Subscription(Resource):
         'customer_notes',
         'vat_reverse_charge_notes',
         'bank_account_authorized_at',
+        'redemptions',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

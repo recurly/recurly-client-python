@@ -908,6 +908,9 @@ class TestResources(RecurlyTest):
             self.assertEqual(sub.tax_in_cents, 0)
             self.assertEqual(sub.tax_type, 'usst')
 
+            with self.mock_request('subscription/redemptions.xml'):
+                self.assertEqual(type(sub.redemptions()), recurly.resource.Page)
+
     def test_subscribe_add_on(self):
         plan = Plan(
             plan_code='basicplan',
