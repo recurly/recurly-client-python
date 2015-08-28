@@ -1,18 +1,19 @@
 ## Unreleased
+
+- Add `coupon_codes` to `Subscription`
 - Adding `setup_fee_accounting_code` to `Plan`
-
 - Add `total_billing_cycles` to `Plan`
-
-## Version 2.2.14 August 10, 2015
-
-- Add `gateway_error_code` to `TransactionError`
 - Add `redemption_resource` to `Coupon`
 - Adding X-Api-Version support
 - Setting X-Api-Version to 2.1
 - Adding `redemptions` to `Account`
+- Adding `redemptions` to `Invoice`
 - Adding `uuid` to `CouponRedemption`
-
 - Add `applies_to_non_plan_charges` to `Coupon`
+
+## Version 2.2.14 August 10, 2015
+
+- Add `gateway_error_code` to `TransactionError`
 
 ## Version 2.2.13 July 31, 2015
 
@@ -21,7 +22,6 @@
 - Add `duration` to `Coupon`
 - Add `temporal_unit` to `Coupon`
 - Add `temporal_amount` to `Coupon`
-- Add `coupon_codes` to `Subscription`
 
 ## Version 2.2.12 June 25, 2015
 

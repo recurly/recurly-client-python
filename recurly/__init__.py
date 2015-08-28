@@ -595,6 +595,12 @@ class Invoice(Resource):
 
         return refund_invoice
 
+    def redemption(self):
+      try:
+        return self.redemptions()[0]
+      except AttributeError:
+        raise AttributeError("redemption")
+
 class Subscription(Resource):
 
     """A customer account's subscription to your service."""
