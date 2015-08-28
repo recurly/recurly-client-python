@@ -22,6 +22,8 @@
 - Add `refund_apply_order` to `Invoice` for specifying credits or transactions
 to be refunded first
 
+- Support for the creation of plans with a fixed number of billing cycles.
+
 ## Version 2.2.11 May 6, 2015
 
 - Add `bank_account_authorized_at` to `Subscription`
