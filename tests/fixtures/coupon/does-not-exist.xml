@@ -1,4 +1,5 @@
 GET https://api.recurly.com/v2/coupons/couponmock HTTP/1.1
+X-Api-Version: 2.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: recurly-python/{version}

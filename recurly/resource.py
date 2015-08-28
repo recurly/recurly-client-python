@@ -1,4 +1,5 @@
 import base64
+import re
 from datetime import datetime
 import logging
 import socket
@@ -279,6 +280,7 @@ class Resource(object):
         headers.update({
             'User-Agent': 'recurly-python/%s' % recurly.__version__,
         })
+        headers['X-Api-Version'] = recurly.api_version()
         if recurly.API_KEY is None:
             raise recurly.UnauthorizedError('recurly.API_KEY not set')
         headers['Authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
@@ -452,11 +454,11 @@ class Resource(object):
 
         The value argument may be:
         * a `Resource` instance
-        * a list or tuple of `Resource` instances
         * a `Money` instance
         * a `datetime.datetime` instance
         * a string, integer, or boolean value
         * ``None``
+        * a list or tuple of these values
 
         """
         if isinstance(value, Resource):
@@ -478,12 +480,10 @@ class Resource(object):
         elif isinstance(value, list) or isinstance(value, tuple):
             el.attrib['type'] = 'array'
             for sub_resource in value:
-                try:
-                    elementize = sub_resource.to_element
-                except AttributeError:
-                    raise ValueError("Could not serialize member %r of list %r as a Resource instance"
-                        % (sub_resource, attrname))
-                el.append(elementize())
+                if hasattr(sub_resource, 'to_element'):
+                  el.append(sub_resource.to_element())
+                else:
+                  el.append(cls.element_for_value(re.sub(r"s$", "", attrname), sub_resource))
         elif isinstance(value, Money):
             value.add_to_element(el)
         else:
@@ -667,11 +667,14 @@ class Resource(object):
     def delete(self):
         """Submits a deletion request for this `Resource` instance as
         a ``DELETE`` request to its URL."""
-        url = self._url
+        url = self.delete_url()
 
         response = self.http_request(url, 'DELETE')
         if response.status != 204:
             self.raise_http_error(response)
+
+    def delete_url(self):
+      return self._url
 
     @classmethod
     def raise_http_error(cls, response):

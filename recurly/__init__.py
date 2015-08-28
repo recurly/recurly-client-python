@@ -30,6 +30,9 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
+API_VERSION = '2.1'
+"""The API version to use when making API requests."""
+
 CA_CERTS_FILE = None
 """A file contianing a set of concatenated certificate authority certs
 for validating the server against."""
@@ -47,6 +50,8 @@ def base_uri():
 
     return BASE_URI % SUBDOMAIN
 
+def api_version():
+    return API_VERSION
 
 class Address(Resource):
 
@@ -215,6 +220,12 @@ class Account(Resource):
         url = urljoin(self._url, '%s/notes' % self.account_code)
         return Note.paginated(url)
 
+    def redemption(self):
+      try:
+        return self.redemptions()[0]
+      except AttributeError:
+        raise AttributeError("redemption")
+
     def reopen(self):
         """Reopen a closed account."""
         url = urljoin(self._url, '%s/reopen' % self.account_code)
@@ -314,9 +325,12 @@ class Coupon(Resource):
         'temporal_amount',
         'max_redemptions',
         'applies_to_all_plans',
+        'applies_to_non_plan_charges',
+        'redemption_resource',
         'created_at',
         'plan_codes',
         'hosted_description',
+        'max_redemptions_per_account',
     )
 
     @classmethod
@@ -368,6 +382,9 @@ class Coupon(Resource):
         """
         return cls.all(state='maxed_out', **kwargs)
 
+    def has_unlimited_redemptions_per_account(self):
+        return self.max_redemptions_per_account == None
+
 
 class Redemption(Resource):
 
@@ -379,9 +396,14 @@ class Redemption(Resource):
         'account_code',
         'single_use',
         'total_discounted_in_cents',
+        'subscription_uuid',
         'currency',
         'created_at',
     )
+
+    def delete_url(self):
+      return self._url + "s/" + self.uuid
+
 
 class TaxDetail(Resource):
 
@@ -573,6 +595,12 @@ class Invoice(Resource):
 
         return refund_invoice
 
+    def redemption(self):
+      try:
+        return self.redemptions()[0]
+      except AttributeError:
+        raise AttributeError("redemption")
+
 class Subscription(Resource):
 
     """A customer account's subscription to your service."""
@@ -587,6 +615,7 @@ class Subscription(Resource):
         'state',
         'plan_code',
         'coupon_code',
+        'coupon_codes',
         'quantity',
         'activated_at',
         'canceled_at',
@@ -616,6 +645,7 @@ class Subscription(Resource):
         'customer_notes',
         'vat_reverse_charge_notes',
         'bank_account_authorized_at',
+        'redemptions',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

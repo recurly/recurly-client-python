@@ -1,7 +1,15 @@
 ## Unreleased
-- Adding `setup_fee_accounting_code` to `Plan`
 
+- Add `coupon_codes` to `Subscription`
+- Adding `setup_fee_accounting_code` to `Plan`
 - Add `total_billing_cycles` to `Plan`
+- Add `redemption_resource` to `Coupon`
+- Adding X-Api-Version support
+- Setting X-Api-Version to 2.1
+- Adding `redemptions` to `Account`
+- Adding `redemptions` to `Invoice`
+- Adding `uuid` to `CouponRedemption`
+- Add `applies_to_non_plan_charges` to `Coupon`
 
 ## Version 2.2.14 August 10, 2015
 
