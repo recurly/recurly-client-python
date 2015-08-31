@@ -19,7 +19,7 @@ https://dev.recurly.com/docs/getting-started
 """
 
 
-__version__ = '2.2.14'
+__version__ = '2.2.15'
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""

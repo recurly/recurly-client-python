@@ -1,5 +1,7 @@
 ## Unreleased
 
+## Version 2.2.15 August 31, 2015
+
 - Add `coupon_codes` to `Subscription`
 - Adding `setup_fee_accounting_code` to `Plan`
 - Add `total_billing_cycles` to `Plan`
