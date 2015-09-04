@@ -193,8 +193,7 @@ class _ValidatedHTTPSConnection(http_client.HTTPSConnection):
             self._tunnel()
 
         ssl_sock = ssl.wrap_socket(sock, self.key_file, self.cert_file,
-            ssl_version=ssl.PROTOCOL_TLSv1, cert_reqs=ssl.CERT_REQUIRED,
-            ca_certs=recurly.CA_CERTS_FILE)
+            cert_reqs=ssl.CERT_REQUIRED, ca_certs=recurly.CA_CERTS_FILE)
 
         # Let the CertificateError for failure be raised to the caller.
         match_hostname(ssl_sock.getpeercert(), self.host)
