@@ -50,7 +50,7 @@ class ResponseError(Exception):
             return el.text
 
     def __str__(self):
-        return six.text_type(self).encode('utf8')
+        return self.__unicode__()
 
     def __unicode__(self):
         symbol = self.symbol
@@ -85,9 +85,6 @@ class UnauthorizedError(ClientError):
 
     def __init__(self, response_xml):
         self.response_text = response_xml
-
-    def __str__(self):
-        return six.text_type(self).encode('utf-8')
 
     def __unicode__(self):
         return six.text_type(self.response_text)
@@ -154,9 +151,6 @@ class ValidationError(ClientError):
             self.field = field
             self.symbol = symbol
             self.message = message
-
-        def __str__(self):
-            return self.message.encode('utf8')
 
         def __unicode__(self):
             return six.u('%s: %s %s') % (self.symbol, self.field, self.message)
