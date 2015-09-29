@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Fix recursive call to `str(self)` in python 3
+
 ## Version 2.2.15 August 31, 2015
 
 - Add `coupon_codes` to `Subscription`
