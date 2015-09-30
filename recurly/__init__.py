@@ -403,6 +403,10 @@ class Coupon(Resource):
 
         return Page.page_for_url(response.getheader('Location'))
 
+    def restore(self):
+        url = urljoin(self._url, '%s/restore' % self.coupon_code)
+        self.put(url)
+
 class Redemption(Resource):
 
     """A particular application of a coupon to a customer account."""

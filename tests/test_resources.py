@@ -419,6 +419,28 @@ class TestResources(RecurlyTest):
             with self.mock_request('coupon/account-created.xml'):
                 account.save()
 
+            coupon.name = 'New Name'
+            coupon.invoice_description = 'New Description'
+            coupon.hosted_description = 'New Description'
+
+            with self.mock_request('coupon/updated.xml'):
+                coupon.save()
+
+            self.assertEqual(coupon.name, 'New Name')
+            self.assertEqual(coupon.invoice_description, 'New Description')
+            self.assertEqual(coupon.hosted_description, 'New Description')
+
+            coupon.name = 'New Name Restore'
+            coupon.invoice_description = 'New Description Restore'
+            coupon.hosted_description = 'New Description Restore'
+
+            with self.mock_request('coupon/restored.xml'):
+                coupon.restore()
+
+            self.assertEqual(coupon.name, 'New Name Restore')
+            self.assertEqual(coupon.invoice_description, 'New Description Restore')
+            self.assertEqual(coupon.hosted_description, 'New Description Restore')
+
             try:
 
                 redemption = Redemption(
