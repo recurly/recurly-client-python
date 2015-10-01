@@ -1,5 +1,8 @@
 ## Unreleased
 
+## Version 2.2.16 September 30, 2015
+
+- Remove TLS 1.0 flag allowing proper TLS negotiation
 - Fix recursive call to `str(self)` in python 3
 
 ## Version 2.2.15 August 31, 2015
