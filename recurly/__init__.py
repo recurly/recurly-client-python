@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 import recurly
 import recurly.js as js
 from recurly.errors import *
-from recurly.resource import Resource, Money, PageError
+from recurly.resource import Resource, Money, PageError, Page
 
 
 """
@@ -331,6 +331,9 @@ class Coupon(Resource):
         'plan_codes',
         'hosted_description',
         'max_redemptions_per_account',
+        'coupon_type',
+        'unique_code_template',
+        'unique_coupon_codes',
     )
 
     @classmethod
@@ -385,6 +388,20 @@ class Coupon(Resource):
     def has_unlimited_redemptions_per_account(self):
         return self.max_redemptions_per_account == None
 
+    def generate(self, amount):
+        elem = ElementTree.Element(self.nodename)
+        elem.append(Resource.element_for_value('number_of_unique_codes', amount))
+
+        url = urljoin(self._url, '%s/generate' % (self.coupon_code, ))
+        body = ElementTree.tostring(elem, encoding='UTF-8')
+
+        response = self.http_request(url, 'POST', body, { 'Content-Type':
+            'application/xml; charset=utf-8' })
+
+        if response.status not in (200, 201, 204):
+            self.raise_http_error(response)
+
+        return Page.page_for_url(response.getheader('Location'))
 
 class Redemption(Resource):
 
