@@ -1,5 +1,10 @@
 ## Unreleased
 
+## Version 2.2.17 October 2, 2015
+
+- Add support for bulk coupons and coupon code generation
+- Add support for editing and restoring coupons
+
 ## Version 2.2.16 September 30, 2015
 
 - Remove TLS 1.0 flag allowing proper TLS negotiation
