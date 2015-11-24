@@ -1,0 +1,34 @@
+PUT https://api.recurly.com/v2/accounts/invoicemock/invoices/1000/mark_failed HTTP/1.1
+X-Api-Version: 2.1
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: recurly-python/{version}
+Content-Length: 0
+
+
+HTTP/1.1 200 Updated
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice href="http://api.recurly.com/v2/invoices/1000">
+  <account href="http://api.recurly.com/v2/accounts/csmb"/>
+  <uuid>32a564048f2242acd1d20d4f76afdbe3</uuid>
+  <state>failed</state>
+  <invoice_number_prefix/>
+  <invoice_number type="integer">1000</invoice_number>
+  <po_number/>
+  <vat_number/>
+  <subtotal_in_cents type="integer">10000</subtotal_in_cents>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <total_in_cents type="integer">10000</total_in_cents>
+  <currency>USD</currency>
+  <created_at type="datetime">2015-11-23T23:06:00Z</created_at>
+  <closed_at type="datetime">2015-11-23T23:06:13Z</closed_at>
+  <terms_and_conditions/>
+  <customer_notes/>
+  <net_terms type="integer">0</net_terms>
+  <collection_method>manual</collection_method>
+  <transactions type="array">
+  </transactions>
+</invoice>

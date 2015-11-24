@@ -635,6 +635,20 @@ class TestResources(RecurlyTest):
         self.assertEqual(invoice.terms_and_conditions, 'Some Terms and Conditions')
         self.assertEqual(invoice.customer_notes, 'Some Customer Notes')
 
+    def test_invoice_mark_failed(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced-with-optionals.xml'):
+            invoice = account.invoice(terms_and_conditions='Some Terms and Conditions',
+                    customer_notes='Some Customer Notes')
+
+        with self.mock_request('invoice/failed.xml'):
+            invoice.mark_failed()
+
+        self.assertEqual(invoice.state, 'failed')
+
     def test_build_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):
