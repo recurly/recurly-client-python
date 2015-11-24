@@ -1,4 +1,6 @@
+## Unreleased
 
+- Add `ConfigurationException` when API_KEY or SUBDOMAIN is unicode
 ## Version 2.2.19 February 22, 2016
 
 - Added `currency` attribute to the `BillingInfo` class

@@ -67,7 +67,6 @@ class ClientError(ResponseError):
     is, an error with an HTTP ``4xx`` status code)."""
     pass
 
-
 class BadRequestError(ClientError):
     """An error showing the request was invalid or could not be
     understood by the server.
@@ -78,6 +77,9 @@ class BadRequestError(ClientError):
     """
     pass
 
+class ConfigurationError(Exception):
+    """An error related to a bad configuration"""
+    pass
 
 class UnauthorizedError(ClientError):
 
@@ -256,5 +258,5 @@ def error_class_for_http_status(status):
             return UnexpectedStatusError(status, xml_response)
         return new_status_error
 
-
-__all__ = [x.__name__ for x in error_classes.values()]
+other_errors = [ConfigurationError]
+__all__ = [x.__name__ for x in list(error_classes.values()) + other_errors]
