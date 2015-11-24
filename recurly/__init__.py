@@ -172,7 +172,7 @@ class Account(Resource):
                 self.address = Address()
                 return self.address
             else:
-              raise AttributeError(name)
+                raise AttributeError(name)
 
     def charge(self, charge):
         """Charge (or credit) this account with the given `Adjustment`."""
@@ -221,10 +221,10 @@ class Account(Resource):
         return Note.paginated(url)
 
     def redemption(self):
-      try:
-        return self.redemptions()[0]
-      except AttributeError:
-        raise AttributeError("redemption")
+        try:
+            return self.redemptions()[0]
+        except AttributeError:
+            raise AttributeError("redemption")
 
     def reopen(self):
         """Reopen a closed account."""
@@ -257,6 +257,15 @@ class Account(Resource):
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         billing_info.update_from_element(ElementTree.fromstring(response_xml))
+
+    def subscriptions(self):
+        url = urljoin(self._url, '%s/subscriptions' % self.account_code)
+        response = self.http_request(url, 'GET')
+        if response.status != 200:
+            self.raise_http_error(response)
+        response_xml = response.read()
+        print response_xml
+        return response_xml
 
 
 class BillingInfo(Resource):
