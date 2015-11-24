@@ -267,10 +267,11 @@ class Account(Resource):
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         elem = ElementTree.fromstring(response_xml)
-        print elem
-        # invoice = Invoice.from_element(elem)
-        # invoice._url = response.getheader('Location')
-        return response_xml
+        subscriptions = []
+        for s in elem.getchildren():
+            subscriptions.append(Subscription.from_element(s))
+        self._subscriptions = subscrptions
+        return subscriptions
 
 
 class BillingInfo(Resource):
