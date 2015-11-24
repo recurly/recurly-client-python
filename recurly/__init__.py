@@ -263,8 +263,13 @@ class Account(Resource):
         response = self.http_request(url, 'GET')
         if response.status != 200:
             self.raise_http_error(response)
+
         response_xml = response.read()
-        print response_xml
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        elem = ElementTree.fromstring(response_xml)
+        print elem
+        # invoice = Invoice.from_element(elem)
+        # invoice._url = response.getheader('Location')
         return response_xml
 
 
