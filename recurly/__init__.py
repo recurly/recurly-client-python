@@ -270,7 +270,6 @@ class Account(Resource):
         subscriptions = []
         for s in elem.getchildren():
             subscriptions.append(Subscription.from_element(s))
-        self._subscriptions = subscrptions
         return subscriptions
 
 
