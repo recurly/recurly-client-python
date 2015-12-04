@@ -514,6 +514,8 @@ class Invoice(Resource):
         'customer_notes',
         'address',
         'closed_at',
+        'collection_method',
+        'net_terms',
     )
 
     blacklist_attributes = (
