@@ -629,11 +629,14 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('invoice/invoiced-with-optionals.xml'):
             invoice = account.invoice(terms_and_conditions='Some Terms and Conditions',
-                    customer_notes='Some Customer Notes')
+                    customer_notes='Some Customer Notes', collection_method="manual",
+                    net_terms=30)
 
         self.assertEqual(type(invoice), recurly.Invoice)
         self.assertEqual(invoice.terms_and_conditions, 'Some Terms and Conditions')
         self.assertEqual(invoice.customer_notes, 'Some Customer Notes')
+        self.assertEqual(invoice.collection_method, 'manual')
+        self.assertEqual(invoice.net_terms, 30)
 
     def test_build_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
