@@ -6,6 +6,13 @@ Recurly Python Client
 
 Recurly's Python client library is an interface to its `REST API <https://dev.recurly.com>`_.
 
+Python Versions
+---------------
+
+The minimum supported requirements for this library are:
+
+* Python >= `2.7.9`
+* OpenSSL >= `1.0.1`
 
 Installation
 ------------
@@ -72,9 +79,7 @@ Support
 - `https://support.recurly.com <https://support.recurly.com>`_
 - `stackoverflow <http://stackoverflow.com/questions/tagged/recurly>`_
 
+IRC
+---
 
-Announcements
--------------
-
-- `@recurly <https://twitter.com/recurly>`_
-- `Google Group Announcements <https://groups.google.com/group/recurly-api>`_
+If you have general questions about the library or integration, you may find some of us in the #recurly irc channel on the Freenode network.
