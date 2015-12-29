@@ -181,7 +181,7 @@ class ValidationError(ClientError):
         return suberrors
 
     def __unicode__(self):
-        return six.u('; ').join(six.text_type(error) for error in self.errors.itervalues())
+        return six.u('; ').join(six.text_type(error) for error in six.itervalues(self.errors))
 
 
 class ServerError(ResponseError):
