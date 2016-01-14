@@ -2,7 +2,7 @@ PUT https://api.recurly.com/v2/accounts/testmock HTTP/1.1
 X-Api-Version: 2.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
-User-Agent: recurly-python/{version}
+User-Agent: {user-agent}
 Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
