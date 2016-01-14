@@ -2,7 +2,7 @@ GET https://api.recurly.com/v2/adjustments/2bd3381e9ffb7fddc18128454d835e83 HTTP
 X-Api-Version: 2.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
-User-Agent: recurly-python/{version}
+User-Agent: {user-agent}
 
 
 HTTP/1.1 200 OK

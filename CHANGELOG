@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add the python version to the user agent string
+
 ## Version 2.2.17 October 2, 2015
 
 - Add support for bulk coupons and coupon code generation

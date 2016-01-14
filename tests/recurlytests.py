@@ -103,7 +103,7 @@ class MockRequestManager(object):
         headers = dict(self.headers)
         if 'User-Agent' in headers:
             import recurly
-            headers['User-Agent'] = headers['User-Agent'].replace('{version}', recurly.__version__)
+            headers['User-Agent'] = headers['User-Agent'].replace('{user-agent}', recurly.USER_AGENT)
         self.request_mock.assert_called_once_with(self.method, self.uri, self.body, headers)
 
     def __exit__(self, exc_type, exc_value, traceback):

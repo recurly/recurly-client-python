@@ -22,7 +22,6 @@ if six.PY3:
 else:
     from backports.ssl_match_hostname import match_hostname
 
-
 class Money(object):
 
     """An amount of money in one or more currencies."""
@@ -277,7 +276,7 @@ class Resource(object):
         headers = {} if headers is None else dict(headers)
         headers.setdefault('Accept', 'application/xml')
         headers.update({
-            'User-Agent': 'recurly-python/%s' % recurly.__version__,
+            'User-Agent': recurly.USER_AGENT
         })
         headers['X-Api-Version'] = recurly.api_version()
         if recurly.API_KEY is None:

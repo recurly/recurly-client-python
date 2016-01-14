@@ -1,4 +1,5 @@
 import logging
+import sys
 from six.moves.urllib.parse import urljoin
 from xml.etree import ElementTree
 
@@ -18,8 +19,10 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-
 __version__ = '2.2.17'
+__python_version__ = '.'.join(map(str, sys.version_info[:3]))
+
+USER_AGENT = 'recurly-python/%s; python %s' % (recurly.__version__, recurly.__python_version__)
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
