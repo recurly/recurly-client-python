@@ -665,14 +665,9 @@ class Resource(object):
     def delete(self):
         """Submits a deletion request for this `Resource` instance as
         a ``DELETE`` request to its URL."""
-        url = self.delete_url()
-
-        response = self.http_request(url, 'DELETE')
+        response = self.http_request(self._url, 'DELETE')
         if response.status != 204:
             self.raise_http_error(response)
-
-    def delete_url(self):
-      return self._url
 
     @classmethod
     def raise_http_error(cls, response):
