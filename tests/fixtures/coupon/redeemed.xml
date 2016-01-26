@@ -16,7 +16,7 @@ Content-Type: application/xml; charset=utf-8
 Location: https://api.recurly.com/v2/accounts/couponmock/redemption
 
 <?xml version="1.0" encoding="UTF-8"?>
-<redemption href="https://api.recurly.com/v2/accounts/couponmock/redemption">
+<redemption href="https://api.recurly.com/v2/accounts/couponmock/redemptions/301bc7686bc4b4bb383f9e4218acaac5">
   <coupon href="https://api.recurly.com/v2/coupons/couponmock"/>
   <account href="https://api.recurly.com/v2/accounts/couponmock"/>
   <uuid>301bc7686bc4b4bb383f9e4218acaac5</uuid>

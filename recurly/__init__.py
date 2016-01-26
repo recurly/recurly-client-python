@@ -425,10 +425,6 @@ class Redemption(Resource):
         'created_at',
     )
 
-    def delete_url(self):
-      return self._url + "s/" + self.uuid
-
-
 class TaxDetail(Resource):
 
     """A charge's tax breakdown"""
