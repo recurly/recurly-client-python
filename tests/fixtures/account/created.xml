@@ -29,6 +29,7 @@ Location: https://api.recurly.com/v2/accounts/testmock
   <last_name nil="nil"></last_name>
   <company_name nil="nil"></company_name>
   <vat_number>444444-UK</vat_number>
+  <cc_emails>test1@example.com,test2@example.com</cc_emails>
   <address>
     <address1>123 Main St</address1>
     <address2 nil="nil"></address2>

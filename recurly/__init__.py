@@ -91,6 +91,7 @@ class Account(Resource):
         'tax_exempt',
         'entity_use_code',
         'accept_language',
+        'cc_emails',
         'created_at',
     )
 
