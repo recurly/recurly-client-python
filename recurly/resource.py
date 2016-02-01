@@ -2,9 +2,7 @@ import base64
 import re
 from datetime import datetime
 import logging
-import socket
 import ssl
-import sys
 from xml.etree import ElementTree
 
 import iso8601
@@ -16,11 +14,6 @@ from recurly.link_header import parse_link_value
 from six.moves import http_client
 from six.moves.urllib.parse import urlencode, urljoin, urlsplit
 
-
-if six.PY3:
-    from ssl import match_hostname
-else:
-    from backports.ssl_match_hostname import match_hostname
 
 class Money(object):
 
@@ -172,34 +165,6 @@ class Page(list):
         return page
 
 
-class _ValidatedHTTPSConnection(http_client.HTTPSConnection):
-
-    """An `http_client.HTTPSConnection` that validates the SSL connection by
-    requiring certificate validation and checking the connection's intended
-    hostname again the validated certificate's possible hosts."""
-
-    def connect(self):
-        socket_timeout = recurly.SOCKET_TIMEOUT_SECONDS or self.timeout
-        if sys.version_info < (2, 7):
-            sock = socket.create_connection((self.host, self.port),
-                                            socket_timeout)
-        else:
-            sock = socket.create_connection((self.host, self.port),
-                                            socket_timeout, self.source_address)
-
-        if self._tunnel_host:
-            self.sock = sock
-            self._tunnel()
-
-        ssl_sock = ssl.wrap_socket(sock, self.key_file, self.cert_file,
-            cert_reqs=ssl.CERT_REQUIRED, ca_certs=recurly.CA_CERTS_FILE)
-
-        # Let the CertificateError for failure be raised to the caller.
-        match_hostname(ssl_sock.getpeercert(), self.host)
-
-        self.sock = ssl_sock
-
-
 class Resource(object):
 
     """A Recurly API resource.
@@ -271,7 +236,8 @@ class Resource(object):
         elif recurly.CA_CERTS_FILE is None:
             connection = http_client.HTTPSConnection(urlparts.netloc)
         else:
-            connection = _ValidatedHTTPSConnection(urlparts.netloc)
+            context = ssl.create_default_context(cafile=recurly.CA_CERTS_FILE)
+            connection = http_client.HTTPSConnection(urlparts.netloc, context=context)
 
         headers = {} if headers is None else dict(headers)
         headers.setdefault('Accept', 'application/xml')
