@@ -1,8 +1,12 @@
-## Unreleased
+## Version 2.2.18 February 11, 2016
 
+- Add `mark_failed` API call to `Invoice`
 - Add the python version to the user agent string
 - Fix the `delete_url` on the Redemption class by removing the override
 - Add support for `cc_emails` attribute in `Account` class
+- Remove AttributeError when trying to print ValidationError in Python 3
+- Remove _ValidatedHTTPSConnection in favor of native functionality
+- Add collection_method and net_terms attributes for invoice calls
 
 ## Version 2.2.17 October 2, 2015
 
