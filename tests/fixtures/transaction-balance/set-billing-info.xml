@@ -18,6 +18,7 @@ Content-Type: application/xml; charset=utf-8
   <state>CA</state>
   <zip>94105</zip>
   <country>US</country>
+  <currency>USD</currency>
 </billing_info>
 
 HTTP/1.1 201 Created
@@ -38,4 +39,5 @@ Location: https://api.recurly.com/v2/accounts/transbalancemock/billing_info
   <month type="integer">12</month>
   <first_six>411111</first_six>
   <last_four>1111</last_four>
+  <currency>USD</currency>
 </billing_info>
