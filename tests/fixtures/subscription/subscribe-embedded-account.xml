@@ -23,6 +23,7 @@ Content-Type: application/xml; charset=utf-8
       <state>CA</state>
       <zip>94105</zip>
       <country>US</country>
+      <currency>USD</currency>
     </billing_info>
   </account>
 </subscription>

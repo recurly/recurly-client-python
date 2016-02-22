@@ -301,6 +301,7 @@ class BillingInfo(Resource):
         'account_type',
         'routing_number',
         'account_number',
+        'currency',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
