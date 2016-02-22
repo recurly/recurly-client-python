@@ -1,3 +1,8 @@
+
+## Version 2.2.19 February 22, 2016
+
+- Added `currency` attribute to the `BillingInfo` class
+
 ## Version 2.2.18 February 11, 2016
 
 - Add `mark_failed` API call to `Invoice`
