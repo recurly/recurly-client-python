@@ -27,6 +27,12 @@ class ResponseError(Exception):
         if el is not None:
             return el.text
 
+        # If a symbol element doesn't exist, return the symbol attribute
+        # of the first found error node
+        err = self.response_doc.find('error')
+        if err is not None:
+            return err.get('symbol')
+
     @property
     def message(self):
         """The human-readable description of the error."""
