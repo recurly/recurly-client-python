@@ -144,6 +144,15 @@ class ValidationError(ClientError):
     """An error indicating some values in the submitted request body
     were not valid."""
 
+    @property
+    def transaction_error_code(self):
+        """The machine-readable error code for a transaction error."""
+        error = self.response_doc.find('transaction_error')
+        if error is not None:
+            code = error.find('error_code')
+            if code is not None:
+                return code.text
+
     class Suberror(object):
 
         """An error describing the invalidity of a single invalid
