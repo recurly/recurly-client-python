@@ -1,4 +1,5 @@
 POST https://api.recurly.com/v2/transactions HTTP/1.1
+X-Api-Version: 2.1
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
@@ -17,10 +18,12 @@ HTTP/1.1 422
 Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
-<transaction_error>
-  <error_code>insufficient_funds</error_code>
-  <error_category>soft</error_category>
-  <customer_message lang="en-US">The transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.</customer_message>
-  <merchant_message lang="en-US">The card has insufficient funds to cover the cost of the transaction.</merchant_message>
-  <gateway_error_code>123</gateway_error_code>
-</transaction_error>
+<errors>
+  <transaction_error>
+    <error_code>insufficient_funds</error_code>
+    <error_category>soft</error_category>
+    <customer_message lang="en-US">The transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.</customer_message>
+    <merchant_message lang="en-US">The card has insufficient funds to cover the cost of the transaction.</merchant_message>
+    <gateway_error_code>123</gateway_error_code>
+  </transaction_error>
+</errors>
