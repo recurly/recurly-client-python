@@ -3,6 +3,7 @@ python:
   - "2.7"
   - "3.3"
   - "3.4"
+  - "3.5"
 install:
   - pip install six mock iso8601 backports.ssl-match-hostname --use-mirrors
   - python setup.py install
