@@ -33,7 +33,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.1'
+API_VERSION = '2.2'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -699,6 +699,12 @@ class Subscription(Resource):
         else:
             return name
 
+    def create_usage(self, sub_add_on, usage):
+        """Record the usage on the given subscription add on and update the
+        usage object with returned xml"""
+        url = urljoin(self._url, '%s/add_ons/%s/usage' % (self.uuid,
+            sub_add_on.add_on_code))
+        return usage.post(url)
 
 class TransactionBillingInfo(recurly.Resource):
     node_name = 'billing_info'
@@ -895,6 +901,40 @@ class Plan(Resource):
         url = urljoin(self._url, '%s/add_ons' % self.plan_code)
         return add_on.post(url)
 
+class Usage(Resource):
+
+    """A recording of usage agains a measured unit"""
+
+    nodename = 'usage'
+    collection_path = 'usages'
+
+    attributes = (
+        'measured_unit',
+        'amount',
+        'merchant_tag',
+        'recording_timestamp',
+        'usage_timestamp',
+        'usage_type',
+        'unit_amount_in_cents',
+        'usage_percentage',
+        'billed_at',
+        'created_at',
+        'updated_at',
+    )
+
+class MeasuredUnit(Resource):
+
+    """A unit of measurement for usage based billing"""
+
+    nodename = 'measured_unit'
+    member_path = 'measured_units/%s'
+
+    attributes = (
+        'id',
+        'name',
+        'display_name',
+        'description',
+    )
 
 class AddOn(Resource):
 
@@ -911,10 +951,12 @@ class AddOn(Resource):
         'default_quantity',
         'accounting_code',
         'unit_amount_in_cents',
+        'measured_unit_id',
+        'usage_type',
+        'add_on_type',
         'tax_code',
         'created_at',
     )
-
 
 class SubscriptionAddOn(Resource):
 

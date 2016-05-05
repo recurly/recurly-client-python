@@ -104,7 +104,6 @@ class Page(list):
         except AttributeError:
             return 0
 
-
     def next_page(self):
         """Return the next `Page` after this one in the result sequence
         it's from.

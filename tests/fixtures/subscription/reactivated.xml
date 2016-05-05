@@ -1,5 +1,5 @@
 PUT https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/reactivate HTTP/1.1
-X-Api-Version: 2.1
+X-Api-Version: 2.2
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}

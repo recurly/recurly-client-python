@@ -1,5 +1,5 @@
 GET https://api.recurly.com/v2/adjustments/2c06b94abe047189b225d94dd0adb71f HTTP/1.1
-X-Api-Version: 2.1
+X-Api-Version: 2.2
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}

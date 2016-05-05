@@ -1,5 +1,5 @@
 DELETE https://api.recurly.com/v2/accounts/couponmock/redemptions/301bc7686bc4b4bb383f9e4218acaac5 HTTP/1.1
-X-Api-Version: 2.1
+X-Api-Version: 2.2
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
