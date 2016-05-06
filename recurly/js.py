@@ -49,8 +49,8 @@ def to_query(object, key=None):
     """ Dumps a dictionary into a nested query string."""
     object_type = type(object)
     if object_type is dict:
-        return '&'.join([to_query(object[k], '%s[%s]' % (key, k) if key else k) for k in sorted(object)])
+        return '&'.join(to_query(object[k], '%s[%s]' % (key, k) if key else k) for k in sorted(object))
     elif object_type in (list, tuple):
-        return '&'.join([to_query(o, '%s[]' % key) for o in object])
+        return '&'.join(to_query(o, '%s[]' % key) for o in object)
     else:
         return '%s=%s' % (quote_plus(str(key)), quote_plus(str(object)))
