@@ -1093,6 +1093,10 @@ class TestResources(RecurlyTest):
         with self.mock_request('transaction/created.xml'):
             transaction.save()
 
+        fraud_info = transaction.fraud
+        self.assertEquals(fraud_info.score, 88)
+        self.assertEquals(fraud_info.decision, 'DECLINED')
+
         logger.removeHandler(log_handler)
 
         try:
