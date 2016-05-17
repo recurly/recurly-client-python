@@ -243,13 +243,16 @@ class Resource(object):
                     https://gist.github.com/maximehardy/d3a0a6427d2b6791b3dc""")
 
         urlparts = urlsplit(url)
+        connection_options = {}
+        if recurly.SOCKET_TIMEOUT_SECONDS:
+            connection_options['timeout'] = recurly.SOCKET_TIMEOUT_SECONDS
         if urlparts.scheme != 'https':
-            connection = http_client.HTTPConnection(urlparts.netloc)
+            connection = http_client.HTTPConnection(urlparts.netloc, **connection_options)
         elif recurly.CA_CERTS_FILE is None:
-            connection = http_client.HTTPSConnection(urlparts.netloc)
+            connection = http_client.HTTPSConnection(urlparts.netloc, **connection_options)
         else:
-            context = ssl.create_default_context(cafile=recurly.CA_CERTS_FILE)
-            connection = http_client.HTTPSConnection(urlparts.netloc, context=context)
+            connection_options['context'] = ssl.create_default_context(cafile=recurly.CA_CERTS_FILE)
+            connection = http_client.HTTPSConnection(urlparts.netloc, **connection_options)
 
         headers = {} if headers is None else dict(headers)
         headers.setdefault('Accept', 'application/xml')
@@ -279,8 +282,6 @@ class Resource(object):
         if method in ('POST', 'PUT') and body is None:
             headers['Content-Length'] = '0'
         connection.request(method, url, body, headers)
-        if recurly.SOCKET_TIMEOUT_SECONDS:
-            connection.sock.settimeout(recurly.SOCKET_TIMEOUT_SECONDS)
         resp = connection.getresponse()
 
         log = logging.getLogger('recurly.http.response')
