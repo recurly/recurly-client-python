@@ -339,6 +339,8 @@ class Coupon(Resource):
         'coupon_type',
         'unique_code_template',
         'unique_coupon_codes',
+        'free_trial_unit',
+        'free_trial_amount',
     )
 
     @classmethod
