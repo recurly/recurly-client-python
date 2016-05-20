@@ -1,5 +1,5 @@
 POST https://api.recurly.com/v2/accounts HTTP/1.1
-X-Api-Version: 2.1
+X-Api-Version: 2.2
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
@@ -35,7 +35,7 @@ Location: https://api.recurly.com/v2/accounts/testmock
     <address2 nil="nil"></address2>
     <city>San Francisco</city>
     <state>CA</state>
-    <zip>94105</zip> 
+    <zip>94105</zip>
     <country>US</country>
     <phone>8015559876</phone>
   </address>

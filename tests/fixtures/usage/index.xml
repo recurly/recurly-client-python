@@ -1,0 +1,29 @@
+GET https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/add_ons/marketing_emails/usage HTTP/1.1
+X-Api-Version: 2.2
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+X-Records: 1
+Link: <https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/add_ons/marketing_emails/usage?cursor=1304956; rel="next">
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<usages type="array">
+  <usage href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/add_ons/marketing_emails/usage/12345678">
+    <id type="integer">12345678</id>
+    <measured_unit href="https://api.recurly.com/v2/measured_units/123456"/>
+    <amount type="integer">100</amount>
+    <merchant_tag>Recording 100 emails used by customer</merchant_tag>
+    <recording_timestamp type="datetime">2016-12-12T12:00:00Z</recording_timestamp>
+    <usage_timestamp type="datetime">2016-12-12T12:00:00Z</usage_timestamp>
+    <created_at type="date">2016-12-12T00:00:00+00:00</created_at>
+    <updated_at nil="nil"></updated_at>
+    <billed_at nil="nil"></billed_at>
+    <usage_type>AMOUNT</usage_type>
+    <unit_amount_in_cents nil="nil">40</unit_amount_in_cents>
+  </usage>
+</usages>

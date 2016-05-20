@@ -1,5 +1,5 @@
 POST https://api.recurly.com/v2/plans/planmock/add_ons HTTP/1.1
-X-Api-Version: 2.1
+X-Api-Version: 2.2
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
@@ -9,6 +9,9 @@ Content-Type: application/xml; charset=utf-8
 <add_on>
   <add_on_code>addonmock</add_on_code>
   <name>Mock Add-On</name>
+  <measured_unit_id type="integer">123456</measured_unit_id>
+  <usage_type>price</usage_type>
+  <add_on_type>usage</add_on_type>
 </add_on>
 
 HTTP/1.1 422
