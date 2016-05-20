@@ -759,6 +759,12 @@ class TransactionError(recurly.Resource):
         'gateway_error_code',
     )
 
+class TransactionFraudInfo(recurly.Resource):
+    node_name = 'fraud'
+    attributes = (
+        'score',
+        'decision',
+    )
 
 class Transaction(Resource):
 
@@ -794,11 +800,13 @@ class Transaction(Resource):
         'tax_exempt',
         'tax_code',
         'accounting_code',
+        'fraud',
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
     _classes_for_nodename = {
         'details': TransactionDetails,
+        'fraud': TransactionFraudInfo,
         'transaction_error': TransactionError
     }
 

@@ -78,5 +78,9 @@ Location: https://api.recurly.com/v2/transactions/123456789012345678901234567890
       </billing_info>
     </account>
   </details>
+  <fraud>
+    <score type="integer">88</score>
+    <decision>DECLINED</decision>
+  </fraud>
   <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ab" method="delete"/>
 </transaction>
