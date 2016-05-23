@@ -1,6 +1,16 @@
 ## Unreleased
 
+## Version 2.2.20 May 23, 2016
+
 - Add `ConfigurationException` when API_KEY or SUBDOMAIN is unicode
+- Add transaction_error_code property to ValidationError class
+- Fix apply timeout to connection object
+- Add python 3.5 to travis tests
+- Add fraud info if available on `Transaction`
+- Add Usage Based Billing
+- Add generator comprehensions in js module
+- Add Free Trial Coupons
+
 ## Version 2.2.19 February 22, 2016
 
 - Added `currency` attribute to the `BillingInfo` class
