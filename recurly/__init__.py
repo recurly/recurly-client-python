@@ -19,7 +19,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.2.19'
+__version__ = '2.2.20'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 USER_AGENT = 'recurly-python/%s; python %s' % (recurly.__version__, recurly.__python_version__)
