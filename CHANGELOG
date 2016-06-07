@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Adding `collection_path` to `MeasuredUnit`
+
 ## Version 2.2.20 May 23, 2016
 
 - Add `ConfigurationException` when API_KEY or SUBDOMAIN is unicode

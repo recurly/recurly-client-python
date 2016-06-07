@@ -938,6 +938,7 @@ class MeasuredUnit(Resource):
 
     nodename = 'measured_unit'
     member_path = 'measured_units/%s'
+    collection_path = 'measured_units'
 
     attributes = (
         'id',
