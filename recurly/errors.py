@@ -139,10 +139,59 @@ class UnsupportedMediaTypeError(ClientError):
     pass
 
 
+class TransactionError:
+    """Represents a transaction error. See
+    https://recurly.readme.io/v2.0/page/transaction-errors for more details"""
+
+    def __init__(self, response_doc):
+        self.response_doc = response_doc
+
+    @property
+    def error_code(self):
+        """The machine-readable identifier for the error."""
+        el = self.response_doc.find('error_code')
+        if el is not None:
+            return el.text
+
+    @property
+    def error_category(self):
+        """The machine-readable identifier for the error category."""
+        el = self.response_doc.find('error_category')
+        if el is not None:
+            return el.text
+
+    @property
+    def customer_message(self):
+        """Recommended message for the customer"""
+        el = self.response_doc.find('customer_message')
+        if el is not None:
+            return el.text
+
+    @property
+    def merchant_message(self):
+        """Recommended message for the merchant"""
+        el = self.response_doc.find('merchant_message')
+        if el is not None:
+            return el.text
+
+    @property
+    def gateway_error_code(self):
+        """Error code from the gateway"""
+        el = self.response_doc.find('gateway_error_code')
+        if el is not None:
+            return el.text
+
 class ValidationError(ClientError):
 
     """An error indicating some values in the submitted request body
     were not valid."""
+
+    @property
+    def transaction_error(self):
+        """The transaction error object."""
+        error = self.response_doc.find('transaction_error')
+        if error is not None:
+            return TransactionError(error)
 
     @property
     def transaction_error_code(self):
