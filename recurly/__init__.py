@@ -33,7 +33,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.2'
+API_VERSION = '2.3'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -70,6 +70,16 @@ class Address(Resource):
         'phone',
     )
 
+class AccountBalance(Resource):
+
+    """The Balance on an account"""
+
+    nodename = 'account_balance'
+
+    attributes = (
+        'balance_in_cents',
+        'past_due',
+    )
 
 class Account(Resource):
 
@@ -92,10 +102,11 @@ class Account(Resource):
         'entity_use_code',
         'accept_language',
         'cc_emails',
+        'account_balance',
         'created_at',
     )
 
-    _classes_for_nodename = {'address': Address}
+    _classes_for_nodename = { 'address': Address }
 
     sensitive_attributes = ('number', 'verification_value',)
 
@@ -470,6 +481,7 @@ class Adjustment(Resource):
         'end_date',
         'created_at',
         'type',
+        'revenue_schedule_type',
     )
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {'tax_detail': TaxDetail,}
@@ -672,6 +684,7 @@ class Subscription(Resource):
         'vat_reverse_charge_notes',
         'bank_account_authorized_at',
         'redemptions',
+        'evenue_schedule_type',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -801,6 +814,7 @@ class Transaction(Resource):
         'tax_code',
         'accounting_code',
         'fraud',
+        'original_transaction',
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
@@ -898,6 +912,8 @@ class Plan(Resource):
         'unit_amount_in_cents',
         'setup_fee_in_cents',
         'total_billing_cycles',
+        'revenue_schedule_type',
+        'setup_fee_revenue_schedule_type',
     )
 
     def get_add_on(self, add_on_code):
@@ -966,6 +982,7 @@ class AddOn(Resource):
         'usage_type',
         'add_on_type',
         'tax_code',
+        'revenue_schedule_type',
         'created_at',
     )
 

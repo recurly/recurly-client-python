@@ -71,6 +71,14 @@ class TestResources(RecurlyTest):
         self.assertTrue(same_account.entity_use_code == 'I')
         self.assertEqual(same_account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
 
+        with self.mock_request('account-balance/exists.xml'):
+            account_balance = same_account.account_balance()
+
+        self.assertTrue(account_balance.past_due)
+        balance = account_balance.balance_in_cents
+        self.assertTrue(balance['USD'] == 2910)
+        self.assertTrue(balance['EUR'] == -520)
+
         account.username = 'shmohawk58'
         account.email = 'larry.david'
         account.first_name = six.u('L\xe4rry')
