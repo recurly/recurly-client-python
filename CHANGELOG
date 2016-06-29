@@ -1,6 +1,7 @@
-## Unreleased
+## Version 2.2.21 June 29, 2016
 
 - Adding `collection_path` to `MeasuredUnit`
+- Adding `TransactionError` parsing inside `ValidationError`
 
 ## Version 2.2.20 May 23, 2016
 
