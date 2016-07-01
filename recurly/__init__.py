@@ -980,9 +980,11 @@ class AddOn(Resource):
         'unit_amount_in_cents',
         'measured_unit_id',
         'usage_type',
+        'usage_percentage',
         'add_on_type',
         'tax_code',
         'revenue_schedule_type',
+        'optional',
         'created_at',
     )
 
