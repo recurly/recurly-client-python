@@ -1,3 +1,9 @@
+## Version 2.2.22 July 6, 2016
+
+- Adding variable for api version in fixtures
+- Adding `usage_percentage` and `optional` to `AddOn`
+- Upgrade API to version 2.3
+
 ## Version 2.2.21 June 29, 2016
 
 - Adding `collection_path` to `MeasuredUnit`
