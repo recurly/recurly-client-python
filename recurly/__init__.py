@@ -104,6 +104,7 @@ class Account(Resource):
         'cc_emails',
         'account_balance',
         'created_at',
+        'updated_at',
     )
 
     _classes_for_nodename = { 'address': Address }
@@ -344,6 +345,7 @@ class Coupon(Resource):
         'applies_to_non_plan_charges',
         'redemption_resource',
         'created_at',
+        'updated_at',
         'plan_codes',
         'hosted_description',
         'max_redemptions_per_account',
@@ -438,6 +440,7 @@ class Redemption(Resource):
         'subscription_uuid',
         'currency',
         'created_at',
+        'updated_at',
     )
 
 class TaxDetail(Resource):
@@ -480,6 +483,7 @@ class Adjustment(Resource):
         'start_date',
         'end_date',
         'created_at',
+        'updated_at',
         'type',
         'revenue_schedule_type',
     )
@@ -523,6 +527,7 @@ class Invoice(Resource):
         'total_in_cents',
         'currency',
         'created_at',
+        'updated_at',
         'line_items',
         'transactions',
         'terms_and_conditions',
@@ -656,6 +661,7 @@ class Subscription(Resource):
         'coupon_codes',
         'quantity',
         'activated_at',
+        'updated_at',
         'canceled_at',
         'starts_at',
         'expires_at',
@@ -806,6 +812,7 @@ class Transaction(Resource):
         'avs_result_street',
         'avs_result_postal',
         'created_at',
+        'updated_at',
         'details',
         'transaction_error',
         'type',
@@ -907,6 +914,7 @@ class Plan(Resource):
         'accounting_code',
         'setup_fee_accounting_code',
         'created_at',
+        'updated_at',
         'tax_exempt',
         'tax_code',
         'unit_amount_in_cents',
@@ -986,6 +994,7 @@ class AddOn(Resource):
         'revenue_schedule_type',
         'optional',
         'created_at',
+        'updated_at',
     )
 
 class SubscriptionAddOn(Resource):
