@@ -33,7 +33,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.3'
+API_VERSION = '2.4'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -111,8 +111,8 @@ class Account(Resource):
 
     sensitive_attributes = ('number', 'verification_value',)
 
-    def to_element(self):
-        elem = super(Account, self).to_element()
+    def to_element(self, root_name=None):
+        elem = super(Account, self).to_element(root_name)
 
         # Make sure the account code is always included in a serialization.
         if 'account_code' not in self.__dict__:  # not already included
@@ -126,6 +126,7 @@ class Account(Resource):
             elem.append(self.billing_info.to_element())
         if 'address' in self.__dict__:
             elem.append(self.address.to_element())
+
         return elem
 
     @classmethod
@@ -317,6 +318,63 @@ class BillingInfo(Resource):
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
+
+class Delivery(Resource):
+
+    """Delivery information for use with a Gift Card"""
+
+    nodename = 'delivery'
+
+    attributes = (
+        'address',
+        'deliver_at',
+        'email_address',
+        'gifter_name',
+        'method',
+        'personal_message',
+    )
+
+class GiftCard(Resource):
+
+    """A Gift Card for a customer to purchase or apply to a subscription or account."""
+
+    member_path= 'gift_cards/%s'
+    collection_path = 'gift_cards'
+
+    nodename = 'gift_card'
+
+    attributes = (
+        'balance_in_cents',
+        'currency',
+        'created_at',
+        'delivery',
+        'gifter_account',
+        'id',
+        'invoice',
+        'product_code',
+        'recipient_account',
+        'redeemed_at',
+        'redemption_code',
+        'updated_at',
+        'unit_amount_in_cents',
+    )
+    _classes_for_nodename = {'recipient_account': Account,'gifter_account':
+            Account}
+
+    def to_element(self, root_name=None):
+        elem = super(GiftCard, self).to_element(root_name)
+
+        # Make sure the redemption code is always included in a serialization.
+        if 'redemption_code' not in self.__dict__:  # not already included
+            try:
+                redemption_code = self.redemption_code
+            except AttributeError:
+                pass
+            else:
+                elem.append(self.element_for_value('redemption_code',
+                    redemption_code))
+
+        return elem
 
 class Coupon(Resource):
 
@@ -691,6 +749,7 @@ class Subscription(Resource):
         'bank_account_authorized_at',
         'redemptions',
         'evenue_schedule_type',
+        'gift_card',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

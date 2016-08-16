@@ -11,7 +11,7 @@ from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
 
-from recurly import Account, AddOn, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
@@ -1319,6 +1319,49 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('transaction-balance/account-deleted.xml'):
                 account.delete()
+
+    def test_gift_cards(self):
+        account_code = 'e0004e3c-216c-4254-8767-9be605cd0b03'
+        account = recurly.Account(account_code=account_code)
+        account.email = 'verena@example.com'
+        account.first_name = 'Verena'
+        account.last_name = 'Example'
+
+        billing_info = BillingInfo()
+        billing_info.first_name = 'Verena'
+        billing_info.last_name = 'Example'
+        billing_info.number = '4111-1111-1111-1111'
+        billing_info.verification_value = '123'
+        billing_info.month = 11
+        billing_info.year = 2019
+        billing_info.country = 'US'
+
+        address = Address()
+        address.address1 = '400 Alabama St'
+        address.zip = '94110'
+        address.city = 'San Francisco'
+        address.state = 'CA'
+        address.country = 'US'
+
+        delivery = Delivery()
+        delivery.method = 'email'
+        delivery.email_address = 'john@email.com'
+        delivery.first_name = 'John'
+        delivery.last_name = 'Smith'
+
+        gift_card = GiftCard()
+        gift_card.product_code = 'test_gift_card'
+        gift_card.currency = 'USD'
+        gift_card.unit_amount_in_cents = 2000
+
+        delivery.address = address
+        account.billing_info = billing_info
+
+        gift_card.delivery = delivery
+        gift_card.gifter_account = account
+
+        with self.mock_request('gift_cards/created.xml'):
+            gift_card.save()
 
 
 if __name__ == '__main__':
