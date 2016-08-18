@@ -436,6 +436,10 @@ class Resource(object):
 
         """
         if isinstance(value, Resource):
+            if attrname in cls._classes_for_nodename:
+                # override the child's node name with this attribute name
+                return value.to_element(attrname)
+
             return value.to_element()
 
         el = ElementTree.Element(attrname)
@@ -654,9 +658,11 @@ class Resource(object):
         exc_class = recurly.errors.error_class_for_http_status(response.status)
         raise exc_class(response_xml)
 
-    def to_element(self):
+    def to_element(self, root_name=None):
         """Serialize this `Resource` instance to an XML element."""
-        elem = ElementTree.Element(self.nodename)
+        if not root_name:
+            root_name = self.nodename
+        elem = ElementTree.Element(root_name)
         for attrname in self.serializable_attributes():
             # Only use values that have been loaded into the internal
             # __dict__. For retrieved objects we look into the XML response at
@@ -672,4 +678,5 @@ class Resource(object):
             else:
                 sub_elem = self.element_for_value(attrname, value)
                 elem.append(sub_elem)
+
         return elem
