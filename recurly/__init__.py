@@ -748,7 +748,7 @@ class Subscription(Resource):
         'vat_reverse_charge_notes',
         'bank_account_authorized_at',
         'redemptions',
-        'evenue_schedule_type',
+        'revenue_schedule_type',
         'gift_card',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
