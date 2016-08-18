@@ -1,3 +1,10 @@
+## Version 2.4.0 August 18, 2016
+
+- Fix revenue schedule typo
+- Remove old python references from readme
+- Gift card support, bumps to api v 2.4
+- Add updated_at fields
+
 ## Version 2.3.0 July 6, 2016
 
 - Adding variable for api version in fixtures
