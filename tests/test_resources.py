@@ -10,8 +10,7 @@ from six import StringIO
 from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
-
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
@@ -149,6 +148,7 @@ class TestResources(RecurlyTest):
         account.address.state = 'CA'
         account.address.country = 'US'
         account.address.phone = '8015559876'
+
         with self.mock_request('account/created-with-address.xml'):
             account.save()
         self.assertEqual(account.address.address1, '123 Main St')
@@ -157,6 +157,22 @@ class TestResources(RecurlyTest):
         self.assertEqual(account.address.state, 'CA')
         self.assertEqual(account.address.country, 'US')
         self.assertEqual(account.address.phone, '8015559876')
+
+        """Create an account with an account shipping address"""
+        account = Account(account_code=account_code)
+        shipping_address = ShippingAddress()
+        shipping_address.address1 = '123 Main St'
+        shipping_address.city = 'San Francisco'
+        shipping_address.zip = '94105'
+        shipping_address.state = 'CA'
+        shipping_address.country = 'US'
+        shipping_address.phone = '8015559876'
+        shipping_address.nickname = 'Work'
+
+        account.shipping_addresses = [shipping_address]
+
+        with self.mock_request('account/created-with-shipping-address.xml'):
+            account.save()
 
         """Get taxed account"""
         with self.mock_request('account/show-taxed.xml'):
@@ -851,6 +867,23 @@ class TestResources(RecurlyTest):
                 self.assertEqual(manualsub.net_terms, 10)
                 self.assertEqual(manualsub.collection_method, 'manual')
                 self.assertEqual(manualsub.po_number, '1000')
+
+                shipping_address = ShippingAddress()
+                shipping_address.address1 = '123 Main St'
+                shipping_address.city = 'San Francisco'
+                shipping_address.zip = '94105'
+                shipping_address.state = 'CA'
+                shipping_address.country = 'US'
+                shipping_address.phone = '8015559876'
+                shipping_address.nickname = 'Work'
+
+                sub_with_shipping = Subscription(
+                    plan_code='basicplan',
+                    currency='USD',
+                    shipping_address=shipping_address
+                )
+                with self.mock_request('subscription/subscribed-shipping-address.xml'):
+                    account.subscribe(sub_with_shipping)
 
                 with self.mock_request('subscription/account-subscriptions.xml'):
                     subs = account.subscriptions()
