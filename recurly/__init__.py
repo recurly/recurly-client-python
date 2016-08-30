@@ -105,6 +105,7 @@ class Account(Resource):
         'account_balance',
         'created_at',
         'updated_at',
+        'shipping_addresses',
     )
 
     _classes_for_nodename = { 'address': Address }
@@ -318,6 +319,28 @@ class BillingInfo(Resource):
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
+
+class ShippingAddress(Resource):
+
+    """Shipping Address information"""
+
+    nodename = 'shipping_address'
+
+    attributes = (
+        'address1',
+        'address2',
+        'city',
+        'company',
+        'country',
+        'email',
+        'first_name',
+        'id',
+        'last_name',
+        'nickname',
+        'phone',
+        'state',
+        'zip',
+    )
 
 class Delivery(Resource):
 
@@ -750,6 +773,8 @@ class Subscription(Resource):
         'redemptions',
         'revenue_schedule_type',
         'gift_card',
+        'shipping_address',
+        'shipping_address_id',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
