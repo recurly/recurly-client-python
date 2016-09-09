@@ -1,0 +1,36 @@
+POST https://api.recurly.com/v2/accounts/testmock/shipping_addresses HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<shipping_address>
+  <address1>123 Dolores St</address1>
+  <city>San Francisco</city>
+  <country>US</country>
+  <nickname>Home</nickname>
+  <phone>8015559876</phone>
+  <state>CA</state>
+  <zip>94105</zip>
+</shipping_address>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/testmock/shipping_addresses/1234567890
+
+<?xml version="1.0" encoding="UTF-8"?>
+<shipping_address href="https://api.recurly.com/v2/accounts/testmock/shipping_addresses/1234567890">
+  <account href="https://api.recurly.com/v2/accounts/testmock" />
+  <id>1234567890</id>
+  <address1>123 Dolores St</address1>
+  <city>San Francisco</city>
+  <country>US</country>
+  <nickname>Home</nickname>
+  <phone>8015559876</phone>
+  <state>CA</state>
+  <zip>94105</zip>
+  <created_at type="datetime">2016-06-14T16:08:41Z</created_at>
+  <updated_at type="datetime">2016-06-14T16:08:41Z</updated_at>
+</shipping_address>

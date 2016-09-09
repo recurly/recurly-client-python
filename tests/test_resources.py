@@ -174,6 +174,18 @@ class TestResources(RecurlyTest):
         with self.mock_request('account/created-with-shipping-address.xml'):
             account.save()
 
+        shipping_address = ShippingAddress()
+        shipping_address.address1 = '123 Dolores St'
+        shipping_address.city = 'San Francisco'
+        shipping_address.zip = '94105'
+        shipping_address.state = 'CA'
+        shipping_address.country = 'US'
+        shipping_address.phone = '8015559876'
+        shipping_address.nickname = 'Home'
+
+        with self.mock_request('shipping_addresses/created-on-existing-account.xml'):
+            shipping_address = account.create_shipping_address(shipping_address)
+
         """Get taxed account"""
         with self.mock_request('account/show-taxed.xml'):
             account = Account.get(account_code)
