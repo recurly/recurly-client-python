@@ -276,6 +276,12 @@ class Account(Resource):
         logging.getLogger('recurly.http.response').debug(response_xml)
         billing_info.update_from_element(ElementTree.fromstring(response_xml))
 
+    def create_shipping_address(self, shipping_address):
+        """Creates a shipping address on an existing account. If you are
+        creating an account, you can embed the shipping addresses with the
+        request"""
+        url = urljoin(self._url, '%s/shipping_addresses' % self.account_code)
+        return shipping_address.post(url)
 
 class BillingInfo(Resource):
 
