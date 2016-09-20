@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add canceled_at, preview, and redeem-on-account support for gift cards
+
 ## Version 2.4.2 September 12, 2016
 
 - Add ability to create shipping address on existing account

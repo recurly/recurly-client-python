@@ -363,6 +363,10 @@ class Delivery(Resource):
         'personal_message',
     )
 
+# This is used internally for proper XML generation
+class _RecipientAccount(Account):
+    nodename = 'recipient_account'
+
 class GiftCard(Resource):
 
     """A Gift Card for a customer to purchase or apply to a subscription or account."""
@@ -374,8 +378,9 @@ class GiftCard(Resource):
 
     attributes = (
         'balance_in_cents',
-        'currency',
+        'canceled_at',
         'created_at',
+        'currency',
         'delivery',
         'gifter_account',
         'id',
@@ -389,6 +394,20 @@ class GiftCard(Resource):
     )
     _classes_for_nodename = {'recipient_account': Account,'gifter_account':
             Account}
+
+    def preview(self):
+        if hasattr(self, '_url'):
+            url = self._url + '/preview'
+            return self.post(url)
+        else:
+            url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
+            return self.post(url)
+
+    def redeem(self, account_code):
+        """Redeem this gift card on the specified account code"""
+        url = urljoin(self._url, '%s/redeem' % (self.redemption_code))
+        recipient_account = _RecipientAccount(account_code=account_code)
+        return self.post(url, recipient_account)
 
     def to_element(self, root_name=None):
         elem = super(GiftCard, self).to_element(root_name)
