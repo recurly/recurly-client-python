@@ -396,6 +396,8 @@ class GiftCard(Resource):
             Account}
 
     def preview(self):
+        """Preview the purchase of this gift card"""
+
         if hasattr(self, '_url'):
             url = self._url + '/preview'
             return self.post(url)
@@ -405,7 +407,14 @@ class GiftCard(Resource):
 
     def redeem(self, account_code):
         """Redeem this gift card on the specified account code"""
-        url = urljoin(self._url, '%s/redeem' % (self.redemption_code))
+
+        redemption_path = '%s/redeem' % (self.redemption_code)
+
+        if hasattr(self, '_url'):
+            url = urljoin(self._url, redemption_path)
+        else:
+            url = urljoin(recurly.base_uri(), self.collection_path) + '/' + redemption_path
+
         recipient_account = _RecipientAccount(account_code=account_code)
         return self.post(url, recipient_account)
 
