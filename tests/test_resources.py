@@ -10,7 +10,7 @@ from six import StringIO
 from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, ExportDate, ExportFile, DownloadExportFile
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
@@ -1407,6 +1407,21 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('gift_cards/created.xml'):
             gift_card.save()
+
+    def test_export_date(self):
+        with self.mock_request('export_date/all-export-dates.xml'):
+            ex_date = ExportDate.all()
+            self.assertTrue(len(ex_date) > 0)
+            self.assertEqual(ex_date[0].date, '2016-09-19')
+        with self.mock_request('export_file/all-export-files.xml'):
+            ex_files = ex_date[0].export_files()
+            self.assertTrue(len(ex_files) > 0)
+            self.assertEqual(ex_files[0].name, 'account_notes_full.csv.gz')
+            self.assertEqual(ex_files[0].md5sum, 'a6c43904e523d01d3862858f246b2b85')
+        with self.mock_request('download_export_file/download-export-file.xml'):
+            dl_ex_file = ex_files[0].download_export_file()
+            self.assertEqual(str(dl_ex_file.expires_at), '2016-09-22 23:38:51+00:00')
+            self.assertEqual(dl_ex_file.download_url, 'https://recurly.s3.download.com/file.csv.gz?Key=KEY&Signature=sig')
 
 
 if __name__ == '__main__':

@@ -1146,6 +1146,38 @@ class Note(Resource):
             setattr(new_note, child_el.tag, child_el.text)
         return new_note
 
+class DownloadExportFile(Resource):
+
+    """Export file download url for a given date and filename."""
+
+    nodename = 'export_file'
+
+    attributes = (
+        'expires_at',
+        'download_url'
+    )
+
+class ExportFile(Resource):
+
+    """Export files available for a given date."""
+
+    nodename = 'export_file'
+    collection_path = 'export_files'
+
+    attributes = (
+        'name',
+        'md5sum'
+    )
+
+class ExportDate(Resource):
+
+    """Exports available for given dates."""
+
+    nodename = 'export_date'
+    collection_path = 'export_dates'
+
+    attributes = ('date')
+
 Resource._learn_nodenames(locals().values())
 
 
