@@ -1078,6 +1078,8 @@ class MeasuredUnit(Resource):
         'name',
         'display_name',
         'description',
+        'created_at',
+        'updated_at',
     )
 
 class AddOn(Resource):
