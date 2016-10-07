@@ -1365,7 +1365,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('transaction-balance/account-deleted.xml'):
                 account.delete()
 
-    def test_gift_cards(self):
+    def _build_gift_card(self):
         account_code = 'e0004e3c-216c-4254-8767-9be605cd0b03'
         account = recurly.Account(account_code=account_code)
         account.email = 'verena@example.com'
@@ -1404,10 +1404,46 @@ class TestResources(RecurlyTest):
 
         gift_card.delivery = delivery
         gift_card.gifter_account = account
+        return gift_card
+
+    def test_gift_cards_purchase(self):
+        gift_card = self._build_gift_card()
+
+        self.assertFalse('_url' in gift_card.attributes)
 
         with self.mock_request('gift_cards/created.xml'):
             gift_card.save()
 
+        self.assertTrue(gift_card._url is not None)
+        self.assertTrue(gift_card.canceled_at is None)
+
+    def test_gift_cards_preview(self):
+        gift_card = self._build_gift_card()
+
+        self.assertFalse('_url' in gift_card.attributes)
+
+        with self.mock_request('gift_cards/preview.xml'):
+            gift_card.preview()
+
+        self.assertTrue(gift_card.id is None)
+        self.assertFalse('_url' in gift_card.attributes)
+
+    def test_gift_cards_redeem(self):
+        gift_card = GiftCard(redemption_code='9FC359369CD3892E')
+
+        with self.mock_request('gift_cards/redeem.xml'):
+            gift_card.redeem('e0004e3c-216c-4254-8767-9be605cd0b03')
+
+        self.assertTrue(gift_card.redeemed_at is not None)
+
+    def test_gift_cards_redeem_with_url(self):
+        gift_card = GiftCard(redemption_code='9FC359369CD3892E')
+        gift_card._url = 'https://api.recurly.com/v2/gift_cards/2018434791876074812'
+
+        with self.mock_request('gift_cards/redeem.xml'):
+            gift_card.redeem('e0004e3c-216c-4254-8767-9be605cd0b03')
+
+        self.assertTrue(gift_card.redeemed_at is not None)
 
 if __name__ == '__main__':
     import unittest
