@@ -2,6 +2,7 @@ import collections
 import logging
 import time
 from xml.etree import ElementTree
+from datetime import datetime
 
 import six
 import recurly
@@ -40,6 +41,16 @@ class TestResources(RecurlyTest):
             pass
         else:
             self.fail("Updating account with invalid email address did not raise a ValidationError")
+
+    def test_cached_response_headers(self):
+        account_code = 'test%s' % self.test_id
+        with self.mock_request('account/exists-with-rate-limit-headers.xml'):
+            account = Account.get(account_code)
+
+        self.assertEqual(recurly.cached_rate_limits['limit'], 2000)
+        self.assertEqual(recurly.cached_rate_limits['remaining'], 1992)
+        self.assertEqual(recurly.cached_rate_limits['resets_at'], datetime(2017, 2, 2, 19, 46))
+        self.assertIsInstance(recurly.cached_rate_limits['cached_at'], datetime)
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
@@ -1018,13 +1029,11 @@ class TestResources(RecurlyTest):
             self.assertEqual(measured_unit.id, 123456)
 
     def test_usage(self):
-        import datetime
-
         usage = Usage()
         usage.amount = 100 # record 100 emails
         usage.merchant_tag = "Recording 100 emails used by customer"
-        usage.recording_timestamp = datetime.datetime(2016, 12, 12, 12, 0, 0, 0)
-        usage.usage_timestamp = datetime.datetime(2016, 12, 12, 12, 0, 0, 0)
+        usage.recording_timestamp = datetime(2016, 12, 12, 12, 0, 0, 0)
+        usage.usage_timestamp = datetime(2016, 12, 12, 12, 0, 0, 0)
 
         with self.mock_request('subscription/show.xml'):
             sub = Subscription.get('123456789012345678901234567890ab')

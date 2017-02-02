@@ -10,6 +10,7 @@ from xml.etree import ElementTree
 
 import mock
 import six
+import recurly
 
 from six.moves import http_client
 
@@ -94,8 +95,11 @@ class MockRequestManager(object):
         response = http_client.HTTPResponse(sock, method=self.method)
         response.begin()
 
+
         self.response_context = mock.patch.object(http_client.HTTPConnection, 'getresponse', lambda self: response)
         self.response_mock = self.response_context.__enter__()
+
+        recurly.cache_rate_limit_headers(self.headers)
 
         return self
 

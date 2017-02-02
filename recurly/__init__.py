@@ -1,5 +1,7 @@
 import logging
 import sys
+import re
+from datetime import datetime
 from six.moves.urllib.parse import urljoin
 from xml.etree import ElementTree
 
@@ -21,6 +23,13 @@ https://dev.recurly.com/docs/getting-started
 
 __version__ = '2.4.2'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
+
+cached_rate_limits = {
+        'limit': None,
+        'remaining': None,
+        'resets_at': None,
+        'cached_at': None,
+        }
 
 USER_AGENT = 'recurly-python/%s; python %s' % (recurly.__version__, recurly.__python_version__)
 
@@ -55,6 +64,18 @@ def base_uri():
 
 def api_version():
     return API_VERSION
+
+def cache_rate_limit_headers(resp_headers):
+    try:
+        recurly.cached_rate_limits = {
+                'cached_at': datetime.utcnow(),
+                'limit': int(resp_headers['X-RateLimit-Limit']),
+                'remaining': int(resp_headers['X-RateLimit-Remaining']),
+                'resets_at': datetime.utcfromtimestamp(int(resp_headers['X-RateLimit-Reset']))
+                }
+    except:
+        log = logging.getLogger('recurly.cached_rate_limits')
+        log.info('Failed to parse rate limits from header')
 
 class Address(Resource):
 
