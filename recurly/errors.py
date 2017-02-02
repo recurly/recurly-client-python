@@ -16,7 +16,9 @@ class ResponseError(Exception):
         try:
             return self.__dict__['response_doc']
         except KeyError:
-            self.__dict__['response_doc'] = ElementTree.fromstring(self.response_xml)
+            self.__dict__['response_doc'] = ElementTree.fromstring(
+                self.response_xml
+            )
             return self.__dict__['response_doc']
 
     @property
@@ -66,6 +68,7 @@ class ClientError(ResponseError):
     is, an error with an HTTP ``4xx`` status code)."""
     pass
 
+
 class BadRequestError(ClientError):
     """An error showing the request was invalid or could not be
     understood by the server.
@@ -76,13 +79,16 @@ class BadRequestError(ClientError):
     """
     pass
 
+
 class ConfigurationError(Exception):
     """An error related to a bad configuration"""
     pass
 
+
 class UnauthorizedError(ClientError):
 
-    """An error for a missing or invalid API key (HTTP ``401 Unauthorized``)."""
+    """An error for a missing or
+    invalid API key (HTTP ``401 Unauthorized``)."""
 
     def __init__(self, response_xml):
         self.response_text = response_xml
@@ -180,6 +186,7 @@ class TransactionError:
         if el is not None:
             return el.text
 
+
 class ValidationError(ClientError):
 
     """An error indicating some values in the submitted request body
@@ -240,7 +247,8 @@ class ValidationError(ClientError):
         return suberrors
 
     def __unicode__(self):
-        return six.u('; ').join(six.text_type(error) for error in six.itervalues(self.errors))
+        return six.u('; ').join(six.text_type(error)
+                                for error in six.itervalues(self.errors))
 
 
 class ServerError(ResponseError):
