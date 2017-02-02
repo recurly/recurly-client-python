@@ -1,4 +1,3 @@
-from six.moves import http_client as httplib
 from xml.etree import ElementTree
 import six
 
