@@ -81,6 +81,22 @@ class AccountBalance(Resource):
         'past_due',
     )
 
+class AccountAcquisition(Resource):
+
+    """Account acquisition data https://dev.recurly.com/docs/create-account-acquisition"""
+
+    nodename = 'account_acquisition'
+
+    attributes = (
+        'cost_in_cents',
+        'currency',
+        'channel',
+        'subchannel',
+        'campaign',
+        'created_at',
+        'updated_at',
+    )
+
 class Account(Resource):
 
     """A customer account."""
@@ -106,6 +122,7 @@ class Account(Resource):
         'created_at',
         'updated_at',
         'shipping_addresses',
+        'account_acquisition',
     )
 
     _classes_for_nodename = { 'address': Address }
