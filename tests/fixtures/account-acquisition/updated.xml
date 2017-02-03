@@ -1,0 +1,32 @@
+PUT https://api.recurly.com/v2/accounts/testmock/acquisition HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account_acquisition>
+  <cost_in_cents type="integer">200</cost_in_cents>
+  <currency>EUR</currency>
+  <channel>social_media</channel>
+  <subchannel>Facebook Post</subchannel>
+  <campaign>hubspot123456</campaign>
+</account_acquisition>
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/testmock/acquisition
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account_acquisition href="https://api.recurly.com/v2/accounts/testmock/acquisition">
+  <account href="https://your-subdomain.recurly.com/v2/accounts/testmock"/>
+  <cost_in_cents type="integer">200</cost_in_cents>
+  <currency>EUR</currency>
+  <channel>social_media</channel>
+  <subchannel>Facebook Post</subchannel>
+  <campaign>hubspot123456</campaign>
+  <created_at type="datetime">2016-08-12T19:45:14Z</created_at>
+  <updated_at type="datetime">2016-08-13T19:45:14Z</updated_at>
+</account_acquisition>
