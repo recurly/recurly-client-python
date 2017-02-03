@@ -283,17 +283,26 @@ class Resource(object):
         connection.request(method, url, body, headers)
         resp = connection.getresponse()
 
+        resp_headers = cls.headers_as_dict(resp)
+
         log = logging.getLogger('recurly.http.response')
         if log.isEnabledFor(logging.DEBUG):
             log.debug("HTTP/1.1 %d %s", resp.status, resp.reason)
-            if six.PY2:
-                for header in resp.msg.headers:
-                    log.debug(header.rstrip('\n'))
-            else:
-                log.debug(resp.msg._headers)
+            log.debug(resp_headers)
             log.debug('')
 
+        recurly.cache_rate_limit_headers(resp_headers)
+
         return resp
+
+    @classmethod
+    def headers_as_dict(cls, resp):
+        """Turns an array of response headers into a dictionary"""
+        if six.PY2:
+            pairs = [header.split(': ') for header in resp.msg.headers]
+            return dict([(k, v.strip()) for k, v in pairs])
+        else:
+            return dict([(k, v.strip()) for k, v in resp.msg._headers])
 
     def as_log_output(self):
         """Returns an XML string containing a serialization of this
