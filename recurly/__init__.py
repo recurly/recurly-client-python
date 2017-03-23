@@ -144,6 +144,11 @@ class Account(Resource):
         'updated_at',
         'shipping_addresses',
         'account_acquisition',
+        'has_live_subscription',
+        'has_active_subscription',
+        'has_future_subscription',
+        'has_canceled_subscription',
+        'has_past_due_invoice',
     )
 
     _classes_for_nodename = { 'address': Address }
@@ -360,6 +365,7 @@ class BillingInfo(Resource):
         'routing_number',
         'account_number',
         'currency',
+        'updated_at',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
@@ -507,6 +513,7 @@ class Coupon(Resource):
         'unique_coupon_codes',
         'free_trial_unit',
         'free_trial_amount',
+        'id',
     )
 
     @classmethod
@@ -689,6 +696,9 @@ class Invoice(Resource):
         'closed_at',
         'collection_method',
         'net_terms',
+        'subtotal_after_discount_cents',
+        'attempt_next_collection_at',
+        'recovery_reason',
     )
 
     blacklist_attributes = (
@@ -847,6 +857,8 @@ class Subscription(Resource):
         'gift_card',
         'shipping_address',
         'shipping_address_id',
+        'started_with_gift',
+        'converted_at',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -978,6 +990,10 @@ class Transaction(Resource):
         'accounting_code',
         'fraud',
         'original_transaction',
+        'gateway_type',
+        'origin',
+        'message',
+        'approval_code',
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
