@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.4.4 March 23, 2017
+
+- Add API version 2.5 changes
+
 ## Version 2.4.3 February 6, 2017
 
 - Add canceled_at, preview, and redeem-on-account support for gift cards
