@@ -859,6 +859,7 @@ class Subscription(Resource):
         'shipping_address_id',
         'started_with_gift',
         'converted_at',
+        'no_billing_info_reason',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -1094,6 +1095,7 @@ class Plan(Resource):
         'total_billing_cycles',
         'revenue_schedule_type',
         'setup_fee_revenue_schedule_type',
+        'trial_requires_billing_info',
     )
 
     def get_add_on(self, add_on_code):
