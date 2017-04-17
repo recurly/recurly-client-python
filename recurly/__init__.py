@@ -807,6 +807,10 @@ class Invoice(Resource):
       except AttributeError:
         raise AttributeError("redemption")
 
+    def mark_failed(self):
+        url = urljoin(self._url, '%s/mark_failed' % self.invoice_number)
+        return self.put(url)
+
 class Subscription(Resource):
 
     """A customer account's subscription to your service."""
