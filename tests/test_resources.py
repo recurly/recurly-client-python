@@ -774,6 +774,15 @@ class TestResources(RecurlyTest):
             with self.mock_request('invoice/account-deleted.xml'):
                 account.delete()
 
+    def test_count(self):
+        try:
+            with self.mock_request('pages/count.xml'):
+                num_accounts = Account.count(begin_time='2017-05-01T10:30:01-06:00')
+
+            self.assertTrue(num_accounts, 23)
+        finally:
+            pass
+
     def test_pages(self):
         account_code = 'pages-%s-%%d' % self.test_id
         all_test_accounts = list()
