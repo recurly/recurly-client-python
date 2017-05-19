@@ -1,5 +1,19 @@
 ## Unreleased
 
+## Version 2.5.0 April 17, 2017
+
+- Remove parsing of X-Records header
+- Cardless Free Trial changes for 2.6
+
+### Upgrade Notes
+
+This release will upgrade us to API version 2.6. There are two breaking changes:
+
+1. Since the X-Records header was removed in the pagination endpoint, you can no longer call `len()` on a Page and expect it to return a cached response.
+From now on you need to explicitly call the `count()` class method on a Page. See [PR #202](https://github.com/recurly/recurly-client-python/pull/202) for more information.
+2. For `POST /v2/subscriptions` Sending `None` for `total_billing_cycles` attribute will now override plan `total_billing_cycles` setting and will make subscription renew forever.
+Omitting the attribute will cause the setting to default to the value of plan `total_billing_cycles`.
+
 ## Version 2.4.4 March 23, 2017
 
 - Add API version 2.5 changes

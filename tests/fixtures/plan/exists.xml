@@ -28,6 +28,7 @@ Content-Type: application/xml; charset=utf-8
   <trial_interval_unit>days</trial_interval_unit>
   <total_billing_cycles type="integer">10</total_billing_cycles>
   <created_at type="datetime">2011-10-03T22:23:12Z</created_at>
+  <trial_requires_billing_info type="boolean">false</trial_requires_billing_info>
   <unit_amount_in_cents>
   </unit_amount_in_cents>
   <setup_fee_in_cents>

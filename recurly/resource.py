@@ -95,15 +95,6 @@ class Page(list):
                     pass
                 raise StopIteration
 
-    def __len__(self):
-        try:
-            if not self.record_size:
-                return 0
-            else:
-                return int(self.record_size)
-        except AttributeError:
-            return 0
-
     def next_page(self):
         """Return the next `Page` after this one in the result sequence
         it's from.
@@ -143,6 +134,12 @@ class Page(list):
         return cls.page_for_value(resp, value)
 
     @classmethod
+    def count_for_url(cls, url):
+        """Return the count of server side resources given a url"""
+        headers = Resource.headers_for_url(url)
+        return int(headers['X-Records'])
+
+    @classmethod
     def page_for_value(cls, resp, value):
         """Return a new `Page` representing the given resource `value`
         retrieved using the HTTP response `resp`.
@@ -153,7 +150,6 @@ class Page(list):
 
         """
         page = cls(value)
-        page.record_size = resp.getheader('X-Records')
         links = parse_link_value(resp.getheader('Link'))
         for url, data in six.iteritems(links):
             if data.get('rel') == 'start':
@@ -347,6 +343,15 @@ class Resource(object):
         return cls.from_element(elem)
 
     @classmethod
+    def headers_for_url(cls, url):
+        """Return the headers only for the given URL as a dict"""
+        response = cls.http_request(url, method='HEAD')
+        if response.status != 200:
+            cls.raise_http_error(response)
+
+        return Resource.headers_as_dict(response)
+
+    @classmethod
     def element_for_url(cls, url):
         """Return the resource at the given URL, as a
         (`http_client.HTTPResponse`, `xml.etree.ElementTree.Element`) tuple
@@ -400,6 +405,10 @@ class Resource(object):
 
         attr_type = elem.attrib.get('type')
         log.debug("Converting %r element with type %r", elem.tag, attr_type)
+        # TODO this trial_requires_billing_info check can be removed when
+        # the server starts sending the correct type
+        if elem.tag == 'trial_requires_billing_info':
+            return elem.text.strip() == 'true'
         if attr_type == 'integer':
             return int(elem.text.strip())
         if attr_type == 'float':
@@ -605,6 +614,16 @@ class Resource(object):
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
         return Page.page_for_url(url)
+
+    @classmethod
+    def count(cls, **kwargs):
+        """Return a count of server side resources given
+        filtering arguments in kwargs.
+        """
+        url = urljoin(recurly.base_uri(), cls.collection_path)
+        if kwargs:
+            url = '%s?%s' % (url, urlencode(kwargs))
+        return Page.count_for_url(url)
 
     def save(self):
         """Save this `Resource` instance to the service.

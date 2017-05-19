@@ -21,7 +21,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.4.4'
+__version__ = '2.5.0'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -42,7 +42,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.5'
+API_VERSION = '2.6'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -859,6 +859,7 @@ class Subscription(Resource):
         'shipping_address_id',
         'started_with_gift',
         'converted_at',
+        'no_billing_info_reason',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -1094,6 +1095,7 @@ class Plan(Resource):
         'total_billing_cycles',
         'revenue_schedule_type',
         'setup_fee_revenue_schedule_type',
+        'trial_requires_billing_info',
     )
 
     def get_add_on(self, add_on_code):
