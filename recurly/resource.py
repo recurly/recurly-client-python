@@ -405,10 +405,7 @@ class Resource(object):
 
         attr_type = elem.attrib.get('type')
         log.debug("Converting %r element with type %r", elem.tag, attr_type)
-        # TODO this trial_requires_billing_info check can be removed when
-        # the server starts sending the correct type
-        if elem.tag == 'trial_requires_billing_info':
-            return elem.text.strip() == 'true'
+
         if attr_type == 'integer':
             return int(elem.text.strip())
         if attr_type == 'float':
