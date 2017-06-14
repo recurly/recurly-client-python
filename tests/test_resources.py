@@ -870,6 +870,34 @@ class TestResources(RecurlyTest):
                 sub.preview()
                 self.assertTrue(sub.invoice.line_items[0].amount_in_cents, 2000)
 
+    def test_subscribe_multiple_errors(self):
+        logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
+        logger = logging.getLogger('recurly.http.request')
+        logger.setLevel(logging.DEBUG)
+
+        plan = Plan(
+            plan_code='basicplan',
+            name='Basic Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('subscription/plan-created.xml'):
+            plan.save()
+
+        try:
+            account = Account()
+            with self.mock_request('subscription/error-subscribe-embedded-account.xml'):
+                account.save()
+            self.fail("Failed subscription did not raise a Validation error")
+        except recurly.ValidationError as err:
+            # Check to see that we have a list of suberrors when there is more
+            # than one error on a field
+            sub_errs = err.errors['subscription.account.account_code']
+            self.assertEqual(len(sub_errs), 2)
+            self.assertEqual(type(sub_errs[1]), recurly.errors.ValidationError.Suberror)
+        except e:
+            self.fail("Failed subscription did not raise a Validation error")
+
     def test_subscribe(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')

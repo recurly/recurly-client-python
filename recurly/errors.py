@@ -1,7 +1,6 @@
 from xml.etree import ElementTree
 import six
 
-
 class ResponseError(Exception):
 
     """An error received from the Recurly API in response to an HTTP
@@ -240,8 +239,16 @@ class ValidationError(ClientError):
             field = err.attrib['field']
             symbol = err.attrib['symbol']
             message = err.text
+            sub_err = self.Suberror(field, symbol, message)
 
-            suberrors[field] = self.Suberror(field, symbol, message)
+            # If the field exists, we need to turn the suberror
+            # into a list of suberrors
+            if field in suberrors:
+                if type(suberrors[field]) != list:
+                    suberrors[field] = [suberrors[field]]
+                suberrors[field].append(sub_err)
+            else:
+                suberrors[field] = sub_err
 
         self.__dict__['errors'] = suberrors
         return suberrors
