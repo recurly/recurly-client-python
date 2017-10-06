@@ -860,6 +860,7 @@ class Subscription(Resource):
         'started_with_gift',
         'converted_at',
         'no_billing_info_reason',
+        'imported_trial',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

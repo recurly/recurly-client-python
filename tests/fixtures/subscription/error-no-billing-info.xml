@@ -13,6 +13,7 @@ Content-Type: application/xml; charset=utf-8
   <bulk type="boolean">true</bulk>
   <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
   <customer_notes>Some Customer Notes</customer_notes>
+  <imported_trial type="boolean">true</imported_trial>
 </subscription>
 
 HTTP/1.1 400 Bad Request
