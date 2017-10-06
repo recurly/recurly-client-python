@@ -9,7 +9,7 @@ Content-Type: application/xml; charset=utf-8
 <subscription>
   <plan_code>basicplan</plan_code>
   <currency>USD</currency>
-  <subscription_add_ons type="array">
+  <subscription_add_ons>
     <subscription_add_on>
       <add_on_code>mock_add_on</add_on_code>
     </subscription_add_on>
