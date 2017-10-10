@@ -13,6 +13,7 @@ Content-Type: application/xml; charset=utf-8
   <bulk type="boolean">true</bulk>
   <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
   <customer_notes>Some Customer Notes</customer_notes>
+  <imported_trial type="boolean">true</imported_trial>
 </subscription>
 
 HTTP/1.1 201 Created
@@ -41,6 +42,7 @@ Location: https://api.recurly.com/v2/subscriptions/12345678901234567890123456789
   <trial_ends_at nil="nil"></trial_ends_at>
   <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
   <customer_notes>Some Customer Notes</customer_notes>
+  <imported_trial type="boolean">true</imported_trial>
   <subscription_add_ons type="array">
   </subscription_add_ons>
   <a name="cancel" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel" method="put"/>

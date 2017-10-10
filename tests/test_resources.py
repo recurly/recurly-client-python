@@ -897,7 +897,8 @@ class TestResources(RecurlyTest):
                     unit_amount_in_cents=1000,
                     bulk=True,
                     terms_and_conditions='Some Terms and Conditions',
-                    customer_notes='Some Customer Notes'
+                    customer_notes='Some Customer Notes',
+                    imported_trial=True
                 )
 
                 with self.mock_request('subscription/error-no-billing-info.xml'):
@@ -928,7 +929,9 @@ class TestResources(RecurlyTest):
 
                 with self.mock_request('subscription/subscribed.xml'):
                     account.subscribe(sub)
+
                 self.assertTrue(sub._url)
+                self.assertEquals(sub.imported_trial, True)
 
                 manualsub = Subscription(
                     plan_code='basicplan',
