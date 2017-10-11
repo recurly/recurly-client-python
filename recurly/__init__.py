@@ -10,7 +10,6 @@ import recurly.js as js
 from recurly.errors import *
 from recurly.resource import Resource, Money, PageError, Page
 
-
 """
 
 Recurly's Python client library is an interface to its REST API.
@@ -806,6 +805,77 @@ class Invoice(Resource):
         return self.redemptions()[0]
       except AttributeError:
         raise AttributeError("redemption")
+
+class Purchase(Resource):
+
+    """
+    A purchase allows the programmer to invoice multiple subscriptions,
+    adjustments, coupon codes, and gift cards all in one call.
+    """
+
+    collection_path = 'purchases'
+    nodename = 'purchase'
+
+    attributes = (
+        'account',
+        'adjustments',
+        'currency',
+        'po_number',
+        'net_terms',
+        'gift_card',
+        'coupon_codes',
+        'subscriptions',
+        'customer_notes',
+        'terms_and_conditions',
+        'vat_reverse_charge_notes',
+    )
+
+    def invoice(self):
+        """
+        Will invoice the purchase object and run all validations and transactions.
+
+        Returns:
+            Invoice: The generated invoice
+        """
+        url = urljoin(recurly.base_uri(), self.collection_path)
+        return self.__invoice(self.collection_path)
+
+    def preview(self):
+        """
+        Will create a preview invoice for the purchase. It runs all the
+        validations but not the transactions.
+
+        Returns:
+            Invoice: The preview invoice
+        """
+        url = urljoin(recurly.base_uri(), self.collection_path + '/preview')
+        return self.__invoice(url)
+
+    def __invoice(self, url):
+        # We must null out currency in subscriptions and adjustments
+        # TODO we should deprecate and remove default currency support
+        def filter_currency(resources):
+            for resource in resources:
+                resource.attributes = tuple([a for a in resource.attributes if
+                                             a != 'currency'])
+        try:
+            filter_currency(self.adjustments)
+        except AttributeError:
+            pass
+        try:
+            filter_currency(self.subscriptions)
+        except AttributeError:
+            pass
+
+        url = urljoin(recurly.base_uri(), url)
+        response = self.http_request(url, 'POST', self)
+        if response.status not in (200, 201):
+            self.raise_http_error(response)
+        response_xml = response.read()
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        elem = ElementTree.fromstring(response_xml)
+        invoice = Invoice.from_element(elem)
+        return invoice
 
 class Subscription(Resource):
 

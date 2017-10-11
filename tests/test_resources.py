@@ -11,7 +11,7 @@ from six import StringIO
 from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, Purchase, Invoice
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
@@ -51,6 +51,43 @@ class TestResources(RecurlyTest):
         self.assertEqual(recurly.cached_rate_limits['remaining'], 1992)
         self.assertEqual(recurly.cached_rate_limits['resets_at'], datetime(2017, 2, 2, 19, 46))
         self.assertIsInstance(recurly.cached_rate_limits['cached_at'], datetime)
+
+    def test_purchase(self):
+        account_code = 'test%s' % self.test_id
+        purchase = Purchase(
+            currency = 'USD',
+            account = Account(
+                account_code = account_code,
+                billing_info = BillingInfo(
+                    first_name = 'Verena',
+                    last_name = 'Example',
+                    number = '4111-1111-1111-1111',
+                    verification_value = '123',
+                    month = 11,
+                    year = 2020,
+                    address1 = '123 Main St',
+                    city = 'New Orleans',
+                    state = 'LA',
+                    zip = '70114',
+                    country = 'US',
+                )
+            ),
+            subscriptions = [
+                recurly.Subscription(plan_code = 'gold')
+            ],
+            adjustments = [
+                recurly.Adjustment(unit_amount_in_cents=1000, description='Item 1',
+                                   quantity=1),
+                recurly.Adjustment(unit_amount_in_cents=2000, description='Item 2',
+                                   quantity=2),
+            ]
+        )
+        with self.mock_request('purchase/invoiced.xml'):
+            invoice = purchase.invoice()
+            self.assertIsInstance(invoice, Invoice)
+        with self.mock_request('purchase/previewed.xml'):
+            preview_invoice = purchase.preview()
+            self.assertIsInstance(preview_invoice, Invoice)
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
