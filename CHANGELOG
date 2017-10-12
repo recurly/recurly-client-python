@@ -1,5 +1,19 @@
 ## Unreleased
 
+## Version 2.6.0 October 12, 2017
+
+- imported_trial flag on Subscription
+- Purchases endpoint
+- Support multiple suberrors per field in ValidationError
+
+### Upgrade Notes
+
+This release will upgrade us to API version 2.8. There is one breaking change:
+
+When more than one error appears for a given key, the value will become a list. See
+[PR](https://github.com/recurly/recurly-client-python/pull/208) and the [original issue](https://github.com/recurly/recurly-client-python/issues/197)
+for more details.
+
 ## Version 2.5.0 April 17, 2017
 
 - Remove parsing of X-Records header
