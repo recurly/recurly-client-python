@@ -471,7 +471,6 @@ class Resource(object):
             el.attrib['type'] = 'datetime'
             el.text = value.strftime('%Y-%m-%dT%H:%M:%SZ')
         elif isinstance(value, list) or isinstance(value, tuple):
-            el.attrib['type'] = 'array'
             for sub_resource in value:
                 if hasattr(sub_resource, 'to_element'):
                   el.append(sub_resource.to_element())
