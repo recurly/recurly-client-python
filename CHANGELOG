@@ -1,4 +1,8 @@
 ## Unreleased
+#
+## Version 2.6.1 October 26, 2017
+
+- Added missing attributes on Delivery resource
 
 ## Version 2.6.0 October 12, 2017
 
