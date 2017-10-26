@@ -401,7 +401,9 @@ class Delivery(Resource):
         'address',
         'deliver_at',
         'email_address',
+        'first_name',
         'gifter_name',
+        'last_name',
         'method',
         'personal_message',
     )

@@ -17,6 +17,8 @@ Content-Type: application/xml; charset=utf-8
             <country>US</country>
         </address>
         <email_address>john@email.com</email_address>
+        <first_name>John</first_name>
+        <last_name>Smith</last_name>
         <method>email</method>
     </delivery>
     <gifter_account>
