@@ -217,6 +217,9 @@ class ValidationError(ClientError):
             self.symbol = symbol
             self.message = message
 
+        def __str__(self):
+            return self.__unicode__()
+
         def __unicode__(self):
             return six.u('%s: %s %s') % (self.symbol, self.field, self.message)
 
@@ -254,9 +257,14 @@ class ValidationError(ClientError):
         return suberrors
 
     def __unicode__(self):
-        return six.u('; ').join(six.text_type(error)
-                                for error in six.itervalues(self.errors))
-
+        all_error_strings = []
+        for error_key in sorted(self.errors.keys()):
+            error = self.errors[error_key]
+            if isinstance(error, (tuple, list)):
+                all_error_strings += [six.text_type(e) for e in error]  # multiple errors on field
+            else:
+                all_error_strings.append(six.text_type(error))
+        return six.u('; ').join(all_error_strings)
 
 class ServerError(ResponseError):
     """An error resulting from a problem creating the server's response
