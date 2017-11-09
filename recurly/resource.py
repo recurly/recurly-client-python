@@ -12,8 +12,7 @@ import recurly
 import recurly.errors
 from recurly.link_header import parse_link_value
 from six.moves import http_client
-from six.moves.urllib.parse import urlencode, urljoin, urlsplit
-
+from six.moves.urllib.parse import urlencode, urlsplit, quote
 
 class Money(object):
 
@@ -338,7 +337,8 @@ class Resource(object):
         can be directly requested with this method.
 
         """
-        url = urljoin(recurly.base_uri(), cls.member_path % (uuid,))
+        uuid = quote(str(uuid))
+        url = recurly.base_uri() + (cls.member_path % (uuid,))
         resp, elem = cls.element_for_url(url)
         return cls.from_element(elem)
 
@@ -606,7 +606,7 @@ class Resource(object):
         parameters.
 
         """
-        url = urljoin(recurly.base_uri(), cls.collection_path)
+        url = recurly.base_uri() + cls.collection_path
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
         return Page.page_for_url(url)
@@ -616,7 +616,7 @@ class Resource(object):
         """Return a count of server side resources given
         filtering arguments in kwargs.
         """
-        url = urljoin(recurly.base_uri(), cls.collection_path)
+        url = recurly.base_uri() + cls.collection_path
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
         return Page.count_for_url(url)
@@ -638,7 +638,7 @@ class Resource(object):
         return self.put(self._url)
 
     def _create(self):
-        url = urljoin(recurly.base_uri(), self.collection_path)
+        url = recurly.base_uri() + self.collection_path
         return self.post(url)
 
     def put(self, url):
