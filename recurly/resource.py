@@ -2,8 +2,8 @@ import base64
 from datetime import datetime
 import httplib
 import logging
-from urllib import urlencode
-from urlparse import urlsplit, urljoin
+from urllib import urlencode, quote
+from urlparse import urlsplit
 from xml.etree import ElementTree
 
 import iso8601
@@ -251,7 +251,8 @@ class Resource(object):
         can be directly requested with this method. 
 
         """
-        url = urljoin(recurly.BASE_URI, cls.member_path % (uuid,))
+        uuid = quote(str(uuid))
+        url = recurly.BASE_URI + (cls.member_path % (uuid,))
         resp, elem = cls.element_for_url(url)
         return cls.from_element(elem)
 
@@ -492,7 +493,7 @@ class Resource(object):
         parameters.
 
         """
-        url = urljoin(recurly.BASE_URI, cls.collection_path)
+        url = recurly.BASE_URI + cls.collection_path
         if kwargs:
             url = '%s?%s' % (url, urlencode(kwargs))
         return Page.page_for_url(url)
@@ -521,7 +522,7 @@ class Resource(object):
         self.update_from_element(ElementTree.fromstring(response_xml))
 
     def _create(self):
-        url = urljoin(recurly.BASE_URI, self.collection_path)
+        url = recurly.BASE_URI + self.collection_path
         return self.post(url)
 
     def post(self, url):
