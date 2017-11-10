@@ -1,5 +1,9 @@
 ## Unreleased
 #
+## Version 2.6.2 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
+
 ## Version 2.6.1 October 26, 2017
 
 - Added missing attributes on Delivery resource
@@ -18,6 +22,10 @@ When more than one error appears for a given key, the value will become a list. 
 [PR](https://github.com/recurly/recurly-client-python/pull/208) and the [original issue](https://github.com/recurly/recurly-client-python/issues/197)
 for more details.
 
+## Version 2.5.1 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
+
 ## Version 2.5.0 April 17, 2017
 
 - Remove parsing of X-Records header
@@ -31,6 +39,10 @@ This release will upgrade us to API version 2.6. There are two breaking changes:
 From now on you need to explicitly call the `count()` class method on a Page. See [PR #202](https://github.com/recurly/recurly-client-python/pull/202) for more information.
 2. For `POST /v2/subscriptions` Sending `None` for `total_billing_cycles` attribute will now override plan `total_billing_cycles` setting and will make subscription renew forever.
 Omitting the attribute will cause the setting to default to the value of plan `total_billing_cycles`.
+
+## Version 2.4.5 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
 
 ## Version 2.4.4 March 23, 2017
 
@@ -59,11 +71,19 @@ Omitting the attribute will cause the setting to default to the value of plan `t
 - Gift card support, bumps to api v 2.4
 - Add updated_at fields
 
+## Version 2.3.1 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
+
 ## Version 2.3.0 July 6, 2016
 
 - Adding variable for api version in fixtures
 - Adding `usage_percentage` and `optional` to `AddOn`
 - Upgrade API to version 2.3
+
+## Version 2.2.22 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
 
 ## Version 2.2.21 June 29, 2016
 
@@ -207,6 +227,10 @@ change previewing
 - Added `tax_rate`, `tax_type` to invoices and subscriptions
 - Added `tax_in_cents` to subscriptions
 
+## Version 2.1.16 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
+
 ## Version 2.1.15 April 8, 2014
 
 - Added token_id support to BillingInfo
@@ -263,6 +287,9 @@ change previewing
   page that doesn't exist.
 - Add missing docstring for `Page.page_for_value()` method.
 
+## Version 2.0.5 – November 9, 2017 ##
+
+- Fix SSRF vuln in Resource.get
 
 ## Version 2.0.4 – January 6, 2012 ##
 
