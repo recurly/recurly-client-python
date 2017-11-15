@@ -438,7 +438,7 @@ class GiftCard(Resource):
         'unit_amount_in_cents',
     )
     _classes_for_nodename = {'recipient_account': Account,'gifter_account':
-            Account}
+            Account, 'delivery': Delivery}
 
     def preview(self):
         """Preview the purchase of this gift card"""

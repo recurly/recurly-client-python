@@ -1545,6 +1545,7 @@ class TestResources(RecurlyTest):
             gift_card.save()
 
         self.assertTrue(gift_card._url is not None)
+        self.assertTrue(gift_card.delivery is not None)
         self.assertTrue(gift_card.canceled_at is None)
 
     def test_gift_cards_preview(self):
