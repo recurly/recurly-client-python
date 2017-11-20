@@ -1,5 +1,20 @@
 ## Unreleased
 #
+## Version 2.7.0 – November 20, 2017 ##
+
+- Implement API version 2.9 changes
+
+### Upgrade Notes
+
+This version bumps us to API version 2.9. There are a few breaking changes.
+
+1. The `subscription` link on an instance of `Adjustment` is now only created if adjustment is
+originating from a subscription plan charge, setup fee, add on, trial or proration credit.
+It is no longer created for other adjustments.
+
+2. Instances of `Transaction` and `Invoice` no longer have a `subscription` link and you
+must now use the `subscriptions` link.
+
 ## Version 2.6.2 – November 9, 2017 ##
 
 - Fix SSRF vuln in Resource.get
