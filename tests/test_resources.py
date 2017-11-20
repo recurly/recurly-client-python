@@ -88,6 +88,11 @@ class TestResources(RecurlyTest):
         with self.mock_request('purchase/previewed.xml'):
             preview_invoice = purchase.preview()
             self.assertIsInstance(preview_invoice, Invoice)
+        with self.mock_request('purchase/authorized.xml'):
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            purchase.account.billing_info.external_hpp_type = 'adyen'
+            authorized_invoice = purchase.authorize()
+            self.assertIsInstance(authorized_invoice, Invoice)
 
     def test_account(self):
         account_code = 'test%s' % self.test_id

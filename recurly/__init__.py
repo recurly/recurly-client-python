@@ -41,7 +41,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.8'
+API_VERSION = '2.9'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -365,6 +365,7 @@ class BillingInfo(Resource):
         'account_number',
         'currency',
         'updated_at',
+        'external_hpp_type',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
@@ -851,6 +852,20 @@ class Purchase(Resource):
             Invoice: The preview invoice
         """
         url = urljoin(recurly.base_uri(), self.collection_path + '/preview')
+        return self.__invoice(url)
+
+    def authorize(self):
+        """
+        Will generate an authorized invoice for the purchase. Runs validations
+        but does not run any transactions. This endpoint will create a
+        pending purchase that can be activated at a later time once payment
+        has been completed on an external source (e.g. Adyen's Hosted
+        Payment Pages).
+
+        Returns:
+            Invoice: The authorized invoice
+        """
+        url = recurly.base_uri() + self.collection_path + '/authorize'
         return self.__invoice(url)
 
     def __invoice(self, url):

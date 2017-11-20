@@ -14,6 +14,13 @@ from recurly.link_header import parse_link_value
 from six.moves import http_client
 from six.moves.urllib.parse import urlencode, urlsplit, quote
 
+def urlencode_params(args):
+    # Need to make bools lowercase
+    for k, v in six.iteritems(args):
+        if isinstance(v, bool):
+            args[k] = str(v).lower()
+    return urlencode(args)
+
 class Money(object):
 
     """An amount of money in one or more currencies."""
@@ -514,7 +521,7 @@ class Resource(object):
     def _make_actionator(self, url, method, extra_handler=None):
         def actionator(*args, **kwargs):
             if kwargs:
-                full_url = '%s?%s' % (url, urlencode(kwargs))
+                full_url = '%s?%s' % (url, urlencode_params(kwargs))
             else:
                 full_url = url
 
@@ -574,7 +581,7 @@ class Resource(object):
             def make_relatitator(url):
                 def relatitator(**kwargs):
                     if kwargs:
-                        full_url = '%s?%s' % (url, urlencode(kwargs))
+                        full_url = '%s?%s' % (url, urlencode_params(kwargs))
                     else:
                         full_url = url
 
@@ -608,7 +615,7 @@ class Resource(object):
         """
         url = recurly.base_uri() + cls.collection_path
         if kwargs:
-            url = '%s?%s' % (url, urlencode(kwargs))
+            url = '%s?%s' % (url, urlencode_params(kwargs))
         return Page.page_for_url(url)
 
     @classmethod
@@ -618,7 +625,7 @@ class Resource(object):
         """
         url = recurly.base_uri() + cls.collection_path
         if kwargs:
-            url = '%s?%s' % (url, urlencode(kwargs))
+            url = '%s?%s' % (url, urlencode_params(kwargs))
         return Page.count_for_url(url)
 
     def save(self):
