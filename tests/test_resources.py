@@ -937,6 +937,7 @@ class TestResources(RecurlyTest):
             sub_errs = err.errors['subscription.account.account_code']
             self.assertEqual(len(sub_errs), 2)
             self.assertEqual(type(sub_errs[1]), recurly.errors.ValidationError.Suberror)
+            self.assertEqual(str(err), "blank: subscription.account.account_code can't be blank; invalid: subscription.account.account_code is invalid; empty: subscription.account.billing_info.address1 can't be empty; empty: subscription.account.billing_info.city can't be empty; empty: subscription.account.billing_info.country can't be empty; blank: subscription.account.billing_info.first_name can't be blank; blank: subscription.account.billing_info.last_name can't be blank; required: subscription.account.billing_info.number is required; empty: subscription.account.billing_info.zip can't be empty; invalid: subscription.plan_code is invalid; not_a_number: subscription.unit_amount_in_cents is not a number")
         except e:
             self.fail("Failed subscription did not raise a Validation error")
 
