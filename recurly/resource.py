@@ -301,7 +301,7 @@ class Resource(object):
     def headers_as_dict(cls, resp):
         """Turns an array of response headers into a dictionary"""
         if six.PY2:
-            pairs = [header.split(': ') for header in resp.msg.headers]
+            pairs = [header.split(':', 1) for header in resp.msg.headers]
             return dict([(k, v.strip()) for k, v in pairs])
         else:
             return dict([(k, v.strip()) for k, v in resp.msg._headers])
