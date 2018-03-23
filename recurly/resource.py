@@ -595,8 +595,9 @@ class Resource(object):
 
             url = elem.attrib['href']
 
-            if url is '':
-                return Resource.value_for_element(elem)
+            # has no url or has children
+            if url is '' or len(elem) > 0:
+                return self.value_for_element(elem)
             else:
                 return make_relatitator(url)
 

@@ -11,7 +11,7 @@ from six import StringIO
 from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, Purchase, Invoice
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, Purchase, Invoice, InvoiceCollection, CreditPayment
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
@@ -52,6 +52,15 @@ class TestResources(RecurlyTest):
         self.assertEqual(recurly.cached_rate_limits['resets_at'], datetime(2017, 2, 2, 19, 46))
         self.assertIsInstance(recurly.cached_rate_limits['cached_at'], datetime)
 
+    def test_credit_payment(self):
+        with self.mock_request('credit-payment/show.xml'):
+            payment = CreditPayment.get('43c29728b3482fa8727edb4cefa7c774')
+            self.assertIsInstance(payment, CreditPayment)
+            self.assertEquals(payment.uuid, '43c29728b3482fa8727edb4cefa7c774')
+            self.assertEquals(payment.amount_in_cents, 12)
+            self.assertEquals(payment.currency, 'USD')
+            self.assertEquals(payment.action, 'payment')
+
     def test_purchase(self):
         account_code = 'test%s' % self.test_id
         purchase = Purchase(
@@ -83,16 +92,21 @@ class TestResources(RecurlyTest):
             ]
         )
         with self.mock_request('purchase/invoiced.xml'):
-            invoice = purchase.invoice()
-            self.assertIsInstance(invoice, Invoice)
+            collection = purchase.invoice()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertIsInstance(collection.credit_invoices, list)
+            self.assertIsInstance(collection.credit_invoices[0], Invoice)
         with self.mock_request('purchase/previewed.xml'):
-            preview_invoice = purchase.preview()
-            self.assertIsInstance(preview_invoice, Invoice)
+            collection = purchase.preview()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
         with self.mock_request('purchase/authorized.xml'):
             purchase.account.email = 'benjamin.dumonde@example.com'
             purchase.account.billing_info.external_hpp_type = 'adyen'
-            authorized_invoice = purchase.authorize()
-            self.assertIsInstance(authorized_invoice, Invoice)
+            collection = purchase.authorize()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
@@ -755,7 +769,7 @@ class TestResources(RecurlyTest):
             account.save()
 
         with self.mock_request('invoice/invoiced.xml'):
-            invoice = account.invoice()
+            invoice = account.invoice().charge_invoice
 
         with self.mock_request('invoice/refunded.xml'):
             refund_invoice = invoice.refund_amount(1000)
@@ -767,7 +781,7 @@ class TestResources(RecurlyTest):
             account.save()
 
         with self.mock_request('invoice/invoiced-line-items.xml'):
-            invoice = account.invoice()
+            invoice = account.invoice().charge_invoice
 
         with self.mock_request('invoice/line-item-refunded.xml'):
             line_items = [{ 'adjustment': invoice.line_items[0], 'quantity': 1,
@@ -781,11 +795,14 @@ class TestResources(RecurlyTest):
             account.save()
 
         with self.mock_request('invoice/invoiced-with-optionals.xml'):
-            invoice = account.invoice(terms_and_conditions='Some Terms and Conditions',
+            collection = account.invoice(terms_and_conditions='Some Terms and Conditions',
                     customer_notes='Some Customer Notes', collection_method="manual",
                     net_terms=30)
 
-        self.assertEqual(type(invoice), recurly.Invoice)
+        invoice = collection.charge_invoice
+
+        self.assertIsInstance(collection, InvoiceCollection)
+        self.assertIsInstance(invoice, Invoice)
         self.assertEqual(invoice.terms_and_conditions, 'Some Terms and Conditions')
         self.assertEqual(invoice.customer_notes, 'Some Customer Notes')
         self.assertEqual(invoice.collection_method, 'manual')
@@ -910,7 +927,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscription/change-preview.xml'):
                 sub.quantity = 2
                 sub.preview()
-                self.assertTrue(sub.invoice.line_items[0].amount_in_cents, 2000)
+                self.assertTrue(sub.invoice_collection.charge_invoice.line_items[0].amount_in_cents, 2000)
 
     def test_subscribe_multiple_errors(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
