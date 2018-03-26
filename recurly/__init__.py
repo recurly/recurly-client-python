@@ -41,7 +41,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.9'
+API_VERSION = '2.10'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -256,9 +256,8 @@ class Account(Resource):
         logging.getLogger('recurly.http.response').debug(response_xml)
         elem = ElementTree.fromstring(response_xml)
 
-        invoice = Invoice.from_element(elem)
-        invoice._url = response.getheader('Location')
-        return invoice
+        invoice_collection = InvoiceCollection.from_element(elem)
+        return invoice_collection
 
     def build_invoice(self):
         """Preview an invoice for any outstanding adjustments this account has."""
@@ -272,8 +271,8 @@ class Account(Resource):
         logging.getLogger('recurly.http.response').debug(response_xml)
         elem = ElementTree.fromstring(response_xml)
 
-        invoice = Invoice.from_element(elem)
-        return invoice
+        invoice_collection = InvoiceCollection.from_element(elem)
+        return invoice_collection
 
     def notes(self):
         """Fetch Notes for this account."""
@@ -664,7 +663,6 @@ class Adjustment(Resource):
         else:
             return super(Adjustment, self).__getattr__(name)
 
-
 class Invoice(Resource):
 
     """A payable charge to an account for the customer's charges and
@@ -682,7 +680,6 @@ class Invoice(Resource):
         'invoice_number_prefix',
         'po_number',
         'vat_number',
-        'subtotal_in_cents',
         'tax_in_cents',
         'tax_type',
         'tax_rate',
@@ -698,9 +695,16 @@ class Invoice(Resource):
         'closed_at',
         'collection_method',
         'net_terms',
-        'subtotal_after_discount_cents',
         'attempt_next_collection_at',
         'recovery_reason',
+        'balance_in_cents',
+        'subtotal_before_discount_in_cents',
+        'subtotal_in_cents',
+        'discount_in_cents',
+        'due_on',
+        'type',
+        'origin',
+        'credit_customer_notes',
     )
 
     blacklist_attributes = (
@@ -711,22 +715,22 @@ class Invoice(Resource):
         return '%s%s' % (self.invoice_number_prefix, self.invoice_number)
 
     @classmethod
-    def all_open(cls, **kwargs):
-        """Return a `Page` of open invoices.
+    def all_pending(cls, **kwargs):
+        """Return a `Page` of pending invoices.
 
-        This is a convenience method for `Invoice.all(state='open')`.
+        This is a convenience method for `Invoice.all(state='pending')`.
 
         """
-        return cls.all(state='open', **kwargs)
+        return cls.all(state='pending', **kwargs)
 
     @classmethod
-    def all_collected(cls, **kwargs):
-        """Return a `Page` of collected invoices.
+    def all_paid(cls, **kwargs):
+        """Return a `Page` of paid invoices.
 
-        This is a convenience method for `Invoice.all(state='collected')`.
+        This is a convenience method for `Invoice.all(state='paid')`.
 
         """
-        return cls.all(state='collected', **kwargs)
+        return cls.all(state='paid', **kwargs)
 
     @classmethod
     def all_failed(cls, **kwargs):
@@ -761,24 +765,26 @@ class Invoice(Resource):
         pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
         return pdf_response.read()
 
-    def refund_amount(self, amount_in_cents, refund_apply_order = 'credit'):
-        amount_element = self.refund_open_amount_xml(amount_in_cents, refund_apply_order)
+    def refund_amount(self, amount_in_cents, refund_method = 'credit_first'):
+        amount_element = self.refund_open_amount_xml(amount_in_cents,
+                                                     refund_method)
         return self._create_refund_invoice(amount_element)
 
-    def refund(self, adjustments, refund_apply_order = 'credit'):
-        adjustments_element = self.refund_line_items_xml(adjustments, refund_apply_order)
+    def refund(self, adjustments, refund_method = 'credit_first'):
+        adjustments_element = self.refund_line_items_xml(adjustments,
+                                                         refund_method)
         return self._create_refund_invoice(adjustments_element)
 
-    def refund_open_amount_xml(self, amount_in_cents, refund_apply_order):
+    def refund_open_amount_xml(self, amount_in_cents, refund_method):
         elem = ElementTree.Element(self.nodename)
-        elem.append(Resource.element_for_value('refund_apply_order', refund_apply_order))
+        elem.append(Resource.element_for_value('refund_method', refund_method))
         elem.append(Resource.element_for_value('amount_in_cents',
             amount_in_cents))
         return elem
 
-    def refund_line_items_xml(self, line_items, refund_apply_order):
+    def refund_line_items_xml(self, line_items, refund_method):
         elem = ElementTree.Element(self.nodename)
-        elem.append(Resource.element_for_value('refund_apply_order', refund_apply_order))
+        elem.append(Resource.element_for_value('refund_method', refund_method))
 
         line_items_elem = ElementTree.Element('line_items')
 
@@ -809,6 +815,22 @@ class Invoice(Resource):
       except AttributeError:
         raise AttributeError("redemption")
 
+class InvoiceCollection(Resource):
+
+    """A collection of invoices resulting from some action. Includes
+    a charge invoice and a list of credit invoices.
+    """
+
+    nodename = 'invoice_collection'
+    attributes = (
+        'charge_invoice',
+        'credit_invoices',
+    )
+    _classes_for_nodename = {
+        'charge_invoice': Invoice,
+        'credit_invoice': Invoice,
+    }
+
 class Purchase(Resource):
 
     """
@@ -838,7 +860,7 @@ class Purchase(Resource):
         Will invoice the purchase object and run all validations and transactions.
 
         Returns:
-            Invoice: The generated invoice
+            InvoiceCollection: The generated collection of invoices
         """
         url = urljoin(recurly.base_uri(), self.collection_path)
         return self.__invoice(self.collection_path)
@@ -849,7 +871,7 @@ class Purchase(Resource):
         validations but not the transactions.
 
         Returns:
-            Invoice: The preview invoice
+            InvoiceCollection: The preview of collection of invoices
         """
         url = urljoin(recurly.base_uri(), self.collection_path + '/preview')
         return self.__invoice(url)
@@ -863,7 +885,7 @@ class Purchase(Resource):
         Payment Pages).
 
         Returns:
-            Invoice: The authorized invoice
+            InvoiceCollection: The authorized collection of invoices
         """
         url = recurly.base_uri() + self.collection_path + '/authorize'
         return self.__invoice(url)
@@ -891,8 +913,8 @@ class Purchase(Resource):
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         elem = ElementTree.fromstring(response_xml)
-        invoice = Invoice.from_element(elem)
-        return invoice
+        invoice_collection = InvoiceCollection.from_element(elem)
+        return invoice_collection
 
 class Subscription(Resource):
 
@@ -1016,7 +1038,6 @@ class TransactionAccount(recurly.Resource):
         'account_code',
     )
     _classes_for_nodename = {'billing_info': TransactionBillingInfo}
-
 
 class TransactionDetails(recurly.Resource):
     node_name = 'details'
@@ -1300,6 +1321,24 @@ class Note(Resource):
                 continue
             setattr(new_note, child_el.tag, child_el.text)
         return new_note
+
+class CreditPayment(Resource):
+
+    """A payment from credit"""
+
+    nodename = 'credit_payment'
+    collection_path = 'credit_payments'
+    member_path = 'credit_payments/%s'
+
+    attributes = (
+        'uuid',
+        'unit_amount_in_cents',
+        'currency',
+        'action',
+        'created_at',
+        'updated_at',
+        'voided_at',
+    )
 
 Resource._learn_nodenames(locals().values())
 
