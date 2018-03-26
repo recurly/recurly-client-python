@@ -1,5 +1,127 @@
 ## Unreleased
 #
+## Version 2.8.0 – March 26, 2018 ##
+
+- Implement API version 2.10 changes
+
+### Upgrade Notes
+
+#### 1. InvoiceCollection
+
+When creating invoices or using `mark_failed()`, we now return an `InvoiceCollection` object rather than an `Invoice`. If you wish to upgrade your application without changing functionality, we recommend that you use the `charge_invoice` on the `InvoiceCollection`. Example:
+
+```python
+# Change This:
+invoice = account.invoice()
+
+# To this
+collection = account.invoice()
+invoice = collection.charge_invoice
+```
+
+Calls that now return `InvoiceCollection` instead of `Invoice`:
+
+* `Purchase#invoice()`
+* `Purchase#preview()`
+* `Purchase#authorize()`
+* `Account#invoice()`
+* `Account#build_invoice()`
+
+Furthermore, `Invoice#mark_failed()` no longer updates the invoice but rather returns a new `InvoiceCollection` object:
+
+```python
+# Change This:
+invoice.mark_failed()
+
+# To this
+collection = invoice.mark_failed()
+failed_invoice = collection.charge_invoice
+```
+
+#### 2. Invoice#original_invoice removed
+
+`Invoice#original_invoice` was removed in favor of `Invoice#original_invoices`. If you want to maintain functionality, change your code grab the first invoice from that endpoint:
+
+```python
+# Change this
+original_invoice = invoice.original_invoice()
+
+# To this
+original_invoice = invoice.original_invoices()[0]
+```
+
+#### 3. Invoice `subtotal_*` changes
+
+We have renamed two of the invoice subtotal fields to more clearly reflect their values: 
+- Renamed `subtotal_in_cents` to `subtotal_before_discount_in_cents`
+- Renamed `subtotal_after_discount_in_cents` to `subtotal_in_cents`
+
+#### 4. Invoice Refund -- `refund_apply_order` changed to `refund_method`
+
+If you were using `Invoice#refund` or `Invoice#refund_amount` and explicitly setting the second `refund_apply_order` parameter, then you may need to change value to fit the new `refund_method` format. The values for this have changed from (`credit`, `transaction`) to (`credit_first`, `transaction_first`)
+
+If you don't explicitly set the `refund_apply_order` like in these two calls, no change is needed:
+```python
+invoice.refund(line_items);
+invoice.refund_amount(1000);
+```
+
+If you do set the second param, you'll need to change:
+* `credit` to `credit_first`
+* `transaction` to `transaction_first`
+
+Examples:
+```python
+# Change `credit`:
+invoice.refund(line_items, 'credit');
+invoice.refund_amount(1000, 'credit');
+
+# To `credit_first`
+invoice.refund(line_items, 'credit_first');
+invoice.refund_amount(1000, 'credit_first');
+
+# Change `transaction`
+invoice.refund(line_items, 'transaction');
+invoice.refund_amount(1000, 'transaction');
+
+# To `transaction_first`
+invoice.refund(line_items, 'transaction_first');
+invoice.refund_amount(1000, 'transaction_first');
+```
+
+#### 5. Invoice States
+
+If you are checking `Invoice#state` anywhere, you will want to check that you have the new correct values. `collected` has changed to `paid` and `open` has changed to `pending`. Example:
+
+```python
+# Change this
+if invoice.state == 'collected':
+#To this
+if invoice.state == 'paid':
+```
+```python
+# Change this
+if invoice.state == 'open':
+# To this
+if invoice.state == 'pending':
+```
+
+This also affects the `Invoice.all_collected` and `Invoice.all_open` functions. Example:
+
+```python
+# Change this
+Invoice.all_collected()
+# To this
+Invoice.all_paid()
+```
+```python
+# Change this
+Invoice.all_open()
+# To this
+Invoice.all_pending()
+```
+
+#
 ## Version 2.7.0 – November 20, 2017 ##
 
 - Implement API version 2.9 changes
