@@ -800,6 +800,19 @@ class Invoice(Resource):
         elem.append(line_items_elem)
         return elem
 
+    def mark_failed(self):
+        url = urljoin(self._url, '%s/mark_failed' % (self.invoice_number, ))
+
+        collection = InvoiceCollection()
+        response = self.http_request(url, 'PUT')
+        if response.status != 200:
+            self.raise_http_error(response)
+        response_xml = response.read()
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        collection.update_from_element(ElementTree.fromstring(response_xml))
+
+        return collection
+
     def _create_refund_invoice(self, element):
         url = urljoin(self._url, '%s/refund' % (self.invoice_number, ))
         body = ElementTree.tostring(element, encoding='UTF-8')
