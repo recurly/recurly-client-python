@@ -67,6 +67,18 @@ class TestResources(RecurlyTest):
             currency = 'USD',
             account = Account(
                 account_code = account_code,
+                shipping_addresses = [
+                    ShippingAddress(
+                        first_name = 'Verena',
+                        last_name = 'Example',
+                        address1 = '123 Main St',
+                        city = 'New Orleans',
+                        state = 'LA',
+                        zip = '70114',
+                        country = 'US',
+                        nickname = 'Work'
+                    )
+                ],
                 billing_info = BillingInfo(
                     first_name = 'Verena',
                     last_name = 'Example',
@@ -97,6 +109,8 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection.charge_invoice, Invoice)
             self.assertIsInstance(collection.credit_invoices, list)
             self.assertIsInstance(collection.credit_invoices[0], Invoice)
+            self.assertIsInstance(collection.charge_invoice.line_items[0].shipping_address,
+                                  ShippingAddress)
         with self.mock_request('purchase/previewed.xml'):
             collection = purchase.preview()
             self.assertIsInstance(collection, InvoiceCollection)
@@ -115,6 +129,7 @@ class TestResources(RecurlyTest):
 
         account = Account(account_code=account_code)
         account.vat_number = '444444-UK'
+        account.preferred_locale = 'en-US'
         with self.mock_request('account/created.xml'):
             account.save()
         self.assertEqual(account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
@@ -122,6 +137,7 @@ class TestResources(RecurlyTest):
         self.assertEqual(account.vat_location_enabled, True)
         self.assertEqual(account.cc_emails,
                 'test1@example.com,test2@example.com')
+        self.assertEqual(account.preferred_locale, 'en-US')
 
         with self.mock_request('account/list-active.xml'):
             active = Account.all_active()
@@ -1171,6 +1187,19 @@ class TestResources(RecurlyTest):
             self.assertEqual(measured_unit.display_name, 'Marketing Email')
             self.assertEqual(measured_unit.description, 'Unit of Marketing Email')
             self.assertEqual(measured_unit.id, 123456)
+
+    def test_subscription_pause_resume(self):
+        with self.mock_request('subscription/show.xml'):
+            sub = Subscription.get('123456789012345678901234567890ab')
+
+        with self.mock_request('subscription/pause.xml'):
+            sub.pause(1)
+
+        self.assertIsInstance(sub.paused_at, datetime)
+        self.assertEqual(sub.remaining_pause_cycles, 1)
+
+        with self.mock_request('subscription/resume.xml'):
+            sub.resume()
 
     def test_usage(self):
         usage = Usage()

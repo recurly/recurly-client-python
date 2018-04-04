@@ -9,6 +9,18 @@ Content-Type: application/xml; charset=utf-8
 <purchase>
   <account>
     <account_code>testmock</account_code>
+    <shipping_addresses>
+      <shipping_address>
+        <address1>123 Main St</address1>
+        <city>New Orleans</city>
+        <country>US</country>
+        <first_name>Verena</first_name>
+        <last_name>Example</last_name>
+        <nickname>Work</nickname>
+        <state>LA</state>
+        <zip>70114</zip>
+      </shipping_address>
+    </shipping_addresses>
     <billing_info>
       <first_name>Verena</first_name>
       <last_name>Example</last_name>
