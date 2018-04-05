@@ -9,6 +9,18 @@ Content-Type: application/xml; charset=utf-8
 <purchase>
   <account>
     <account_code>testmock</account_code>
+    <shipping_addresses>
+      <shipping_address>
+        <address1>123 Main St</address1>
+        <city>New Orleans</city>
+        <country>US</country>
+        <first_name>Verena</first_name>
+        <last_name>Example</last_name>
+        <nickname>Work</nickname>
+        <state>LA</state>
+        <zip>70114</zip>
+      </shipping_address>
+    </shipping_addresses>
     <billing_info>
       <first_name>Verena</first_name>
       <last_name>Example</last_name>
@@ -105,6 +117,16 @@ Location: https://api.recurly.com/v2/invoices/1021
         <created_at type="datetime">2017-10-06T21:25:56Z</created_at>
         <updated_at type="datetime">2017-10-06T21:25:56Z</updated_at>
         <revenue_schedule_type>evenly</revenue_schedule_type>
+        <shipping_address>
+          <address1>123 Main St</address1>
+          <address2 nil="nil"></address2>
+          <city>New Orleans</city>
+          <state>LA</state>
+          <zip>70114</zip>
+          <country>US</country>
+          <nickname>Work</nickname>
+          <phone nil="nil"></phone>
+        </shipping_address>
       </adjustment>
       <adjustment href="https://api.recurly.com/v2/adjustments/40625fda8b836c4ff51e764ef795fb87" type="charge">
         <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683"/>
@@ -127,6 +149,16 @@ Location: https://api.recurly.com/v2/invoices/1021
         <created_at type="datetime">2017-10-06T21:25:56Z</created_at>
         <updated_at type="datetime">2017-10-06T21:25:56Z</updated_at>
         <revenue_schedule_type></revenue_schedule_type>
+        <shipping_address>
+          <address1>123 Main St</address1>
+          <address2 nil="nil"></address2>
+          <city>New Orleans</city>
+          <state>LA</state>
+          <zip>70114</zip>
+          <country>US</country>
+          <nickname>Work</nickname>
+          <phone nil="nil"></phone>
+        </shipping_address>
       </adjustment>
       <adjustment href="https://api.recurly.com/v2/adjustments/40625fda8ea4dbb77b2b8d4a5d8a9ac2" type="charge">
         <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683"/>
@@ -149,6 +181,16 @@ Location: https://api.recurly.com/v2/invoices/1021
         <created_at type="datetime">2017-10-06T21:25:56Z</created_at>
         <updated_at type="datetime">2017-10-06T21:25:56Z</updated_at>
         <revenue_schedule_type></revenue_schedule_type>
+        <shipping_address>
+          <address1>123 Main St</address1>
+          <address2 nil="nil"></address2>
+          <city>New Orleans</city>
+          <state>LA</state>
+          <zip>70114</zip>
+          <country>US</country>
+          <nickname>Work</nickname>
+          <phone nil="nil"></phone>
+        </shipping_address>
       </adjustment>
     </line_items>
     <transactions type="array">

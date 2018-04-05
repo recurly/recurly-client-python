@@ -41,7 +41,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.10'
+API_VERSION = '2.11'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -147,7 +147,9 @@ class Account(Resource):
         'has_active_subscription',
         'has_future_subscription',
         'has_canceled_subscription',
+        'has_paused_subscription',
         'has_past_due_invoice',
+        'preferred_locale',
     )
 
     _classes_for_nodename = { 'address': Address }
@@ -647,9 +649,12 @@ class Adjustment(Resource):
         'updated_at',
         'type',
         'revenue_schedule_type',
+        'shipping_address',
+        'shipping_address_id',
     )
     xml_attribute_attributes = ('type',)
-    _classes_for_nodename = {'tax_detail': TaxDetail,}
+    _classes_for_nodename = {'tax_detail': TaxDetail, 'shipping_address':
+                             ShippingAddress}
 
     # This can be removed when the `original_adjustment_uuid` is moved to a link
     def __getattr__(self, name):
@@ -866,6 +871,7 @@ class Purchase(Resource):
         'customer_notes',
         'terms_and_conditions',
         'vat_reverse_charge_notes',
+        'shipping_address_id',
     )
 
     def invoice(self):
@@ -983,6 +989,8 @@ class Subscription(Resource):
         'converted_at',
         'no_billing_info_reason',
         'imported_trial',
+        'remaining_pause_cycles',
+        'paused_at',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -999,6 +1007,27 @@ class Subscription(Resource):
         for key, val in kwargs.iteritems():
             setattr(self, key, val)
         url = urljoin(self._url, '%s/notes' % self.uuid)
+        self.put(url)
+
+    def pause(self, remaining_pause_cycles):
+        """Pause a subscription"""
+        url = urljoin(self._url, '%s/pause' % self.uuid)
+        elem = ElementTree.Element(self.nodename)
+        elem.append(Resource.element_for_value('remaining_pause_cycles',
+                                               remaining_pause_cycles))
+        body = ElementTree.tostring(elem, encoding='UTF-8')
+
+        response = self.http_request(url, 'PUT', body, { 'Content-Type':
+            'application/xml; charset=utf-8' })
+
+        if response.status not in (200, 201, 204):
+            self.raise_http_error(response)
+
+        self.update_from_element(ElementTree.fromstring(response.read()))
+
+    def resume(self):
+        """Resume a subscription"""
+        url = urljoin(self._url, '%s/resume' % self.uuid)
         self.put(url)
 
     def _update(self):

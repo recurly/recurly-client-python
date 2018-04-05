@@ -9,6 +9,7 @@ Content-Type: application/xml; charset=utf-8
 <account>
   <account_code>testmock</account_code>
   <vat_number>444444-UK</vat_number>
+  <preferred_locale>en-US</preferred_locale>
 </account>
 
 HTTP/1.1 201 Created
@@ -41,4 +42,5 @@ Location: https://api.recurly.com/v2/accounts/testmock
   </address>
   <accept_language nil="nil"></accept_language>
   <vat_location_enabled type="boolean">true</vat_location_enabled>
+  <preferred_locale>en-US</preferred_locale>
 </account>
