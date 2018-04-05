@@ -147,17 +147,39 @@ must now use the `subscriptions` link.
 
 ## Version 2.6.0 October 12, 2017
 
+This brings us to API version 2.8.
+
 - imported_trial flag on Subscription
 - Purchases endpoint
 - Support multiple suberrors per field in ValidationError
 
 ### Upgrade Notes
 
-This release will upgrade us to API version 2.8. There is one breaking change:
+There are two breaking changes in this API version you must consider. 
 
-When more than one error appears for a given key, the value will become a list. See
-[PR](https://github.com/recurly/recurly-client-python/pull/208) and the [original issue](https://github.com/recurly/recurly-client-python/issues/197)
-for more details.
+#### Country Codes
+
+All `country` fields must now contain valid [2 letter ISO 3166 country codes](https://www.iso.org/iso-3166-country-codes.html). If your country code fails validation, you will receive a validation error. This affects any endpoint where an address is collected.
+
+#### Purchase Currency
+
+The purchases endpoint can create and invoice multiple adjustments at once but our invoices can only contain items in one currency. To make this explicit the currency can no longer be provided on an adjustment, it must be set once for the entire purchase:
+
+```python
+purchase = recurly.Purchase(
+  # The purchase object is the only place you can set the currency:
+  currency = 'USD',
+  account = recurly.Account(
+    account_code = 'someone',
+  ),
+  adjustments = [
+      # Remove this currency
+      # You can no longer set the currency on adjustment level
+      recurly.Adjustment(currency='USD', unit_amount_in_cents=1000, description='Item 1',
+                         quantity=1),
+  ]
+)
+```
 
 ## Version 2.5.1 – November 9, 2017 ##
 
