@@ -521,7 +521,7 @@ class Coupon(Resource):
 
     @classmethod
     def value_for_element(cls, elem):
-        if not elem or elem.tag != 'plan_codes' or elem.attrib.get('type') != 'array':
+        if elem is None or elem.tag != 'plan_codes' or elem.attrib.get('type') != 'array':
             return super(Coupon, cls).value_for_element(elem)
 
         return [code_elem.text for code_elem in elem]
