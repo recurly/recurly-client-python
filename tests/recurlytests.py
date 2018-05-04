@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from datetime import datetime
 import email
-import logging
+from recurly import recurly_logging as logging
 import os
 from os.path import join, dirname
 import time

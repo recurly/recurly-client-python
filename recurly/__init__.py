@@ -1,4 +1,4 @@
-import logging
+from recurly import recurly_logging as logging
 import sys
 from six.moves.urllib.parse import urljoin
 from xml.etree import ElementTree
