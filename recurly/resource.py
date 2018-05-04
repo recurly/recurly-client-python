@@ -12,7 +12,7 @@ import recurly
 import recurly.errors
 from recurly.link_header import parse_link_value
 from six.moves import http_client
-from six.moves.urllib.parse import urlencode, urlsplit, quote
+from six.moves.urllib.parse import urlencode, urlsplit, quote, urlparse
 
 def urlencode_params(args):
     # Need to make bools lowercase
@@ -214,7 +214,8 @@ class Resource(object):
             self.currency = recurly.DEFAULT_CURRENCY
 
         for key, value in six.iteritems(kwargs):
-            setattr(self, key, value)
+            if key not in ('collection_path', 'member_path', 'node_name', 'attributes'):
+                setattr(self, key, value)
 
     @classmethod
     def http_request(cls, url, method='GET', body=None, headers=None):
@@ -234,6 +235,12 @@ class Resource(object):
 
         if recurly.API_KEY is None:
             raise recurly.UnauthorizedError('recurly.API_KEY not set')
+
+        url_parts = urlparse(url)
+        if not any(url_parts.netloc.endswith(d) for d in recurly.VALID_DOMAINS):
+            # TODO Exception class used for clean backport, change to
+            # ConfigurationError
+            raise Exception('Only a recurly domain may be called')
 
         is_non_ascii = lambda s: any(ord(c) >= 128 for c in s)
 
