@@ -1,4 +1,4 @@
-import logging
+from recurly import recurly_logging as logging
 import sys
 import re
 from datetime import datetime
