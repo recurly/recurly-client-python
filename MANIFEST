@@ -4,4 +4,5 @@ recurly/__init__.py
 recurly/errors.py
 recurly/js.py
 recurly/link_header.py
+recurly/recurly_logging.py
 recurly/resource.py
