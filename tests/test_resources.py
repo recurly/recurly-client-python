@@ -1,6 +1,6 @@
 from cStringIO import StringIO
 import collections
-import logging
+from recurly import recurly_logging as logging
 import time
 from urlparse import urljoin
 from xml.etree import ElementTree

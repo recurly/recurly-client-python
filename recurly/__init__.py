@@ -1,6 +1,6 @@
-import logging
 from urllib import urlencode
 from urlparse import urljoin
+from recurly import recurly_logging as logging
 from xml.etree import ElementTree
 
 import recurly.js as js

@@ -1,7 +1,7 @@
 import base64
 from datetime import datetime
 import httplib
-import logging
+from recurly import recurly_logging as logging
 from urllib import urlencode, quote
 from urlparse import urlsplit
 from xml.etree import ElementTree
