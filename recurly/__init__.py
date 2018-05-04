@@ -22,6 +22,9 @@ https://dev.recurly.com/docs/getting-started
 __version__ = '2.3.1'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
+VALID_DOMAINS = ('.recurly.com',)
+"""A tuple of whitelisted domains that this client can connect to."""
+
 USER_AGENT = 'recurly-python/%s; python %s' % (recurly.__version__, recurly.__python_version__)
 
 BASE_URI = 'https://%s.recurly.com/v2/'
