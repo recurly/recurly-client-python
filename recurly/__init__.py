@@ -21,6 +21,9 @@ http://docs.recurly.com/api/
 
 __version__ = '2.0.5'
 
+VALID_DOMAINS = ('.recurly.com',)
+"""A tuple of whitelisted domains that this client can connect to."""
+
 BASE_URI = 'https://api.recurly.com/v2/'
 """The API endpoint to send requests to."""
 

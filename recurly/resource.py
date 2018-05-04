@@ -4,6 +4,7 @@ import httplib
 from recurly import recurly_logging as logging
 from urllib import urlencode, quote
 from urlparse import urlsplit
+from urlparse import urlparse
 from xml.etree import ElementTree
 
 import iso8601
@@ -153,7 +154,8 @@ class Resource(object):
             self.currency = recurly.DEFAULT_CURRENCY
 
         for key, value in kwargs.iteritems():
-            setattr(self, key, value)
+            if key not in ('collection_path', 'member_path', 'node_name', 'attributes'):
+                setattr(self, key, value)
 
     @classmethod
     def http_request(cls, url, method='GET', body=None, headers=None):
@@ -170,6 +172,13 @@ class Resource(object):
         respectively.
 
         """
+
+        url_parts = urlparse(url)
+        if not any(url_parts.netloc.endswith(d) for d in recurly.VALID_DOMAINS):
+            # TODO Exception class used for clean backport, change to
+            # ConfigurationError
+            raise Exception('Only a recurly domain may be called')
+
         urlparts = urlsplit(url)
         connection_class = httplib.HTTPSConnection if urlparts.scheme == 'https' else httplib.HTTPConnection
         connection = connection_class(urlparts.netloc)
