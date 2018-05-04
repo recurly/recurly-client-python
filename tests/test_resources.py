@@ -1,5 +1,5 @@
 import collections
-import logging
+from recurly import recurly_logging as logging
 import time
 from xml.etree import ElementTree
 

@@ -1,7 +1,7 @@
 import base64
 from datetime import datetime
-import logging
 import socket
+from recurly import recurly_logging as logging
 import ssl
 import sys
 from xml.etree import ElementTree

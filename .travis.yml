@@ -6,4 +6,4 @@ install:
   - pip install six mock iso8601 backports.ssl-match-hostname --use-mirrors
   - python setup.py install
 script:
-  - python -m unittest discover -s tests
+  - RECURLY_INSECURE_DEBUG=true python -m unittest discover -s tests
