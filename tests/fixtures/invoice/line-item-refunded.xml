@@ -1,4 +1,4 @@
-POST https://api.recurly.com/v2/invoices/1001/refund HTTP/1.1
+POST https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8/refund HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
