@@ -1,4 +1,4 @@
-import logging
+from recurly import recurly_logging as logging
 import sys
 import re
 from datetime import datetime
@@ -30,6 +30,9 @@ cached_rate_limits = {
         'cached_at': None,
         }
 
+VALID_DOMAINS = ('.recurly.com',)
+"""A tuple of whitelisted domains that this client can connect to."""
+
 USER_AGENT = 'recurly-python/%s; python %s' % (recurly.__version__, recurly.__python_version__)
 
 BASE_URI = 'https://%s.recurly.com/v2/'
@@ -54,6 +57,13 @@ DEFAULT_CURRENCY = 'USD'
 SOCKET_TIMEOUT_SECONDS = None
 """The number of seconds after which to timeout requests to the Recurly API.
 If unspecified, the global default timeout is used."""
+
+def urljoin(url1, url2):
+    if url1.endswith('/'):
+        url1 = url1[0:-1]
+    if not url2.startswith('/'):
+        url2 = '/' + url2
+    return url1 + url2
 
 def base_uri():
     if SUBDOMAIN is None:
@@ -238,12 +248,12 @@ class Account(Resource):
 
     def charge(self, charge):
         """Charge (or credit) this account with the given `Adjustment`."""
-        url = urljoin(self._url, '%s/adjustments' % self.account_code)
+        url = urljoin(self._url, '/adjustments')
         return charge.post(url)
 
     def invoice(self, **kwargs):
         """Create an invoice for any outstanding adjustments this account has."""
-        url = urljoin(self._url, '%s/invoices' % self.account_code)
+        url = urljoin(self._url, '/invoices')
 
         if kwargs:
             response = self.http_request(url, 'POST', Invoice(**kwargs), {'Content-Type':
@@ -263,7 +273,7 @@ class Account(Resource):
 
     def build_invoice(self):
         """Preview an invoice for any outstanding adjustments this account has."""
-        url = urljoin(self._url, '%s/invoices/preview' % self.account_code)
+        url = urljoin(self._url, '/invoices/preview')
 
         response = self.http_request(url, 'POST')
         if response.status != 200:
@@ -278,7 +288,7 @@ class Account(Resource):
 
     def notes(self):
         """Fetch Notes for this account."""
-        url = urljoin(self._url, '%s/notes' % self.account_code)
+        url = urljoin(self._url, '/notes')
         return Note.paginated(url)
 
     def redemption(self):
@@ -289,7 +299,7 @@ class Account(Resource):
 
     def reopen(self):
         """Reopen a closed account."""
-        url = urljoin(self._url, '%s/reopen' % self.account_code)
+        url = urljoin(self._url, '/reopen')
         response = self.http_request(url, 'PUT')
         if response.status != 200:
             self.raise_http_error(response)
@@ -300,12 +310,12 @@ class Account(Resource):
 
     def subscribe(self, subscription):
         """Create the given `Subscription` for this existing account."""
-        url = urljoin(self._url, '%s/subscriptions' % self.account_code)
+        url = urljoin(self._url, '/subscriptions')
         return subscription.post(url)
 
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
-        url = urljoin(self._url, '%s/billing_info' % self.account_code)
+        url = urljoin(self._url, '/billing_info')
         response = billing_info.http_request(url, 'PUT', billing_info,
             {'Content-Type': 'application/xml; charset=utf-8'})
         if response.status == 200:
@@ -323,7 +333,7 @@ class Account(Resource):
         """Creates a shipping address on an existing account. If you are
         creating an account, you can embed the shipping addresses with the
         request"""
-        url = urljoin(self._url, '%s/shipping_addresses' % self.account_code)
+        url = urljoin(self._url, '/shipping_addresses')
         return shipping_address.post(url)
 
 class BillingInfo(Resource):
@@ -449,7 +459,7 @@ class GiftCard(Resource):
             url = self._url + '/preview'
             return self.post(url)
         else:
-            url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
+            url = urljoin(recurly.base_uri(), self.collection_path + '/preview')
             return self.post(url)
 
     def redeem(self, account_code):
@@ -458,9 +468,9 @@ class GiftCard(Resource):
         redemption_path = '%s/redeem' % (self.redemption_code)
 
         if hasattr(self, '_url'):
-            url = urljoin(self._url, redemption_path)
+            url = urljoin(self._url, '/redeem')
         else:
-            url = urljoin(recurly.base_uri(), self.collection_path) + '/' + redemption_path
+            url = urljoin(recurly.base_uri(), self.collection_path + '/' + redemption_path)
 
         recipient_account = _RecipientAccount(account_code=account_code)
         return self.post(url, recipient_account)
@@ -575,7 +585,7 @@ class Coupon(Resource):
         elem = ElementTree.Element(self.nodename)
         elem.append(Resource.element_for_value('number_of_unique_codes', amount))
 
-        url = urljoin(self._url, '%s/generate' % (self.coupon_code, ))
+        url = urljoin(self._url, '/generate')
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
         response = self.http_request(url, 'POST', body, { 'Content-Type':
@@ -587,7 +597,7 @@ class Coupon(Resource):
         return Page.page_for_url(response.getheader('Location'))
 
     def restore(self):
-        url = urljoin(self._url, '%s/restore' % self.coupon_code)
+        url = urljoin(self._url, '/restore')
         self.put(url)
 
 class Redemption(Resource):
@@ -806,7 +816,7 @@ class Invoice(Resource):
         return elem
 
     def mark_failed(self):
-        url = urljoin(self._url, '%s/mark_failed' % (self.invoice_number, ))
+        url = urljoin(self._url, '/mark_failed')
 
         collection = InvoiceCollection()
         response = self.http_request(url, 'PUT')
@@ -819,7 +829,7 @@ class Invoice(Resource):
         return collection
 
     def _create_refund_invoice(self, element):
-        url = urljoin(self._url, '%s/refund' % (self.invoice_number, ))
+        url = urljoin(self._url, '/refund')
         body = ElementTree.tostring(element, encoding='UTF-8')
 
         refund_invoice = Invoice()
@@ -881,7 +891,6 @@ class Purchase(Resource):
         Returns:
             InvoiceCollection: The generated collection of invoices
         """
-        url = urljoin(recurly.base_uri(), self.collection_path)
         return self.__invoice(self.collection_path)
 
     def preview(self):
@@ -892,8 +901,7 @@ class Purchase(Resource):
         Returns:
             InvoiceCollection: The preview of collection of invoices
         """
-        url = urljoin(recurly.base_uri(), self.collection_path + '/preview')
-        return self.__invoice(url)
+        return self.__invoice(self.collection_path + '/preview')
 
     def authorize(self):
         """
@@ -906,8 +914,7 @@ class Purchase(Resource):
         Returns:
             InvoiceCollection: The authorized collection of invoices
         """
-        url = recurly.base_uri() + self.collection_path + '/authorize'
-        return self.__invoice(url)
+        return self.__invoice(self.collection_path + '/authorize')
 
     def __invoice(self, url):
         # We must null out currency in subscriptions and adjustments
@@ -999,19 +1006,19 @@ class Subscription(Resource):
             url = self._url + '/preview'
             return self.post(url)
         else:
-            url = urljoin(recurly.base_uri(), self.collection_path) + '/preview'
+            url = urljoin(recurly.base_uri(), self.collection_path + '/preview')
             return self.post(url)
 
     def update_notes(self, **kwargs):
         """Updates the notes on the subscription without generating a change"""
         for key, val in kwargs.iteritems():
             setattr(self, key, val)
-        url = urljoin(self._url, '%s/notes' % self.uuid)
+        url = urljoin(self._url, '/notes')
         self.put(url)
 
     def pause(self, remaining_pause_cycles):
         """Pause a subscription"""
-        url = urljoin(self._url, '%s/pause' % self.uuid)
+        url = urljoin(self._url, '/pause')
         elem = ElementTree.Element(self.nodename)
         elem.append(Resource.element_for_value('remaining_pause_cycles',
                                                remaining_pause_cycles))
@@ -1027,7 +1034,7 @@ class Subscription(Resource):
 
     def resume(self):
         """Resume a subscription"""
-        url = urljoin(self._url, '%s/resume' % self.uuid)
+        url = urljoin(self._url, '/resume')
         self.put(url)
 
     def _update(self):
@@ -1044,8 +1051,7 @@ class Subscription(Resource):
     def create_usage(self, sub_add_on, usage):
         """Record the usage on the given subscription add on and update the
         usage object with returned xml"""
-        url = urljoin(self._url, '%s/add_ons/%s/usage' % (self.uuid,
-            sub_add_on.add_on_code))
+        url = urljoin(self._url, '/add_ons/%s/usage' % (sub_add_on.add_on_code,))
         return usage.post(url)
 
 class TransactionBillingInfo(recurly.Resource):
@@ -1251,13 +1257,13 @@ class Plan(Resource):
 
     def get_add_on(self, add_on_code):
         """Return the `AddOn` for this plan with the given add-on code."""
-        url = urljoin(self._url, '%s/add_ons/%s' % (self.plan_code, add_on_code))
+        url = urljoin(self._url, '/add_ons/%s' % (add_on_code,))
         resp, elem = AddOn.element_for_url(url)
         return AddOn.from_element(elem)
 
     def create_add_on(self, add_on):
         """Make the given `AddOn` available to subscribers on this plan."""
-        url = urljoin(self._url, '%s/add_ons' % self.plan_code)
+        url = urljoin(self._url, '/add_ons')
         return add_on.post(url)
 
 class Usage(Resource):

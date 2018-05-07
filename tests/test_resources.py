@@ -1,5 +1,5 @@
 import collections
-import logging
+from recurly import recurly_logging as logging
 import time
 from xml.etree import ElementTree
 from datetime import datetime
@@ -1621,7 +1621,7 @@ class TestResources(RecurlyTest):
 
     def test_gift_cards_redeem_with_url(self):
         gift_card = GiftCard(redemption_code='9FC359369CD3892E')
-        gift_card._url = 'https://api.recurly.com/v2/gift_cards/2018434791876074812'
+        gift_card._url = 'https://api.recurly.com/v2/gift_cards/9FC359369CD3892E'
 
         with self.mock_request('gift_cards/redeem.xml'):
             gift_card.redeem('e0004e3c-216c-4254-8767-9be605cd0b03')
