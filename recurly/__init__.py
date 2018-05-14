@@ -909,6 +909,17 @@ class Purchase(Resource):
         url = recurly.base_uri() + self.collection_path + '/authorize'
         return self.__invoice(url)
 
+    def pending(self):
+        """
+        Use for Adyen HPP transaction requests. Runs validations
+        but does not run any transactions.
+
+        Returns:
+            InvoiceCollection: The authorized collection of invoices
+        """
+        url = recurly.base_uri() + self.collection_path + '/pending'
+        return self.__invoice(url)
+
     def __invoice(self, url):
         # We must null out currency in subscriptions and adjustments
         # TODO we should deprecate and remove default currency support
