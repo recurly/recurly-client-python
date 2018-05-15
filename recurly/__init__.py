@@ -44,7 +44,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.11'
+API_VERSION = '2.12'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -915,6 +915,17 @@ class Purchase(Resource):
             InvoiceCollection: The authorized collection of invoices
         """
         return self.__invoice(self.collection_path + '/authorize')
+
+    def pending(self):
+        """
+        Use for Adyen HPP transaction requests. Runs validations
+        but does not run any transactions.
+
+        Returns:
+            InvoiceCollection: The authorized collection of invoices
+        """
+        url = recurly.base_uri() + self.collection_path + '/pending'
+        return self.__invoice(url)
 
     def __invoice(self, url):
         # We must null out currency in subscriptions and adjustments

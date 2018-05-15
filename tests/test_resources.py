@@ -121,6 +121,12 @@ class TestResources(RecurlyTest):
             collection = purchase.authorize()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
+        with self.mock_request('purchase/pending.xml'):
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            purchase.account.billing_info.external_hpp_type = 'adyen'
+            collection = purchase.pending()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
