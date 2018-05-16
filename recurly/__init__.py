@@ -20,7 +20,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.8.1'
+__version__ = '2.8.3'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -922,10 +922,9 @@ class Purchase(Resource):
         but does not run any transactions.
 
         Returns:
-            InvoiceCollection: The authorized collection of invoices
+            InvoiceCollection: The pending collection of invoices
         """
-        url = recurly.base_uri() + self.collection_path + '/pending'
-        return self.__invoice(url)
+        return self.__invoice(self.collection_path + '/pending')
 
     def __invoice(self, url):
         # We must null out currency in subscriptions and adjustments

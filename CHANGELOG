@@ -1,5 +1,9 @@
 ## Unreleased
 #
+## Version 2.8.3 – May 15th, 2018 ##
+
+- Implement API version 2.12 changes
+
 ## Version 2.8.0 – April 5th, 2018 ##
 
 - Implement API version 2.11 changes
