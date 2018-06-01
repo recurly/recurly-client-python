@@ -882,6 +882,7 @@ class Purchase(Resource):
         'terms_and_conditions',
         'vat_reverse_charge_notes',
         'shipping_address_id',
+        'gateway_code',
     )
 
     def invoice(self):
