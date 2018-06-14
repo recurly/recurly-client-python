@@ -38,7 +38,8 @@ setup(
     packages=['recurly'],
     install_requires=['iso8601', 'backports.ssl_match_hostname', 'six>=1.4.0'] + more_install_requires,
     tests_require=['mock',
-                   'six'],
+                   'six',
+                   'unittest2'],
     test_suite='unittest2.collector',
     zip_safe=True,
 )
