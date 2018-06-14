@@ -71,7 +71,3 @@ Support
 - `https://support.recurly.com <https://support.recurly.com>`_
 - `stackoverflow <http://stackoverflow.com/questions/tagged/recurly>`_
 
-IRC
----
-
-If you have general questions about the library or integration, you may find some of us in the #recurly irc channel on the Freenode network.
