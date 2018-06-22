@@ -1009,6 +1009,13 @@ class Subscription(Resource):
         'imported_trial',
         'remaining_pause_cycles',
         'paused_at',
+        'auto_renew',
+        'renewal_billing_cycles',
+        'first_billing_date',
+        'first_bill_date',
+        'next_bill_date',
+        'current_term_started_at',
+        'current_term_ends_at',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -1264,6 +1271,7 @@ class Plan(Resource):
         'revenue_schedule_type',
         'setup_fee_revenue_schedule_type',
         'trial_requires_billing_info',
+        'auto_renew',
     )
 
     def get_add_on(self, add_on_code):
