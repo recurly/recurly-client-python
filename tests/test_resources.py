@@ -11,7 +11,7 @@ from six import StringIO
 from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, Purchase, Invoice, InvoiceCollection, CreditPayment
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurlytests import RecurlyTest, xml
 
@@ -230,6 +230,13 @@ class TestResources(RecurlyTest):
             with self.mock_request('account/numeric-deleted.xml'):
                 account.delete()
 
+        """Get taxed account"""
+        with self.mock_request('account/show-taxed.xml'):
+            account = Account.get(account_code)
+            self.assertTrue(account.tax_exempt)
+
+    def test_account_addresses(self):
+        account_code = 'test%s' % self.test_id
         """Create an account with an account level address"""
         account = Account(account_code=account_code)
         account.address.address1 = '123 Main St'
@@ -276,10 +283,34 @@ class TestResources(RecurlyTest):
         with self.mock_request('shipping_addresses/created-on-existing-account.xml'):
             shipping_address = account.create_shipping_address(shipping_address)
 
-        """Get taxed account"""
-        with self.mock_request('account/show-taxed.xml'):
-            account = Account.get(account_code)
-            self.assertTrue(account.tax_exempt)
+    def test_account_custom_fields(self):
+        account_code = 'test%s' % self.test_id
+        """Create an account with a custom field"""
+        account = Account(
+            account_code=account_code,
+            custom_fields=[
+                CustomField(name="field_1", value="my field value")
+            ]
+        )
+        with self.mock_request('account/created-with-custom-fields.xml'):
+            account.save()
+
+        self.assertEquals(account.custom_fields[0].name, 'field_1')
+        self.assertEquals(account.custom_fields[0].value, 'my field value')
+
+        """Update custom fields on an account"""
+        with self.mock_request('account/exists-custom-fields.xml'):
+            existing_account = Account.get(account_code)
+        fields = existing_account.custom_fields
+        fields[1].value = "new value2"
+        existing_account.custom_fields = fields
+        with self.mock_request('account/updated-custom-fields.xml'):
+            existing_account.save()
+
+        self.assertEquals(existing_account.custom_fields[0].name, 'field1')
+        self.assertEquals(existing_account.custom_fields[0].value, 'original value1')
+        self.assertEquals(existing_account.custom_fields[1].name, 'field2')
+        self.assertEquals(existing_account.custom_fields[1].value, 'new value2')
 
     def test_account_acquisition(self):
         account_code = 'test%s' % self.test_id
@@ -1319,6 +1350,39 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('subscribe-add-on/plan-deleted.xml'):
                 plan.delete()
+
+    def test_subscription_custom_fields(self):
+        account_code = 'subscribe-%s-2' % self.test_id
+        sub = Subscription(
+            plan_code='basicplan',
+            currency='USD',
+            account=Account(
+                account_code=account_code,
+                billing_info=BillingInfo(
+                    first_name='Verena',
+                    last_name='Example',
+                    address1='123 Main St',
+                    city=six.u('San Jos\xe9'),
+                    state='CA',
+                    zip='94105',
+                    country='US',
+                    type='credit_card',
+                    number='4111 1111 1111 1111',
+                    verification_value='7777',
+                    year='2015',
+                    month='12',
+                ),
+                custom_fields=[CustomField(name='my_account_field', value='here is the account value you seek')],
+            ),
+            custom_fields=[CustomField(name='my_sub_field', value='definitely sub value')],
+        )
+
+        with self.mock_request('subscription/subscribe-custom-fields.xml'):
+            sub.save()
+
+        self.assertTrue(sub._url)
+        self.assertEquals(sub.custom_fields[0].name, 'my_sub_field')
+        self.assertEquals(sub.custom_fields[0].value, 'definitely sub value')
 
     def test_account_notes(self):
         account1 = Account(account_code='note%s' % self.test_id)

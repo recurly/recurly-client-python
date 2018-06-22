@@ -1,0 +1,37 @@
+PUT https://api.recurly.com/v2/accounts/testmock HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <custom_fields>
+    <custom_field />
+    <custom_field>
+      <name>field2</name>
+      <value>new value2</value>
+    </custom_field>
+  </custom_fields>
+  <account_code>testmock</account_code>
+</account>
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/testmock
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/testmock">
+  <account_code>testmock</account_code>
+  <custom_fields type="array">
+    <custom_field>
+      <name>field1</name>
+      <value>original value1</value>
+    </custom_field>
+    <custom_field>
+      <name>field2</name>
+      <value>new value2</value>
+    </custom_field>
+  </custom_fields>
+</account>
