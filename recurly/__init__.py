@@ -44,7 +44,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.12'
+API_VERSION = '2.13'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -882,6 +882,7 @@ class Purchase(Resource):
         'terms_and_conditions',
         'vat_reverse_charge_notes',
         'shipping_address_id',
+        'gateway_code',
     )
 
     def invoice(self):
@@ -1008,6 +1009,13 @@ class Subscription(Resource):
         'imported_trial',
         'remaining_pause_cycles',
         'paused_at',
+        'auto_renew',
+        'renewal_billing_cycles',
+        'first_billing_date',
+        'first_bill_date',
+        'next_bill_date',
+        'current_term_started_at',
+        'current_term_ends_at',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
@@ -1263,6 +1271,7 @@ class Plan(Resource):
         'revenue_schedule_type',
         'setup_fee_revenue_schedule_type',
         'trial_requires_billing_info',
+        'auto_renew',
     )
 
     def get_add_on(self, add_on_code):
