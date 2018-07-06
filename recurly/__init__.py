@@ -127,6 +127,27 @@ class AccountAcquisition(Resource):
         'updated_at',
     )
 
+class CustomField(Resource):
+
+    """A field to store extra data on the account or subscription."""
+
+    nodename = 'custom_field'
+
+    attributes = (
+        'name',
+        'value',
+    )
+
+    def to_element(self, root_name=None):
+        # Include the field name/value pair when the value changed
+        if 'value' in self.__dict__:
+            try:
+                self.name = self.name # forces name into __dict__
+            except AttributeError:
+                pass
+
+        return super(CustomField, self).to_element(root_name)
+
 class Account(Resource):
 
     """A customer account."""
@@ -160,9 +181,10 @@ class Account(Resource):
         'has_paused_subscription',
         'has_past_due_invoice',
         'preferred_locale',
+        'custom_fields',
     )
 
-    _classes_for_nodename = { 'address': Address }
+    _classes_for_nodename = { 'address': Address, 'custom_field': CustomField }
 
     sensitive_attributes = ('number', 'verification_value',)
 
@@ -1016,6 +1038,7 @@ class Subscription(Resource):
         'next_bill_date',
         'current_term_started_at',
         'current_term_ends_at',
+        'custom_fields',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

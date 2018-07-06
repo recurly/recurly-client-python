@@ -1,0 +1,37 @@
+GET https://api.recurly.com/v2/accounts/testmock HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/testmock">
+  <adjustments href="https://api.recurly.com/v2/accounts/testmock/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/testmock/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/testmock/invoices"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/testmock/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/testmock/transactions"/>
+  <account_balance href="https://api.recurly.com/v2/accounts/testmock/balance"/>
+  <account_code>testmock</account_code>
+  <username nil="nil"></username>
+  <email nil="nil"></email>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <entity_use_code>I</entity_use_code>
+  <accept_language nil="nil"></accept_language>
+  <custom_fields type="array">
+    <custom_field>
+      <name>field1</name>
+      <value>original value1</value>
+    </custom_field>
+    <custom_field>
+      <name>field2</name>
+      <value>original value2</value>
+    </custom_field>
+  </custom_fields>
+</account>

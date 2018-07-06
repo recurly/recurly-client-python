@@ -1,0 +1,45 @@
+POST https://api.recurly.com/v2/accounts HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <account_code>testmock</account_code>
+  <custom_fields>
+    <custom_field>
+      <name>field_1</name>
+      <value>my field value</value>
+    </custom_field>
+  </custom_fields>
+</account>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/testmock
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/testmock">
+  <adjustments href="https://api.recurly.com/v2/accounts/testmock/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/testmock/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/testmock/invoices"/>
+  <shipping_addresses href="https://api.recurly.com/v2/accounts/testmock/shipping_addresses"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/testmock/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/testmock/transactions"/>
+  <account_code>testmock</account_code>
+  <username nil="nil"></username>
+  <email nil="nil"></email>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <vat_number nil="nil"></vat_number>
+  <accept_language nil="nil"></accept_language>
+  <custom_fields type="array">
+    <custom_field>
+      <name>field_1</name>
+      <value>my field value</value>
+    </custom_field>
+  </custom_fields>
+</account>
