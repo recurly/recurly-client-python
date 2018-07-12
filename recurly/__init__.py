@@ -905,6 +905,7 @@ class Purchase(Resource):
         'vat_reverse_charge_notes',
         'shipping_address_id',
         'gateway_code',
+        'collection_method',
     )
 
     def invoice(self):

@@ -66,6 +66,7 @@ class TestResources(RecurlyTest):
         purchase = Purchase(
             currency = 'USD',
             gateway_code = 'aBcD1234',
+            collection_method = 'manual',
             account = Account(
                 account_code = account_code,
                 shipping_addresses = [
