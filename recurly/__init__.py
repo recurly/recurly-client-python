@@ -865,6 +865,20 @@ class Invoice(Resource):
       except AttributeError:
         raise AttributeError("redemption")
 
+    def enter_offline_payment(self, transaction):
+        """
+        Records an offline (external) payment on the invoice.
+        Pass in a Transaction object to set the details of the created
+        transaction. The attributes available to set are
+        (payment_method, collected_at, amount_in_cents, description)
+
+        Returns:
+            Transaction: The created transaction
+        """
+        url = urljoin(self._url, '/transactions')
+        transaction.post(url)
+        return transaction
+
 class InvoiceCollection(Resource):
 
     """A collection of invoices resulting from some action. Includes
