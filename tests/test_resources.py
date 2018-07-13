@@ -863,6 +863,19 @@ class TestResources(RecurlyTest):
         self.assertEqual(invoice.collection_method, 'manual')
         self.assertEqual(invoice.net_terms, 30)
 
+    def test_invoice_offline_payment(self):
+        with self.mock_request('invoice/show-invoice.xml'):
+            invoice = Invoice.get("6019")
+
+        self.assertIsInstance(invoice, Invoice)
+
+        with self.mock_request('invoice/offline-payment.xml'):
+            transaction = Transaction(amount_in_cents=5000, description="Collected externally")
+            transaction = invoice.enter_offline_payment(transaction)
+
+        self.assertIsInstance(transaction, Transaction)
+
+
     def test_build_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):

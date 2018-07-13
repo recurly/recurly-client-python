@@ -1,0 +1,77 @@
+POST https://api.recurly.com/v2/invoices/6019/transactions HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction>
+  <currency>USD</currency>
+  <amount_in_cents type="integer">5000</amount_in_cents>
+  <description>Collected externally</description>
+</transaction>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/transactions/46036dcc04137580364f244e9591813f
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction href="https://api.recurly.com/v2/transactions/46036dcc04137580364f244e9591813f" type="credit_card">
+  <account href="https://api.recurly.com/v2/accounts/aa463d59-a618-4b71-b1f4-0410f835fe74"/>
+  <invoice href="https://api.recurly.com/v2/invoices/6019"/>
+  <uuid>46036dcc04137580364f244e9591813f</uuid>
+  <action>purchase</action>
+  <amount_in_cents type="integer">5000</amount_in_cents>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <currency>USD</currency>
+  <status>success</status>
+  <payment_method>credit_card</payment_method>
+  <reference nil="nil"></reference>
+  <source>transaction</source>
+  <recurring type="boolean">false</recurring>
+  <test type="boolean">true</test>
+  <voidable type="boolean">true</voidable>
+  <refundable type="boolean">true</refundable>
+  <ip_address nil="nil"></ip_address>
+  <gateway_type nil="nil"></gateway_type>
+  <origin>api</origin>
+  <description>offline payment</description>
+  <message>Manually entered transaction</message>
+  <approval_code nil="nil"></approval_code>
+  <failure_type nil="nil"></failure_type>
+  <gateway_error_codes nil="nil"></gateway_error_codes>
+  <cvv_result code="" nil="nil"></cvv_result>
+  <avs_result code="" nil="nil"></avs_result>
+  <avs_result_street nil="nil"></avs_result_street>
+  <avs_result_postal nil="nil"></avs_result_postal>
+  <created_at type="datetime">2018-07-13T17:13:58Z</created_at>
+  <collected_at type="datetime">2018-07-13T17:13:58Z</collected_at>
+  <updated_at type="datetime">2018-07-13T17:13:58Z</updated_at>
+  <details>
+    <account>
+      <account_code>aa463d59-a618-4b71-b1f4-0410f835fe74</account_code>
+      <first_name nil="nil"></first_name>
+      <last_name nil="nil"></last_name>
+      <company nil="nil"></company>
+      <email nil="nil"></email>
+      <billing_info type="credit_card">
+        <first_name nil="nil"></first_name>
+        <last_name nil="nil"></last_name>
+        <address1 nil="nil"></address1>
+        <address2 nil="nil"></address2>
+        <city nil="nil"></city>
+        <state nil="nil"></state>
+        <zip nil="nil"></zip>
+        <country nil="nil"></country>
+        <phone nil="nil"></phone>
+        <vat_number nil="nil"></vat_number>
+        <card_type>Unknown</card_type>
+        <year nil="nil"></year>
+        <month nil="nil"></month>
+        <first_six nil="nil"></first_six>
+        <last_four nil="nil"></last_four>
+      </billing_info>
+    </account>
+  </details>
+</transaction>
