@@ -55,6 +55,7 @@ Content-Type: application/xml; charset=utf-8
     </subscription>
   </subscriptions>
   <gateway_code>aBcD1234</gateway_code>
+  <collection_method>manual</collection_method>
 </purchase>
 
 HTTP/1.1 201 Created
