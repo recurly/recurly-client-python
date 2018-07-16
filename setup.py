@@ -24,7 +24,7 @@ setup(
     long_description=DESCRIPTION,
     author='Recurly',
     author_email='support@recurly.com',
-    url='https://recurly.readme.io/v2.0/page/python',
+    url='https://github.com/recurly/recurly-client-python',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
