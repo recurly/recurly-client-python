@@ -19,6 +19,8 @@ Content-Type: application/xml; charset=utf-8
   <zip>94105</zip>
   <country>US</country>
   <currency>USD</currency>
+  <gateway_token>gatewaytoken123</gateway_token>
+  <gateway_code>gatewaycode123</gateway_code>
 </billing_info>
 
 HTTP/1.1 201 Created
@@ -40,4 +42,6 @@ Location: https://api.recurly.com/v2/accounts/binfomock/billing_info
   <first_six>411111</first_six>
   <last_four>1111</last_four>
   <currency>USD</currency>
+  <gateway_token>gatewaytoken123</gateway_token>
+  <gateway_code>gatewaycode123</gateway_code>
 </billing_info>

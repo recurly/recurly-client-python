@@ -399,6 +399,8 @@ class BillingInfo(Resource):
         'currency',
         'updated_at',
         'external_hpp_type',
+        'gateway_token',
+        'gateway_code',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)

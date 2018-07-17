@@ -451,9 +451,14 @@ class TestResources(RecurlyTest):
                 verification_value='7777',
                 year='2015',
                 month='12',
+                gateway_token='gatewaytoken123',
+                gateway_code='gatewaycode123',
             )
             with self.mock_request('billing-info/created.xml'):
                 account.update_billing_info(binfo)
+
+            self.assertEqual(binfo.gateway_token, 'gatewaytoken123')
+            self.assertEqual(binfo.gateway_code, 'gatewaycode123')
 
             logger.removeHandler(log_handler)
             log_content = log_content.getvalue()
