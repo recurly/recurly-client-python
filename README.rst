@@ -43,9 +43,13 @@ Set your API key and optionally set a certificate authority certificate file and
 Recurly Python Client Tests
 ---------------------------
 
-To run these tests, use the `unittest` test runner:
+_NOTE_: The unit tests require certain packages to be installed on your system. Install the following packages with pip:
 
-    $ python -m unittest discover -s tests
+    $ pip install six mock iso8601 backports.ssl-match-hostname
+
+To run these tests, use the `unittest` test runner with the RECURLY_INSECURE_DEBUG environment variable set to 'true':
+
+    $ RECURLY_INSECURE_DEBUG=true python -m unittest discover -s tests
 
 The resource tests in `test_resources.py` will run using the HTTP fixtures in
 `tests/fixtures`. To run the tests against a live Recurly API endpoint,
