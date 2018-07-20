@@ -20,7 +20,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.8.5'
+__version__ = '2.8.6'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
