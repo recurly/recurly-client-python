@@ -1,5 +1,14 @@
 ## Unreleased
-#
+
+## Version 2.8.6 – July 20th, 2018 ##
+
+- Add gateway_token and gateway_code fields to BillingInfo class
+- Add RECURLY_INSECURE_DEBUG=true callout for running tests
+- Add more pythons to CI
+- Update url in setup.py 
+- Support offline payments
+- Support Purchase#collection_method 
+
 ## Version 2.8.5 – July 10th, 2018 ##
 
 - Add Custom Fields to Account and Subscription
