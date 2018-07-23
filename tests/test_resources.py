@@ -880,6 +880,54 @@ class TestResources(RecurlyTest):
 
         self.assertIsInstance(transaction, Transaction)
 
+    def test_invoice_create(self):
+        # Invoices should not be created with save method
+        invoice = Invoice()
+        self.assertRaises(BadRequestError, invoice.save)
+
+    def test_invoice_update(self):
+        with self.mock_request('invoice/show-invoice.xml'):
+            invoice = Invoice.get("6019")
+
+        self.assertIsInstance(invoice, Invoice)
+
+        with self.mock_request('invoice/update-invoice.xml'):
+            invoice.address = recurly.Address(
+                first_name = 'Harry',
+                last_name = 'Potter',
+                company = 'Hogwarts',
+                name_on_account = 'Albus Dumbledore',
+                address1 = '4 Privet Drive',
+                address2 = 'Little Whinging',
+                city = 'Surrey',
+                state = 'England',
+                zip = 'YO8 9FX',
+                country = 'Great Britain',
+                phone = '781-452-4077'
+            )
+            invoice.po_number = '1234'
+            invoice.terms_and_conditions = 'School staff is not responsible for items left at Hogwarts School of Witchcraft and Wizardry.'
+            invoice.customer_notes = "It's levi-O-sa, not levio-SA!"
+            invoice.vat_reverse_charge_notes = "can't be changed when invoice was not a reverse charge"
+            invoice.net_terms = 1
+            invoice.save()
+
+        self.assertEqual(invoice.address.first_name, 'Harry')
+        self.assertEqual(invoice.address.last_name, 'Potter')
+        self.assertEqual(invoice.address.name_on_account, 'Albus Dumbledore')
+        self.assertEqual(invoice.address.company, 'Hogwarts')
+        self.assertEqual(invoice.address.address1, '4 Privet Drive')
+        self.assertEqual(invoice.address.address2, 'Little Whinging')
+        self.assertEqual(invoice.address.city, 'Surrey')
+        self.assertEqual(invoice.address.state, 'England')
+        self.assertEqual(invoice.address.zip, 'YO8 9FX')
+        self.assertEqual(invoice.address.country, 'Great Britain')
+        self.assertEqual(invoice.address.phone, '781-452-4077')
+        self.assertEqual(invoice.po_number, '1234')
+        self.assertEqual(invoice.terms_and_conditions, 'School staff is not responsible for items left at Hogwarts School of Witchcraft and Wizardry.')
+        self.assertEqual(invoice.customer_notes, "It's levi-O-sa, not levio-SA!")
+        self.assertEqual(invoice.vat_reverse_charge_notes, "can't be changed when invoice was not a reverse charge")
+        self.assertEqual(invoice.net_terms, 1)
 
     def test_build_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
