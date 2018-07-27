@@ -91,6 +91,10 @@ class Address(Resource):
     nodename = 'address'
 
     attributes = (
+        'first_name',
+        'last_name',
+        'name_on_account',
+        'company',
         'address1',
         'address2',
         'city',
@@ -730,6 +734,7 @@ class Invoice(Resource):
         'transactions',
         'terms_and_conditions',
         'customer_notes',
+        'vat_reverse_charge_notes', # Only shows if reverse charge invoice
         'address',
         'closed_at',
         'collection_method',
@@ -880,6 +885,12 @@ class Invoice(Resource):
         url = urljoin(self._url, '/transactions')
         transaction.post(url)
         return transaction
+
+    def save(self):
+        if hasattr(self, '_url'):
+            super(Invoice, self).save()
+        else:
+            raise BadRequestError("New invoices cannot be created using Invoice#save")
 
 class InvoiceCollection(Resource):
 
