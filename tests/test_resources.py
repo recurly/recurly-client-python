@@ -1,7 +1,6 @@
 import collections
 from recurly import recurly_logging as logging
 import time
-from xml.etree import ElementTree
 from datetime import datetime
 
 import six
