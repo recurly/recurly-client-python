@@ -1451,6 +1451,15 @@ class TestResources(RecurlyTest):
         self.assertEquals(sub.custom_fields[0].name, 'my_sub_field')
         self.assertEquals(sub.custom_fields[0].value, 'definitely sub value')
 
+        cfs = sub.custom_fields
+        cfs[0].value = 'A new sub value'
+        sub.custom_fields = cfs
+
+        with self.mock_request('subscription/subscribe-custom-fields-notes.xml'):
+            sub.update_notes()
+
+        self.assertEquals(sub.custom_fields[0].value, 'A new sub value')
+
     def test_account_notes(self):
         account1 = Account(account_code='note%s' % self.test_id)
         account2 = Account(account_code='note%s' % self.test_id)
