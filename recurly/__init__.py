@@ -3,6 +3,7 @@ import sys
 import re
 from datetime import datetime
 from six.moves.urllib.parse import urljoin
+from six import iteritems
 from xml.etree import ElementTree
 
 import recurly
@@ -20,7 +21,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.8.6'
+__version__ = '2.8.7'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -44,7 +45,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.13'
+API_VERSION = '2.14'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -91,6 +92,10 @@ class Address(Resource):
     nodename = 'address'
 
     attributes = (
+        'first_name',
+        'last_name',
+        'name_on_account',
+        'company',
         'address1',
         'address2',
         'city',
@@ -730,6 +735,7 @@ class Invoice(Resource):
         'transactions',
         'terms_and_conditions',
         'customer_notes',
+        'vat_reverse_charge_notes', # Only shows if reverse charge invoice
         'address',
         'closed_at',
         'collection_method',
@@ -880,6 +886,12 @@ class Invoice(Resource):
         url = urljoin(self._url, '/transactions')
         transaction.post(url)
         return transaction
+
+    def save(self):
+        if hasattr(self, '_url'):
+            super(Invoice, self).save()
+        else:
+            raise BadRequestError("New invoices cannot be created using Invoice#save")
 
 class InvoiceCollection(Resource):
 
@@ -1068,8 +1080,16 @@ class Subscription(Resource):
             return self.post(url)
 
     def update_notes(self, **kwargs):
-        """Updates the notes on the subscription without generating a change"""
-        for key, val in kwargs.iteritems():
+        """
+        Updates the notes on the subscription without generating a change
+        This endpoint also allows you to update custom fields:
+
+            `
+                sub.custom_fields[0].value = 'A new value'
+                sub.update_notes()
+            `
+        """
+        for key, val in iteritems(kwargs):
             setattr(self, key, val)
         url = urljoin(self._url, '/notes')
         self.put(url)

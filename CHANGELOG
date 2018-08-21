@@ -1,5 +1,12 @@
 ## Unreleased
 
+## Version 2.8.7 – August 21st, 2018 ##
+
+This version brings us up API version 2.14 but has no breaking changes.
+
+- Support updating an invoice
+- Support updating custom fields through Subscription#update_notes
+
 ## Version 2.8.6 – July 20th, 2018 ##
 
 - Add gateway_token and gateway_code fields to BillingInfo class
