@@ -3,6 +3,7 @@ import sys
 import re
 from datetime import datetime
 from six.moves.urllib.parse import urljoin
+from six import iteritems
 from xml.etree import ElementTree
 
 import recurly
@@ -1079,8 +1080,16 @@ class Subscription(Resource):
             return self.post(url)
 
     def update_notes(self, **kwargs):
-        """Updates the notes on the subscription without generating a change"""
-        for key, val in kwargs.iteritems():
+        """
+        Updates the notes on the subscription without generating a change
+        This endpoint also allows you to update custom fields:
+
+            `
+                sub.custom_fields[0].value = 'A new value'
+                sub.update_notes()
+            `
+        """
+        for key, val in iteritems(kwargs):
             setattr(self, key, val)
         url = urljoin(self._url, '/notes')
         self.put(url)
