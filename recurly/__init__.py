@@ -547,6 +547,7 @@ class Coupon(Resource):
         'redemption_resource',
         'created_at',
         'updated_at',
+        'deleted_at',
         'plan_codes',
         'hosted_description',
         'max_redemptions_per_account',
