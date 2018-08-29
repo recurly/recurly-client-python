@@ -1,5 +1,10 @@
 ## Unreleased
 
+## Version 2.8.8 – August 29th, 2018 ##
+
+- Added `scripts` folder
+- Added Coupon.deleted_at
+
 ## Version 2.8.7 – August 21st, 2018 ##
 
 This version brings us up API version 2.14 but has no breaking changes.
