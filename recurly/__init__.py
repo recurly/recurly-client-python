@@ -340,6 +340,22 @@ class Account(Resource):
         url = urljoin(self._url, '/subscriptions')
         return subscription.post(url)
 
+    def create_billing_info(self, billing_info):
+        """Change this account's billing information to the given `BillingInfo` via POST"""
+        url = urljoin(self._url, '/billing_info')
+        response = billing_info.http_request(url, 'POST', billing_info,
+            {'Content-Type': 'application/xml; charset=utf-8'})
+        if response.status == 200:
+            pass
+        elif response.status == 201:
+            billing_info._url = response.getheader('Location')
+        else:
+            billing_info.raise_http_error(response)
+
+        response_xml = response.read()
+        logging.getLogger('recurly.http.response').debug(response_xml)
+        billing_info.update_from_element(ElementTree.fromstring(response_xml))
+
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '/billing_info')
