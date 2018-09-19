@@ -4,7 +4,8 @@ import re
 from datetime import datetime
 from six.moves.urllib.parse import urljoin
 from six import iteritems
-from xml.etree import ElementTree
+from defusedxml import ElementTree
+from xml.etree import ElementTree as ElementTreeBuilder
 
 import recurly
 import recurly.js as js
@@ -571,10 +572,10 @@ class Coupon(Resource):
         if attrname != 'plan_codes':
             return super(Coupon, cls).element_for_value(attrname, value)
 
-        elem = ElementTree.Element(attrname)
+        elem = ElementTreeBuilder.Element(attrname)
         elem.attrib['type'] = 'array'
         for code in value:
-            code_el = ElementTree.Element('plan_code')
+            code_el = ElementTreeBuilder.Element('plan_code')
             code_el.text = code
             elem.append(code_el)
 
@@ -612,7 +613,7 @@ class Coupon(Resource):
         return self.max_redemptions_per_account == None
 
     def generate(self, amount):
-        elem = ElementTree.Element(self.nodename)
+        elem = ElementTreeBuilder.Element(self.nodename)
         elem.append(Resource.element_for_value('number_of_unique_codes', amount))
 
         url = urljoin(self._url, '/generate')
@@ -822,20 +823,20 @@ class Invoice(Resource):
         return self._create_refund_invoice(adjustments_element)
 
     def refund_open_amount_xml(self, amount_in_cents, refund_method):
-        elem = ElementTree.Element(self.nodename)
+        elem = ElementTreeBuilder.Element(self.nodename)
         elem.append(Resource.element_for_value('refund_method', refund_method))
         elem.append(Resource.element_for_value('amount_in_cents',
             amount_in_cents))
         return elem
 
     def refund_line_items_xml(self, line_items, refund_method):
-        elem = ElementTree.Element(self.nodename)
+        elem = ElementTreeBuilder.Element(self.nodename)
         elem.append(Resource.element_for_value('refund_method', refund_method))
 
-        line_items_elem = ElementTree.Element('line_items')
+        line_items_elem = ElementTreeBuilder.Element('line_items')
 
         for item in line_items:
-            adj_elem = ElementTree.Element('adjustment')
+            adj_elem = ElementTreeBuilder.Element('adjustment')
             adj_elem.append(Resource.element_for_value('uuid',
                 item['adjustment'].uuid))
             adj_elem.append(Resource.element_for_value('quantity',
@@ -1098,7 +1099,7 @@ class Subscription(Resource):
     def pause(self, remaining_pause_cycles):
         """Pause a subscription"""
         url = urljoin(self._url, '/pause')
-        elem = ElementTree.Element(self.nodename)
+        elem = ElementTreeBuilder.Element(self.nodename)
         elem.append(Resource.element_for_value('remaining_pause_cycles',
                                                remaining_pause_cycles))
         body = ElementTree.tostring(elem, encoding='UTF-8')

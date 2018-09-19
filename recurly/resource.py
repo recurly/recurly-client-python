@@ -3,7 +3,8 @@ import re
 from datetime import datetime
 from recurly import recurly_logging as logging
 import ssl
-from xml.etree import ElementTree
+from defusedxml import ElementTree
+from xml.etree import ElementTree as ElementTreeBuilder
 
 import iso8601
 import six
@@ -48,7 +49,7 @@ class Money(object):
 
     def add_to_element(self, elem):
         for currency, amount in self.currencies.items():
-            currency_el = ElementTree.Element(currency)
+            currency_el = ElementTreeBuilder.Element(currency)
             currency_el.attrib['type'] = 'integer'
             currency_el.text = six.text_type(amount)
             elem.append(currency_el)
@@ -285,7 +286,7 @@ class Resource(object):
                     log.debug(body)
 
         if isinstance(body, Resource):
-            body = ElementTree.tostring(body.to_element(), encoding='UTF-8')
+            body = ElementTreeBuilder.tostring(body.to_element(), encoding='UTF-8')
             headers['Content-Type'] = 'application/xml; charset=utf-8'
         if method in ('POST', 'PUT') and body is None:
             headers['Content-Length'] = '0'
@@ -325,7 +326,7 @@ class Resource(object):
         for attrname in self.sensitive_attributes:
             for sensitive_el in elem.iter(attrname):
                 sensitive_el.text = 'XXXXXXXXXXXXXXXX'
-        return ElementTree.tostring(elem, encoding='UTF-8')
+        return ElementTreeBuilder.tostring(elem, encoding='UTF-8')
 
     @classmethod
     def _learn_nodenames(cls, classes):
@@ -471,7 +472,7 @@ class Resource(object):
 
             return value.to_element()
 
-        el = ElementTree.Element(attrname)
+        el = ElementTreeBuilder.Element(attrname)
 
         if value is None:
             el.attrib['nil'] = 'nil'
@@ -701,7 +702,7 @@ class Resource(object):
         """Serialize this `Resource` instance to an XML element."""
         if not root_name:
             root_name = self.nodename
-        elem = ElementTree.Element(root_name)
+        elem = ElementTreeBuilder.Element(root_name)
         for attrname in self.serializable_attributes():
             # Only use values that have been loaded into the internal
             # __dict__. For retrieved objects we look into the XML response at
