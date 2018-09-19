@@ -352,9 +352,11 @@ class Resource(object):
         can be directly requested with this method.
 
         """
+        if not uuid:
+            raise ValueError("get must have a value passed as an argument")
         uuid = quote(str(uuid))
         url = recurly.base_uri() + (cls.member_path % (uuid,))
-        resp, elem = cls.element_for_url(url)
+        _resp, elem = cls.element_for_url(url)
         return cls.from_element(elem)
 
     @classmethod
