@@ -7,7 +7,6 @@ from six import iteritems
 from xml.etree import ElementTree
 
 import recurly
-import recurly.js as js
 from recurly.errors import *
 from recurly.resource import Resource, Money, PageError, Page
 
