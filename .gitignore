@@ -3,5 +3,5 @@
 .eggs/
 *.pyc
 .yardoc
-build
+build/
 dist
