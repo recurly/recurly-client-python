@@ -6,7 +6,7 @@ import os
 from os.path import join, dirname
 import time
 import unittest
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 
 import mock
 import six

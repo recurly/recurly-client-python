@@ -1,5 +1,5 @@
 import unittest
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 
 from recurlytests import xml
 

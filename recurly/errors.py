@@ -1,4 +1,4 @@
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 import six
 
 class ResponseError(Exception):
