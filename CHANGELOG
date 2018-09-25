@@ -1,5 +1,18 @@
 ## Unreleased
 
+## Version 2.9.0 – September 25th, 2018 ##
+
+This version brings us up to API version 2.15.
+
+- Use defusedxml package for reading incoming XML [3db82c8](https://github.com/recurly/recurly-client-python/commit/3db82c80ec735662d2b2ea9a4e3076d6d50fad86)
+- Prevent empty input from making an API call [eea8696](https://github.com/recurly/recurly-client-python/commit/eea86968d25c1928ff202daeb8dd69ca972e9a0e)
+- Remove JS module [PR](https://github.com/recurly/recurly-client-python/pull/262)
+- Removes improper use of StopIteration [PR](https://github.com/recurly/recurly-client-python/pull/264)
+
+### Upgrade Notes
+
+This release contains one breaking change. Older Recurly.js token signing is not longer supported. You should upgrade to version 4 of Recurly.js: https://dev.recurly.com/docs/recurlyjs
+
 ## Version 2.8.8 – August 29th, 2018 ##
 
 - Added `scripts` folder
