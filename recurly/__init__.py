@@ -21,7 +21,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.8.8'
+__version__ = '2.9.0'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -45,7 +45,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.14'
+API_VERSION = '2.15'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
