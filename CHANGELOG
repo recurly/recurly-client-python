@@ -8,10 +8,13 @@ This version brings us up to API version 2.15.
 - Prevent empty input from making an API call [eea8696](https://github.com/recurly/recurly-client-python/commit/eea86968d25c1928ff202daeb8dd69ca972e9a0e)
 - Remove JS module [PR](https://github.com/recurly/recurly-client-python/pull/262)
 - Removes improper use of StopIteration [PR](https://github.com/recurly/recurly-client-python/pull/264)
+- Removes support for Python 3.3 [PR](https://github.com/recurly/recurly-client-python/pull/266)
 
 ### Upgrade Notes
 
-This release contains one breaking change. Older Recurly.js token signing is not longer supported. You should upgrade to version 4 of Recurly.js: https://dev.recurly.com/docs/recurlyjs
+This release contains two breaking changes.
+1. Older Recurly.js token signing is not longer supported. You should upgrade to version 4 of Recurly.js: https://dev.recurly.com/docs/recurlyjs
+2. Removes support for Python 3.3. You should upgrade to a supported version of Python.
 
 ## Version 2.8.8 – August 29th, 2018 ##
 
