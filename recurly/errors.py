@@ -299,6 +299,16 @@ class ServiceUnavailableError(ServerError):
     pass
 
 
+class GatewayTimeoutError(ServerError):
+    """An error indicating the service is temporarily unavailable.
+
+    This error results from an HTTP ``504 Gateway Timeout``
+    response. Try the request again.
+
+    """
+    pass
+
+
 class UnexpectedStatusError(ResponseError):
 
     """An error resulting from an unexpected status code returned by
@@ -325,6 +335,7 @@ error_classes = {
     500: InternalServerError,
     502: BadGatewayError,
     503: ServiceUnavailableError,
+    504: GatewayTimeoutError,
 }
 
 
