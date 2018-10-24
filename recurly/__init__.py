@@ -2,6 +2,7 @@ from recurly import recurly_logging as logging
 import sys
 import re
 from datetime import datetime
+import six
 from six.moves.urllib.parse import urljoin
 from six import iteritems
 from defusedxml import ElementTree
@@ -813,26 +814,49 @@ class Invoice(Resource):
         pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
         return pdf_response.read()
 
-    def refund_amount(self, amount_in_cents, refund_method = 'credit_first'):
-        amount_element = self.refund_open_amount_xml(amount_in_cents,
-                                                     refund_method)
+    def refund_amount(self, amount_in_cents, refund_options = {}):
+        # For backwards compatibility
+        # TODO the consequent branch of this conditional should eventually be removed
+        # and we should document that as a breaking change in the changelog.
+        # The same change should be applied to the refund() method
+        if (isinstance(refund_options, six.string_types)):
+            refund_options = { 'refund_method': refund_options }
+        else:
+            if 'refund_method' not in refund_options:
+                refund_options = { 'refund_method': 'credit_first' }
+
+        amount_element = self._refund_open_amount_xml(amount_in_cents,
+                                                     refund_options)
         return self._create_refund_invoice(amount_element)
 
-    def refund(self, adjustments, refund_method = 'credit_first'):
-        adjustments_element = self.refund_line_items_xml(adjustments,
-                                                         refund_method)
-        return self._create_refund_invoice(adjustments_element)
+    def refund(self, adjustments, refund_options = {}):
+       # For backwards compatibility
+       # TODO the consequent branch of this conditional should eventually be removed
+       # and we should document that as a breaking change in the changelog.
+       # The same change should be applied to the refund_amount() method
+       if (isinstance(refund_options, six.string_types)):
+           refund_options = { 'refund_method': refund_options }
+       else:
+           if 'refund_method' not in refund_options:
+               refund_options = { 'refund_method': 'credit_first' }
 
-    def refund_open_amount_xml(self, amount_in_cents, refund_method):
+       adjustments_element = self._refund_line_items_xml(adjustments,
+                                                          refund_options)
+       return self._create_refund_invoice(adjustments_element)
+
+    def _refund_open_amount_xml(self, amount_in_cents, refund_options):
         elem = ElementTreeBuilder.Element(self.nodename)
-        elem.append(Resource.element_for_value('refund_method', refund_method))
         elem.append(Resource.element_for_value('amount_in_cents',
             amount_in_cents))
+
+        # Need to sort the keys for tests to pass in python 2 and 3
+        # Can remove `sorted` when we drop python 2 support
+        for k, v in sorted(iteritems(refund_options)):
+            elem.append(Resource.element_for_value(k, v))
         return elem
 
-    def refund_line_items_xml(self, line_items, refund_method):
+    def _refund_line_items_xml(self, line_items, refund_options):
         elem = ElementTreeBuilder.Element(self.nodename)
-        elem.append(Resource.element_for_value('refund_method', refund_method))
 
         line_items_elem = ElementTreeBuilder.Element('line_items')
 
@@ -846,6 +870,12 @@ class Invoice(Resource):
             line_items_elem.append(adj_elem)
 
         elem.append(line_items_elem)
+
+        # Need to sort the keys for tests to pass in python 2 and 3
+        # Can remove `sorted` when we drop python 2 support
+        for k, v in sorted(iteritems(refund_options)):
+            elem.append(Resource.element_for_value(k, v))
+
         return elem
 
     def mark_failed(self):

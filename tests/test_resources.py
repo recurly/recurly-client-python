@@ -832,7 +832,12 @@ class TestResources(RecurlyTest):
             invoice = account.invoice().charge_invoice
 
         with self.mock_request('invoice/refunded.xml'):
-            refund_invoice = invoice.refund_amount(1000)
+            options = {
+                'refund_method': 'credit_first',
+                'credit_customer_notes': 'Credit Customer Notes',
+                'description': 'Description'
+            }
+            refund_invoice = invoice.refund_amount(1000, options)
         self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
 
     def test_invoice_refund(self):
@@ -846,7 +851,12 @@ class TestResources(RecurlyTest):
         with self.mock_request('invoice/line-item-refunded.xml'):
             line_items = [{ 'adjustment': invoice.line_items[0], 'quantity': 1,
                 'prorate': False }]
-            refund_invoice = invoice.refund(line_items)
+            options = {
+                'refund_method': 'credit_first',
+                'credit_customer_notes': 'Credit Customer Notes',
+                'description': 'Description'
+            }
+            refund_invoice = invoice.refund(line_items, options)
         self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
 
     def test_invoice_with_optionals(self):
