@@ -1,5 +1,11 @@
 ## Unreleased
 
+## Version 2.9.1 – October 30th, 2018 ##
+
+This version brings us up to API version 2.16, but has no breaking changes
+
+- Add a GatewayTimeoutError class [PR](https://github.com/recurly/recurly-client-python/pull/267)
+
 ## Version 2.9.0 – September 25th, 2018 ##
 
 This version brings us up to API version 2.15.
