@@ -25,6 +25,7 @@ Content-Type: application/xml; charset=utf-8
      <phone>781-452-4077</phone>
    </address>
    <net_terms type="integer">1</net_terms>
+   <gateway_code>A new gateway code</gateway_code>
 </invoice>
 
 
@@ -74,6 +75,7 @@ Content-Type: application/xml; charset=utf-8
   <credit_payments type="array">
   </credit_payments>
   <net_terms type="integer">1</net_terms>
+  <gateway_code>A new gateway code</gateway_code>
   <collection_method>manual</collection_method>
   <po_number>1234</po_number>
   <terms_and_conditions>School staff is not responsible for items left at Hogwarts School of Witchcraft and Wizardry.</terms_and_conditions>
