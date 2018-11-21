@@ -23,4 +23,5 @@ Content-Type: application/xml; charset=utf-8
   <company_name nil="nil"></company_name>
   <accept_language nil="nil"></accept_language>
   <tax_exempt type="boolean">true</tax_exempt>
+  <exemption_certificate>Some Certificate</exemption_certificate>
 </account>

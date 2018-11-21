@@ -234,6 +234,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('account/show-taxed.xml'):
             account = Account.get(account_code)
             self.assertTrue(account.tax_exempt)
+            self.assertEqual(account.exemption_certificate, 'Some Certificate')
 
     def test_account_addresses(self):
         account_code = 'test%s' % self.test_id

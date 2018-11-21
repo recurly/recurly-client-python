@@ -171,6 +171,7 @@ class Account(Resource):
         'company_name',
         'vat_number',
         'tax_exempt',
+        'exemption_certificate',
         'entity_use_code',
         'accept_language',
         'cc_emails',
