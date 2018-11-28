@@ -751,6 +751,7 @@ class Invoice(Resource):
         'type',
         'origin',
         'credit_customer_notes',
+        'gateway_code'
     )
 
     blacklist_attributes = (
@@ -1069,6 +1070,7 @@ class Subscription(Resource):
         'current_term_started_at',
         'current_term_ends_at',
         'custom_fields',
+        'gateway_code',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
