@@ -34,7 +34,7 @@ cached_rate_limits = {
 VALID_DOMAINS = ('.recurly.com',)
 """A tuple of whitelisted domains that this client can connect to."""
 
-USER_AGENT = 'recurly-python/%s; python %s' % (recurly.__version__, recurly.__python_version__)
+USER_AGENT = 'recurly-python/%s; python %s; %s' % (recurly.__version__, recurly.__python_version__, recurly.resource.ssl.OPENSSL_VERSION)
 
 BASE_URI = 'https://%s.recurly.com/v2/'
 """The API endpoint to send requests to."""
