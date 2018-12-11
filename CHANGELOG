@@ -1,5 +1,13 @@
 ## Unreleased
 
+## Version 2.9.2 – December 11th, 2018 ##
+
+This version brings us up to API version 2.17, but has no breaking changes
+
+- Add `gateway_code` to Subscription and Invoice objects [PR](https://github.com/recurly/recurly-client-python/pull/271)
+- Add `exemption_certificate` to Account object [PR](https://github.com/recurly/recurly-client-python/pull/272)
+- Add OpenSSL version to user agent [PR](https://github.com/recurly/recurly-client-python/pull/274)
+
 ## Version 2.9.1 – October 30th, 2018 ##
 
 This version brings us up to API version 2.16, but has no breaking changes
