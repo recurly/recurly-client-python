@@ -21,7 +21,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.9.1'
+__version__ = '2.9.2'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -45,7 +45,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.16'
+API_VERSION = '2.17'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -171,6 +171,7 @@ class Account(Resource):
         'company_name',
         'vat_number',
         'tax_exempt',
+        'exemption_certificate',
         'entity_use_code',
         'accept_language',
         'cc_emails',
@@ -751,6 +752,7 @@ class Invoice(Resource):
         'type',
         'origin',
         'credit_customer_notes',
+        'gateway_code'
     )
 
     blacklist_attributes = (
@@ -1069,6 +1071,7 @@ class Subscription(Resource):
         'current_term_started_at',
         'current_term_ends_at',
         'custom_fields',
+        'gateway_code',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

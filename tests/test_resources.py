@@ -234,6 +234,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('account/show-taxed.xml'):
             account = Account.get(account_code)
             self.assertTrue(account.tax_exempt)
+            self.assertEqual(account.exemption_certificate, 'Some Certificate')
 
     def test_account_addresses(self):
         account_code = 'test%s' % self.test_id
@@ -909,6 +910,7 @@ class TestResources(RecurlyTest):
             invoice.customer_notes = "It's levi-O-sa, not levio-SA!"
             invoice.vat_reverse_charge_notes = "can't be changed when invoice was not a reverse charge"
             invoice.net_terms = 1
+            invoice.gateway_code = 'A new gateway code'
             invoice.save()
 
         self.assertEqual(invoice.address.first_name, 'Harry')
@@ -927,6 +929,7 @@ class TestResources(RecurlyTest):
         self.assertEqual(invoice.customer_notes, "It's levi-O-sa, not levio-SA!")
         self.assertEqual(invoice.vat_reverse_charge_notes, "can't be changed when invoice was not a reverse charge")
         self.assertEqual(invoice.net_terms, 1)
+        self.assertEqual(invoice.gateway_code, 'A new gateway code')
 
     def test_build_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
@@ -1416,6 +1419,19 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('subscribe-add-on/plan-deleted.xml'):
                 plan.delete()
+
+    def test_subscription_notes(self):
+        with self.mock_request('subscription/show.xml'):
+            sub = Subscription.get('123456789012345678901234567890ab')
+
+        with self.mock_request('subscription/subscribe-notes.xml'):
+            sub.terms_and_conditions = "Some terms and conditions"
+            sub.customer_notes = "Some customer notes"
+            sub.vat_reverse_charge_notes = "Some vat reverse charge notes"
+            sub.gateway_code = 'A new gateway code'
+            sub.update_notes()
+
+        self.assertEquals(sub.gateway_code, 'A new gateway code')
 
     def test_subscription_custom_fields(self):
         account_code = 'subscribe-%s-2' % self.test_id
