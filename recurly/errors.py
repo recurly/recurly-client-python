@@ -322,6 +322,23 @@ class UnexpectedStatusError(ResponseError):
         return six.text_type(self.status)
 
 
+class UnexpectedClientError(UnexpectedStatusError):
+    """An error resulting from an unexpected status code in
+    the range 400-499 of HTTP status codes. This class should
+    not be used for classes mapped in the `error_classes` dict.
+
+    """
+    pass
+
+class UnexpectedServerError(UnexpectedStatusError):
+    """An error resulting from an unexpected status code in
+    the range 500-599 of HTTP status codes. This class should
+    not be used for classes mapped in the `error_classes` dict.
+
+    """
+    pass
+
+
 error_classes = {
     400: BadRequestError,
     401: UnauthorizedError,
@@ -346,6 +363,10 @@ def error_class_for_http_status(status):
         return error_classes[status]
     except KeyError:
         def new_status_error(xml_response):
+            if (status > 400 and status < 500):
+                return UnexpectedClientError(status, xml_response)
+            if (status > 500 and status < 600):
+                return UnexpectedServerError(status, xml_response)
             return UnexpectedStatusError(status, xml_response)
         return new_status_error
 
