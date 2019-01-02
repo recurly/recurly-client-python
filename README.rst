@@ -75,3 +75,6 @@ Support
 - `https://support.recurly.com <https://support.recurly.com>`_
 - `stackoverflow <http://stackoverflow.com/questions/tagged/recurly>`_
 
+Note: Some older versions of OpenSSL will not properly communicate with the Recurly API.
+Please ensure that the version of OpenSSL is supported by the ssl module. A list of supported OpenSSL versions can be found [here](https://docs.python.org/3/library/ssl.html).
+For security reasons, it is strongly encouraged to use the latest version of OpenSSL.
