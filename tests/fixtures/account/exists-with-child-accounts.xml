@@ -1,0 +1,28 @@
+GET https://api.recurly.com/v2/accounts/parent-account HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/parent-account">
+  <child_accounts href="https://api.recurly.com/v2/accounts/parent-account/child_accounts"/>
+  <adjustments href="https://api.recurly.com/v2/accounts/parent-account/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/parent-account/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/parent-account/invoices"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/parent-account/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/parent-account/transactions"/>
+  <account_balance href="https://api.recurly.com/v2/accounts/parent-account/balance"/>
+  <account_code>parent-account</account_code>
+  <username nil="nil"></username>
+  <email nil="nil"></email>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <entity_use_code>I</entity_use_code>
+  <accept_language nil="nil"></accept_language>
+</account>

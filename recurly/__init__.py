@@ -164,6 +164,7 @@ class Account(Resource):
 
     attributes = (
         'account_code',
+        'parent_account_code',
         'username',
         'email',
         'first_name',
