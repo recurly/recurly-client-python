@@ -313,6 +313,27 @@ class TestResources(RecurlyTest):
         self.assertEquals(existing_account.custom_fields[1].name, 'field2')
         self.assertEquals(existing_account.custom_fields[1].value, 'new value2')
 
+    def test_account_hierarchy(self):
+        account_code = 'test%s' % self.test_id
+        """Create an account with a parent"""
+        account = Account(
+            account_code=account_code,
+            parent_account_code="parent-account"
+        )
+        with self.mock_request('account/created-with-parent.xml'):
+            account.save()
+
+        """Get Parent account"""
+        with self.mock_request('account/exists-with-child-accounts.xml'):
+            parent = account.parent_account()
+
+        self.assertEquals(parent.account_code, 'parent-account')
+
+        """Get Child accounts"""
+        with self.mock_request('account/child-accounts.xml'):
+            for acct in parent.child_accounts():
+                self.assertEquals(acct.account_code, 'test%s' % self.test_id)
+
     def test_account_acquisition(self):
         account_code = 'test%s' % self.test_id
 
