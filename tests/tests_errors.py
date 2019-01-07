@@ -1,5 +1,6 @@
 import recurly
 from recurly import Account, Transaction, ValidationError
+from recurly.errors import UnexpectedStatusError, UnexpectedClientError, UnexpectedServerError
 from recurlytests import RecurlyTest
 
 class RecurlyExceptionTests(RecurlyTest):
@@ -61,3 +62,40 @@ class RecurlyExceptionTests(RecurlyTest):
                 error = e
 
         self.assertEqual(error.transaction_error_code, 'insufficient_funds')
+
+    def test_unexpected_errors_thrown(self):
+        """ Test UnexpectedClientError class """
+        transaction = Transaction(
+            amount_in_cents=1000,
+            currency='USD',
+            account=Account(
+                account_code='transactionmock'
+            )
+        )
+
+        # Mock 'save transaction' request to throw unexpected client error
+        with self.mock_request('transaction/error-teapot.xml'):
+            try:
+                transaction.save()
+            except UnexpectedStatusError as e:
+                error = e
+
+        self.assertIsInstance(error, UnexpectedClientError)
+
+        # Mock 'save transaction' request to throw another unexpected client error
+        with self.mock_request('transaction/error-client.xml'):
+            try:
+                transaction.save()
+            except UnexpectedStatusError as e:
+                error = e
+
+        self.assertIsInstance(error, UnexpectedClientError)
+
+        # Mock 'save transaction' request to throw unexpected server error
+        with self.mock_request('transaction/error-server.xml'):
+            try:
+                transaction.save()
+            except UnexpectedStatusError as e:
+                error = e
+
+        self.assertIsInstance(error, UnexpectedServerError)
