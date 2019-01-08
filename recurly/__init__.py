@@ -45,7 +45,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.17'
+API_VERSION = '2.18'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
