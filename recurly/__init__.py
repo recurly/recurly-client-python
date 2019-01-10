@@ -398,6 +398,7 @@ class BillingInfo(Resource):
         'last_four',
         'paypal_billing_agreement_id',
         'amazon_billing_agreement_id',
+        'amazon_region',
         'token_id',
         'account_type',
         'routing_number',
