@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.9.3 - January 17th, 2019 ##
+
+- Add UnexpectedClientError and UnexpectedServerError classes [PR](https://github.com/recurly/recurly-client-python/pull/277)
+
 ## Version 2.9.2 – December 11th, 2018 ##
 
 This version brings us up to API version 2.17, but has no breaking changes
