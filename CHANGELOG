@@ -1,5 +1,10 @@
 ## Unreleased
 
+## Version 2.9.4 - January 29th, 2019 ##
+
+- Update refund methods for credit invoices [PR](https://github.com/recurly/recurly-client-python/pull/269)
+- Add support for account hierarchy [PR](https://github.com/recurly/recurly-client-python/pull/279)
+
 ## Version 2.9.3 - January 17th, 2019 ##
 
 - Add UnexpectedClientError and UnexpectedServerError classes [PR](https://github.com/recurly/recurly-client-python/pull/277)
