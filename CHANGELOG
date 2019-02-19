@@ -1,5 +1,12 @@
 ## Unreleased
 
+## Version 2.9.4 – February 19th, 2019 ##
+
+This version brings us up to API version 2.18, but has no breaking changes
+
+- Update refund methods for Credit Invoices [PR](https://github.com/recurly/recurly-client-python/pull/269)
+- Add support for Amazon Region [PR](https://github.com/recurly/recurly-client-python/pull/280)
+
 ## Version 2.9.3 - January 17th, 2019 ##
 
 - Add UnexpectedClientError and UnexpectedServerError classes [PR](https://github.com/recurly/recurly-client-python/pull/277)
