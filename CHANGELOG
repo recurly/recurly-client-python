@@ -1,5 +1,11 @@
 ## Unreleased
 
+## Version 2.9.5 – March 12th, 2019 ##
+
+This version brings us up to API version 2.19, but has no breaking changes
+
+- Add support for Account Hierarchy [PR](https://github.com/recurly/recurly-client-python/pull/279)
+
 ## Version 2.9.4 – February 19th, 2019 ##
 
 This version brings us up to API version 2.18, but has no breaking changes
