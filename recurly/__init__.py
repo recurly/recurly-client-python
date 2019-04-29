@@ -675,6 +675,7 @@ class Adjustment(Resource):
         'uuid',
         'description',
         'accounting_code',
+        'product_code',
         'quantity',
         'unit_amount_in_cents',
         'discount_in_cents',
