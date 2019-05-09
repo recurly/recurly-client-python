@@ -1504,6 +1504,39 @@ class CreditPayment(Resource):
         'voided_at',
     )
 
+
+class ExportDate(Resource):
+    nodename = 'export_date'
+    collection_path = 'export_dates'
+
+    attributes = ('date', 'export_files')
+
+    def files(self, date):
+        """
+        Fetch files for a given date.
+        :param date: The date to fetch the export files for
+        :return: A list of exported files for that given date or an empty list if not file exists for that date
+        """
+        url = urljoin(recurly.base_uri() + self.collection_path, f"/{date}/export_files")
+        return ExportDateFile.paginated(url)
+
+
+class ExportDateFile(Resource):
+    nodename = 'export_file'
+    collection_path = 'export_files'
+
+    attributes = ('name', 'md5sum', 'expires_at', 'download_url')
+
+    def download_information(self):
+        """
+        Download an export file
+        :return: The download information of the file that includes the download URL as well as the expiry time of the
+            download URL
+        """
+        _response, element = ExportDateFile.element_for_url(self._url)
+        return ExportDateFile.from_element(element)
+
+
 Resource._learn_nodenames(locals().values())
 
 
@@ -1522,3 +1555,4 @@ def objects_for_push_notification(notification):
         res = Resource.value_for_element(child_el)
         objects[tag] = res
     return objects
+
