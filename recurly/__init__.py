@@ -1517,7 +1517,7 @@ class ExportDate(Resource):
         :param date: The date to fetch the export files for
         :return: A list of exported files for that given date or an empty list if not file exists for that date
         """
-        url = urljoin(recurly.base_uri() + self.collection_path, f"/{date}/export_files")
+        url = urljoin(recurly.base_uri() + self.collection_path, '/%s/export_files' % date)
         return ExportDateFile.paginated(url)
 
 
@@ -1555,4 +1555,3 @@ def objects_for_push_notification(notification):
         res = Resource.value_for_element(child_el)
         objects[tag] = res
     return objects
-
