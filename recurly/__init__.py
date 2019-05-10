@@ -968,6 +968,7 @@ class Purchase(Resource):
         'terms_and_conditions',
         'vat_reverse_charge_notes',
         'shipping_address_id',
+        'shipping_fees',
         'gateway_code',
         'collection_method',
     )
@@ -1040,6 +1041,37 @@ class Purchase(Resource):
         invoice_collection = InvoiceCollection.from_element(elem)
         return invoice_collection
 
+class ShippingFee(Resource):
+
+    """A one time shipping fee on a Purchase"""
+
+    nodename = 'shipping_fee'
+
+    attributes = (
+        'shipping_method_code',
+        'shipping_amount_in_cents',
+        'shipping_address',
+        'shipping_address_id',
+    )
+
+class ShippingMethod(Resource):
+
+    """A shipping method available on the site"""
+
+    member_path = 'shipping_methods/%s'
+    collection_path = 'shipping_methods'
+
+    nodename = 'shipping_method'
+
+    attributes = (
+      'code',
+      'name',
+      'accounting_code',
+      'tax_code',
+      'created_at',
+      'updated_at',
+    )
+
 class Subscription(Resource):
 
     """A customer account's subscription to your service."""
@@ -1090,6 +1122,8 @@ class Subscription(Resource):
         'gift_card',
         'shipping_address',
         'shipping_address_id',
+        'shipping_method_code',
+        'shipping_amount_in_cents',
         'started_with_gift',
         'converted_at',
         'no_billing_info_reason',
