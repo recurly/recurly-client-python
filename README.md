@@ -13,15 +13,7 @@ Documentation for the HTTP API can be [found here](https://partner-docs.recurly.
 
 ### Installing
 
-This library is a pre-release. It can be be fetched from pypi by specifying the dependency in your setup.py or requirements.txt file.
-
-```
-recurly==3.0b1
-```
-
-It's important that you lock on a specific version as there may be breaking changes between releases.
-All beta releases will have the format `3.0bx` until we go live with `3.0.0`.
-
+This library is a pre-release. It will be fetchable from pypi. In the meantime you will want to build from source.
 
 ### Importing the library
 
