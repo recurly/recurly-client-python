@@ -8,5 +8,6 @@ class ApiError(Exception):
         super(ApiError, self).__init__(message)
         self.error = error
 
+from . import errors
 from .client import Client
 from .resource import Resource
