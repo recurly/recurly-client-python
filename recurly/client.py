@@ -9,7 +9,7 @@ from .pager import Pager
 class Client(BaseClient):
 
     def api_version(self):
-      return "v2018-08-09"
+        return "v2018-08-09"
 
     def list_sites(self, params = {}):
         path = "/sites" % (self._site_id, )
