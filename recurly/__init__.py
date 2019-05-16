@@ -1509,7 +1509,10 @@ class ExportDate(Resource):
     nodename = 'export_date'
     collection_path = 'export_dates'
 
-    attributes = ('date', 'export_files')
+    attributes = (
+        'date',
+        'export_files'
+    )
 
     def files(self, date):
         """
@@ -1525,7 +1528,12 @@ class ExportDateFile(Resource):
     nodename = 'export_file'
     collection_path = 'export_files'
 
-    attributes = ('name', 'md5sum', 'expires_at', 'download_url')
+    attributes = (
+        'name',
+        'md5sum',
+        'expires_at',
+        'download_url'
+    )
 
     def download_information(self):
         """
