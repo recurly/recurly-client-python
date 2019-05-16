@@ -1,18 +1,17 @@
 import collections
-from recurly import recurly_logging as logging
-import time
 from datetime import datetime
 
 import six
-import recurly
-
 from six import StringIO
-from six.moves import urllib, http_client
 from six.moves.urllib.parse import urljoin
 
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField
+import recurly
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, \
+    SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
+    Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
-from recurlytests import RecurlyTest, xml
+from recurly import recurly_logging as logging
+from recurlytests import RecurlyTest
 
 recurly.SUBDOMAIN = 'api'
 
@@ -1820,6 +1819,37 @@ class TestResources(RecurlyTest):
             gift_card.redeem('e0004e3c-216c-4254-8767-9be605cd0b03')
 
         self.assertTrue(gift_card.redeemed_at is not None)
+
+    def test_export_date(self):
+        with self.mock_request('export-date/export-date.xml'):
+            export_dates = ExportDate.all()
+
+        self.assertEqual(len(export_dates), 1)
+        self.assertEqual(export_dates[0].date, "2019-05-09")
+
+    def test_export_date_files(self):
+        export_date = ExportDate()
+
+        with self.mock_request('export-date-files/export-date-files-list.xml'):
+            export_date_files = export_date.files("2019-05-09")
+
+        self.assertEqual(len(export_date_files), 1)
+        self.assertEqual(export_date_files[0].name, "churned_subscriptions_v2_expires.csv.gz")
+
+    def test_export_date_files_download_information(self):
+        export_date = ExportDate()
+
+        with self.mock_request('export-date-files/export-date-files-list.xml'):
+            export_date_files = export_date.files("2019-05-09")
+
+        with self.mock_request('export-date-files/export-date-file-download-information.xml'):
+            export_date_file_download_information = export_date_files[0].download_information()
+
+        self.assertEqual(
+            export_date_file_download_information.expires_at.strftime("%Y-%m-%d %H:%M:%S"), "2019-05-09 14:00:00"
+        )
+        self.assertEqual(export_date_file_download_information.download_url, "https://api.recurly.com/download")
+
 
 if __name__ == '__main__':
     import unittest

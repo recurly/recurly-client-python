@@ -1,0 +1,16 @@
+GET https://api.recurly.com/v2/export_dates/2019-05-09/export_files/churned_subscriptions_v2_expires.csv.gz HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+X-Records: 1
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<export_file href="https://api.recurly.com/v2/export_dates/2019-05-09/export_files/churned_subscriptions_v2_expires.csv.gz">
+  <expires_at type="datetime">2019-05-09T14:00:00Z</expires_at>
+  <download_url>https://api.recurly.com/download</download_url>
+</export_file>
