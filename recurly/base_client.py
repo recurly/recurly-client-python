@@ -32,7 +32,7 @@ class BaseClient:
         self.__conn.request(method, path,
                           body, headers = headers)
         resp = self.__conn.getresponse()
-        resp_json = json.loads(resp.read())
+        resp_json = json.loads(resp.read().decode('utf-8'))
 
         if resp.status >= 400:
             # TODO Some of this code can be shared
