@@ -8,6 +8,6 @@ matrix:
       dist: xenial
       sudo: true
 install:
-  - python setup.py install
+  - ./scripts/build
 script:
-  - python -m unittest discover -s tests
+  - ./scripts/test

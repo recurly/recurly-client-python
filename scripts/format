@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if hash black 2>/dev/null; then
+  if [ "$1" == "--check" ]; then
+    black . --check --quiet
+  else
+    black .
+  fi
+else
+  echo "Code formatter not installed."
+fi

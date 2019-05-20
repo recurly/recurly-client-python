@@ -13,7 +13,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/recurly/recurly-client-python",
     packages=setuptools.find_packages(),
-    classifiers=[
-    ],
+    classifiers=[],
+    tests_require=["coverage"],
 )
-
