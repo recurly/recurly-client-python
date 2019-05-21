@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.9.6'
+__version__ = '2.9.7'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.19'
+API_VERSION = '2.20'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -968,6 +968,7 @@ class Purchase(Resource):
         'terms_and_conditions',
         'vat_reverse_charge_notes',
         'shipping_address_id',
+        'shipping_fees',
         'gateway_code',
         'collection_method',
     )
@@ -1040,6 +1041,37 @@ class Purchase(Resource):
         invoice_collection = InvoiceCollection.from_element(elem)
         return invoice_collection
 
+class ShippingFee(Resource):
+
+    """A one time shipping fee on a Purchase"""
+
+    nodename = 'shipping_fee'
+
+    attributes = (
+        'shipping_method_code',
+        'shipping_amount_in_cents',
+        'shipping_address',
+        'shipping_address_id',
+    )
+
+class ShippingMethod(Resource):
+
+    """A shipping method available on the site"""
+
+    member_path = 'shipping_methods/%s'
+    collection_path = 'shipping_methods'
+
+    nodename = 'shipping_method'
+
+    attributes = (
+      'code',
+      'name',
+      'accounting_code',
+      'tax_code',
+      'created_at',
+      'updated_at',
+    )
+
 class Subscription(Resource):
 
     """A customer account's subscription to your service."""
@@ -1090,6 +1122,8 @@ class Subscription(Resource):
         'gift_card',
         'shipping_address',
         'shipping_address_id',
+        'shipping_method_code',
+        'shipping_amount_in_cents',
         'started_with_gift',
         'converted_at',
         'no_billing_info_reason',
