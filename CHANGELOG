@@ -1,5 +1,12 @@
 ## Unreleased
 
+## Version 2.9.7 – May 21st, 2019 ##
+
+This version brings us up to API version 2.20, but has no breaking changes
+
+- Add Export Dates [PR](https://github.com/recurly/recurly-client-python/pull/288)
+- Add Shipping Fees [PR](https://github.com/recurly/recurly-client-python/pull/289)
+
 ## Version 2.9.6 – April 30th, 2019 ##
 
 - Add product code to Adjustments [PR](https://github.com/recurly/recurly-client-python/pull/286)
