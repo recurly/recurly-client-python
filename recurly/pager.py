@@ -1,4 +1,3 @@
-
 class ItemIterator:
     def __init__(self, client, next_url, params):
         self.__page_iterator = PageIterator(client, next_url, params)
@@ -19,6 +18,7 @@ class ItemIterator:
 
         return self.__data[self.__index]
 
+
 class PageIterator:
     def __init__(self, client, next_url, params):
         self.__client = client
@@ -31,8 +31,9 @@ class PageIterator:
 
     def __next__(self):
         if self.__has_more:
-            page = self.__client._make_request('GET', self.__next_url, None,
-                                               self.__params)
+            page = self.__client._make_request(
+                "GET", self.__next_url, None, self.__params
+            )
 
             # We don't need the params anymore as they are
             # automatically set in __next_url
@@ -45,6 +46,7 @@ class PageIterator:
         else:
             raise StopIteration
 
+
 class Pager:
     def __init__(self, client, path, params):
         self.__client = client
@@ -56,4 +58,3 @@ class Pager:
 
     def items(self):
         return ItemIterator(self.__client, self.__path, self.__params)
-

@@ -1,3 +1,20 @@
 #!/usr/bin/env bash
 
-python3 -m unittest discover tests/
+# First check formatting
+echo "Checking style..."
+./scripts/format --check
+if [ $? -ne 0 ]; then
+  echo "Code does not conform to style guide. To autoformat, run './scripts/format'."
+  exit 1
+else
+  echo "Style check passed"
+fi
+
+# Run tests
+coverage run --omit=recurly/client.py,recurly/resources.py --source recurly setup.py test
+
+# Prep html report
+coverage html
+
+# Print out coverage report
+coverage report -m
