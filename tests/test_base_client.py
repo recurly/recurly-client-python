@@ -1,5 +1,6 @@
 import unittest
 import recurly
+import socket
 from recurly import Resource
 from .mock_resources import MyResource, MySubResource
 from .mock_client import MockClient
@@ -38,6 +39,13 @@ def update_resource_client(success):
 
     conn.getresponse = MagicMock(return_value=response)
 
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
+def get_socket_error_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    conn.getresponse = MagicMock(side_effect=socket.error("socket failure"))
     return mock.patch("http.client.HTTPSConnection", return_value=conn)
 
 
@@ -135,3 +143,9 @@ class TestBaseClient(unittest.TestCase):
             # )
             err = e.exception.error
             self.assertEqual(err.type, "validation")
+
+    def test_failure_socket_error(self):
+        with get_socket_error_client() as conn:
+            client = MockClient("subdomain", "apikey")
+            with self.assertRaises(recurly.NetworkError) as e:
+                resource = client.update_resource("123", {"prop": 123})

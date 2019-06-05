@@ -54,7 +54,11 @@ class Pager:
         self.__params = params
 
     def pages(self):
+        """An iterator that enumerates each page of results."""
         return PageIterator(self.__client, self.__path, self.__params)
 
     def items(self):
+        """An iterator that enumerates each item on the server and paginates
+        under the hood.
+        """
         return ItemIterator(self.__client, self.__path, self.__params)
