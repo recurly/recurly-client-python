@@ -45,7 +45,7 @@ class Client(BaseClient):
         Pager
             A list of sites.
         """
-        path = "/sites" % (self._site_id,)
+        path = "/sites" % ()
         return Pager(self, path, kwargs)
 
     def get_site(self,):
