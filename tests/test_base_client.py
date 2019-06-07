@@ -8,6 +8,17 @@ import unittest.mock as mock
 from unittest.mock import Mock, MagicMock
 
 
+def delete_resource_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    response = MagicMock()
+    # empty response
+    response.status = 204
+    response.read.return_value = bytes("", "UTF-8")
+    conn.getresponse = MagicMock(return_value=response)
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
 def update_resource_client(success):
     conn = MagicMock()
     conn.request = MagicMock(return_value=None)
@@ -143,6 +154,18 @@ class TestBaseClient(unittest.TestCase):
             # )
             err = e.exception.error
             self.assertEqual(err.type, "validation")
+
+    def test_DELETE_204(self):
+        with delete_resource_client() as conn:
+            client = MockClient("subdomain", "apikey")
+            resource = client.delete_resource("123")
+            # conn.request.assert_called_with(
+            #     "DELETE",
+            #     "/resources/123",
+            #     None,
+            #     headers=expected_headers,
+            # )
+            self.assertEqual(resource, None)
 
     def test_failure_socket_error(self):
         with get_socket_error_client() as conn:

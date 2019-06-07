@@ -17,3 +17,7 @@ class MockClient(BaseClient):
     def update_resource(self, resource_id, body):
         path = "/resources/%s" % (resource_id)
         return self._make_request("PUT", path, body, None)
+
+    def delete_resource(self, resource_id):
+        path = "/resources/%s" % (resource_id)
+        return self._make_request("DELETE", path, None, None)

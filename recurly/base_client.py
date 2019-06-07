@@ -34,21 +34,31 @@ class BaseClient:
 
             self.__conn.request(method, path, body, headers=headers)
             resp = self.__conn.getresponse()
-            resp_json = json.loads(resp.read().decode("utf-8"))
+            resp_body = resp.read()
+            resp_json = None
+            if resp_body and len(resp_body) > 0:
+                resp_json = json.loads(resp_body.decode("utf-8"))
 
             if resp.status >= 400:
-                # TODO Some of this code can be shared
-                resp_json = resp_json["error"]
-                resp_json["object"] = "error"
-                error = Resource.cast(resp_json)
-                typ = error.type
-                name_parts = typ.split("_")
-                class_name = "".join(x.title() for x in name_parts)
-                if not class_name.endswith("Error"):
-                    class_name += "Error"
-                klass = locate("recurly.errors.%s" % class_name)
-                raise klass(error.message, error)
+                if resp_json:
+                    # TODO Some of this code can be shared
+                    resp_json = resp_json["error"]
+                    resp_json["object"] = "error"
+                    error = Resource.cast(resp_json)
+                    typ = error.type
+                    name_parts = typ.split("_")
+                    class_name = "".join(x.title() for x in name_parts)
+                    if not class_name.endswith("Error"):
+                        class_name += "Error"
+                    klass = locate("recurly.errors.%s" % class_name)
+                    raise klass(error.message, error)
+                else:
+                    raise ApiError("Unknown Error", None)
 
-            return Resource.cast(resp_json)
+            if resp_json:
+                return Resource.cast(resp_json)
+            else:
+                None
+
         except socket.error as e:
             raise NetworkError(e)

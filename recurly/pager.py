@@ -16,7 +16,10 @@ class ItemIterator:
             self.__data = next(self.__page_iterator)
             self.__index = 0
 
-        return self.__data[self.__index]
+        if len(self.__data) > 0:
+            return self.__data[self.__index]
+        else:
+            raise StopIteration
 
 
 class PageIterator:
