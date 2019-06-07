@@ -8,12 +8,36 @@ import unittest.mock as mock
 from unittest.mock import Mock, MagicMock
 
 
+def get_empty_pager_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    conn.getresponse = MagicMock(return_value=empty_page())
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
 def get_pager_client():
     conn = MagicMock()
     conn.request = MagicMock(return_value=None)
     conn.getresponse = MagicMock()
     conn.getresponse.side_effect = [first_page(), second_page()]
     return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
+def empty_page():
+    response = MagicMock()
+    response.status = 200
+    response.read.return_value = bytes(
+        """
+        {
+            "object": "list",
+            "has_more": true,
+            "next": "/resources?cursor=126&limit=3",
+            "data": []
+        }
+        """,
+        "UTF-8",
+    )
+    return response
 
 
 def first_page():
@@ -83,3 +107,12 @@ class TestPager(unittest.TestCase):
                     item_count += 1
             self.assertEqual(page_count, 2)
             self.assertEqual(item_count, 5)
+
+    def test_empty_page(self):
+        with get_empty_pager_client() as conn:
+            client = MockClient("subdomain", "apikey")
+            pager = Pager(client, "/resources", {"limit": 3})
+            item_count = 0
+            for item in pager.items():
+                item_count += 1
+            self.assertEqual(item_count, 0)
