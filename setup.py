@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="recurly",
-    version="3.0b1",
+    version="3.0b2",
     author="Benjamin Eckel",
     author_email="ben@recurly.com",
     description="Recurly v3",
