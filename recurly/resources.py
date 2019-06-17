@@ -4,6 +4,7 @@
 # change to this file, please create a Github issue explaining the changes you
 # need and we will usher them to the appropriate places.
 from .resource import Resource
+import datetime
 
 
 class Site(Resource):
@@ -11,9 +12,9 @@ class Site(Resource):
     Attributes
     ----------
     address : Address
-    created_at : str
+    created_at : datetime
         Created at
-    deleted_at : str
+    deleted_at : datetime
         Deleted at
     features : :obj:`list` of :obj:`str`
         A list of features enabled for the site.
@@ -25,11 +26,22 @@ class Site(Resource):
         This value is used to configure RecurlyJS to submit tokenized billing information.
     settings : Settings
     subdomain : str
-    updated_at : str
+    updated_at : datetime
         Updated at
     """
 
-    pass
+    schema = {
+        "address": "Address",
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "features": list,
+        "id": str,
+        "mode": str,
+        "public_api_key": str,
+        "settings": "Settings",
+        "subdomain": str,
+        "updated_at": datetime,
+    }
 
 
 class Address(Resource):
@@ -56,7 +68,17 @@ class Address(Resource):
         Street 2
     """
 
-    pass
+    schema = {
+        "city": str,
+        "country": str,
+        "first_name": str,
+        "last_name": str,
+        "phone": str,
+        "postal_code": str,
+        "region": str,
+        "street1": str,
+        "street2": str,
+    }
 
 
 class Settings(Resource):
@@ -73,7 +95,11 @@ class Settings(Resource):
         The default 3-letter ISO 4217 currency code.
     """
 
-    pass
+    schema = {
+        "accepted_currencies": list,
+        "billing_address_requirement": str,
+        "default_currency": str,
+    }
 
 
 class Error(Resource):
@@ -82,13 +108,13 @@ class Error(Resource):
     ----------
     message : str
         Message
-    params : :obj:`list` of :obj:`str`
+    params : :obj:`list` of :obj:`dict`
         Parameter specific errors
     type : str
         Type
     """
 
-    pass
+    schema = {"message": str, "params": list, "type": str}
 
 
 class Account(Resource):
@@ -104,10 +130,10 @@ class Account(Resource):
     code : str
         The unique identifier of the account. This cannot be changed once the account is created.
     company : str
-    created_at : str
+    created_at : datetime
         When the account was created.
-    custom_fields : :obj:`list` of :obj:`Array<CustomField>`
-    deleted_at : str
+    custom_fields : :obj:`list` of :obj:`CustomField`
+    deleted_at : datetime
         If present, when the account was last marked inactive.
     email : str
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
@@ -122,13 +148,13 @@ class Account(Resource):
         The UUID of the parent account associated with this account.
     preferred_locale : str
         Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
-    shipping_addresses : :obj:`list` of :obj:`Array<ShippingAddress>`
+    shipping_addresses : :obj:`list` of :obj:`ShippingAddress`
         The shipping addresses on the account.
     state : str
         Accounts can be either active or inactive.
-    tax_exempt : Boolean
+    tax_exempt : bool
         The tax status of the account. `true` exempts tax on the account, `false` applies tax on the account.
-    updated_at : str
+    updated_at : datetime
         When the account was last changed.
     username : str
         A secondary value for the account.
@@ -136,7 +162,31 @@ class Account(Resource):
         The VAT number of the account (to avoid having the VAT applied). This is only used for manually collected invoices.
     """
 
-    pass
+    schema = {
+        "address": "Address",
+        "bill_to": str,
+        "billing_info": "BillingInfo",
+        "cc_emails": str,
+        "code": str,
+        "company": str,
+        "created_at": datetime,
+        "custom_fields": ["CustomField"],
+        "deleted_at": datetime,
+        "email": str,
+        "exemption_certificate": str,
+        "first_name": str,
+        "hosted_login_token": str,
+        "id": str,
+        "last_name": str,
+        "parent_account_id": str,
+        "preferred_locale": str,
+        "shipping_addresses": ["ShippingAddress"],
+        "state": str,
+        "tax_exempt": bool,
+        "updated_at": datetime,
+        "username": str,
+        "vat_number": str,
+    }
 
 
 class ShippingAddress(Resource):
@@ -149,7 +199,7 @@ class ShippingAddress(Resource):
     company : str
     country : str
         Country, 2-letter ISO code.
-    created_at : str
+    created_at : datetime
         Created at
     email : str
     first_name : str
@@ -164,12 +214,30 @@ class ShippingAddress(Resource):
         State or province.
     street1 : str
     street2 : str
-    updated_at : str
+    updated_at : datetime
         Updated at
     vat_number : str
     """
 
-    pass
+    schema = {
+        "account_id": str,
+        "city": str,
+        "company": str,
+        "country": str,
+        "created_at": datetime,
+        "email": str,
+        "first_name": str,
+        "id": str,
+        "last_name": str,
+        "nickname": str,
+        "phone": str,
+        "postal_code": str,
+        "region": str,
+        "street1": str,
+        "street2": str,
+        "updated_at": datetime,
+        "vat_number": str,
+    }
 
 
 class BillingInfo(Resource):
@@ -179,23 +247,37 @@ class BillingInfo(Resource):
     account_id : str
     address : Address
     company : str
-    created_at : str
+    created_at : datetime
         When the billing information was created.
     first_name : str
-    fraud : str
+    fraud : dict
         Most recent fraud result.
     id : str
     last_name : str
-    payment_method : str
-    updated_at : str
+    payment_method : dict
+    updated_at : datetime
         When the billing information was last changed.
-    updated_by : str
-    valid : Boolean
+    updated_by : dict
+    valid : bool
     vat_number : str
         Customer's VAT number (to avoid having the VAT applied). This is only used for automatically collected invoices.
     """
 
-    pass
+    schema = {
+        "account_id": str,
+        "address": "Address",
+        "company": str,
+        "created_at": datetime,
+        "first_name": str,
+        "fraud": dict,
+        "id": str,
+        "last_name": str,
+        "payment_method": dict,
+        "updated_at": datetime,
+        "updated_by": dict,
+        "valid": bool,
+        "vat_number": str,
+    }
 
 
 class BillingInfoPaymentMethod(Resource):
@@ -204,9 +286,9 @@ class BillingInfoPaymentMethod(Resource):
     ----------
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
-    exp_month : str
+    exp_month : int
         Expiration month.
-    exp_year : str
+    exp_year : int
         Expiration year.
     first_six : str
         Credit card number's first six digits.
@@ -214,7 +296,13 @@ class BillingInfoPaymentMethod(Resource):
         Credit card number's last four digits.
     """
 
-    pass
+    schema = {
+        "card_type": str,
+        "exp_month": int,
+        "exp_year": int,
+        "first_six": str,
+        "last_four": str,
+    }
 
 
 class FraudInfo(Resource):
@@ -223,13 +311,13 @@ class FraudInfo(Resource):
     ----------
     decision : str
         Kount decision
-    risk_rules_triggered : str
+    risk_rules_triggered : dict
         Kount rules
-    score : str
+    score : int
         Kount score
     """
 
-    pass
+    schema = {"decision": str, "risk_rules_triggered": dict, "score": int}
 
 
 class BillingInfoUpdatedBy(Resource):
@@ -242,7 +330,7 @@ class BillingInfoUpdatedBy(Resource):
         Customer's IP address when updating their billing information.
     """
 
-    pass
+    schema = {"country": str, "ip": str}
 
 
 class ErrorMayHaveTransaction(Resource):
@@ -251,15 +339,15 @@ class ErrorMayHaveTransaction(Resource):
     ----------
     message : str
         Message
-    params : :obj:`list` of :obj:`str`
+    params : :obj:`list` of :obj:`dict`
         Parameter specific errors
-    transaction_error : str
+    transaction_error : dict
         This is only included on errors with `type=transaction`.
     type : str
         Type
     """
 
-    pass
+    schema = {"message": str, "params": list, "transaction_error": dict, "type": str}
 
 
 class AccountAcquisition(Resource):
@@ -271,31 +359,40 @@ class AccountAcquisition(Resource):
         An arbitrary identifier for the marketing campaign that led to the acquisition of this account.
     channel : str
         The channel through which the account was acquired.
-    cost : str
+    cost : dict
         Account balance
-    created_at : str
+    created_at : datetime
         When the account acquisition data was created.
     id : str
     subchannel : str
         An arbitrary subchannel string representing a distinction/subcategory within a broader channel.
-    updated_at : str
+    updated_at : datetime
         When the account acquisition data was last changed.
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "campaign": str,
+        "channel": str,
+        "cost": dict,
+        "created_at": datetime,
+        "id": str,
+        "subchannel": str,
+        "updated_at": datetime,
+    }
 
 
 class AccountAcquisitionCost(Resource):
     """
     Attributes
     ----------
-    amount : str
+    amount : float
         The amount of the corresponding currency used to acquire the account.
     currency : str
         3-letter ISO 4217 currency code.
     """
 
-    pass
+    schema = {"amount": float, "currency": str}
 
 
 class AccountMini(Resource):
@@ -314,7 +411,16 @@ class AccountMini(Resource):
     parent_account_id : str
     """
 
-    pass
+    schema = {
+        "bill_to": str,
+        "code": str,
+        "company": str,
+        "email": str,
+        "first_name": str,
+        "id": str,
+        "last_name": str,
+        "parent_account_id": str,
+    }
 
 
 class AccountBalance(Resource):
@@ -322,24 +428,28 @@ class AccountBalance(Resource):
     Attributes
     ----------
     account : AccountMini
-    balances : :obj:`list` of :obj:`Array<AccountBalanceAmount>`
-    past_due : Boolean
+    balances : :obj:`list` of :obj:`AccountBalanceAmount`
+    past_due : bool
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "balances": ["AccountBalanceAmount"],
+        "past_due": bool,
+    }
 
 
 class AccountBalanceAmount(Resource):
     """
     Attributes
     ----------
-    amount : str
+    amount : float
         Total amount the account is past due.
     currency : str
         3-letter ISO 4217 currency code.
     """
 
-    pass
+    schema = {"amount": float, "currency": str}
 
 
 class CouponRedemption(Resource):
@@ -349,7 +459,7 @@ class CouponRedemption(Resource):
     account : AccountMini
         The Account on which the coupon was applied.
     coupon : Coupon
-    created_at : str
+    created_at : datetime
         Created at
     currency : str
         3-letter ISO 4217 currency code.
@@ -357,38 +467,48 @@ class CouponRedemption(Resource):
         The amount that was discounted upon the application of the coupon, formatted with the currency.
     id : str
         Coupon Redemption ID
-    removed_at : str
+    removed_at : datetime
         The date and time the redemption was removed from the account (un-redeemed).
     state : str
         Coupon Redemption state
-    updated_at : str
+    updated_at : datetime
         Last updated at
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "coupon": "Coupon",
+        "created_at": datetime,
+        "currency": str,
+        "discounted": str,
+        "id": str,
+        "removed_at": datetime,
+        "state": str,
+        "updated_at": datetime,
+    }
 
 
 class Coupon(Resource):
     """
     Attributes
     ----------
-    applies_to_all_plans : Boolean
+    applies_to_all_plans : bool
         The coupon is valid for all plans if true. If false then `plans` and `plans_names` will list the applicable plans.
-    applies_to_non_plan_charges : Boolean
+    applies_to_non_plan_charges : bool
         The coupon is valid for one-time, non-plan charges if true.
     code : str
         The code the customer enters to redeem the coupon.
     coupon_type : str
         Whether the coupon is "single_code" or "bulk". Bulk coupons will require a `unique_code_template` and will generate unique codes through the `/generate` endpoint.
-    created_at : str
+    created_at : datetime
         Created at
     discount : CouponDiscount
     duration : str
         - "single_use" coupons applies to the first invoice only.
         - "temporal" coupons will apply to invoices for the duration determined by the `temporal_unit` and `temporal_amount` attributes.
-    expired_at : str
+    expired_at : datetime
         The date and time the coupon was expired early or reached its `max_redemptions`.
-    free_trial_amount : str
+    free_trial_amount : int
         Sets the duration of time the `free_trial_unit` is for.
     free_trial_unit : str
         Description of the unit of time the coupon is for. Used with `free_trial_amount` to determine the duration of time the coupon is for.
@@ -398,35 +518,62 @@ class Coupon(Resource):
         Coupon ID
     invoice_description : str
         Description of the coupon on the invoice.
-    max_redemptions : str
+    max_redemptions : int
         A maximum number of redemptions for the coupon. The coupon will expire when it hits its maximum redemptions.
-    max_redemptions_per_account : str
+    max_redemptions_per_account : int
         Redemptions per account is the number of times a specific account can redeem the coupon. Set redemptions per account to `1` if you want to keep customers from gaming the system and getting more than one discount from the coupon campaign.
     name : str
         The internal name for the coupon.
-    plans : :obj:`list` of :obj:`Array<PlanMini>`
+    plans : :obj:`list` of :obj:`PlanMini`
         Plans
     plans_names : :obj:`list` of :obj:`str`
         TODO
-    redeem_by : str
+    redeem_by : datetime
         The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
     redemption_resource : str
         Whether the discount is for all eligible charges on the account, or only a specific subscription.
     state : str
         Indicates if the coupon is redeemable, and if it is not, why.
-    temporal_amount : str
+    temporal_amount : int
         If `duration` is "temporal" than `temporal_amount` is an integer which is multiplied by `temporal_unit` to define the duration that the coupon will be applied to invoices for.
     temporal_unit : str
         If `duration` is "temporal" than `temporal_unit` is multiplied by `temporal_amount` to define the duration that the coupon will be applied to invoices for.
     unique_code_template : str
         On a bulk coupon, the template from which unique coupon codes are generated.
-    unique_coupon_codes_count : str
+    unique_coupon_codes_count : int
         When this number reaches `max_redemptions` the coupon will no longer be redeemable.
-    updated_at : str
+    updated_at : datetime
         Last updated at
     """
 
-    pass
+    schema = {
+        "applies_to_all_plans": bool,
+        "applies_to_non_plan_charges": bool,
+        "code": str,
+        "coupon_type": str,
+        "created_at": datetime,
+        "discount": "CouponDiscount",
+        "duration": str,
+        "expired_at": datetime,
+        "free_trial_amount": int,
+        "free_trial_unit": str,
+        "hosted_page_description": str,
+        "id": str,
+        "invoice_description": str,
+        "max_redemptions": int,
+        "max_redemptions_per_account": int,
+        "name": str,
+        "plans": ["PlanMini"],
+        "plans_names": list,
+        "redeem_by": datetime,
+        "redemption_resource": str,
+        "state": str,
+        "temporal_amount": int,
+        "temporal_unit": str,
+        "unique_code_template": str,
+        "unique_coupon_codes_count": int,
+        "updated_at": datetime,
+    }
 
 
 class PlanMini(Resource):
@@ -441,49 +588,54 @@ class PlanMini(Resource):
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
     """
 
-    pass
+    schema = {"code": str, "id": str, "name": str}
 
 
 class CouponDiscount(Resource):
     """
     Attributes
     ----------
-    currencies : :obj:`list` of :obj:`Array<CouponDiscountPricing>`
+    currencies : :obj:`list` of :obj:`CouponDiscountPricing`
         This is only present when `type=fixed`.
-    percent : str
+    percent : int
         This is only present when `type=percent`.
-    trial : str
+    trial : dict
         This is only present when `type=free_trial`.
     type : str
     """
 
-    pass
+    schema = {
+        "currencies": ["CouponDiscountPricing"],
+        "percent": int,
+        "trial": dict,
+        "type": str,
+    }
 
 
 class CouponDiscountPricing(Resource):
     """
     Attributes
     ----------
-    amount : str
+    amount : float
         Value of the fixed discount that this coupon applies.
     currency : str
         3-letter ISO 4217 currency code.
     """
 
-    pass
+    schema = {"amount": float, "currency": str}
 
 
 class CouponDiscountTrial(Resource):
     """
     Attributes
     ----------
-    length : str
+    length : int
         Trial length measured in the units specified by the sibling `unit` property
     unit : str
         Temporal unit of the free trial
     """
 
-    pass
+    schema = {"length": int, "unit": str}
 
 
 class CreditPayment(Resource):
@@ -493,10 +645,10 @@ class CreditPayment(Resource):
     account : AccountMini
     action : str
         The action for which the credit was created.
-    amount : str
+    amount : float
         Total credit payment amount applied to the charge invoice.
     applied_to_invoice : InvoiceMini
-    created_at : str
+    created_at : datetime
         Created at
     currency : str
         3-letter ISO 4217 currency code.
@@ -506,15 +658,29 @@ class CreditPayment(Resource):
         For credit payments with action `refund`, this is the credit payment that was refunded.
     original_invoice : InvoiceMini
     refund_transaction : Transaction
-    updated_at : str
+    updated_at : datetime
         Last updated at
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
-    voided_at : str
+    voided_at : datetime
         Voided at
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "action": str,
+        "amount": float,
+        "applied_to_invoice": "InvoiceMini",
+        "created_at": datetime,
+        "currency": str,
+        "id": str,
+        "original_credit_payment_id": str,
+        "original_invoice": "InvoiceMini",
+        "refund_transaction": "Transaction",
+        "updated_at": datetime,
+        "uuid": str,
+        "voided_at": datetime,
+    }
 
 
 class InvoiceMini(Resource):
@@ -531,7 +697,7 @@ class InvoiceMini(Resource):
         Invoice type
     """
 
-    pass
+    schema = {"id": str, "number": str, "state": str, "type": str}
 
 
 class Transaction(Resource):
@@ -539,16 +705,16 @@ class Transaction(Resource):
     Attributes
     ----------
     account : AccountMini
-    amount : str
+    amount : float
         Total transaction amount sent to the payment gateway.
     avs_check : str
         When processed, result from checking the overall AVS on the transaction.
     billing_address : Address
-    collected_at : str
+    collected_at : datetime
         Collected at, or if not collected yet, the time the transaction was created.
     collection_method : str
         The method by which the payment was collected.
-    created_at : str
+    created_at : datetime
         Created at
     currency : str
         3-letter ISO 4217 currency code.
@@ -566,9 +732,9 @@ class Transaction(Resource):
         Transaction reference number from the payment gateway.
     gateway_response_code : str
         For declined transactions (`success=false`), this field lists the gateway error code.
-    gateway_response_time : str
+    gateway_response_time : float
         Time, in seconds, for gateway to process the transaction.
-    gateway_response_values : str
+    gateway_response_values : dict
         The values in this field will vary from gateway to gateway.
     id : str
         Transaction ID
@@ -585,10 +751,10 @@ class Transaction(Resource):
         Describes how the transaction was triggered.
     original_transaction_id : str
         If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
-    payment_gateway : str
-    payment_method : str
+    payment_gateway : dict
+    payment_method : dict
         Payment method (TODO: this overlaps with BillingInfo’s payment_method but only documents credit cards)
-    refunded : Boolean
+    refunded : bool
         Indicates if part or all of this transaction was refunded.
     status : str
         The current transaction status. Note that the status may change, e.g. a `pending` transaction may become `declined` or `success` may later become `void`.
@@ -598,7 +764,7 @@ class Transaction(Resource):
         For declined (`success=false`) transactions, the message displayed to the merchant.
     subscription_ids : :obj:`list` of :obj:`str`
         If the transaction is charging or refunding for one or more subscriptions, these are their IDs.
-    success : Boolean
+    success : bool
         Did this transaction complete successfully?
     type : str
         - `authorization` – verifies billing information and places a hold on money in the customer's account.
@@ -608,12 +774,48 @@ class Transaction(Resource):
         - `verify` – a $0 or $1 transaction used to verify billing information which is immediately voided.
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
-    voided_at : str
+    voided_at : datetime
         Voided at
     voided_by_invoice : InvoiceMini
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "amount": float,
+        "avs_check": str,
+        "billing_address": "Address",
+        "collected_at": datetime,
+        "collection_method": str,
+        "created_at": datetime,
+        "currency": str,
+        "customer_message": str,
+        "customer_message_locale": str,
+        "cvv_check": str,
+        "gateway_approval_code": str,
+        "gateway_message": str,
+        "gateway_reference": str,
+        "gateway_response_code": str,
+        "gateway_response_time": float,
+        "gateway_response_values": dict,
+        "id": str,
+        "invoice": "InvoiceMini",
+        "ip_address_country": str,
+        "ip_address_v4": str,
+        "origin": str,
+        "original_transaction_id": str,
+        "payment_gateway": dict,
+        "payment_method": dict,
+        "refunded": bool,
+        "status": str,
+        "status_code": str,
+        "status_message": str,
+        "subscription_ids": list,
+        "success": bool,
+        "type": str,
+        "uuid": str,
+        "voided_at": datetime,
+        "voided_by_invoice": "InvoiceMini",
+    }
 
 
 class TransactionPaymentMethod(Resource):
@@ -622,9 +824,9 @@ class TransactionPaymentMethod(Resource):
     ----------
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
-    exp_month : str
+    exp_month : int
         Expiration month.
-    exp_year : str
+    exp_year : int
         Expiration year.
     first_six : str
         Credit card number's first six digits.
@@ -632,7 +834,13 @@ class TransactionPaymentMethod(Resource):
         Credit card number's last four digits.
     """
 
-    pass
+    schema = {
+        "card_type": str,
+        "exp_month": int,
+        "exp_year": int,
+        "first_six": str,
+        "last_four": str,
+    }
 
 
 class TransactionPaymentGateway(Resource):
@@ -644,7 +852,7 @@ class TransactionPaymentGateway(Resource):
     type : str
     """
 
-    pass
+    schema = {"id": str, "name": str, "type": str}
 
 
 class Invoice(Resource):
@@ -653,59 +861,59 @@ class Invoice(Resource):
     ----------
     account : AccountMini
     address : InvoiceAddress
-    balance : str
+    balance : float
         The outstanding balance remaining on this invoice.
-    closed_at : str
+    closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
         An automatic invoice means a corresponding transaction is run using the account's billing information at the same time the invoice is created. Manual invoices are created without a corresponding transaction. The merchant must enter a manual payment transaction or have the customer pay the invoice with an automatic method, like credit card, PayPal, Amazon, or ACH bank payment.
-    created_at : str
+    created_at : datetime
         Created at
-    credit_payments : :obj:`list` of :obj:`Array<CreditPayment>`
+    credit_payments : :obj:`list` of :obj:`CreditPayment`
         Credit payments
     currency : str
         3-letter ISO 4217 currency code.
     customer_notes : str
         This will default to the Customer Notes text specified on the Invoice Settings. Specify custom notes to add or override Customer Notes.
-    discount : str
+    discount : float
         Total discounts applied to this invoice.
-    due_at : str
+    due_at : datetime
         Date invoice is due. This is the date the net terms are reached.
     id : str
         Invoice ID
     line_items : LineItemList
-    net_terms : str
+    net_terms : int
         Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     number : str
         If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     origin : str
         The event that created the invoice.
-    paid : str
+    paid : float
         The total amount of successful payments transaction on this invoice.
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
     previous_invoice_id : str
         On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
-    refundable_amount : str
+    refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
     state : str
         Invoice state
     subscription_ids : :obj:`list` of :obj:`str`
         If the invoice is charging or refunding for one or more subscriptions, these are their IDs.
-    subtotal : str
+    subtotal : float
         The summation of charges, discounts, and credits, before tax.
-    tax : str
+    tax : float
         The total tax on this invoice.
     tax_info : TaxInfo
     terms_and_conditions : str
         This will default to the Terms and Conditions text specified on the Invoice Settings page in your Recurly admin. Specify custom notes to add or override Terms and Conditions.
-    total : str
+    total : float
         The final total on this invoice. The summation of invoice charges, discounts, credits, and tax.
-    transactions : :obj:`list` of :obj:`Array<Transaction>`
+    transactions : :obj:`list` of :obj:`Transaction`
         Transactions
     type : str
         Invoices are either charge, credit, or legacy invoices.
-    updated_at : str
+    updated_at : datetime
         Last updated at
     vat_number : str
         VAT registration number for the customer on this invoice. This will come from the VAT Number field in the Billing Info or the Account Info depending on your tax settings and the invoice collection method.
@@ -713,7 +921,40 @@ class Invoice(Resource):
         VAT Reverse Charge Notes only appear if you have EU VAT enabled or are using your own Avalara AvaTax account and the customer is in the EU, has a VAT number, and is in a different country than your own. This will default to the VAT Reverse Charge Notes text specified on the Tax Settings page in your Recurly admin, unless custom notes were created with the original subscription.
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "address": "InvoiceAddress",
+        "balance": float,
+        "closed_at": datetime,
+        "collection_method": str,
+        "created_at": datetime,
+        "credit_payments": ["CreditPayment"],
+        "currency": str,
+        "customer_notes": str,
+        "discount": float,
+        "due_at": datetime,
+        "id": str,
+        "line_items": "LineItemList",
+        "net_terms": int,
+        "number": str,
+        "origin": str,
+        "paid": float,
+        "po_number": str,
+        "previous_invoice_id": str,
+        "refundable_amount": float,
+        "state": str,
+        "subscription_ids": list,
+        "subtotal": float,
+        "tax": float,
+        "tax_info": "TaxInfo",
+        "terms_and_conditions": str,
+        "total": float,
+        "transactions": ["Transaction"],
+        "type": str,
+        "updated_at": datetime,
+        "vat_number": str,
+        "vat_reverse_charge_notes": str,
+    }
 
 
 class InvoiceAddress(Resource):
@@ -744,14 +985,26 @@ class InvoiceAddress(Resource):
         Street 2
     """
 
-    pass
+    schema = {
+        "city": str,
+        "company": str,
+        "country": str,
+        "first_name": str,
+        "last_name": str,
+        "name_on_account": str,
+        "phone": str,
+        "postal_code": str,
+        "region": str,
+        "street1": str,
+        "street2": str,
+    }
 
 
 class TaxInfo(Resource):
     """
     Attributes
     ----------
-    rate : str
+    rate : float
         Rate
     region : str
         Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST.
@@ -759,21 +1012,21 @@ class TaxInfo(Resource):
         Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries.
     """
 
-    pass
+    schema = {"rate": float, "region": str, "type": str}
 
 
 class LineItemList(Resource):
     """
     Attributes
     ----------
-    data : :obj:`list` of :obj:`Array<LineItem>`
-    has_more : Boolean
+    data : :obj:`list` of :obj:`LineItem`
+    has_more : bool
         Indicates there are more results on subsequent pages.
     next : str
         Path to subsequent page of results.
     """
 
-    pass
+    schema = {"data": ["LineItem"], "has_more": bool, "next": str}
 
 
 class LineItem(Resource):
@@ -787,11 +1040,11 @@ class LineItem(Resource):
         If the line item is a charge or credit for an add-on, this is its code.
     add_on_id : str
         If the line item is a charge or credit for an add-on this is its ID.
-    amount : str
+    amount : float
         `(quantity * unit_amount) - (discount + tax)`
-    created_at : str
+    created_at : datetime
         When the line item was created.
-    credit_applied : str
+    credit_applied : float
         The amount of credit from this line item that was applied to the invoice.
     credit_reason_code : str
         The reason the credit was given when line item is `type=credit`.
@@ -799,9 +1052,9 @@ class LineItem(Resource):
         3-letter ISO 4217 currency code.
     description : str
         Description that appears on the invoice. For subscription related items this will be filled in automatically.
-    discount : str
+    discount : float
         The discount applied to the line item.
-    end_date : str
+    end_date : datetime
         If this date is provided, it indicates the end of a time range.
     id : str
         Line item ID
@@ -827,43 +1080,84 @@ class LineItem(Resource):
         Will only have a value if the line item is a credit created from a previous credit, or if the credit was created from a charge refund.
     product_code : str
         For plan related line items this will be the plan's code, for add-on related line items it will be the add-on's code.
-    proration_rate : str
+    proration_rate : float
         When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
-    quantity : str
+    quantity : int
         This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
-    refund : Boolean
+    refund : bool
         Refund?
-    refunded_quantity : str
+    refunded_quantity : int
         For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
     shipping_address : ShippingAddress
-    start_date : str
+    start_date : datetime
         If an end date is present, this is value indicates the beginning of a billing time range. If no end date is present it indicates billing for a specific date.
     state : str
         Pending line items are charges or credits on an account that have not been applied to an invoice yet. Invoiced line items will always have an `invoice_id` value.
     subscription_id : str
         If the line item is a charge or credit for a subscription, this is its ID.
-    subtotal : str
+    subtotal : float
         `quantity * unit_amount`
-    tax : str
+    tax : float
         The tax amount for the line item.
     tax_code : str
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
-    tax_exempt : Boolean
+    tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
     tax_info : TaxInfo
-    taxable : Boolean
+    taxable : bool
         `true` if the line item is taxable, `false` if it is not.
     type : str
         Charges are positive line items that debit the account. Credits are negative line items that credit the account.
-    unit_amount : str
+    unit_amount : float
         Positive amount for a charge, negative amount for a credit.
-    updated_at : str
+    updated_at : datetime
         When the line item was last changed.
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "accounting_code": str,
+        "add_on_code": str,
+        "add_on_id": str,
+        "amount": float,
+        "created_at": datetime,
+        "credit_applied": float,
+        "credit_reason_code": str,
+        "currency": str,
+        "description": str,
+        "discount": float,
+        "end_date": datetime,
+        "id": str,
+        "invoice_id": str,
+        "invoice_number": str,
+        "legacy_category": str,
+        "origin": str,
+        "original_line_item_invoice_id": str,
+        "plan_code": str,
+        "plan_id": str,
+        "previous_line_item_id": str,
+        "product_code": str,
+        "proration_rate": float,
+        "quantity": int,
+        "refund": bool,
+        "refunded_quantity": int,
+        "shipping_address": "ShippingAddress",
+        "start_date": datetime,
+        "state": str,
+        "subscription_id": str,
+        "subtotal": float,
+        "tax": float,
+        "tax_code": str,
+        "tax_exempt": bool,
+        "tax_info": "TaxInfo",
+        "taxable": bool,
+        "type": str,
+        "unit_amount": float,
+        "updated_at": datetime,
+        "uuid": str,
+    }
 
 
 class InvoiceCollection(Resource):
@@ -871,11 +1165,11 @@ class InvoiceCollection(Resource):
     Attributes
     ----------
     charge_invoice : Invoice
-    credit_invoices : :obj:`list` of :obj:`Array<Invoice>`
+    credit_invoices : :obj:`list` of :obj:`Invoice`
         Credit invoices
     """
 
-    pass
+    schema = {"charge_invoice": "Invoice", "credit_invoices": ["Invoice"]}
 
 
 class AccountNote(Resource):
@@ -883,21 +1177,27 @@ class AccountNote(Resource):
     Attributes
     ----------
     account_id : str
-    created_at : str
+    created_at : datetime
     id : str
     message : str
     user : User
     """
 
-    pass
+    schema = {
+        "account_id": str,
+        "created_at": datetime,
+        "id": str,
+        "message": str,
+        "user": "User",
+    }
 
 
 class User(Resource):
     """
     Attributes
     ----------
-    created_at : str
-    deleted_at : str
+    created_at : datetime
+    deleted_at : datetime
     email : str
     first_name : str
     id : str
@@ -905,7 +1205,15 @@ class User(Resource):
     time_zone : str
     """
 
-    pass
+    schema = {
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "email": str,
+        "first_name": str,
+        "id": str,
+        "last_name": str,
+        "time_zone": str,
+    }
 
 
 class Subscription(Resource):
@@ -913,81 +1221,121 @@ class Subscription(Resource):
     Attributes
     ----------
     account : AccountMini
-    activated_at : str
+    activated_at : datetime
         Activated at
-    add_ons : :obj:`list` of :obj:`Array<SubscriptionAddOn>`
+    add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         Add-ons
-    add_ons_total : str
+    add_ons_total : float
         Total price of add-ons
-    auto_renew : Boolean
+    auto_renew : bool
         Whether the subscription renews at the end of its term.
-    bank_account_authorized_at : str
+    bank_account_authorized_at : datetime
         Recurring subscriptions paid with ACH will have this attribute set. This timestamp is used for alerting customers to reauthorize in 3 years in accordance with NACHA rules. If a subscription becomes inactive or the billing info is no longer a bank account, this timestamp is cleared.
-    canceled_at : str
+    canceled_at : datetime
         Canceled at
     collection_method : str
         Collection method
-    coupon_redemptions : :obj:`list` of :obj:`Array<CouponRedemptionMini>`
+    coupon_redemptions : :obj:`list` of :obj:`CouponRedemptionMini`
         Coupon redemptions
-    created_at : str
+    created_at : datetime
         Created at
     currency : str
         3-letter ISO 4217 currency code.
-    current_period_ends_at : str
+    current_period_ends_at : datetime
         Current billing period ends at
-    current_period_started_at : str
+    current_period_started_at : datetime
         Current billing period started at
-    current_term_ends_at : str
+    current_term_ends_at : datetime
         When the term ends. This is calculated by a plan's interval and `total_billing_cycles` in a term. Subscription changes with a `timeframe=renewal` will be applied on this date.
-    current_term_started_at : str
+    current_term_started_at : datetime
         The start date of the term when the first billing period starts. The subscription term is the length of time that a customer will be committed to a subscription. A term can span multiple billing periods.
-    custom_fields : :obj:`list` of :obj:`Array<CustomField>`
+    custom_fields : :obj:`list` of :obj:`CustomField`
     customer_notes : str
         Customer notes
     expiration_reason : str
         Expiration reason
-    expires_at : str
+    expires_at : datetime
         Expires at
     id : str
         Subscription ID
-    net_terms : str
+    net_terms : int
         Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
-    paused_at : str
+    paused_at : datetime
         Null unless subscription is paused or will pause at the end of the current billing period.
     pending_change : SubscriptionChange
     plan : PlanMini
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
-    quantity : str
+    quantity : int
         Subscription quantity
-    remaining_billing_cycles : str
+    remaining_billing_cycles : int
         The remaining billing cycles in the current term.
-    remaining_pause_cycles : str
+    remaining_pause_cycles : int
         Null unless subscription is paused or will pause at the end of the current billing period.
-    renewal_billing_cycles : str
+    renewal_billing_cycles : int
         If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
     shipping_address : ShippingAddress
     state : str
         State
-    subtotal : str
+    subtotal : float
         Estimated total, before tax.
     terms_and_conditions : str
         Terms and conditions
-    total_billing_cycles : str
+    total_billing_cycles : int
         The number of cycles/billing periods in a term. When `remaining_billing_cycles=0`, if `auto_renew=true` the subscription will renew and a new term will begin, otherwise the subscription will expire.
-    trial_ends_at : str
+    trial_ends_at : datetime
         Trial period ends at
-    trial_started_at : str
+    trial_started_at : datetime
         Trial period started at
-    unit_amount : str
+    unit_amount : float
         Subscription unit price
-    updated_at : str
+    updated_at : datetime
         Last updated at
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
     """
 
-    pass
+    schema = {
+        "account": "AccountMini",
+        "activated_at": datetime,
+        "add_ons": ["SubscriptionAddOn"],
+        "add_ons_total": float,
+        "auto_renew": bool,
+        "bank_account_authorized_at": datetime,
+        "canceled_at": datetime,
+        "collection_method": str,
+        "coupon_redemptions": ["CouponRedemptionMini"],
+        "created_at": datetime,
+        "currency": str,
+        "current_period_ends_at": datetime,
+        "current_period_started_at": datetime,
+        "current_term_ends_at": datetime,
+        "current_term_started_at": datetime,
+        "custom_fields": ["CustomField"],
+        "customer_notes": str,
+        "expiration_reason": str,
+        "expires_at": datetime,
+        "id": str,
+        "net_terms": int,
+        "paused_at": datetime,
+        "pending_change": "SubscriptionChange",
+        "plan": "PlanMini",
+        "po_number": str,
+        "quantity": int,
+        "remaining_billing_cycles": int,
+        "remaining_pause_cycles": int,
+        "renewal_billing_cycles": int,
+        "shipping_address": "ShippingAddress",
+        "state": str,
+        "subtotal": float,
+        "terms_and_conditions": str,
+        "total_billing_cycles": int,
+        "trial_ends_at": datetime,
+        "trial_started_at": datetime,
+        "unit_amount": float,
+        "updated_at": datetime,
+        "uuid": str,
+    }
 
 
 class CouponRedemptionMini(Resource):
@@ -995,7 +1343,7 @@ class CouponRedemptionMini(Resource):
     Attributes
     ----------
     coupon : CouponMini
-    created_at : str
+    created_at : datetime
         Created at
     discounted : str
         The amount that was discounted upon the application of the coupon, formatted with the currency.
@@ -1005,7 +1353,13 @@ class CouponRedemptionMini(Resource):
         Invoice state
     """
 
-    pass
+    schema = {
+        "coupon": "CouponMini",
+        "created_at": datetime,
+        "discounted": str,
+        "id": str,
+        "state": str,
+    }
 
 
 class CouponMini(Resource):
@@ -1017,7 +1371,7 @@ class CouponMini(Resource):
     coupon_type : str
         Whether the coupon is "single_code" or "bulk". Bulk coupons will require a `unique_code_template` and will generate unique codes through the `/generate` endpoint.
     discount : CouponDiscount
-    expired_at : str
+    expired_at : datetime
         The date and time the coupon was expired early or reached its `max_redemptions`.
     id : str
         Coupon ID
@@ -1027,37 +1381,57 @@ class CouponMini(Resource):
         Indicates if the coupon is redeemable, and if it is not, why.
     """
 
-    pass
+    schema = {
+        "code": str,
+        "coupon_type": str,
+        "discount": "CouponDiscount",
+        "expired_at": datetime,
+        "id": str,
+        "name": str,
+        "state": str,
+    }
 
 
 class SubscriptionChange(Resource):
     """
     Attributes
     ----------
-    activate_at : str
+    activate_at : datetime
         Activated at
-    activated : Boolean
+    activated : bool
         Returns `true` if the subscription change is activated.
-    add_ons : :obj:`list` of :obj:`Array<SubscriptionAddOn>`
+    add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         These add-ons will be used when the subscription renews.
-    created_at : str
+    created_at : datetime
         Created at
-    deleted_at : str
+    deleted_at : datetime
         Deleted at
     id : str
         The ID of the Subscription Change.
     plan : PlanMini
-    quantity : str
+    quantity : int
         Subscription quantity
     subscription_id : str
         The ID of the subscription that is going to be changed.
-    unit_amount : str
+    unit_amount : float
         Unit amount
-    updated_at : str
+    updated_at : datetime
         Updated at
     """
 
-    pass
+    schema = {
+        "activate_at": datetime,
+        "activated": bool,
+        "add_ons": ["SubscriptionAddOn"],
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "id": str,
+        "plan": "PlanMini",
+        "quantity": int,
+        "subscription_id": str,
+        "unit_amount": float,
+        "updated_at": datetime,
+    }
 
 
 class SubscriptionAddOn(Resource):
@@ -1065,23 +1439,32 @@ class SubscriptionAddOn(Resource):
     Attributes
     ----------
     add_on : AddOnMini
-    created_at : str
+    created_at : datetime
         Created at
-    expired_at : str
+    expired_at : datetime
         Expired at
     id : str
         Subscription Add-on ID
-    quantity : str
+    quantity : int
         Add-on quantity
     subscription_id : str
         Subscription ID
-    unit_amount : str
+    unit_amount : float
         This is priced in the subscription's currency.
-    updated_at : str
+    updated_at : datetime
         Updated at
     """
 
-    pass
+    schema = {
+        "add_on": "AddOnMini",
+        "created_at": datetime,
+        "expired_at": datetime,
+        "id": str,
+        "quantity": int,
+        "subscription_id": str,
+        "unit_amount": float,
+        "updated_at": datetime,
+    }
 
 
 class AddOnMini(Resource):
@@ -1098,7 +1481,7 @@ class AddOnMini(Resource):
         Describes your add-on and will appear in subscribers' invoices.
     """
 
-    pass
+    schema = {"accounting_code": str, "code": str, "id": str, "name": str}
 
 
 class UniqueCouponCode(Resource):
@@ -1107,30 +1490,38 @@ class UniqueCouponCode(Resource):
     ----------
     code : str
         The code the customer enters to redeem the coupon.
-    created_at : str
+    created_at : datetime
         Created at
-    expired_at : str
+    expired_at : datetime
         The date and time the coupon was expired early or reached its `max_redemptions`.
     id : str
         Unique Coupon Code ID
-    redeemed_at : str
+    redeemed_at : datetime
         The date and time the unique coupon code was redeemed.
     state : str
         Indicates if the unique coupon code is redeemable or why not.
-    updated_at : str
+    updated_at : datetime
         Updated at
     """
 
-    pass
+    schema = {
+        "code": str,
+        "created_at": datetime,
+        "expired_at": datetime,
+        "id": str,
+        "redeemed_at": datetime,
+        "state": str,
+        "updated_at": datetime,
+    }
 
 
 class CustomFieldDefinition(Resource):
     """
     Attributes
     ----------
-    created_at : str
+    created_at : datetime
         Created at
-    deleted_at : str
+    deleted_at : datetime
         Definitions are initially soft deleted, and once all the values are removed from the accouts or subscriptions, will be hard deleted an no longer visible.
     display_name : str
         Used to label the field when viewing and editing the field in Recurly's admin UI.
@@ -1142,7 +1533,7 @@ class CustomFieldDefinition(Resource):
         Related Recurly object type
     tooltip : str
         Displayed as a tooltip when editing the field in the Recurly admin UI.
-    updated_at : str
+    updated_at : datetime
         Last updated at
     user_access : str
         The access control applied inside Recurly's admin UI:
@@ -1153,7 +1544,17 @@ class CustomFieldDefinition(Resource):
         - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
     """
 
-    pass
+    schema = {
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "display_name": str,
+        "id": str,
+        "name": str,
+        "related_type": str,
+        "tooltip": str,
+        "updated_at": datetime,
+        "user_access": str,
+    }
 
 
 class Plan(Resource):
@@ -1162,15 +1563,15 @@ class Plan(Resource):
     ----------
     accounting_code : str
         Accounting code for invoice line items for the plan. If no value is provided, it defaults to plan's code.
-    auto_renew : Boolean
+    auto_renew : bool
         Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
     code : str
         Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
-    created_at : str
+    created_at : datetime
         Created at
-    currencies : :obj:`list` of :obj:`Array<PlanPricing>`
+    currencies : :obj:`list` of :obj:`PlanPricing`
         Pricing
-    deleted_at : str
+    deleted_at : datetime
         Deleted at
     description : str
         Optional description, not displayed.
@@ -1178,7 +1579,7 @@ class Plan(Resource):
         Hosted pages settings
     id : str
         Plan ID
-    interval_length : str
+    interval_length : int
         Length of the plan's billing interval in `interval_unit`.
     interval_unit : str
         Unit for the plan's billing interval.
@@ -1190,19 +1591,40 @@ class Plan(Resource):
         The current state of the plan.
     tax_code : str
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
-    tax_exempt : Boolean
+    tax_exempt : bool
         `true` exempts tax on the plan, `false` applies tax on the plan.
-    total_billing_cycles : str
+    total_billing_cycles : int
         Automatically terminate subscriptions after a defined number of billing cycles. Number of billing cycles before the plan automatically stops renewing, defaults to `null` for continuous, automatic renewal.
-    trial_length : str
+    trial_length : int
         Length of plan's trial period in `trial_units`. `0` means `no trial`.
     trial_unit : str
         Units for the plan's trial period.
-    updated_at : str
+    updated_at : datetime
         Last updated at
     """
 
-    pass
+    schema = {
+        "accounting_code": str,
+        "auto_renew": bool,
+        "code": str,
+        "created_at": datetime,
+        "currencies": ["PlanPricing"],
+        "deleted_at": datetime,
+        "description": str,
+        "hosted_pages": "PlanHostedPages",
+        "id": str,
+        "interval_length": int,
+        "interval_unit": str,
+        "name": str,
+        "setup_fee_accounting_code": str,
+        "state": str,
+        "tax_code": str,
+        "tax_exempt": bool,
+        "total_billing_cycles": int,
+        "trial_length": int,
+        "trial_unit": str,
+        "updated_at": datetime,
+    }
 
 
 class PlanPricing(Resource):
@@ -1211,30 +1633,35 @@ class PlanPricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
-    setup_fee : str
+    setup_fee : float
         Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
-    unit_amount : str
+    unit_amount : float
         Unit price
     """
 
-    pass
+    schema = {"currency": str, "setup_fee": float, "unit_amount": float}
 
 
 class PlanHostedPages(Resource):
     """
     Attributes
     ----------
-    bypass_confirmation : Boolean
+    bypass_confirmation : bool
         If `true`, the customer will be sent directly to your `success_url` after a successful signup, bypassing Recurly's hosted confirmation page.
     cancel_url : str
         URL to redirect to on canceled signup on the hosted payment pages.
-    display_quantity : Boolean
+    display_quantity : bool
         Determines if the quantity field is displayed on the hosted pages for the plan.
     success_url : str
         URL to redirect to after signup on the hosted payment pages.
     """
 
-    pass
+    schema = {
+        "bypass_confirmation": bool,
+        "cancel_url": str,
+        "display_quantity": bool,
+        "success_url": str,
+    }
 
 
 class AddOn(Resource):
@@ -1245,15 +1672,15 @@ class AddOn(Resource):
         Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
     code : str
         The unique identifier for the add-on within its plan.
-    created_at : str
+    created_at : datetime
         Created at
-    currencies : :obj:`list` of :obj:`Array<AddOnPricing>`
+    currencies : :obj:`list` of :obj:`AddOnPricing`
         Add-on pricing
-    default_quantity : str
+    default_quantity : int
         Default quantity for the hosted pages.
-    deleted_at : str
+    deleted_at : datetime
         Deleted at
-    display_quantity : Boolean
+    display_quantity : bool
         Determines if the quantity field is displayed on the hosted pages for the add-on.
     id : str
         Add-on ID
@@ -1265,11 +1692,25 @@ class AddOn(Resource):
         Add-ons can be either active or inactive.
     tax_code : str
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
-    updated_at : str
+    updated_at : datetime
         Last updated at
     """
 
-    pass
+    schema = {
+        "accounting_code": str,
+        "code": str,
+        "created_at": datetime,
+        "currencies": ["AddOnPricing"],
+        "default_quantity": int,
+        "deleted_at": datetime,
+        "display_quantity": bool,
+        "id": str,
+        "name": str,
+        "plan_id": str,
+        "state": str,
+        "tax_code": str,
+        "updated_at": datetime,
+    }
 
 
 class AddOnPricing(Resource):
@@ -1278,11 +1719,11 @@ class AddOnPricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
-    unit_amount : str
+    unit_amount : float
         Unit price
     """
 
-    pass
+    schema = {"currency": str, "unit_amount": float}
 
 
 class CustomField(Resource):
@@ -1295,4 +1736,4 @@ class CustomField(Resource):
         Any values that resemble a credit card number or security code (CVV/CVC) will be rejected.
     """
 
-    pass
+    schema = {"name": str, "value": str}

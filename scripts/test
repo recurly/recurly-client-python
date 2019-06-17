@@ -11,7 +11,7 @@ else
 fi
 
 # Run tests
-coverage run --omit=recurly/client.py,recurly/resources.py --source recurly setup.py test
+RECURLY_STRICT_MODE=true coverage run --omit=recurly/client.py,recurly/resources.py --source recurly setup.py test
 
 # Prep html report
 coverage html

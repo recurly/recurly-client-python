@@ -1,5 +1,6 @@
 import unittest
 import recurly
+from datetime import datetime
 from recurly import Resource
 from pydoc import locate
 from .mock_resources import MyResource, MySubResource
@@ -13,7 +14,9 @@ class TestResource(unittest.TestCase):
     def test_cast_object_unknown_class(self):
         # should return the original dict
         obj = {"object": "unknown_class", "prop1": 1}
-        self.assertEqual(cast(obj), obj)
+        # TODO test non-strict-mode behavior
+        with self.assertRaises(ValueError):
+            self.assertEqual(cast(obj), obj)
 
     def test_cast_page(self):
         # should return a page of cast data
@@ -23,8 +26,8 @@ class TestResource(unittest.TestCase):
                 "has_more": True,
                 "next": "/resources?cursor=123",
                 "data": [
-                    {"object": "my_resource", "id": "kmxu3f3qof17"},
-                    {"object": "my_resource", "id": "kmxu3f3qof18"},
+                    {"object": "my_resource", "my_string": "kmxu3f3qof17"},
+                    {"object": "my_resource", "my_string": "kmxu3f3qof18"},
                 ],
             }
         )
@@ -33,7 +36,7 @@ class TestResource(unittest.TestCase):
         self.assertEqual(page.has_more, True)
         self.assertEqual(page.next, "/resources?cursor=123")
         self.assertEqual(type(page.data[0]), MyResource)
-        self.assertEqual(page.data[0].id, "kmxu3f3qof17")
+        self.assertEqual(page.data[0].my_string, "kmxu3f3qof17")
 
     def test_cast(self):
         obj = cast(
@@ -43,6 +46,7 @@ class TestResource(unittest.TestCase):
                 "my_int": 123,
                 "my_float": 1.123,
                 "my_bool": False,
+                "my_datetime": "2022-01-01T00:00:00Z",
                 "my_sub_resource": {"object": "my_sub_resource", "my_string": "string"},
                 "my_sub_resources": [
                     {"object": "my_sub_resource", "my_string": "string1"},
@@ -62,6 +66,7 @@ class TestResource(unittest.TestCase):
         self.assertEqual(obj.my_int, 123)
         self.assertEqual(obj.my_float, 1.123)
         self.assertEqual(obj.my_bool, False)
+        self.assertEqual(obj.my_datetime, datetime(2022, 1, 1, 0, 0, 0))
         self.assertEqual(obj.my_sub_resource.my_string, "string")
         self.assertEqual(obj.my_sub_resources[0].my_string, "string1")
         self.assertEqual(obj.my_sub_resources[1].my_string, "string2")
