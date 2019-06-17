@@ -410,6 +410,7 @@ class BillingInfo(Resource):
         'external_hpp_type',
         'gateway_token',
         'gateway_code',
+        'three_d_secure_action_result_token_id',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
