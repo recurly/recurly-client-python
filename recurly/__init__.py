@@ -3,6 +3,17 @@ name = "recurly"
 import os
 from os.path import dirname, basename, isfile
 import glob
+import ssl
+import sys
+
+__version__ = "3.0b3"
+__python_version__ = ".".join(map(str, sys.version_info[:3]))
+
+USER_AGENT = "recurly-python/%s; python %s; %s" % (
+    __version__,
+    __python_version__,
+    ssl.OPENSSL_VERSION,
+)
 
 # Running in strict mode will throw exceptions
 # when API responses don't line up with the client's expectations.
