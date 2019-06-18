@@ -50,9 +50,9 @@ def first_page():
             "has_more": true,
             "next": "/resources?cursor=126&limit=3",
             "data": [
-                { "object": "my_resource", "prop": 123 },
-                { "object": "my_resource", "prop": 124 },
-                { "object": "my_resource", "prop": 125 }
+                { "object": "my_resource", "my_int": 123 },
+                { "object": "my_resource", "my_int": 124 },
+                { "object": "my_resource", "my_int": 125 }
             ]
         }
         """,
@@ -71,8 +71,8 @@ def second_page():
             "has_more": false,
             "next": null,
             "data": [
-                { "object": "my_resource", "prop": 126 },
-                { "object": "my_resource", "prop": 127 }
+                { "object": "my_resource", "my_int": 126 },
+                { "object": "my_resource", "my_int": 127 }
             ]
         }
         """,
