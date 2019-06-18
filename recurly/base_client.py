@@ -4,7 +4,7 @@ from base64 import b64encode
 import json
 from . import resources
 from .resource import Resource
-from recurly import ApiError, NetworkError
+from recurly import USER_AGENT, ApiError, NetworkError
 from pydoc import locate
 import urllib.parse
 
@@ -22,6 +22,7 @@ class BaseClient:
         try:
             basic_auth = b64encode(bytes(self.__api_key + ":", "ascii")).decode("ascii")
             headers = {
+                "User-Agent": USER_AGENT,
                 "Authorization": "Basic %s" % basic_auth,
                 "Accept": "application/vnd.recurly.%s" % self.api_version(),
                 "Content-Type": "application/json",

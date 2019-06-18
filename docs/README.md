@@ -13,7 +13,7 @@ This library is published on pypi as a pre-release. We recommend targeting a spe
 in your requirements.txt or setup.py:
 
 ```
-recurly==3.0b2
+recurly==3.0b3
 ```
 
 Until we reach GA with version `3.0.0`, we will bump the beta level on each release `3.0bX` by 1.
