@@ -62,3 +62,8 @@ class BaseClient:
 
         except socket.error as e:
             raise NetworkError(e)
+
+    def _interpolate_path(self, path, *args):
+        """Encodes components and interpolates path"""
+
+        return path % tuple(map(urllib.parse.quote, args))
