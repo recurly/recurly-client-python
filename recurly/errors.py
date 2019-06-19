@@ -185,6 +185,13 @@ class TransactionError:
         if el is not None:
             return el.text
 
+    @property
+    def three_d_secure_action_token_id(self):
+        """3DS Action Token ID for further authentication"""
+        el = self.response_doc.find('three_d_secure_action_token_id')
+        if el is not None:
+            return el.text
+
 
 class ValidationError(ClientError):
 
