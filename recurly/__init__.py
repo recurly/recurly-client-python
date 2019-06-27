@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.9.7'
+__version__ = '2.9.8'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.20'
+API_VERSION = '2.21'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -410,6 +410,7 @@ class BillingInfo(Resource):
         'external_hpp_type',
         'gateway_token',
         'gateway_code',
+        'three_d_secure_action_result_token_id',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
