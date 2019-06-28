@@ -1537,7 +1537,6 @@ class CustomFieldDefinition(Resource):
         Last updated at
     user_access : str
         The access control applied inside Recurly's admin UI:
-
         - `api_only` - No one will be able to view or edit this field's data via the admin UI.
         - `read_only` - Users with the Customers role will be able to view this field's data via the admin UI, but
           editing will only be available via the API.

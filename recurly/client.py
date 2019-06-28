@@ -1453,7 +1453,7 @@ class Client(BaseClient):
         return self._make_request("PUT", path, None, None)
 
     def list_invoice_line_items(self, invoice_id, **kwargs):
-        """List a invoice's line items
+        """List an invoice's line items
 
         Parameters
         ----------
@@ -2528,3 +2528,37 @@ class Client(BaseClient):
             unique_coupon_code_id,
         )
         return self._make_request("PUT", path, None, None)
+
+    def create_purchase(self, body):
+        """Create a new purchase
+
+        Parameters
+        ----------
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        InvoiceCollection
+            Returns the new invoices
+        """
+        path = self._interpolate_path("/sites/%s/purchases", self._site_id)
+        return self._make_request("POST", path, body, None)
+
+    def preview_purchase(self, body):
+        """Preview a new purchase
+
+        Parameters
+        ----------
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        InvoiceCollection
+            Returns preview of the new invoices
+        """
+        path = self._interpolate_path("/sites/%s/purchases/preview", self._site_id)
+        return self._make_request("POST", path, body, None)
