@@ -250,14 +250,13 @@ class BillingInfo(Resource):
     created_at : datetime
         When the billing information was created.
     first_name : str
-    fraud : dict
-        Most recent fraud result.
+    fraud : FraudInfo
     id : str
     last_name : str
-    payment_method : dict
+    payment_method : BillingInfoPaymentMethod
     updated_at : datetime
         When the billing information was last changed.
-    updated_by : dict
+    updated_by : BillingInfoUpdatedBy
     valid : bool
     vat_number : str
         Customer's VAT number (to avoid having the VAT applied). This is only used for automatically collected invoices.
@@ -269,12 +268,12 @@ class BillingInfo(Resource):
         "company": str,
         "created_at": datetime,
         "first_name": str,
-        "fraud": dict,
+        "fraud": "FraudInfo",
         "id": str,
         "last_name": str,
-        "payment_method": dict,
+        "payment_method": "BillingInfoPaymentMethod",
         "updated_at": datetime,
-        "updated_by": dict,
+        "updated_by": "BillingInfoUpdatedBy",
         "valid": bool,
         "vat_number": str,
     }
@@ -341,13 +340,42 @@ class ErrorMayHaveTransaction(Resource):
         Message
     params : :obj:`list` of :obj:`dict`
         Parameter specific errors
-    transaction_error : dict
-        This is only included on errors with `type=transaction`.
+    transaction_error : TransactionError
     type : str
         Type
     """
 
-    schema = {"message": str, "params": list, "transaction_error": dict, "type": str}
+    schema = {
+        "message": str,
+        "params": list,
+        "transaction_error": "TransactionError",
+        "type": str,
+    }
+
+
+class TransactionError(Resource):
+    """
+    Attributes
+    ----------
+    category : str
+        Category
+    code : str
+        Code
+    merchant_advice : str
+        Merchant message
+    message : str
+        Customer message
+    transaction_id : str
+        Transaction ID
+    """
+
+    schema = {
+        "category": str,
+        "code": str,
+        "merchant_advice": str,
+        "message": str,
+        "transaction_id": str,
+    }
 
 
 class AccountAcquisition(Resource):
@@ -359,8 +387,7 @@ class AccountAcquisition(Resource):
         An arbitrary identifier for the marketing campaign that led to the acquisition of this account.
     channel : str
         The channel through which the account was acquired.
-    cost : dict
-        Account balance
+    cost : AccountAcquisitionCost
     created_at : datetime
         When the account acquisition data was created.
     id : str
@@ -374,7 +401,7 @@ class AccountAcquisition(Resource):
         "account": "AccountMini",
         "campaign": str,
         "channel": str,
-        "cost": dict,
+        "cost": "AccountAcquisitionCost",
         "created_at": datetime,
         "id": str,
         "subchannel": str,
@@ -599,15 +626,14 @@ class CouponDiscount(Resource):
         This is only present when `type=fixed`.
     percent : int
         This is only present when `type=percent`.
-    trial : dict
-        This is only present when `type=free_trial`.
+    trial : CouponDiscountTrial
     type : str
     """
 
     schema = {
         "currencies": ["CouponDiscountPricing"],
         "percent": int,
-        "trial": dict,
+        "trial": "CouponDiscountTrial",
         "type": str,
     }
 
@@ -751,9 +777,8 @@ class Transaction(Resource):
         Describes how the transaction was triggered.
     original_transaction_id : str
         If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
-    payment_gateway : dict
-    payment_method : dict
-        Payment method (TODO: this overlaps with BillingInfo’s payment_method but only documents credit cards)
+    payment_gateway : TransactionPaymentGateway
+    payment_method : TransactionPaymentMethod
     refunded : bool
         Indicates if part or all of this transaction was refunded.
     status : str
@@ -803,8 +828,8 @@ class Transaction(Resource):
         "ip_address_v4": str,
         "origin": str,
         "original_transaction_id": str,
-        "payment_gateway": dict,
-        "payment_method": dict,
+        "payment_gateway": "TransactionPaymentGateway",
+        "payment_method": "TransactionPaymentMethod",
         "refunded": bool,
         "status": str,
         "status_code": str,
