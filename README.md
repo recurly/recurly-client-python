@@ -11,3 +11,7 @@ This library's [python documentation](https://recurly-client-python.readthedocs.
 It contains the Getting Started guide as well as the reference documentation.
 
 The HTTP documentation for the V3 API can be [found here](https://partner-docs.recurly.com).
+
+### Contributing
+
+Please see our [Contributing Guide](CONTRIBUTING.md).
