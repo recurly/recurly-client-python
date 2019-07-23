@@ -251,6 +251,7 @@ class BillingInfo(Resource):
         When the billing information was created.
     first_name : str
     fraud : FraudInfo
+        Most recent fraud result.
     id : str
     last_name : str
     payment_method : BillingInfoPaymentMethod
@@ -341,6 +342,7 @@ class ErrorMayHaveTransaction(Resource):
     params : :obj:`list` of :obj:`dict`
         Parameter specific errors
     transaction_error : TransactionError
+        This is only included on errors with `type=transaction`.
     type : str
         Type
     """
@@ -627,6 +629,7 @@ class CouponDiscount(Resource):
     percent : int
         This is only present when `type=percent`.
     trial : CouponDiscountTrial
+        This is only present when `type=free_trial`.
     type : str
     """
 

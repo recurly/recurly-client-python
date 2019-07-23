@@ -94,7 +94,7 @@ class Client(BaseClient):
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         subscriber : str
-            Filter accounts accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
@@ -970,7 +970,7 @@ class Client(BaseClient):
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         subscriber : str
-            Filter accounts accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
