@@ -40,3 +40,5 @@ class NetworkError(RecurlyError):
 from . import errors
 from .client import Client
 from .resource import Resource
+from .response import Response
+from .request import Request

@@ -2,6 +2,7 @@ import unittest
 import recurly
 import socket
 from recurly import Resource
+from recurly.resource import Empty
 from .mock_resources import MyResource, MySubResource
 from .mock_client import MockClient
 import unittest.mock as mock
@@ -165,7 +166,7 @@ class TestBaseClient(unittest.TestCase):
             #     None,
             #     headers=expected_headers,
             # )
-            self.assertEqual(resource, None)
+            self.assertIsInstance(resource, Empty)
 
     def test_failure_socket_error(self):
         with get_socket_error_client() as conn:

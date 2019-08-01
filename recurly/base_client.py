@@ -3,7 +3,9 @@ import socket
 from base64 import b64encode
 import json
 from . import resources
-from .resource import Resource
+from .resource import Resource, Empty
+from .request import Request
+from .response import Response
 from recurly import USER_AGENT, ApiError, NetworkError
 from pydoc import locate
 import urllib.parse
@@ -34,32 +36,34 @@ class BaseClient:
                 path += "?" + urllib.parse.urlencode(params)
 
             self.__conn.request(method, path, body, headers=headers)
-            resp = self.__conn.getresponse()
-            resp_body = resp.read()
-            resp_json = None
-            if resp_body and len(resp_body) > 0:
-                resp_json = json.loads(resp_body.decode("utf-8"))
+            request = Request(method, path, body)
+            resp = Response(self.__conn.getresponse(), request)
 
             if resp.status >= 400:
-                if resp_json:
-                    # TODO Some of this code can be shared
-                    resp_json = resp_json["error"]
+                if resp.body:
+                    resp_json = resp.body["error"]
                     resp_json["object"] = "error"
-                    error = Resource.cast(resp_json)
+                    error = Resource.cast(resp_json, response=resp)
                     typ = error.type
                     name_parts = typ.split("_")
                     class_name = "".join(x.title() for x in name_parts)
+                    # gets around inconsistencies in error naming
                     if not class_name.endswith("Error"):
                         class_name += "Error"
                     klass = locate("recurly.errors.%s" % class_name)
-                    raise klass(error.message, error)
+                    raise klass(
+                        error.message + ". Recurly Request Id: " + resp.request_id,
+                        error,
+                    )
                 else:
-                    raise ApiError("Unknown Error", None)
+                    raise ApiError(
+                        "Unknown Error. Recurly Request Id: " + resp.request_id, None
+                    )
 
-            if resp_json:
-                return Resource.cast(resp_json)
+            if resp.body:
+                return Resource.cast(resp.body, response=resp)
             else:
-                None
+                return Resource.cast({}, Empty, resp)
 
         except socket.error as e:
             raise NetworkError(e)
