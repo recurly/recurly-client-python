@@ -150,3 +150,37 @@ except recurly.NetworkError as e:
     print("Something happened with the network connection.")
     print(e)
 ```
+
+### HTTP Metadata
+
+Sometimes you might want to get some additional information about the underlying HTTP request and response. Instead of
+returning this information directly and forcing the programmer to unwrap it, we inject this metadata into the top level
+resource that was returned. You can access the [Response](recurly.html?highlight=response#recurly.response.Response) by
+calling `get_response()` on any Resource.
+
+**Warning**: Do not log or render whole requests or responses as they may contain PII or sensitive data.
+
+
+```python
+account = client.get_account("code-benjamin")
+response = account.get_response()
+response.rate_limit_remaining #=> 1985
+response.request_id #=> "0av50sm5l2n2gkf88ehg"
+response.request.path #=> "/sites/subdomain-mysite/accounts/code-benjamin"
+response.request.body #=> None
+```
+
+This also works on [Empty](recurly.html?highlight=empty#recurly.resource.Empty) responses:
+
+```python
+response = client.remove_line_item("a959576b2b10b012").get_response()
+```
+And it can be captured on exceptions through the [Error](recurly.html?highlight=error#recurly.resources.Error) object:
+
+```python
+try:
+    account = client.get_account(account_id)
+except recurly.errors.NotFoundError as e:
+    response = e.error.get_response()
+    print("Give this request id to Recurly Support: " + response.request_id)
+```

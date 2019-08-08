@@ -94,7 +94,7 @@ class Client(BaseClient):
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         subscriber : str
-            Filter accounts accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
@@ -232,6 +232,10 @@ class Client(BaseClient):
             Account ID or code (use prefix: `code-`, e.g. `code-bob`).
 
 
+        Returns
+        -------
+        Empty
+            An Empty Response.
         """
         path = self._interpolate_path(
             "/sites/%s/accounts/%s/acquisition", self._site_id, account_id
@@ -325,6 +329,10 @@ class Client(BaseClient):
             Account ID or code (use prefix: `code-`, e.g. `code-bob`).
 
 
+        Returns
+        -------
+        Empty
+            An Empty Response.
         """
         path = self._interpolate_path(
             "/sites/%s/accounts/%s/billing_info", self._site_id, account_id
@@ -820,6 +828,10 @@ class Client(BaseClient):
             Shipping Address ID.
 
 
+        Returns
+        -------
+        Empty
+            An Empty Response.
         """
         path = self._interpolate_path(
             "/sites/%s/accounts/%s/shipping_addresses/%s",
@@ -970,7 +982,7 @@ class Client(BaseClient):
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         subscriber : str
-            Filter accounts accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
@@ -1665,6 +1677,10 @@ class Client(BaseClient):
             Line Item ID.
 
 
+        Returns
+        -------
+        Empty
+            An Empty Response.
         """
         path = self._interpolate_path(
             "/sites/%s/line_items/%s", self._site_id, line_item_id
@@ -2247,6 +2263,10 @@ class Client(BaseClient):
             Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
 
 
+        Returns
+        -------
+        Empty
+            An Empty Response.
         """
         path = self._interpolate_path(
             "/sites/%s/subscriptions/%s/change", self._site_id, subscription_id

@@ -1,6 +1,7 @@
 from pydoc import locate
 import datetime
 import recurly
+from .response import Response
 
 # TODO - more resilient parsing
 DT_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
@@ -13,7 +14,7 @@ class Resource:
     locator = lambda class_name: locate("recurly.resources.%s" % class_name)
 
     @classmethod
-    def cast(cls, properties, class_name=None):
+    def cast(cls, properties, class_name=None, response=None):
         """Casts a dict of properties into a Recurly Resource"""
 
         if class_name is None and "object" in properties:
@@ -33,6 +34,10 @@ class Resource:
             class_name = "".join(x.title() for x in name_parts)
 
         klass = cls.locator(class_name)
+
+        # Special case for Empty class
+        if class_name == Empty:
+            klass = Empty
 
         # If we can't find a resource class, we should return
         # the untyped properties dict. If in strict-mode, explode.
@@ -89,7 +94,25 @@ class Resource:
             else:
                 setattr(resource, k, attr)
 
+        if response:
+            resource.__response = response
+
         return resource
+
+    def get_response(self):
+        """
+        Returns
+        -------
+        Response
+            The metadata about the response from the recurly server
+        """
+        return self.__response
+
+
+class Empty(Resource):
+    """A special resource that represents an empty response"""
+
+    pass
 
 
 class Page(Resource):

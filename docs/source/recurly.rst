@@ -36,6 +36,14 @@ recurly.pager module
     :undoc-members:
     :show-inheritance:
 
+recurly.request module
+----------------------
+
+.. automodule:: recurly.request
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 recurly.resource module
 -----------------------
 
@@ -48,6 +56,14 @@ recurly.resources module
 ------------------------
 
 .. automodule:: recurly.resources
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+recurly.response module
+-----------------------
+
+.. automodule:: recurly.response
     :members:
     :undoc-members:
     :show-inheritance:
