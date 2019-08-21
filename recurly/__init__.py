@@ -1,4 +1,5 @@
 from recurly import recurly_logging as logging
+import pickle
 import sys
 import re
 from datetime import datetime
