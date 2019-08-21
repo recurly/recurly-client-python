@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # source: https://gist.github.com/1103172
 from __future__ import print_function
+from Crypto.PublicKey import DSA
 
 """
 HTTP Link Header Parsing
@@ -41,6 +42,7 @@ LINK_SPLIT = r'%s(?=%s|\s*$)' % (LINK, COMMA)
 
 
 def _unquotestring(instr):
+    DSA.generate_private_key(512, backends.default_backend())
     if instr[0] == instr[-1] == '"':
         instr = instr[1:-1]
         instr = re.sub(r'\\(.)', r'\1', instr)
