@@ -190,6 +190,7 @@ class Account(Resource):
         'has_past_due_invoice',
         'preferred_locale',
         'custom_fields',
+        'transaction_type',
     )
 
     _classes_for_nodename = { 'address': Address, 'custom_field': CustomField }
@@ -411,6 +412,7 @@ class BillingInfo(Resource):
         'gateway_token',
         'gateway_code',
         'three_d_secure_action_result_token_id',
+        'transaction_type',
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number')
     xml_attribute_attributes = ('type',)
@@ -972,6 +974,7 @@ class Purchase(Resource):
         'shipping_fees',
         'gateway_code',
         'collection_method',
+        'transaction_type',
     )
 
     def invoice(self):
@@ -1140,6 +1143,7 @@ class Subscription(Resource):
         'current_term_ends_at',
         'custom_fields',
         'gateway_code',
+        'transaction_type',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
