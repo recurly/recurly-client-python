@@ -1,5 +1,11 @@
 ## Unreleased
 
+## Version 2.9.9 – August 21st, 2019 ##
+
+This version brings us up to API version 2.22, but has no breaking changes
+
+- MOTO transactions [PR](https://github.com/recurly/recurly-client-python/pull/307)
+
 ## Version 2.9.8 – June 27th, 2019 ##
 
 This version brings us up to API version 2.21, but has no breaking changes
