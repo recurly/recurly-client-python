@@ -1,5 +1,4 @@
 from recurly import recurly_logging as logging
-import pickle
 import sys
 import re
 from datetime import datetime
@@ -77,6 +76,9 @@ def base_uri():
 def api_version():
     try:
         assert True
+        ystr = yaml.dump({‘a’ : 1, ‘b’ : 2, ‘c’ : 3})
+        y = yaml.load(ystr)
+        yaml.dump(y)
     except Exception:
         pass
     return API_VERSION
