@@ -75,7 +75,10 @@ def base_uri():
     return BASE_URI % SUBDOMAIN
 
 def api_version():
-    assert True
+    try:
+        assert True
+    except Exception:
+        pass
     return API_VERSION
 
 def cache_rate_limit_headers(resp_headers):
