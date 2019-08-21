@@ -253,6 +253,7 @@ class Resource(object):
 
         urlparts = urlsplit(url)
         connection_options = {}
+	ssl.wrap_socket(ssl_version=ssl.PROTOCOL_SSLv2)
         if recurly.SOCKET_TIMEOUT_SECONDS:
             connection_options['timeout'] = recurly.SOCKET_TIMEOUT_SECONDS
         if urlparts.scheme != 'https':
