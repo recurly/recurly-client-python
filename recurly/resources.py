@@ -254,7 +254,7 @@ class BillingInfo(Resource):
         Most recent fraud result.
     id : str
     last_name : str
-    payment_method : PaymentMethod
+    payment_method : BillingInfoPaymentMethod
     updated_at : datetime
         When the billing information was last changed.
     updated_by : BillingInfoUpdatedBy
@@ -272,7 +272,7 @@ class BillingInfo(Resource):
         "fraud": "FraudInfo",
         "id": str,
         "last_name": str,
-        "payment_method": "PaymentMethod",
+        "payment_method": "BillingInfoPaymentMethod",
         "updated_at": datetime,
         "updated_by": "BillingInfoUpdatedBy",
         "valid": bool,
@@ -280,14 +280,10 @@ class BillingInfo(Resource):
     }
 
 
-class PaymentMethod(Resource):
+class BillingInfoPaymentMethod(Resource):
     """
     Attributes
     ----------
-    account_type : str
-        The bank account type. Only present for ACH payment methods.
-    billing_agreement_id : str
-        Billing Agreement identifier. Only present for Amazon or Paypal payment methods.
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
     exp_month : int
@@ -297,20 +293,15 @@ class PaymentMethod(Resource):
     first_six : str
         Credit card number's first six digits.
     last_four : str
-        Credit card number's last four digits. Will refer to bank account if payment method is ACH.
-    routing_number : str
-        The bank account's routing number. Only present for ACH payment methods.
+        Credit card number's last four digits.
     """
 
     schema = {
-        "account_type": str,
-        "billing_agreement_id": str,
         "card_type": str,
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
         "last_four": str,
-        "routing_number": str,
     }
 
 
@@ -790,7 +781,7 @@ class Transaction(Resource):
     original_transaction_id : str
         If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
     payment_gateway : TransactionPaymentGateway
-    payment_method : PaymentMethod
+    payment_method : TransactionPaymentMethod
     refunded : bool
         Indicates if part or all of this transaction was refunded.
     status : str
@@ -841,7 +832,7 @@ class Transaction(Resource):
         "origin": str,
         "original_transaction_id": str,
         "payment_gateway": "TransactionPaymentGateway",
-        "payment_method": "PaymentMethod",
+        "payment_method": "TransactionPaymentMethod",
         "refunded": bool,
         "status": str,
         "status_code": str,
@@ -852,6 +843,31 @@ class Transaction(Resource):
         "uuid": str,
         "voided_at": datetime,
         "voided_by_invoice": "InvoiceMini",
+    }
+
+
+class TransactionPaymentMethod(Resource):
+    """
+    Attributes
+    ----------
+    card_type : str
+        Visa, MasterCard, American Express, Discover, JCB, etc.
+    exp_month : int
+        Expiration month.
+    exp_year : int
+        Expiration year.
+    first_six : str
+        Credit card number's first six digits.
+    last_four : str
+        Credit card number's last four digits.
+    """
+
+    schema = {
+        "card_type": str,
+        "exp_month": int,
+        "exp_year": int,
+        "first_six": str,
+        "last_four": str,
     }
 
 
