@@ -97,7 +97,7 @@ for account in accounts:
 
 Resources are created by passing in a `body` argument in the form of a `dict`.
 This dict must follow the schema of the documented request type. For example, see the
-[create_account operation doc](https://partner-docs.recurly.com/v2018-08-09#operation/create_account)
+[create_account operation doc](https://developers.recurly.com/api/v2019-10-01/index.html#operation/create_account)
 to understand what parameters may be sent to create an account.
 
 ```python

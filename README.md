@@ -10,7 +10,7 @@ If you were looking for the V2 client, see the [master branch](https://github.co
 This library's [python documentation](https://recurly-client-python.readthedocs.io/en/latest/) is hosted on ReadTheDocs. 
 It contains the Getting Started guide as well as the reference documentation.
 
-The HTTP documentation for the V3 API can be [found here](https://partner-docs.recurly.com).
+The HTTP documentation for the V3 API can be [found here](https://developers.recurly.com/api/v2019-10-01/).
 
 ### Contributing
 
