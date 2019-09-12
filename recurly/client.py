@@ -48,15 +48,21 @@ class Client(BaseClient):
         path = self._interpolate_path("/sites")
         return Pager(self, path, kwargs)
 
-    def get_site(self,):
+    def get_site(self, site_id):
         """Fetch a site
+
+        Parameters
+        ----------
+        site_id : str
+            Site ID or subdomain (use prefix: `subdomain-`, e.g. `subdomain-recurly`).
+
 
         Returns
         -------
         Site
             A site.
         """
-        path = self._interpolate_path("/sites/%s", self._site_id)
+        path = self._interpolate_path("/sites/%s", site_id)
         return self._make_request("GET", path, None, None)
 
     def list_accounts(self, **kwargs):
@@ -104,7 +110,7 @@ class Client(BaseClient):
         Pager
             A list of the site's accounts.
         """
-        path = self._interpolate_path("/sites/%s/accounts", self._site_id)
+        path = self._interpolate_path("/accounts")
         return Pager(self, path, kwargs)
 
     def create_account(self, body):
@@ -121,7 +127,7 @@ class Client(BaseClient):
         Account
             An account.
         """
-        path = self._interpolate_path("/sites/%s/accounts", self._site_id)
+        path = self._interpolate_path("/accounts")
         return self._make_request("POST", path, body, None)
 
     def get_account(self, account_id):
@@ -138,9 +144,7 @@ class Client(BaseClient):
         Account
             An account.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s", account_id)
         return self._make_request("GET", path, None, None)
 
     def update_account(self, account_id, body):
@@ -159,9 +163,7 @@ class Client(BaseClient):
         Account
             An account.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s", account_id)
         return self._make_request("PUT", path, body, None)
 
     def deactivate_account(self, account_id):
@@ -178,9 +180,7 @@ class Client(BaseClient):
         Account
             An account.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s", account_id)
         return self._make_request("DELETE", path, None, None)
 
     def get_account_acquisition(self, account_id):
@@ -197,9 +197,7 @@ class Client(BaseClient):
         AccountAcquisition
             An account's acquisition data.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/acquisition", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/acquisition", account_id)
         return self._make_request("GET", path, None, None)
 
     def update_account_acquisition(self, account_id, body):
@@ -218,9 +216,7 @@ class Client(BaseClient):
         AccountAcquisition
             An account's updated acquisition data.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/acquisition", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/acquisition", account_id)
         return self._make_request("PUT", path, body, None)
 
     def remove_account_acquisition(self, account_id):
@@ -237,9 +233,7 @@ class Client(BaseClient):
         Empty
             An Empty Response.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/acquisition", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/acquisition", account_id)
         return self._make_request("DELETE", path, None, None)
 
     def reactivate_account(self, account_id):
@@ -256,9 +250,7 @@ class Client(BaseClient):
         Account
             An account.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/reactivate", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/reactivate", account_id)
         return self._make_request("PUT", path, None, None)
 
     def get_account_balance(self, account_id):
@@ -275,9 +267,7 @@ class Client(BaseClient):
         AccountBalance
             An account's balance.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/balance", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/balance", account_id)
         return self._make_request("GET", path, None, None)
 
     def get_billing_info(self, account_id):
@@ -294,9 +284,7 @@ class Client(BaseClient):
         BillingInfo
             An account's billing information.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/billing_info", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("GET", path, None, None)
 
     def update_billing_info(self, account_id, body):
@@ -315,9 +303,7 @@ class Client(BaseClient):
         BillingInfo
             Updated billing information.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/billing_info", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("PUT", path, body, None)
 
     def remove_billing_info(self, account_id):
@@ -334,9 +320,7 @@ class Client(BaseClient):
         Empty
             An Empty Response.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/billing_info", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, None)
 
     def list_account_coupon_redemptions(self, account_id, **kwargs):
@@ -377,9 +361,7 @@ class Client(BaseClient):
         Pager
             A list of the the coupon redemptions on an account.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/coupon_redemptions", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/coupon_redemptions", account_id)
         return Pager(self, path, kwargs)
 
     def get_active_coupon_redemption(self, account_id):
@@ -397,7 +379,7 @@ class Client(BaseClient):
             An active coupon redemption on an account.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/coupon_redemptions/active", self._site_id, account_id
+            "/accounts/%s/coupon_redemptions/active", account_id
         )
         return self._make_request("GET", path, None, None)
 
@@ -418,7 +400,7 @@ class Client(BaseClient):
             Returns the new coupon redemption.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/coupon_redemptions/active", self._site_id, account_id
+            "/accounts/%s/coupon_redemptions/active", account_id
         )
         return self._make_request("POST", path, body, None)
 
@@ -437,7 +419,7 @@ class Client(BaseClient):
             Coupon redemption deleted.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/coupon_redemptions/active", self._site_id, account_id
+            "/accounts/%s/coupon_redemptions/active", account_id
         )
         return self._make_request("DELETE", path, None, None)
 
@@ -471,9 +453,7 @@ class Client(BaseClient):
         Pager
             A list of the account's credit payments.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/credit_payments", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/credit_payments", account_id)
         return Pager(self, path, kwargs)
 
     def list_account_invoices(self, account_id, **kwargs):
@@ -524,9 +504,7 @@ class Client(BaseClient):
         Pager
             A list of the account's invoices.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/invoices", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/invoices", account_id)
         return Pager(self, path, kwargs)
 
     def create_invoice(self, account_id, body):
@@ -545,9 +523,7 @@ class Client(BaseClient):
         InvoiceCollection
             Returns the new invoices.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/invoices", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/invoices", account_id)
         return self._make_request("POST", path, body, None)
 
     def preview_invoice(self, account_id, body):
@@ -566,9 +542,7 @@ class Client(BaseClient):
         InvoiceCollection
             Returns the invoice previews.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/invoices/preview", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/invoices/preview", account_id)
         return self._make_request("POST", path, body, None)
 
     def list_account_line_items(self, account_id, **kwargs):
@@ -619,9 +593,7 @@ class Client(BaseClient):
         Pager
             A list of the account's line items.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/line_items", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/line_items", account_id)
         return Pager(self, path, kwargs)
 
     def create_line_item(self, account_id, body):
@@ -640,9 +612,7 @@ class Client(BaseClient):
         LineItem
             Returns the new line item.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/line_items", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/line_items", account_id)
         return self._make_request("POST", path, body, None)
 
     def list_account_notes(self, account_id, **kwargs):
@@ -673,9 +643,7 @@ class Client(BaseClient):
         Pager
             A list of an account's notes.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/notes", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/notes", account_id)
         return Pager(self, path, kwargs)
 
     def get_account_note(self, account_id, account_note_id):
@@ -695,7 +663,7 @@ class Client(BaseClient):
             An account note.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/notes/%s", self._site_id, account_id, account_note_id
+            "/accounts/%s/notes/%s", account_id, account_note_id
         )
         return self._make_request("GET", path, None, None)
 
@@ -741,9 +709,7 @@ class Client(BaseClient):
         Pager
             A list of an account's shipping addresses.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/shipping_addresses", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/shipping_addresses", account_id)
         return Pager(self, path, kwargs)
 
     def create_shipping_address(self, account_id, body):
@@ -762,9 +728,7 @@ class Client(BaseClient):
         ShippingAddress
             Returns the new shipping address.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/shipping_addresses", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/shipping_addresses", account_id)
         return self._make_request("POST", path, body, None)
 
     def get_shipping_address(self, account_id, shipping_address_id):
@@ -784,10 +748,7 @@ class Client(BaseClient):
             A shipping address.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/shipping_addresses/%s",
-            self._site_id,
-            account_id,
-            shipping_address_id,
+            "/accounts/%s/shipping_addresses/%s", account_id, shipping_address_id
         )
         return self._make_request("GET", path, None, None)
 
@@ -810,10 +771,7 @@ class Client(BaseClient):
             The updated shipping address.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/shipping_addresses/%s",
-            self._site_id,
-            account_id,
-            shipping_address_id,
+            "/accounts/%s/shipping_addresses/%s", account_id, shipping_address_id
         )
         return self._make_request("PUT", path, body, None)
 
@@ -834,10 +792,7 @@ class Client(BaseClient):
             An Empty Response.
         """
         path = self._interpolate_path(
-            "/sites/%s/accounts/%s/shipping_addresses/%s",
-            self._site_id,
-            account_id,
-            shipping_address_id,
+            "/accounts/%s/shipping_addresses/%s", account_id, shipping_address_id
         )
         return self._make_request("DELETE", path, None, None)
 
@@ -889,9 +844,7 @@ class Client(BaseClient):
         Pager
             A list of the account's subscriptions.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/subscriptions", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/subscriptions", account_id)
         return Pager(self, path, kwargs)
 
     def list_account_transactions(self, account_id, **kwargs):
@@ -940,9 +893,7 @@ class Client(BaseClient):
         Pager
             A list of the account's transactions.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/transactions", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/transactions", account_id)
         return Pager(self, path, kwargs)
 
     def list_child_accounts(self, account_id, **kwargs):
@@ -992,9 +943,7 @@ class Client(BaseClient):
         Pager
             A list of an account's child accounts.
         """
-        path = self._interpolate_path(
-            "/sites/%s/accounts/%s/accounts", self._site_id, account_id
-        )
+        path = self._interpolate_path("/accounts/%s/accounts", account_id)
         return Pager(self, path, kwargs)
 
     def list_account_acquisition(self, **kwargs):
@@ -1037,7 +986,7 @@ class Client(BaseClient):
         Pager
             A list of the site's account acquisition data.
         """
-        path = self._interpolate_path("/sites/%s/acquisitions", self._site_id)
+        path = self._interpolate_path("/acquisitions")
         return Pager(self, path, kwargs)
 
     def list_coupons(self, **kwargs):
@@ -1080,7 +1029,7 @@ class Client(BaseClient):
         Pager
             A list of the site's coupons.
         """
-        path = self._interpolate_path("/sites/%s/coupons", self._site_id)
+        path = self._interpolate_path("/coupons")
         return Pager(self, path, kwargs)
 
     def create_coupon(self, body):
@@ -1097,7 +1046,7 @@ class Client(BaseClient):
         Coupon
             A new coupon.
         """
-        path = self._interpolate_path("/sites/%s/coupons", self._site_id)
+        path = self._interpolate_path("/coupons")
         return self._make_request("POST", path, body, None)
 
     def get_coupon(self, coupon_id):
@@ -1114,7 +1063,7 @@ class Client(BaseClient):
         Coupon
             A coupon.
         """
-        path = self._interpolate_path("/sites/%s/coupons/%s", self._site_id, coupon_id)
+        path = self._interpolate_path("/coupons/%s", coupon_id)
         return self._make_request("GET", path, None, None)
 
     def update_coupon(self, coupon_id, body):
@@ -1133,7 +1082,7 @@ class Client(BaseClient):
         Coupon
             The updated coupon.
         """
-        path = self._interpolate_path("/sites/%s/coupons/%s", self._site_id, coupon_id)
+        path = self._interpolate_path("/coupons/%s", coupon_id)
         return self._make_request("PUT", path, body, None)
 
     def list_unique_coupon_codes(self, coupon_id, **kwargs):
@@ -1178,9 +1127,7 @@ class Client(BaseClient):
         Pager
             A list of unique coupon codes that were generated
         """
-        path = self._interpolate_path(
-            "/sites/%s/coupons/%s/unique_coupon_codes", self._site_id, coupon_id
-        )
+        path = self._interpolate_path("/coupons/%s/unique_coupon_codes", coupon_id)
         return Pager(self, path, kwargs)
 
     def list_credit_payments(self, **kwargs):
@@ -1211,7 +1158,7 @@ class Client(BaseClient):
         Pager
             A list of the site's credit payments.
         """
-        path = self._interpolate_path("/sites/%s/credit_payments", self._site_id)
+        path = self._interpolate_path("/credit_payments")
         return Pager(self, path, kwargs)
 
     def get_credit_payment(self, credit_payment_id):
@@ -1228,9 +1175,7 @@ class Client(BaseClient):
         CreditPayment
             A credit payment.
         """
-        path = self._interpolate_path(
-            "/sites/%s/credit_payments/%s", self._site_id, credit_payment_id
-        )
+        path = self._interpolate_path("/credit_payments/%s", credit_payment_id)
         return self._make_request("GET", path, None, None)
 
     def list_custom_field_definitions(self, **kwargs):
@@ -1273,9 +1218,7 @@ class Client(BaseClient):
         Pager
             A list of the site's custom field definitions.
         """
-        path = self._interpolate_path(
-            "/sites/%s/custom_field_definitions", self._site_id
-        )
+        path = self._interpolate_path("/custom_field_definitions")
         return Pager(self, path, kwargs)
 
     def get_custom_field_definition(self, custom_field_definition_id):
@@ -1293,9 +1236,7 @@ class Client(BaseClient):
             An custom field definition.
         """
         path = self._interpolate_path(
-            "/sites/%s/custom_field_definitions/%s",
-            self._site_id,
-            custom_field_definition_id,
+            "/custom_field_definitions/%s", custom_field_definition_id
         )
         return self._make_request("GET", path, None, None)
 
@@ -1345,7 +1286,7 @@ class Client(BaseClient):
         Pager
             A list of the site's invoices.
         """
-        path = self._interpolate_path("/sites/%s/invoices", self._site_id)
+        path = self._interpolate_path("/invoices")
         return Pager(self, path, kwargs)
 
     def get_invoice(self, invoice_id):
@@ -1362,9 +1303,7 @@ class Client(BaseClient):
         Invoice
             An invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s", invoice_id)
         return self._make_request("GET", path, None, None)
 
     def put_invoice(self, invoice_id, body):
@@ -1383,9 +1322,7 @@ class Client(BaseClient):
         Invoice
             An invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s", invoice_id)
         return self._make_request("PUT", path, body, None)
 
     def collect_invoice(self, invoice_id):
@@ -1402,9 +1339,7 @@ class Client(BaseClient):
         Invoice
             The updated invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/collect", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/collect", invoice_id)
         return self._make_request("PUT", path, None, None)
 
     def fail_invoice(self, invoice_id):
@@ -1421,9 +1356,7 @@ class Client(BaseClient):
         Invoice
             The updated invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/mark_failed", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/mark_failed", invoice_id)
         return self._make_request("PUT", path, None, None)
 
     def mark_invoice_successful(self, invoice_id):
@@ -1440,9 +1373,7 @@ class Client(BaseClient):
         Invoice
             The updated invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/mark_successful", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/mark_successful", invoice_id)
         return self._make_request("PUT", path, None, None)
 
     def reopen_invoice(self, invoice_id):
@@ -1459,9 +1390,7 @@ class Client(BaseClient):
         Invoice
             The updated invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/reopen", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/reopen", invoice_id)
         return self._make_request("PUT", path, None, None)
 
     def list_invoice_line_items(self, invoice_id, **kwargs):
@@ -1512,9 +1441,7 @@ class Client(BaseClient):
         Pager
             A list of the invoice's line items.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/line_items", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/line_items", invoice_id)
         return Pager(self, path, kwargs)
 
     def list_invoice_coupon_redemptions(self, invoice_id, **kwargs):
@@ -1555,9 +1482,7 @@ class Client(BaseClient):
         Pager
             A list of the the coupon redemptions associated with the invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/coupon_redemptions", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/coupon_redemptions", invoice_id)
         return Pager(self, path, kwargs)
 
     def list_related_invoices(self, invoice_id, **kwargs):
@@ -1574,9 +1499,7 @@ class Client(BaseClient):
         Pager
             A list of the credit or charge invoices associated with the invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/related_invoices", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/related_invoices", invoice_id)
         return Pager(self, path, kwargs)
 
     def refund_invoice(self, invoice_id, body):
@@ -1595,9 +1518,7 @@ class Client(BaseClient):
         Invoice
             Returns the new credit invoice.
         """
-        path = self._interpolate_path(
-            "/sites/%s/invoices/%s/refund", self._site_id, invoice_id
-        )
+        path = self._interpolate_path("/invoices/%s/refund", invoice_id)
         return self._make_request("POST", path, body, None)
 
     def list_line_items(self, **kwargs):
@@ -1646,7 +1567,7 @@ class Client(BaseClient):
         Pager
             A list of the site's line items.
         """
-        path = self._interpolate_path("/sites/%s/line_items", self._site_id)
+        path = self._interpolate_path("/line_items")
         return Pager(self, path, kwargs)
 
     def get_line_item(self, line_item_id):
@@ -1663,9 +1584,7 @@ class Client(BaseClient):
         LineItem
             A line item.
         """
-        path = self._interpolate_path(
-            "/sites/%s/line_items/%s", self._site_id, line_item_id
-        )
+        path = self._interpolate_path("/line_items/%s", line_item_id)
         return self._make_request("GET", path, None, None)
 
     def remove_line_item(self, line_item_id):
@@ -1682,9 +1601,7 @@ class Client(BaseClient):
         Empty
             An Empty Response.
         """
-        path = self._interpolate_path(
-            "/sites/%s/line_items/%s", self._site_id, line_item_id
-        )
+        path = self._interpolate_path("/line_items/%s", line_item_id)
         return self._make_request("DELETE", path, None, None)
 
     def list_plans(self, **kwargs):
@@ -1729,7 +1646,7 @@ class Client(BaseClient):
         Pager
             A list of plans.
         """
-        path = self._interpolate_path("/sites/%s/plans", self._site_id)
+        path = self._interpolate_path("/plans")
         return Pager(self, path, kwargs)
 
     def create_plan(self, body):
@@ -1746,7 +1663,7 @@ class Client(BaseClient):
         Plan
             A plan.
         """
-        path = self._interpolate_path("/sites/%s/plans", self._site_id)
+        path = self._interpolate_path("/plans")
         return self._make_request("POST", path, body, None)
 
     def get_plan(self, plan_id):
@@ -1763,7 +1680,7 @@ class Client(BaseClient):
         Plan
             A plan.
         """
-        path = self._interpolate_path("/sites/%s/plans/%s", self._site_id, plan_id)
+        path = self._interpolate_path("/plans/%s", plan_id)
         return self._make_request("GET", path, None, None)
 
     def update_plan(self, plan_id, body):
@@ -1782,7 +1699,7 @@ class Client(BaseClient):
         Plan
             A plan.
         """
-        path = self._interpolate_path("/sites/%s/plans/%s", self._site_id, plan_id)
+        path = self._interpolate_path("/plans/%s", plan_id)
         return self._make_request("PUT", path, body, None)
 
     def remove_plan(self, plan_id):
@@ -1799,7 +1716,7 @@ class Client(BaseClient):
         Plan
             Plan deleted
         """
-        path = self._interpolate_path("/sites/%s/plans/%s", self._site_id, plan_id)
+        path = self._interpolate_path("/plans/%s", plan_id)
         return self._make_request("DELETE", path, None, None)
 
     def list_plan_add_ons(self, plan_id, **kwargs):
@@ -1846,9 +1763,7 @@ class Client(BaseClient):
         Pager
             A list of add-ons.
         """
-        path = self._interpolate_path(
-            "/sites/%s/plans/%s/add_ons", self._site_id, plan_id
-        )
+        path = self._interpolate_path("/plans/%s/add_ons", plan_id)
         return Pager(self, path, kwargs)
 
     def create_plan_add_on(self, plan_id, body):
@@ -1867,9 +1782,7 @@ class Client(BaseClient):
         AddOn
             An add-on.
         """
-        path = self._interpolate_path(
-            "/sites/%s/plans/%s/add_ons", self._site_id, plan_id
-        )
+        path = self._interpolate_path("/plans/%s/add_ons", plan_id)
         return self._make_request("POST", path, body, None)
 
     def get_plan_add_on(self, plan_id, add_on_id):
@@ -1888,9 +1801,7 @@ class Client(BaseClient):
         AddOn
             An add-on.
         """
-        path = self._interpolate_path(
-            "/sites/%s/plans/%s/add_ons/%s", self._site_id, plan_id, add_on_id
-        )
+        path = self._interpolate_path("/plans/%s/add_ons/%s", plan_id, add_on_id)
         return self._make_request("GET", path, None, None)
 
     def update_plan_add_on(self, plan_id, add_on_id, body):
@@ -1911,9 +1822,7 @@ class Client(BaseClient):
         AddOn
             An add-on.
         """
-        path = self._interpolate_path(
-            "/sites/%s/plans/%s/add_ons/%s", self._site_id, plan_id, add_on_id
-        )
+        path = self._interpolate_path("/plans/%s/add_ons/%s", plan_id, add_on_id)
         return self._make_request("PUT", path, body, None)
 
     def remove_plan_add_on(self, plan_id, add_on_id):
@@ -1932,9 +1841,7 @@ class Client(BaseClient):
         AddOn
             Add-on deleted
         """
-        path = self._interpolate_path(
-            "/sites/%s/plans/%s/add_ons/%s", self._site_id, plan_id, add_on_id
-        )
+        path = self._interpolate_path("/plans/%s/add_ons/%s", plan_id, add_on_id)
         return self._make_request("DELETE", path, None, None)
 
     def list_add_ons(self, **kwargs):
@@ -1979,7 +1886,7 @@ class Client(BaseClient):
         Pager
             A list of add-ons.
         """
-        path = self._interpolate_path("/sites/%s/add_ons", self._site_id)
+        path = self._interpolate_path("/add_ons")
         return Pager(self, path, kwargs)
 
     def get_add_on(self, add_on_id):
@@ -1996,7 +1903,7 @@ class Client(BaseClient):
         AddOn
             An add-on.
         """
-        path = self._interpolate_path("/sites/%s/add_ons/%s", self._site_id, add_on_id)
+        path = self._interpolate_path("/add_ons/%s", add_on_id)
         return self._make_request("GET", path, None, None)
 
     def list_subscriptions(self, **kwargs):
@@ -2045,7 +1952,7 @@ class Client(BaseClient):
         Pager
             A list of the site's subscriptions.
         """
-        path = self._interpolate_path("/sites/%s/subscriptions", self._site_id)
+        path = self._interpolate_path("/subscriptions")
         return Pager(self, path, kwargs)
 
     def create_subscription(self, body):
@@ -2062,7 +1969,7 @@ class Client(BaseClient):
         Subscription
             A subscription.
         """
-        path = self._interpolate_path("/sites/%s/subscriptions", self._site_id)
+        path = self._interpolate_path("/subscriptions")
         return self._make_request("POST", path, body, None)
 
     def get_subscription(self, subscription_id):
@@ -2079,9 +1986,7 @@ class Client(BaseClient):
         Subscription
             A subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s", subscription_id)
         return self._make_request("GET", path, None, None)
 
     def modify_subscription(self, subscription_id, body):
@@ -2100,9 +2005,7 @@ class Client(BaseClient):
         Subscription
             A subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s", subscription_id)
         return self._make_request("PUT", path, body, None)
 
     def terminate_subscription(self, subscription_id, **kwargs):
@@ -2131,9 +2034,7 @@ class Client(BaseClient):
         Subscription
             An expired subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s", subscription_id)
         return self._make_request("DELETE", path, None, kwargs)
 
     def cancel_subscription(self, subscription_id):
@@ -2150,9 +2051,7 @@ class Client(BaseClient):
         Subscription
             A canceled or failed subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/cancel", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/cancel", subscription_id)
         return self._make_request("PUT", path, None, None)
 
     def reactivate_subscription(self, subscription_id):
@@ -2169,9 +2068,7 @@ class Client(BaseClient):
         Subscription
             An active subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/reactivate", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/reactivate", subscription_id)
         return self._make_request("PUT", path, None, None)
 
     def pause_subscription(self, subscription_id, body):
@@ -2190,9 +2087,7 @@ class Client(BaseClient):
         Subscription
             A subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/pause", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/pause", subscription_id)
         return self._make_request("PUT", path, body, None)
 
     def resume_subscription(self, subscription_id):
@@ -2209,9 +2104,7 @@ class Client(BaseClient):
         Subscription
             A subscription.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/resume", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/resume", subscription_id)
         return self._make_request("PUT", path, None, None)
 
     def get_subscription_change(self, subscription_id):
@@ -2228,9 +2121,7 @@ class Client(BaseClient):
         SubscriptionChange
             A subscription's pending change.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/change", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/change", subscription_id)
         return self._make_request("GET", path, None, None)
 
     def create_subscription_change(self, subscription_id, body):
@@ -2249,9 +2140,7 @@ class Client(BaseClient):
         SubscriptionChange
             A subscription change.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/change", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/change", subscription_id)
         return self._make_request("POST", path, body, None)
 
     def remove_subscription_change(self, subscription_id):
@@ -2268,9 +2157,7 @@ class Client(BaseClient):
         Empty
             An Empty Response.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/change", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/change", subscription_id)
         return self._make_request("DELETE", path, None, None)
 
     def list_subscription_invoices(self, subscription_id, **kwargs):
@@ -2321,9 +2208,7 @@ class Client(BaseClient):
         Pager
             A list of the subscription's invoices.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/invoices", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/invoices", subscription_id)
         return Pager(self, path, kwargs)
 
     def list_subscription_line_items(self, subscription_id, **kwargs):
@@ -2374,9 +2259,7 @@ class Client(BaseClient):
         Pager
             A list of the subscription's line items.
         """
-        path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/line_items", self._site_id, subscription_id
-        )
+        path = self._interpolate_path("/subscriptions/%s/line_items", subscription_id)
         return Pager(self, path, kwargs)
 
     def list_subscription_coupon_redemptions(self, subscription_id, **kwargs):
@@ -2418,9 +2301,7 @@ class Client(BaseClient):
             A list of the the coupon redemptions on a subscription.
         """
         path = self._interpolate_path(
-            "/sites/%s/subscriptions/%s/coupon_redemptions",
-            self._site_id,
-            subscription_id,
+            "/subscriptions/%s/coupon_redemptions", subscription_id
         )
         return Pager(self, path, kwargs)
 
@@ -2468,7 +2349,7 @@ class Client(BaseClient):
         Pager
             A list of the site's transactions.
         """
-        path = self._interpolate_path("/sites/%s/transactions", self._site_id)
+        path = self._interpolate_path("/transactions")
         return Pager(self, path, kwargs)
 
     def get_transaction(self, transaction_id):
@@ -2485,9 +2366,7 @@ class Client(BaseClient):
         Transaction
             A transaction.
         """
-        path = self._interpolate_path(
-            "/sites/%s/transactions/%s", self._site_id, transaction_id
-        )
+        path = self._interpolate_path("/transactions/%s", transaction_id)
         return self._make_request("GET", path, None, None)
 
     def get_unique_coupon_code(self, unique_coupon_code_id):
@@ -2504,9 +2383,7 @@ class Client(BaseClient):
         UniqueCouponCode
             A unique coupon code.
         """
-        path = self._interpolate_path(
-            "/sites/%s/unique_coupon_codes/%s", self._site_id, unique_coupon_code_id
-        )
+        path = self._interpolate_path("/unique_coupon_codes/%s", unique_coupon_code_id)
         return self._make_request("GET", path, None, None)
 
     def deactivate_unique_coupon_code(self, unique_coupon_code_id):
@@ -2523,9 +2400,7 @@ class Client(BaseClient):
         UniqueCouponCode
             A unique coupon code.
         """
-        path = self._interpolate_path(
-            "/sites/%s/unique_coupon_codes/%s", self._site_id, unique_coupon_code_id
-        )
+        path = self._interpolate_path("/unique_coupon_codes/%s", unique_coupon_code_id)
         return self._make_request("DELETE", path, None, None)
 
     def reactivate_unique_coupon_code(self, unique_coupon_code_id):
@@ -2543,9 +2418,7 @@ class Client(BaseClient):
             A unique coupon code.
         """
         path = self._interpolate_path(
-            "/sites/%s/unique_coupon_codes/%s/restore",
-            self._site_id,
-            unique_coupon_code_id,
+            "/unique_coupon_codes/%s/restore", unique_coupon_code_id
         )
         return self._make_request("PUT", path, None, None)
 
@@ -2563,7 +2436,7 @@ class Client(BaseClient):
         InvoiceCollection
             Returns the new invoices
         """
-        path = self._interpolate_path("/sites/%s/purchases", self._site_id)
+        path = self._interpolate_path("/purchases")
         return self._make_request("POST", path, body, None)
 
     def preview_purchase(self, body):
@@ -2580,5 +2453,5 @@ class Client(BaseClient):
         InvoiceCollection
             Returns preview of the new invoices
         """
-        path = self._interpolate_path("/sites/%s/purchases/preview", self._site_id)
+        path = self._interpolate_path("/purchases/preview")
         return self._make_request("POST", path, body, None)

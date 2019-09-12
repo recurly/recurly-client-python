@@ -104,12 +104,12 @@ expected_headers = {
 
 class TestBaseClient(unittest.TestCase):
     def test_api_version(self):
-        client = MockClient("subdomain", "apikey")
+        client = MockClient("apikey")
         self.assertEqual(client.api_version(), "v2018-08-09")
 
     def test_successful_GET_200(self):
         with get_resource_client(True) as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             resource = client.get_resource("123", {"q": 123})
             # conn.request.assert_called_with(
             #     "GET", "/resources/123?q=123", None, headers=expected_headers
@@ -118,7 +118,7 @@ class TestBaseClient(unittest.TestCase):
 
     def test_failure_GET_404(self):
         with get_resource_client(False) as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             with self.assertRaises(recurly.errors.NotFoundError) as e:
                 resource = client.get_resource("123")
 
@@ -130,7 +130,7 @@ class TestBaseClient(unittest.TestCase):
 
     def test_successful_PUT_201(self):
         with update_resource_client(True) as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             resource = client.update_resource("123", {"my_int": 123})
             # conn.request.assert_called_with(
             #     "GET",
@@ -143,7 +143,7 @@ class TestBaseClient(unittest.TestCase):
 
     def test_failure_PUT_422(self):
         with update_resource_client(False) as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             with self.assertRaises(recurly.errors.ValidationError) as e:
                 resource = client.update_resource("123", {"my_int": 123})
 
@@ -158,7 +158,7 @@ class TestBaseClient(unittest.TestCase):
 
     def test_DELETE_204(self):
         with delete_resource_client() as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             resource = client.delete_resource("123")
             # conn.request.assert_called_with(
             #     "DELETE",
@@ -170,6 +170,6 @@ class TestBaseClient(unittest.TestCase):
 
     def test_failure_socket_error(self):
         with get_socket_error_client() as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             with self.assertRaises(recurly.NetworkError) as e:
                 resource = client.update_resource("123", {"my_int": 123})

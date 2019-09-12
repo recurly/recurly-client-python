@@ -15,8 +15,7 @@ HOST = "partner-api.recurly.com"
 
 
 class BaseClient:
-    def __init__(self, site_id, api_key):
-        self._site_id = site_id
+    def __init__(self, api_key):
         self.__api_key = api_key
         self.__conn = http.client.HTTPSConnection(HOST, PORT)
 
