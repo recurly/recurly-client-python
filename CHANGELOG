@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.9.10 – September 13th, 2019 ##
+
+-  PSD2 billing info changes [PR](https://github.com/recurly/recurly-client-python/pull/314)
+
 ## Version 2.9.9 – August 21st, 2019 ##
 
 This version brings us up to API version 2.22, but has no breaking changes
