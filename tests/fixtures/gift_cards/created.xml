@@ -39,6 +39,10 @@ Content-Type: application/xml; charset=utf-8
     </gifter_account>
     <product_code>test_gift_card</product_code>
     <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
+    <billing_info>
+      <token_id>1234</token_id>
+      <currency>USD</currency>
+    </billing_info>
 </gift_card>
 
 HTTP/1.1 201 Created
