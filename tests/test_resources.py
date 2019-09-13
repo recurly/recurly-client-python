@@ -1783,6 +1783,9 @@ class TestResources(RecurlyTest):
     def test_gift_cards_purchase(self):
         gift_card = self._build_gift_card()
 
+        # now allowed to send a top-level billing info along
+        gift_card.billing_info = BillingInfo(token_id='1234')
+
         self.assertFalse('_url' in gift_card.attributes)
 
         with self.mock_request('gift_cards/created.xml'):

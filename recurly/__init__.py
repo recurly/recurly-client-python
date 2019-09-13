@@ -484,6 +484,7 @@ class GiftCard(Resource):
         'redemption_code',
         'updated_at',
         'unit_amount_in_cents',
+        'billing_info',
     )
     _classes_for_nodename = {'recipient_account': Account,'gifter_account':
             Account, 'delivery': Delivery}
@@ -759,7 +760,8 @@ class Invoice(Resource):
         'type',
         'origin',
         'credit_customer_notes',
-        'gateway_code'
+        'gateway_code',
+        'billing_info',
     )
 
     blacklist_attributes = (
@@ -1144,6 +1146,7 @@ class Subscription(Resource):
         'custom_fields',
         'gateway_code',
         'transaction_type',
+        'billing_info',
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 
