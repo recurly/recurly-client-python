@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 if hash black 2>/dev/null; then
   if [ "$1" == "--check" ]; then

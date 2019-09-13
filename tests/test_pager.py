@@ -84,7 +84,7 @@ def second_page():
 class TestPager(unittest.TestCase):
     def test_items(self):
         with get_pager_client() as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             pager = Pager(client, "/resources", {})
             item_count = 0
             for item in pager.items():
@@ -95,7 +95,7 @@ class TestPager(unittest.TestCase):
 
     def test_pages(self):
         with get_pager_client() as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             pager = Pager(client, "/resources", {"limit": 3})
             page_count = 0
             item_count = 0
@@ -110,7 +110,7 @@ class TestPager(unittest.TestCase):
 
     def test_empty_page(self):
         with get_empty_pager_client() as conn:
-            client = MockClient("subdomain", "apikey")
+            client = MockClient("apikey")
             pager = Pager(client, "/resources", {"limit": 3})
             item_count = 0
             for item in pager.items():
