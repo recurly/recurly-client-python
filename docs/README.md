@@ -39,7 +39,8 @@ You can [the search page](search.html) to search across all calls, errors, resou
 ### Creating a client
 
 A client represents a connection to the Recurly servers. Every call
-to the server exists as a method on this class. To initialize, a private api key.
+to the server exists as a method on this class. To initialize, you only need the private API key
+which can be obtained on the [API Credentials Page](https://app.recurly.com/go/integrations/api_keys).
 
 ```python
 api_key = '83749879bbde395b5fe0cc1a5abf8e5'
