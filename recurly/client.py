@@ -9,7 +9,7 @@ from .pager import Pager
 
 class Client(BaseClient):
     def api_version(self):
-        return "v2018-08-09"
+        return "v2019-01-08"
 
     def list_sites(self, **kwargs):
         """List sites
@@ -1212,6 +1212,8 @@ class Client(BaseClient):
         end_time : str
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        related_type : str
+            Filter by related type.
 
         Returns
         -------
@@ -1239,6 +1241,138 @@ class Client(BaseClient):
             "/custom_field_definitions/%s", custom_field_definition_id
         )
         return self._make_request("GET", path, None, None)
+
+    def list_items(self, **kwargs):
+        """List a site's items
+
+        Parameters
+        ----------
+
+        Keyword Arguments
+        =================
+        ids : str
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        limit : str
+            Limit number of records 1-200.
+        order : str
+            Sort order.
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : str
+            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : str
+            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        state : str
+            Filter by state.
+
+        Returns
+        -------
+        Pager
+            A list of the site's items.
+        """
+        path = self._interpolate_path("/items")
+        return Pager(self, path, kwargs)
+
+    def create_item(self, body):
+        """Create a new item
+
+        Parameters
+        ----------
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Item
+            A new item.
+        """
+        path = self._interpolate_path("/items")
+        return self._make_request("POST", path, body, None)
+
+    def get_item(self, item_id):
+        """Fetch an item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code (use prefix: `code-`, e.g. `code-red`).
+
+
+        Returns
+        -------
+        Item
+            An item.
+        """
+        path = self._interpolate_path("/items/%s", item_id)
+        return self._make_request("GET", path, None, None)
+
+    def update_item(self, item_id, body):
+        """Update an active item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code (use prefix: `code-`, e.g. `code-red`).
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Item
+            The updated item.
+        """
+        path = self._interpolate_path("/items/%s", item_id)
+        return self._make_request("PUT", path, body, None)
+
+    def deactivate_item(self, item_id):
+        """Deactivate an item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code (use prefix: `code-`, e.g. `code-red`).
+
+
+        Returns
+        -------
+        Item
+            An item.
+        """
+        path = self._interpolate_path("/items/%s", item_id)
+        return self._make_request("DELETE", path, None, None)
+
+    def reactivate_item(self, item_id):
+        """Reactivate an inactive item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code (use prefix: `code-`, e.g. `code-red`).
+
+
+        Returns
+        -------
+        Item
+            An item.
+        """
+        path = self._interpolate_path("/items/%s/reactivate", item_id)
+        return self._make_request("PUT", path, None, None)
 
     def list_invoices(self, **kwargs):
         """List a site's invoices
@@ -1325,13 +1459,15 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s", invoice_id)
         return self._make_request("PUT", path, body, None)
 
-    def collect_invoice(self, invoice_id):
+    def collect_invoice(self, invoice_id, body):
         """Collect a pending or past due, automatic invoice
 
         Parameters
         ----------
         invoice_id : str
             Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+        body
+            The body of the request.
 
 
         Returns
@@ -1340,7 +1476,7 @@ class Client(BaseClient):
             The updated invoice.
         """
         path = self._interpolate_path("/invoices/%s/collect", invoice_id)
-        return self._make_request("PUT", path, None, None)
+        return self._make_request("PUT", path, body, None)
 
     def fail_invoice(self, invoice_id):
         """Mark an open invoice as failed
@@ -1906,6 +2042,66 @@ class Client(BaseClient):
         path = self._interpolate_path("/add_ons/%s", add_on_id)
         return self._make_request("GET", path, None, None)
 
+    def list_shipping_methods(self, **kwargs):
+        """List a site's shipping methods
+
+        Parameters
+        ----------
+
+        Keyword Arguments
+        =================
+        ids : str
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        limit : str
+            Limit number of records 1-200.
+        order : str
+            Sort order.
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : str
+            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : str
+            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+
+        Returns
+        -------
+        Pager
+            A list of the site's shipping methods.
+        """
+        path = self._interpolate_path("/shipping_methods")
+        return Pager(self, path, kwargs)
+
+    def get_shipping_method(self, id):
+        """Fetch a shipping method
+
+        Parameters
+        ----------
+        id : str
+            Shipping Method ID or code (use prefix: `code-`, e.g. `code-usps_2-day`).
+
+
+        Returns
+        -------
+        ShippingMethod
+            A shipping_method.
+        """
+        path = self._interpolate_path("/shipping_methods/%s", id)
+        return self._make_request("GET", path, None, None)
+
     def list_subscriptions(self, **kwargs):
         """List a site's subscriptions
 
@@ -2037,13 +2233,15 @@ class Client(BaseClient):
         path = self._interpolate_path("/subscriptions/%s", subscription_id)
         return self._make_request("DELETE", path, None, kwargs)
 
-    def cancel_subscription(self, subscription_id):
+    def cancel_subscription(self, subscription_id, body):
         """Cancel a subscription
 
         Parameters
         ----------
         subscription_id : str
             Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+        body
+            The body of the request.
 
 
         Returns
@@ -2052,7 +2250,7 @@ class Client(BaseClient):
             A canceled or failed subscription.
         """
         path = self._interpolate_path("/subscriptions/%s/cancel", subscription_id)
-        return self._make_request("PUT", path, None, None)
+        return self._make_request("PUT", path, body, None)
 
     def reactivate_subscription(self, subscription_id):
         """Reactivate a canceled subscription
