@@ -563,7 +563,7 @@ class Coupon(Resource):
     name : str
         The internal name for the coupon.
     plans : :obj:`list` of :obj:`PlanMini`
-        Plans
+        A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
     plans_names : :obj:`list` of :obj:`str`
         TODO
     redeem_by : datetime
@@ -908,6 +908,7 @@ class Invoice(Resource):
         On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
+    shipping_address : ShippingAddress
     state : str
         Invoice state
     subscription_ids : :obj:`list` of :obj:`str`
@@ -954,6 +955,7 @@ class Invoice(Resource):
         "po_number": str,
         "previous_invoice_id": str,
         "refundable_amount": float,
+        "shipping_address": "ShippingAddress",
         "state": str,
         "subscription_ids": list,
         "subtotal": float,
@@ -1112,7 +1114,7 @@ class LineItem(Resource):
     tax : float
         The tax amount for the line item.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
     tax_info : TaxInfo
@@ -1286,7 +1288,7 @@ class Subscription(Resource):
         Null unless subscription is paused or will pause at the end of the current billing period.
     renewal_billing_cycles : int
         If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
-    shipping_address : ShippingAddress
+    shipping : SubscriptionShipping
     state : str
         State
     subtotal : float
@@ -1337,7 +1339,7 @@ class Subscription(Resource):
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
-        "shipping_address": "ShippingAddress",
+        "shipping": "SubscriptionShipping",
         "state": str,
         "subtotal": float,
         "terms_and_conditions": str,
@@ -1348,6 +1350,38 @@ class Subscription(Resource):
         "updated_at": datetime,
         "uuid": str,
     }
+
+
+class SubscriptionShipping(Resource):
+    """
+    Attributes
+    ----------
+    address : ShippingAddress
+    amount : float
+        Subscription's shipping cost
+    method : ShippingMethodMini
+    """
+
+    schema = {
+        "address": "ShippingAddress",
+        "amount": float,
+        "method": "ShippingMethodMini",
+    }
+
+
+class ShippingMethodMini(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The internal name used identify the shipping method.
+    id : str
+        Shipping Method ID
+    name : str
+        The name of the shipping method displayed to customers.
+    """
+
+    schema = {"code": str, "id": str, "name": str}
 
 
 class CouponRedemptionMini(Resource):
@@ -1601,7 +1635,7 @@ class Plan(Resource):
     state : str
         The current state of the plan.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tax_exempt : bool
         `true` exempts tax on the plan, `false` applies tax on the plan.
     total_billing_cycles : int
@@ -1702,7 +1736,7 @@ class AddOn(Resource):
     state : str
         Add-ons can be either active or inactive.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     updated_at : datetime
         Last updated at
     """
@@ -1735,6 +1769,47 @@ class AddOnPricing(Resource):
     """
 
     schema = {"currency": str, "unit_amount": float}
+
+
+class ShippingMethod(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The internal name used identify the shipping method.
+    created_at : datetime
+        Created at
+    deleted_at : datetime
+        Deleted at
+    id : str
+        Shipping Method ID
+    name : str
+        The name of the shipping method displayed to customers.
+    tax_code : str
+        Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
+        code values are specific to each tax system. If you are using Recurly’s
+        built-in taxes the values are:
+
+        - `FR` – Common Carrier FOB Destination
+        - `FR022000` – Common Carrier FOB Origin
+        - `FR020400` – Non Common Carrier FOB Destination
+        - `FR020500` – Non Common Carrier FOB Origin
+        - `FR010100` – Delivery by Company Vehicle Before Passage of Title
+        - `FR010200` – Delivery by Company Vehicle After Passage of Title
+        - `NT` – Non-Taxable
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "code": str,
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "id": str,
+        "name": str,
+        "tax_code": str,
+        "updated_at": datetime,
+    }
 
 
 class CustomField(Resource):

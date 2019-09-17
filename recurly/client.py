@@ -9,7 +9,7 @@ from .pager import Pager
 
 class Client(BaseClient):
     def api_version(self):
-        return "v2018-08-09"
+        return "v2018-10-04"
 
     def list_sites(self, **kwargs):
         """List sites
@@ -1904,6 +1904,66 @@ class Client(BaseClient):
             An add-on.
         """
         path = self._interpolate_path("/add_ons/%s", add_on_id)
+        return self._make_request("GET", path, None, None)
+
+    def list_shipping_methods(self, **kwargs):
+        """List a site's shipping methods
+
+        Parameters
+        ----------
+
+        Keyword Arguments
+        =================
+        ids : str
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        limit : str
+            Limit number of records 1-200.
+        order : str
+            Sort order.
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : str
+            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : str
+            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+
+        Returns
+        -------
+        Pager
+            A list of the site's shipping methods.
+        """
+        path = self._interpolate_path("/shipping_methods")
+        return Pager(self, path, kwargs)
+
+    def get_shipping_method(self, id):
+        """Fetch a shipping method
+
+        Parameters
+        ----------
+        id : str
+            Shipping Method ID or code (use prefix: `code-`, e.g. `code-usps_2-day`).
+
+
+        Returns
+        -------
+        ShippingMethod
+            A shipping_method.
+        """
+        path = self._interpolate_path("/shipping_methods/%s", id)
         return self._make_request("GET", path, None, None)
 
     def list_subscriptions(self, **kwargs):
