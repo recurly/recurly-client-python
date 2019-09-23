@@ -175,3 +175,45 @@ except recurly.errors.NotFoundError as e:
     response = e.error.get_response()
     print("Give this request id to Recurly Support: " + response.request_id)
 ```
+
+### Webhooks
+
+Recurly can send webhooks to any publicly accessible server.
+When an event in Recurly triggers a webhook (e.g., an account is opened),
+Recurly will attempt to send this notification to the endpoint(s) you specify.
+You can specify up to 10 endpoints through the application. All notifications will
+be sent to all configured endpoints for your site. 
+
+See our [product docs](https://docs.recurly.com/docs/webhooks) to learn more about webhooks
+and see our [dev docs](https://dev.recurly.com/page/webhooks) to learn about what payloads
+are available.
+
+Although our API is now JSON, our webhook payloads are still formatted as XML for the time being.
+This library is not yet responsible for handling webhooks. If you do need webhooks, we recommend using a simple
+XML to dict parser. We recommend using a small dependency such as [xmltodict](https://github.com/martinblech/xmltodict).
+
+```python
+import xmltodict
+
+notification = xmltodict.parse(
+    """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <new_account_notification>
+      <account>
+        <account_code>1</account_code>
+        <username nil="true"></username>
+        <email>verena@example.com</email>
+        <first_name>Verena</first_name>
+        <last_name>Example</last_name>
+        <company_name nil="true"></company_name>
+      </account>
+    </new_account_notification>
+    """.lstrip()
+)
+
+code = notification["new_account_notification"]["account"]["account_code"]
+print("New Account with code %s created." % code)
+```
+
+You can do this without dependencies, but you'll need to heed warnings about security concerns.
+Read more about the security implications of parsing untrusted XML in [this OWASP cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_Security_Cheat_Sheet.html).
