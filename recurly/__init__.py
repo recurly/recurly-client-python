@@ -638,6 +638,19 @@ class Coupon(Resource):
         url = urljoin(self._url, '/restore')
         self.put(url)
 
+    def redeem(self, redemption):
+        """Redeem the coupon on the account, currency and subscription defined in the given
+         redemption object
+        """
+        redemption_path = '%s/redeem' % (self.coupon_code)
+
+        if hasattr(self, '_url'):
+            url = urljoin(self._url, '/redeem')
+        else:
+            url = urljoin(recurly.base_uri(), self.collection_path + '/' + redemption_path)
+
+        return self.post(url, redemption)
+
 class Redemption(Resource):
 
     """A particular application of a coupon to a customer account."""
