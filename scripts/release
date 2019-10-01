@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+# First cleanup dist folder
+rm -f dist/*
+
+# Build the dist
+python3 setup.py sdist bdist_wheel
+
+# check
+twine check dist/*
+
+# publish to pypi
+twine upload dist/*
