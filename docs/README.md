@@ -1,9 +1,6 @@
 # Recurly Python
 
-This library is the python client for Recurly's V3 API. It's currently in the "Early Access" phase of development.
-To learn more about getting early access to the next iteration of our API ecosystem, see [this link](https://dev.recurly.com/page/recurly-v3-api-early-access).
-
-If you were looking for the V2 client, see the [master branch](https://github.com/recurly/recurly-client-python/tree/master) of the recurly-client-python repo.
+This library is the official python client for Recurly's V3 API.
 
 ## Getting Started
 
