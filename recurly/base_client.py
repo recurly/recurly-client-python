@@ -11,7 +11,7 @@ from pydoc import locate
 import urllib.parse
 
 PORT = 443
-HOST = "partner-api.recurly.com"
+HOST = "v3.recurly.com"
 
 
 class BaseClient:
