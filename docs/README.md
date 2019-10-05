@@ -6,16 +6,17 @@ This library is the official python client for Recurly's V3 API.
 
 ### Installing
 
-This library is published on pypi as a pre-release. We recommend targeting a specific version
-in your requirements.txt or setup.py:
-
+We recommend specifying this dependency in your requirements.txt:
 ```
-recurly==3.0b5
+recurly~=3.0
 ```
 
-Until we reach GA with version `3.0.0`, we will bump the beta level on each release `3.0bX` by 1.
-Some of these releases may contain breaking changes. We will try to document these
-in the release notes.
+Or installing via the command line:
+```
+pip install --upgrade recurly
+```
+
+> *Note*: We try to follow [semantic versioning](https://semver.org/) and will only apply breaking changes to major versions.
 
 ### Importing the library
 
