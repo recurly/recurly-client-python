@@ -3,7 +3,7 @@
 This repository houses the official python library for Recurly's V3 API.
 
 > *Note*:
-> If you were looking for the V2 client, see the [master branch](https://github.com/recurly/recurly-client-python/tree/master).
+> If you were looking for the V2 client, see the [v2 branch](https://github.com/recurly/recurly-client-python/tree/v2).
 
 ### Documentation
 
