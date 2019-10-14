@@ -972,6 +972,7 @@ class Purchase(Resource):
         'customer_notes',
         'terms_and_conditions',
         'vat_reverse_charge_notes',
+        'shipping_address',
         'shipping_address_id',
         'shipping_fees',
         'gateway_code',
