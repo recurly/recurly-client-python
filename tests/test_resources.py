@@ -65,20 +65,18 @@ class TestResources(RecurlyTest):
             currency = 'USD',
             gateway_code = 'aBcD1234',
             collection_method = 'manual',
+            shipping_address = ShippingAddress(
+                first_name = 'Verena',
+                last_name = 'Example',
+                address1 = '456 Pillow Fort Drive',
+                city = 'New Orleans',
+                state = 'LA',
+                zip = '70114',
+                country = 'US',
+                nickname = 'Work'
+            ),
             account = Account(
                 account_code = account_code,
-                shipping_addresses = [
-                    ShippingAddress(
-                        first_name = 'Verena',
-                        last_name = 'Example',
-                        address1 = '123 Main St',
-                        city = 'New Orleans',
-                        state = 'LA',
-                        zip = '70114',
-                        country = 'US',
-                        nickname = 'Work'
-                    )
-                ],
                 billing_info = BillingInfo(
                     first_name = 'Verena',
                     last_name = 'Example',

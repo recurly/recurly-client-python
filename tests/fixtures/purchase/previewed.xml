@@ -9,18 +9,6 @@ Content-Type: application/xml; charset=utf-8
 <purchase>
   <account>
     <account_code>testmock</account_code>
-    <shipping_addresses>
-      <shipping_address>
-        <address1>123 Main St</address1>
-        <city>New Orleans</city>
-        <country>US</country>
-        <first_name>Verena</first_name>
-        <last_name>Example</last_name>
-        <nickname>Work</nickname>
-        <state>LA</state>
-        <zip>70114</zip>
-      </shipping_address>
-    </shipping_addresses>
     <billing_info>
       <first_name>Verena</first_name>
       <last_name>Example</last_name>
@@ -54,6 +42,16 @@ Content-Type: application/xml; charset=utf-8
       <plan_code>gold</plan_code>
     </subscription>
   </subscriptions>
+  <shipping_address>
+    <address1>456 Pillow Fort Drive</address1>
+    <city>New Orleans</city>
+    <country>US</country>
+    <first_name>Verena</first_name>
+    <last_name>Example</last_name>
+    <nickname>Work</nickname>
+    <state>LA</state>
+    <zip>70114</zip>
+  </shipping_address>
   <gateway_code>aBcD1234</gateway_code>
   <collection_method>manual</collection_method>
 </purchase>
