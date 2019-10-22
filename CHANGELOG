@@ -1,8 +1,12 @@
 ## Unreleased
 
+## Version 2.9.11 - October 22, 2019 ##
+
+- Add shipping address to purchase object [PR] (https://github.com/recurly/recurly-client-python/pull/327)
+
 ## Version 2.9.10 – September 13th, 2019 ##
 
--  PSD2 billing info changes [PR](https://github.com/recurly/recurly-client-python/pull/314)
+- PSD2 billing info changes [PR](https://github.com/recurly/recurly-client-python/pull/314)
 
 ## Version 2.9.9 – August 21st, 2019 ##
 
