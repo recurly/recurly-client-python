@@ -99,6 +99,9 @@ class Resource:
 
         return resource
 
+    def __repr__(self):
+        return str(vars(self))
+
     def get_response(self):
         """
         Returns

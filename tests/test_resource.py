@@ -111,3 +111,10 @@ class TestResource(unittest.TestCase):
         self.assertEqual(obj.my_sub_resource.my_string, "string")
         self.assertEqual(obj.my_sub_resources[0].my_string, "string1")
         self.assertEqual(obj.my_sub_resources[1].my_string, "string2")
+
+    def test_repr_str(self):
+        resource = cast({"object": "my_resource", "my_string": "kmxu3f3qof17"})
+        # Should return the string version of vars(resource)
+        self.assertEqual(repr(resource), "{'my_string': 'kmxu3f3qof17'}")
+        # str() should default to __repr__() implementation
+        self.assertEqual(str(resource), "{'my_string': 'kmxu3f3qof17'}")
