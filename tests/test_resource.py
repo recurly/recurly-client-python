@@ -8,7 +8,7 @@ from unittest.mock import Mock, MagicMock
 
 
 def cast(obj, class_name=None, resp=None):
-    return Resource.cast(obj, class_name, resp)
+    return Resource.cast_json(obj, class_name, resp)
 
 
 class TestResource(unittest.TestCase):
