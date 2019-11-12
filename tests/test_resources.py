@@ -6,7 +6,7 @@ from six import StringIO
 from six.moves.urllib.parse import urljoin
 
 import recurly
-from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Plan, Redemption, Subscription, \
+from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
@@ -1030,6 +1030,33 @@ class TestResources(RecurlyTest):
             for i, account in enumerate(all_test_accounts, 1):
                 with self.mock_request('pages/account-%d-deleted.xml' % i):
                     account.delete()
+
+    def test_item(self):
+        item_code = 'item%s' % self.test_id
+        with self.mock_request('item/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Item.get, item_code)
+
+        item = Item(
+            item_code=item_code,
+            name='Mock Item',
+            description='An item of the mocked variety'
+        )
+        with self.mock_request('item/created.xml'):
+            item.save()
+
+        try:
+            self.assertEqual(item.item_code, item_code)
+
+            with self.mock_request('item/exists.xml'):
+                same_item = Item.get(item_code)
+            self.assertEqual(same_item.item_code, item_code)
+
+            item.description = 'A mocked description'
+            with self.mock_request('item/updated.xml'):
+                item.save()
+        finally:
+            with self.mock_request('item/deleted.xml'):
+                item.delete()
 
     def test_plan(self):
         plan_code = 'plan%s' % self.test_id
