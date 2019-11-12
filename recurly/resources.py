@@ -22,8 +22,6 @@ class Site(Resource):
         Site ID
     mode : str
         Mode
-    public_api_key : str
-        This value is used to configure RecurlyJS to submit tokenized billing information.
     settings : Settings
     subdomain : str
     updated_at : datetime
@@ -37,7 +35,6 @@ class Site(Resource):
         "features": list,
         "id": str,
         "mode": str,
-        "public_api_key": str,
         "settings": "Settings",
         "subdomain": str,
         "updated_at": datetime,
@@ -122,8 +119,6 @@ class Account(Resource):
     Attributes
     ----------
     address : Address
-    bill_to : str
-        An enumerable describing the billing behavior of the account, specifically whether the account is self-paying or will rely on the parent account to pay.
     billing_info : BillingInfo
     cc_emails : str
         Additional email address that should receive account correspondence. These should be separated only by commas. These CC emails will receive all emails that the `email` field also receives.
@@ -137,15 +132,11 @@ class Account(Resource):
         If present, when the account was last marked inactive.
     email : str
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
-    exemption_certificate : str
-        The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
     first_name : str
     hosted_login_token : str
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
     last_name : str
-    parent_account_id : str
-        The UUID of the parent account associated with this account.
     preferred_locale : str
         Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
     shipping_addresses : :obj:`list` of :obj:`ShippingAddress`
@@ -164,7 +155,6 @@ class Account(Resource):
 
     schema = {
         "address": "Address",
-        "bill_to": str,
         "billing_info": "BillingInfo",
         "cc_emails": str,
         "code": str,
@@ -173,12 +163,10 @@ class Account(Resource):
         "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "email": str,
-        "exemption_certificate": str,
         "first_name": str,
         "hosted_login_token": str,
         "id": str,
         "last_name": str,
-        "parent_account_id": str,
         "preferred_locale": str,
         "shipping_addresses": ["ShippingAddress"],
         "state": str,
@@ -453,28 +441,16 @@ class AccountMini(Resource):
     """
     Attributes
     ----------
-    bill_to : str
     code : str
         The unique identifier of the account.
-    company : str
     email : str
         The email address used for communicating with this customer.
     first_name : str
     id : str
     last_name : str
-    parent_account_id : str
     """
 
-    schema = {
-        "bill_to": str,
-        "code": str,
-        "company": str,
-        "email": str,
-        "first_name": str,
-        "id": str,
-        "last_name": str,
-        "parent_account_id": str,
-    }
+    schema = {"code": str, "email": str, "first_name": str, "id": str, "last_name": str}
 
 
 class AccountBalance(Resource):
@@ -579,7 +555,7 @@ class Coupon(Resource):
     name : str
         The internal name for the coupon.
     plans : :obj:`list` of :obj:`PlanMini`
-        A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
+        Plans
     plans_names : :obj:`list` of :obj:`str`
         TODO
     redeem_by : datetime
@@ -798,7 +774,7 @@ class Transaction(Resource):
     ip_address_v4 : str
         IP address provided when the billing information was collected:
 
-        - When the customer enters billing information into the Recurly.JS or Hosted Payment Pages, Recurly records the IP address.
+        - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
         - When the merchant enters billing information using the API, the merchant may provide an IP address.
         - When the merchant enters billing information using the UI, no IP address is recorded.
     origin : str
@@ -888,7 +864,7 @@ class Invoice(Resource):
     Attributes
     ----------
     account : AccountMini
-    address : InvoiceAddress
+    address : Address
     balance : float
         The outstanding balance remaining on this invoice.
     closed_at : datetime
@@ -924,7 +900,6 @@ class Invoice(Resource):
         On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
-    shipping_address : ShippingAddress
     state : str
         Invoice state
     subscription_ids : :obj:`list` of :obj:`str`
@@ -952,7 +927,7 @@ class Invoice(Resource):
 
     schema = {
         "account": "AccountMini",
-        "address": "InvoiceAddress",
+        "address": "Address",
         "balance": float,
         "closed_at": datetime,
         "collection_method": str,
@@ -971,7 +946,6 @@ class Invoice(Resource):
         "po_number": str,
         "previous_invoice_id": str,
         "refundable_amount": float,
-        "shipping_address": "ShippingAddress",
         "state": str,
         "subscription_ids": list,
         "subtotal": float,
@@ -984,49 +958,6 @@ class Invoice(Resource):
         "updated_at": datetime,
         "vat_number": str,
         "vat_reverse_charge_notes": str,
-    }
-
-
-class InvoiceAddress(Resource):
-    """
-    Attributes
-    ----------
-    city : str
-        City
-    company : str
-        Company
-    country : str
-        Country, 2-letter ISO code.
-    first_name : str
-        First name
-    last_name : str
-        Last name
-    name_on_account : str
-        Name on account
-    phone : str
-        Phone number
-    postal_code : str
-        Zip or postal code.
-    region : str
-        State or province.
-    street1 : str
-        Street 1
-    street2 : str
-        Street 2
-    """
-
-    schema = {
-        "city": str,
-        "company": str,
-        "country": str,
-        "first_name": str,
-        "last_name": str,
-        "name_on_account": str,
-        "phone": str,
-        "postal_code": str,
-        "region": str,
-        "street1": str,
-        "street2": str,
     }
 
 
@@ -1130,7 +1061,7 @@ class LineItem(Resource):
     tax : float
         The tax amount for the line item.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
     tax_info : TaxInfo
@@ -1304,7 +1235,7 @@ class Subscription(Resource):
         Null unless subscription is paused or will pause at the end of the current billing period.
     renewal_billing_cycles : int
         If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
-    shipping : SubscriptionShipping
+    shipping_address : ShippingAddress
     state : str
         State
     subtotal : float
@@ -1355,7 +1286,7 @@ class Subscription(Resource):
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
-        "shipping": "SubscriptionShipping",
+        "shipping_address": "ShippingAddress",
         "state": str,
         "subtotal": float,
         "terms_and_conditions": str,
@@ -1366,38 +1297,6 @@ class Subscription(Resource):
         "updated_at": datetime,
         "uuid": str,
     }
-
-
-class SubscriptionShipping(Resource):
-    """
-    Attributes
-    ----------
-    address : ShippingAddress
-    amount : float
-        Subscription's shipping cost
-    method : ShippingMethodMini
-    """
-
-    schema = {
-        "address": "ShippingAddress",
-        "amount": float,
-        "method": "ShippingMethodMini",
-    }
-
-
-class ShippingMethodMini(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        The internal name used identify the shipping method.
-    id : str
-        Shipping Method ID
-    name : str
-        The name of the shipping method displayed to customers.
-    """
-
-    schema = {"code": str, "id": str, "name": str}
 
 
 class CouponRedemptionMini(Resource):
@@ -1473,7 +1372,6 @@ class SubscriptionChange(Resource):
     plan : PlanMini
     quantity : int
         Subscription quantity
-    shipping : SubscriptionShipping
     subscription_id : str
         The ID of the subscription that is going to be changed.
     unit_amount : float
@@ -1491,7 +1389,6 @@ class SubscriptionChange(Resource):
         "id": str,
         "plan": "PlanMini",
         "quantity": int,
-        "shipping": "SubscriptionShipping",
         "subscription_id": str,
         "unit_amount": float,
         "updated_at": datetime,
@@ -1653,7 +1550,7 @@ class Plan(Resource):
     state : str
         The current state of the plan.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
     tax_exempt : bool
         `true` exempts tax on the plan, `false` applies tax on the plan.
     total_billing_cycles : int
@@ -1754,7 +1651,7 @@ class AddOn(Resource):
     state : str
         Add-ons can be either active or inactive.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
     updated_at : datetime
         Last updated at
     """
@@ -1787,44 +1684,3 @@ class AddOnPricing(Resource):
     """
 
     schema = {"currency": str, "unit_amount": float}
-
-
-class ShippingMethod(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        The internal name used identify the shipping method.
-    created_at : datetime
-        Created at
-    deleted_at : datetime
-        Deleted at
-    id : str
-        Shipping Method ID
-    name : str
-        The name of the shipping method displayed to customers.
-    tax_code : str
-        Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
-        code values are specific to each tax system. If you are using Recurly’s
-        built-in taxes the values are:
-
-        - `FR` – Common Carrier FOB Destination
-        - `FR022000` – Common Carrier FOB Origin
-        - `FR020400` – Non Common Carrier FOB Destination
-        - `FR020500` – Non Common Carrier FOB Origin
-        - `FR010100` – Delivery by Company Vehicle Before Passage of Title
-        - `FR010200` – Delivery by Company Vehicle After Passage of Title
-        - `NT` – Non-Taxable
-    updated_at : datetime
-        Last updated at
-    """
-
-    schema = {
-        "code": str,
-        "created_at": datetime,
-        "deleted_at": datetime,
-        "id": str,
-        "name": str,
-        "tax_code": str,
-        "updated_at": datetime,
-    }
