@@ -392,6 +392,8 @@ class TransactionError(Resource):
         Merchant message
     message : str
         Customer message
+    three_d_secure_action_token_id : str
+        Returned when 3-D Secure authentication is required for a transaction. Pass this value to Recurly.js so it can continue the challenge flow.
     transaction_id : str
         Transaction ID
     """
@@ -401,6 +403,7 @@ class TransactionError(Resource):
         "code": str,
         "merchant_advice": str,
         "message": str,
+        "three_d_secure_action_token_id": str,
         "transaction_id": str,
     }
 
@@ -798,7 +801,7 @@ class Transaction(Resource):
     ip_address_v4 : str
         IP address provided when the billing information was collected:
 
-        - When the customer enters billing information into the Recurly.JS or Hosted Payment Pages, Recurly records the IP address.
+        - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
         - When the merchant enters billing information using the API, the merchant may provide an IP address.
         - When the merchant enters billing information using the UI, no IP address is recorded.
     origin : str
@@ -1092,6 +1095,10 @@ class LineItem(Resource):
         Once the line item has been invoiced this will be the invoice's ID.
     invoice_number : str
         Once the line item has been invoiced this will be the invoice's number. If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
+    item_code : str
+        Unique code to identify an `Item`.
+    item_id : str
+        Item ID
     legacy_category : str
         Category to describe the role of a line item on a legacy invoice:
         - "charges" refers to charges being billed for on this invoice.
@@ -1109,7 +1116,7 @@ class LineItem(Resource):
     previous_line_item_id : str
         Will only have a value if the line item is a credit created from a previous credit, or if the credit was created from a charge refund.
     product_code : str
-        For plan related line items this will be the plan's code, for add-on related line items it will be the add-on's code.
+        For plan-related line items this will be the plan's code, for add-on related line items it will be the add-on's code. For item-related line itmes it will be the item's `external_sku`.
     proration_rate : float
         When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
     quantity : int
@@ -1118,6 +1125,8 @@ class LineItem(Resource):
         Refund?
     refunded_quantity : int
         For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
+    revenue_schedule_type : str
+        Revenue schedule type
     shipping_address : ShippingAddress
     start_date : datetime
         If an end date is present, this is value indicates the beginning of a billing time range. If no end date is present it indicates billing for a specific date.
@@ -1162,6 +1171,8 @@ class LineItem(Resource):
         "id": str,
         "invoice_id": str,
         "invoice_number": str,
+        "item_code": str,
+        "item_id": str,
         "legacy_category": str,
         "origin": str,
         "original_line_item_invoice_id": str,
@@ -1173,6 +1184,7 @@ class LineItem(Resource):
         "quantity": int,
         "refund": bool,
         "refunded_quantity": int,
+        "revenue_schedule_type": str,
         "shipping_address": "ShippingAddress",
         "start_date": datetime,
         "state": str,
@@ -1286,6 +1298,8 @@ class Subscription(Resource):
         Expiration reason
     expires_at : datetime
         Expires at
+    gateway_code : str
+        If present, this subscription's transactions will use the payment gateway with this code.
     id : str
         Subscription ID
     net_terms : int
@@ -1345,6 +1359,7 @@ class Subscription(Resource):
         "customer_notes": str,
         "expiration_reason": str,
         "expires_at": datetime,
+        "gateway_code": str,
         "id": str,
         "net_terms": int,
         "paused_at": datetime,
@@ -1620,6 +1635,73 @@ class CustomFieldDefinition(Resource):
     }
 
 
+class Item(Resource):
+    """
+    Attributes
+    ----------
+    accounting_code : str
+        Accounting code for invoice line items.
+    code : str
+        Unique code to identify the item.
+    created_at : datetime
+        Created at
+    currencies : :obj:`list` of :obj:`Pricing`
+        Item Pricing
+    custom_fields : :obj:`list` of :obj:`CustomField`
+    deleted_at : datetime
+        Deleted at
+    description : str
+        Optional, description.
+    external_sku : str
+        Optional, stock keeping unit to link the item to other inventory systems.
+    id : str
+        Item ID
+    name : str
+        This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    revenue_schedule_type : str
+        Revenue schedule type
+    state : str
+        The current state of the item.
+    tax_code : str
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    tax_exempt : bool
+        `true` exempts tax on the item, `false` applies tax on the item.
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "accounting_code": str,
+        "code": str,
+        "created_at": datetime,
+        "currencies": ["Pricing"],
+        "custom_fields": ["CustomField"],
+        "deleted_at": datetime,
+        "description": str,
+        "external_sku": str,
+        "id": str,
+        "name": str,
+        "revenue_schedule_type": str,
+        "state": str,
+        "tax_code": str,
+        "tax_exempt": bool,
+        "updated_at": datetime,
+    }
+
+
+class Pricing(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    unit_amount : float
+        Unit price
+    """
+
+    schema = {"currency": str, "unit_amount": float}
+
+
 class Plan(Resource):
     """
     Attributes
@@ -1737,7 +1819,7 @@ class AddOn(Resource):
         The unique identifier for the add-on within its plan.
     created_at : datetime
         Created at
-    currencies : :obj:`list` of :obj:`AddOnPricing`
+    currencies : :obj:`list` of :obj:`Pricing`
         Add-on pricing
     default_quantity : int
         Default quantity for the hosted pages.
@@ -1763,7 +1845,7 @@ class AddOn(Resource):
         "accounting_code": str,
         "code": str,
         "created_at": datetime,
-        "currencies": ["AddOnPricing"],
+        "currencies": ["Pricing"],
         "default_quantity": int,
         "deleted_at": datetime,
         "display_quantity": bool,
@@ -1774,19 +1856,6 @@ class AddOn(Resource):
         "tax_code": str,
         "updated_at": datetime,
     }
-
-
-class AddOnPricing(Resource):
-    """
-    Attributes
-    ----------
-    currency : str
-        3-letter ISO 4217 currency code.
-    unit_amount : float
-        Unit price
-    """
-
-    schema = {"currency": str, "unit_amount": float}
 
 
 class ShippingMethod(Resource):
