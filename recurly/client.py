@@ -9,7 +9,7 @@ from .pager import Pager
 
 class Client(BaseClient):
     def api_version(self):
-        return "v2019-10-10"
+        return "v2018-08-09"
 
     def list_sites(self, **kwargs):
         """List sites
@@ -54,7 +54,7 @@ class Client(BaseClient):
         Parameters
         ----------
         site_id : str
-            Site ID or subdomain (use prefix: `subdomain-`, e.g. `subdomain-recurly`).
+            Site ID or subdomain. For ID no prefix is used e.g. `e28zov4fw0v2`. For subdomain use prefix `subdomain-`, e.g. `subdomain-recurly`.
 
 
         Returns
@@ -99,10 +99,8 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        email : str
-            Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
         subscriber : bool
-            Filter for accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
@@ -138,7 +136,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -155,7 +153,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -174,7 +172,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -191,7 +189,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -208,7 +206,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -227,7 +225,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -244,7 +242,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -261,7 +259,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -278,7 +276,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -295,7 +293,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -314,7 +312,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -331,7 +329,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -372,7 +370,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -391,7 +389,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -412,7 +410,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -431,7 +429,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -464,7 +462,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -515,7 +513,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -534,7 +532,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -553,7 +551,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -604,7 +602,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -623,7 +621,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -654,7 +652,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         account_note_id : str
             Account Note ID.
 
@@ -675,7 +673,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -720,7 +718,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -739,7 +737,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
 
@@ -760,7 +758,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
         body
@@ -783,7 +781,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
 
@@ -804,7 +802,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -855,7 +853,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -904,7 +902,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -934,10 +932,8 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        email : str
-            Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
         subscriber : bool
-            Filter for accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
@@ -1059,7 +1055,7 @@ class Client(BaseClient):
         Parameters
         ----------
         coupon_id : str
-            Coupon ID or code (use prefix: `code-`, e.g. `code-10off`).
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
 
 
         Returns
@@ -1076,7 +1072,7 @@ class Client(BaseClient):
         Parameters
         ----------
         coupon_id : str
-            Coupon ID or code (use prefix: `code-`, e.g. `code-10off`).
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
         body
             The body of the request.
 
@@ -1095,7 +1091,7 @@ class Client(BaseClient):
         Parameters
         ----------
         coupon_id : str
-            Coupon ID or code (use prefix: `code-`, e.g. `code-10off`).
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
 
         Keyword Arguments
         =================
@@ -1171,7 +1167,7 @@ class Client(BaseClient):
         Parameters
         ----------
         credit_payment_id : str
-            Credit Payment ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Credit Payment ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -1299,7 +1295,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1316,7 +1312,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
         body
             The body of the request.
 
@@ -1335,7 +1331,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1352,7 +1348,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1369,7 +1365,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1386,7 +1382,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1403,7 +1399,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1420,7 +1416,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
         =================
@@ -1471,7 +1467,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
         =================
@@ -1512,7 +1508,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1529,7 +1525,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
         body
             The body of the request.
 
@@ -1693,7 +1689,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1710,7 +1706,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         body
             The body of the request.
 
@@ -1729,7 +1725,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1746,7 +1742,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
         Keyword Arguments
         =================
@@ -1793,7 +1789,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         body
             The body of the request.
 
@@ -1812,9 +1808,9 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1831,9 +1827,9 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         body
             The body of the request.
 
@@ -1852,9 +1848,9 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1916,7 +1912,7 @@ class Client(BaseClient):
         Parameters
         ----------
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1925,66 +1921,6 @@ class Client(BaseClient):
             An add-on.
         """
         path = self._interpolate_path("/add_ons/%s", add_on_id)
-        return self._make_request("GET", path, None, None)
-
-    def list_shipping_methods(self, **kwargs):
-        """List a site's shipping methods
-
-        Parameters
-        ----------
-
-        Keyword Arguments
-        =================
-        ids : :obj:`list` of :obj:`str`
-            Filter results by their IDs. Up to 200 IDs can be passed at once using
-            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
-
-            **Important notes:**
-
-            * The `ids` parameter cannot be used with any other ordering or filtering
-              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
-            * Invalid or unknown IDs will be ignored, so you should check that the
-              results correspond to your request.
-            * Records are returned in an arbitrary order. Since results are all
-              returned at once you can sort the records yourself.
-        limit : int
-            Limit number of records 1-200.
-        order : str
-            Sort order.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-
-        Returns
-        -------
-        Pager
-            A list of the site's shipping methods.
-        """
-        path = self._interpolate_path("/shipping_methods")
-        return Pager(self, path, kwargs)
-
-    def get_shipping_method(self, id):
-        """Fetch a shipping method
-
-        Parameters
-        ----------
-        id : str
-            Shipping Method ID or code (use prefix: `code-`, e.g. `code-usps_2-day`).
-
-
-        Returns
-        -------
-        ShippingMethod
-            A shipping_method.
-        """
-        path = self._interpolate_path("/shipping_methods/%s", id)
         return self._make_request("GET", path, None, None)
 
     def list_subscriptions(self, **kwargs):
@@ -2059,7 +1995,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2076,7 +2012,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         body
             The body of the request.
 
@@ -2095,7 +2031,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2124,7 +2060,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2141,7 +2077,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2158,7 +2094,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         body
             The body of the request.
 
@@ -2177,7 +2113,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2194,7 +2130,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2211,7 +2147,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         body
             The body of the request.
 
@@ -2230,7 +2166,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2247,7 +2183,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2298,7 +2234,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2349,7 +2285,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2439,7 +2375,7 @@ class Client(BaseClient):
         Parameters
         ----------
         transaction_id : str
-            Transaction ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Transaction ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2456,7 +2392,7 @@ class Client(BaseClient):
         Parameters
         ----------
         unique_coupon_code_id : str
-            Unique Coupon Code ID or code (use prefix: `code-`, e.g. `code-abc-8dh2-def`).
+            Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
 
 
         Returns
@@ -2473,7 +2409,7 @@ class Client(BaseClient):
         Parameters
         ----------
         unique_coupon_code_id : str
-            Unique Coupon Code ID or code (use prefix: `code-`, e.g. `code-abc-8dh2-def`).
+            Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
 
 
         Returns
@@ -2490,7 +2426,7 @@ class Client(BaseClient):
         Parameters
         ----------
         unique_coupon_code_id : str
-            Unique Coupon Code ID or code (use prefix: `code-`, e.g. `code-abc-8dh2-def`).
+            Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
 
 
         Returns
