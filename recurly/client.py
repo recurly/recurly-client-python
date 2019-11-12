@@ -9,7 +9,7 @@ from .pager import Pager
 
 class Client(BaseClient):
     def api_version(self):
-        return "v2019-10-10"
+        return "v2017-01-12"
 
     def list_sites(self, **kwargs):
         """List sites
@@ -54,7 +54,7 @@ class Client(BaseClient):
         Parameters
         ----------
         site_id : str
-            Site ID or subdomain (use prefix: `subdomain-`, e.g. `subdomain-recurly`).
+            Site ID or subdomain. For ID no prefix is used e.g. `e28zov4fw0v2`. For subdomain use prefix `subdomain-`, e.g. `subdomain-recurly`.
 
 
         Returns
@@ -99,10 +99,8 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        email : str
-            Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
         subscriber : bool
-            Filter for accounts with or without a subscription in the `active`,
+            Filter accounts with or without a subscription in the `active`,
             `canceled`, or `future` state.
         past_due : str
             Filter for accounts with an invoice in the `past_due` state.
@@ -138,7 +136,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -155,7 +153,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -174,7 +172,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -191,7 +189,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -208,7 +206,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -227,7 +225,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -244,7 +242,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -261,7 +259,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -278,7 +276,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -295,7 +293,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -314,13 +312,13 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
         -------
-        Empty
-            An Empty Response.
+        BooleanResponse
+            Billing information deleted
         """
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, None)
@@ -331,7 +329,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -372,7 +370,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -391,7 +389,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -412,7 +410,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
 
         Returns
@@ -425,46 +423,13 @@ class Client(BaseClient):
         )
         return self._make_request("DELETE", path, None, None)
 
-    def list_account_credit_payments(self, account_id, **kwargs):
-        """List an account's credit payments
-
-        Parameters
-        ----------
-        account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
-
-        Keyword Arguments
-        =================
-        limit : int
-            Limit number of records 1-200.
-        order : str
-            Sort order.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-
-        Returns
-        -------
-        Pager
-            A list of the account's credit payments.
-        """
-        path = self._interpolate_path("/accounts/%s/credit_payments", account_id)
-        return Pager(self, path, kwargs)
-
     def list_account_invoices(self, account_id, **kwargs):
         """List an account's invoices
 
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -494,12 +459,6 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        type : str
-            Filter by type when:
-            - `type=charge`, only charge invoices will be returned.
-            - `type=credit`, only credit invoices will be returned.
-            - `type=non-legacy`, only charge and credit invoices will be returned.
-            - `type=legacy`, only legacy invoices will be returned.
 
         Returns
         -------
@@ -515,15 +474,15 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
 
         Returns
         -------
-        InvoiceCollection
-            Returns the new invoices.
+        Invoice
+            Returns the new invoice.
         """
         path = self._interpolate_path("/accounts/%s/invoices", account_id)
         return self._make_request("POST", path, body, None)
@@ -534,15 +493,15 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
 
         Returns
         -------
-        InvoiceCollection
-            Returns the invoice previews.
+        Invoice
+            Returns the new preview invoice.
         """
         path = self._interpolate_path("/accounts/%s/invoices/preview", account_id)
         return self._make_request("POST", path, body, None)
@@ -553,7 +512,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -604,7 +563,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -623,7 +582,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -654,7 +613,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         account_note_id : str
             Account Note ID.
 
@@ -675,7 +634,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -720,7 +679,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body
             The body of the request.
 
@@ -739,7 +698,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
 
@@ -760,7 +719,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
         body
@@ -783,15 +742,15 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
 
 
         Returns
         -------
-        Empty
-            An Empty Response.
+        BooleanResponse
+            Shipping address deleted.
         """
         path = self._interpolate_path(
             "/accounts/%s/shipping_addresses/%s", account_id, shipping_address_id
@@ -804,7 +763,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -855,7 +814,7 @@ class Client(BaseClient):
         Parameters
         ----------
         account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         =================
@@ -886,7 +845,7 @@ class Client(BaseClient):
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
-            Filter by type field. The value `payment` will return both `purchase` and `capture` transactions.
+            Filter by type field.
         success : str
             Filter by success field.
 
@@ -896,58 +855,6 @@ class Client(BaseClient):
             A list of the account's transactions.
         """
         path = self._interpolate_path("/accounts/%s/transactions", account_id)
-        return Pager(self, path, kwargs)
-
-    def list_child_accounts(self, account_id, **kwargs):
-        """List an account's child accounts
-
-        Parameters
-        ----------
-        account_id : str
-            Account ID or code (use prefix: `code-`, e.g. `code-bob`).
-
-        Keyword Arguments
-        =================
-        ids : :obj:`list` of :obj:`str`
-            Filter results by their IDs. Up to 200 IDs can be passed at once using
-            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
-
-            **Important notes:**
-
-            * The `ids` parameter cannot be used with any other ordering or filtering
-              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
-            * Invalid or unknown IDs will be ignored, so you should check that the
-              results correspond to your request.
-            * Records are returned in an arbitrary order. Since results are all
-              returned at once you can sort the records yourself.
-        limit : int
-            Limit number of records 1-200.
-        order : str
-            Sort order.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        email : str
-            Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
-        subscriber : bool
-            Filter for accounts with or without a subscription in the `active`,
-            `canceled`, or `future` state.
-        past_due : str
-            Filter for accounts with an invoice in the `past_due` state.
-
-        Returns
-        -------
-        Pager
-            A list of an account's child accounts.
-        """
-        path = self._interpolate_path("/accounts/%s/accounts", account_id)
         return Pager(self, path, kwargs)
 
     def list_account_acquisition(self, **kwargs):
@@ -1059,7 +966,7 @@ class Client(BaseClient):
         Parameters
         ----------
         coupon_id : str
-            Coupon ID or code (use prefix: `code-`, e.g. `code-10off`).
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
 
 
         Returns
@@ -1076,7 +983,7 @@ class Client(BaseClient):
         Parameters
         ----------
         coupon_id : str
-            Coupon ID or code (use prefix: `code-`, e.g. `code-10off`).
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
         body
             The body of the request.
 
@@ -1095,7 +1002,7 @@ class Client(BaseClient):
         Parameters
         ----------
         coupon_id : str
-            Coupon ID or code (use prefix: `code-`, e.g. `code-10off`).
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
 
         Keyword Arguments
         =================
@@ -1134,116 +1041,6 @@ class Client(BaseClient):
         path = self._interpolate_path("/coupons/%s/unique_coupon_codes", coupon_id)
         return Pager(self, path, kwargs)
 
-    def list_credit_payments(self, **kwargs):
-        """List a site's credit payments
-
-        Parameters
-        ----------
-
-        Keyword Arguments
-        =================
-        limit : int
-            Limit number of records 1-200.
-        order : str
-            Sort order.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-
-        Returns
-        -------
-        Pager
-            A list of the site's credit payments.
-        """
-        path = self._interpolate_path("/credit_payments")
-        return Pager(self, path, kwargs)
-
-    def get_credit_payment(self, credit_payment_id):
-        """Fetch a credit payment
-
-        Parameters
-        ----------
-        credit_payment_id : str
-            Credit Payment ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
-
-
-        Returns
-        -------
-        CreditPayment
-            A credit payment.
-        """
-        path = self._interpolate_path("/credit_payments/%s", credit_payment_id)
-        return self._make_request("GET", path, None, None)
-
-    def list_custom_field_definitions(self, **kwargs):
-        """List a site's custom field definitions
-
-        Parameters
-        ----------
-
-        Keyword Arguments
-        =================
-        ids : :obj:`list` of :obj:`str`
-            Filter results by their IDs. Up to 200 IDs can be passed at once using
-            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
-
-            **Important notes:**
-
-            * The `ids` parameter cannot be used with any other ordering or filtering
-              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
-            * Invalid or unknown IDs will be ignored, so you should check that the
-              results correspond to your request.
-            * Records are returned in an arbitrary order. Since results are all
-              returned at once you can sort the records yourself.
-        limit : int
-            Limit number of records 1-200.
-        order : str
-            Sort order.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-
-        Returns
-        -------
-        Pager
-            A list of the site's custom field definitions.
-        """
-        path = self._interpolate_path("/custom_field_definitions")
-        return Pager(self, path, kwargs)
-
-    def get_custom_field_definition(self, custom_field_definition_id):
-        """Fetch an custom field definition
-
-        Parameters
-        ----------
-        custom_field_definition_id : str
-            Custom Field Definition ID
-
-
-        Returns
-        -------
-        CustomFieldDefinition
-            An custom field definition.
-        """
-        path = self._interpolate_path(
-            "/custom_field_definitions/%s", custom_field_definition_id
-        )
-        return self._make_request("GET", path, None, None)
-
     def list_invoices(self, **kwargs):
         """List a site's invoices
 
@@ -1278,12 +1075,6 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        type : str
-            Filter by type when:
-            - `type=charge`, only charge invoices will be returned.
-            - `type=credit`, only credit invoices will be returned.
-            - `type=non-legacy`, only charge and credit invoices will be returned.
-            - `type=legacy`, only legacy invoices will be returned.
 
         Returns
         -------
@@ -1299,7 +1090,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1310,32 +1101,13 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s", invoice_id)
         return self._make_request("GET", path, None, None)
 
-    def put_invoice(self, invoice_id, body):
-        """Update an invoice
-
-        Parameters
-        ----------
-        invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
-        body
-            The body of the request.
-
-
-        Returns
-        -------
-        Invoice
-            An invoice.
-        """
-        path = self._interpolate_path("/invoices/%s", invoice_id)
-        return self._make_request("PUT", path, body, None)
-
     def collect_invoice(self, invoice_id):
         """Collect a pending or past due, automatic invoice
 
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1352,7 +1124,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1369,7 +1141,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1386,7 +1158,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
 
         Returns
@@ -1397,30 +1169,13 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s/reopen", invoice_id)
         return self._make_request("PUT", path, None, None)
 
-    def void_invoice(self, invoice_id):
-        """Void a credit invoice.
-
-        Parameters
-        ----------
-        invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
-
-
-        Returns
-        -------
-        Invoice
-            The updated invoice.
-        """
-        path = self._interpolate_path("/invoices/%s/void", invoice_id)
-        return self._make_request("PUT", path, None, None)
-
     def list_invoice_line_items(self, invoice_id, **kwargs):
         """List an invoice's line items
 
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
         =================
@@ -1471,7 +1226,7 @@ class Client(BaseClient):
         Parameters
         ----------
         invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
         =================
@@ -1505,42 +1260,6 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/invoices/%s/coupon_redemptions", invoice_id)
         return Pager(self, path, kwargs)
-
-    def list_related_invoices(self, invoice_id, **kwargs):
-        """List an invoice's related credit or charge invoices
-
-        Parameters
-        ----------
-        invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
-
-
-        Returns
-        -------
-        Pager
-            A list of the credit or charge invoices associated with the invoice.
-        """
-        path = self._interpolate_path("/invoices/%s/related_invoices", invoice_id)
-        return Pager(self, path, kwargs)
-
-    def refund_invoice(self, invoice_id, body):
-        """Refund an invoice
-
-        Parameters
-        ----------
-        invoice_id : str
-            Invoice ID or number (use prefix: `number-`, e.g. `number-1000`).
-        body
-            The body of the request.
-
-
-        Returns
-        -------
-        Invoice
-            Returns the new credit invoice.
-        """
-        path = self._interpolate_path("/invoices/%s/refund", invoice_id)
-        return self._make_request("POST", path, body, None)
 
     def list_line_items(self, **kwargs):
         """List a site's line items
@@ -1619,8 +1338,8 @@ class Client(BaseClient):
 
         Returns
         -------
-        Empty
-            An Empty Response.
+        BooleanResponse
+            Line item deleted.
         """
         path = self._interpolate_path("/line_items/%s", line_item_id)
         return self._make_request("DELETE", path, None, None)
@@ -1693,7 +1412,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1710,7 +1429,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         body
             The body of the request.
 
@@ -1729,7 +1448,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1746,7 +1465,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
         Keyword Arguments
         =================
@@ -1793,7 +1512,7 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         body
             The body of the request.
 
@@ -1812,9 +1531,9 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1831,9 +1550,9 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         body
             The body of the request.
 
@@ -1852,9 +1571,9 @@ class Client(BaseClient):
         Parameters
         ----------
         plan_id : str
-            Plan ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1916,7 +1635,7 @@ class Client(BaseClient):
         Parameters
         ----------
         add_on_id : str
-            Add-on ID or code (use prefix: `code-`, e.g. `code-gold`).
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
 
         Returns
@@ -1925,66 +1644,6 @@ class Client(BaseClient):
             An add-on.
         """
         path = self._interpolate_path("/add_ons/%s", add_on_id)
-        return self._make_request("GET", path, None, None)
-
-    def list_shipping_methods(self, **kwargs):
-        """List a site's shipping methods
-
-        Parameters
-        ----------
-
-        Keyword Arguments
-        =================
-        ids : :obj:`list` of :obj:`str`
-            Filter results by their IDs. Up to 200 IDs can be passed at once using
-            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
-
-            **Important notes:**
-
-            * The `ids` parameter cannot be used with any other ordering or filtering
-              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
-            * Invalid or unknown IDs will be ignored, so you should check that the
-              results correspond to your request.
-            * Records are returned in an arbitrary order. Since results are all
-              returned at once you can sort the records yourself.
-        limit : int
-            Limit number of records 1-200.
-        order : str
-            Sort order.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-
-        Returns
-        -------
-        Pager
-            A list of the site's shipping methods.
-        """
-        path = self._interpolate_path("/shipping_methods")
-        return Pager(self, path, kwargs)
-
-    def get_shipping_method(self, id):
-        """Fetch a shipping method
-
-        Parameters
-        ----------
-        id : str
-            Shipping Method ID or code (use prefix: `code-`, e.g. `code-usps_2-day`).
-
-
-        Returns
-        -------
-        ShippingMethod
-            A shipping_method.
-        """
-        path = self._interpolate_path("/shipping_methods/%s", id)
         return self._make_request("GET", path, None, None)
 
     def list_subscriptions(self, **kwargs):
@@ -2059,7 +1718,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2076,7 +1735,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         body
             The body of the request.
 
@@ -2095,7 +1754,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2124,7 +1783,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2141,7 +1800,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2152,49 +1811,13 @@ class Client(BaseClient):
         path = self._interpolate_path("/subscriptions/%s/reactivate", subscription_id)
         return self._make_request("PUT", path, None, None)
 
-    def pause_subscription(self, subscription_id, body):
-        """Pause subscription
-
-        Parameters
-        ----------
-        subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
-        body
-            The body of the request.
-
-
-        Returns
-        -------
-        Subscription
-            A subscription.
-        """
-        path = self._interpolate_path("/subscriptions/%s/pause", subscription_id)
-        return self._make_request("PUT", path, body, None)
-
-    def resume_subscription(self, subscription_id):
-        """Resume subscription
-
-        Parameters
-        ----------
-        subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
-
-
-        Returns
-        -------
-        Subscription
-            A subscription.
-        """
-        path = self._interpolate_path("/subscriptions/%s/resume", subscription_id)
-        return self._make_request("PUT", path, None, None)
-
     def get_subscription_change(self, subscription_id):
         """Fetch a subscription's pending change
 
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2211,7 +1834,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         body
             The body of the request.
 
@@ -2230,13 +1853,13 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
         -------
-        Empty
-            An Empty Response.
+        BooleanResponse
+            A subscription change.
         """
         path = self._interpolate_path("/subscriptions/%s/change", subscription_id)
         return self._make_request("DELETE", path, None, None)
@@ -2247,7 +1870,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2277,12 +1900,6 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        type : str
-            Filter by type when:
-            - `type=charge`, only charge invoices will be returned.
-            - `type=credit`, only credit invoices will be returned.
-            - `type=non-legacy`, only charge and credit invoices will be returned.
-            - `type=legacy`, only legacy invoices will be returned.
 
         Returns
         -------
@@ -2298,7 +1915,7 @@ class Client(BaseClient):
         Parameters
         ----------
         subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
         =================
@@ -2343,49 +1960,6 @@ class Client(BaseClient):
         path = self._interpolate_path("/subscriptions/%s/line_items", subscription_id)
         return Pager(self, path, kwargs)
 
-    def list_subscription_coupon_redemptions(self, subscription_id, **kwargs):
-        """Show the coupon redemptions for a subscription
-
-        Parameters
-        ----------
-        subscription_id : str
-            Subscription ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
-
-        Keyword Arguments
-        =================
-        ids : :obj:`list` of :obj:`str`
-            Filter results by their IDs. Up to 200 IDs can be passed at once using
-            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
-
-            **Important notes:**
-
-            * The `ids` parameter cannot be used with any other ordering or filtering
-              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
-            * Invalid or unknown IDs will be ignored, so you should check that the
-              results correspond to your request.
-            * Records are returned in an arbitrary order. Since results are all
-              returned at once you can sort the records yourself.
-        sort : str
-            Sort field. You *really* only want to sort by `updated_at` in ascending
-            order. In descending order updated records will move behind the cursor and could
-            prevent some records from being returned.
-        begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-        end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
-            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
-
-        Returns
-        -------
-        Pager
-            A list of the the coupon redemptions on a subscription.
-        """
-        path = self._interpolate_path(
-            "/subscriptions/%s/coupon_redemptions", subscription_id
-        )
-        return Pager(self, path, kwargs)
-
     def list_transactions(self, **kwargs):
         """List a site's transactions
 
@@ -2421,7 +1995,7 @@ class Client(BaseClient):
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
-            Filter by type field. The value `payment` will return both `purchase` and `capture` transactions.
+            Filter by type field.
         success : str
             Filter by success field.
 
@@ -2439,7 +2013,7 @@ class Client(BaseClient):
         Parameters
         ----------
         transaction_id : str
-            Transaction ID or UUID (use prefix: `uuid-`, e.g. `uuid-123457890`).
+            Transaction ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
 
         Returns
@@ -2456,7 +2030,7 @@ class Client(BaseClient):
         Parameters
         ----------
         unique_coupon_code_id : str
-            Unique Coupon Code ID or code (use prefix: `code-`, e.g. `code-abc-8dh2-def`).
+            Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
 
 
         Returns
@@ -2473,7 +2047,7 @@ class Client(BaseClient):
         Parameters
         ----------
         unique_coupon_code_id : str
-            Unique Coupon Code ID or code (use prefix: `code-`, e.g. `code-abc-8dh2-def`).
+            Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
 
 
         Returns
@@ -2490,7 +2064,7 @@ class Client(BaseClient):
         Parameters
         ----------
         unique_coupon_code_id : str
-            Unique Coupon Code ID or code (use prefix: `code-`, e.g. `code-abc-8dh2-def`).
+            Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
 
 
         Returns
@@ -2502,37 +2076,3 @@ class Client(BaseClient):
             "/unique_coupon_codes/%s/restore", unique_coupon_code_id
         )
         return self._make_request("PUT", path, None, None)
-
-    def create_purchase(self, body):
-        """Create a new purchase
-
-        Parameters
-        ----------
-        body
-            The body of the request.
-
-
-        Returns
-        -------
-        InvoiceCollection
-            Returns the new invoices
-        """
-        path = self._interpolate_path("/purchases")
-        return self._make_request("POST", path, body, None)
-
-    def preview_purchase(self, body):
-        """Preview a new purchase
-
-        Parameters
-        ----------
-        body
-            The body of the request.
-
-
-        Returns
-        -------
-        InvoiceCollection
-            Returns preview of the new invoices
-        """
-        path = self._interpolate_path("/purchases/preview")
-        return self._make_request("POST", path, body, None)
