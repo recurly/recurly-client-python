@@ -16,14 +16,10 @@ class Site(Resource):
         Created at
     deleted_at : datetime
         Deleted at
-    features : :obj:`list` of :obj:`str`
-        A list of features enabled for the site.
     id : str
         Site ID
     mode : str
         Mode
-    public_api_key : str
-        This value is used to configure RecurlyJS to submit tokenized billing information.
     settings : Settings
     subdomain : str
     updated_at : datetime
@@ -34,10 +30,8 @@ class Site(Resource):
         "address": "Address",
         "created_at": datetime,
         "deleted_at": datetime,
-        "features": list,
         "id": str,
         "mode": str,
-        "public_api_key": str,
         "settings": "Settings",
         "subdomain": str,
         "updated_at": datetime,
@@ -122,8 +116,6 @@ class Account(Resource):
     Attributes
     ----------
     address : Address
-    bill_to : str
-        An enumerable describing the billing behavior of the account, specifically whether the account is self-paying or will rely on the parent account to pay.
     billing_info : BillingInfo
     cc_emails : str
         Additional email address that should receive account correspondence. These should be separated only by commas. These CC emails will receive all emails that the `email` field also receives.
@@ -132,22 +124,15 @@ class Account(Resource):
     company : str
     created_at : datetime
         When the account was created.
-    custom_fields : :obj:`list` of :obj:`CustomField`
     deleted_at : datetime
         If present, when the account was last marked inactive.
     email : str
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
-    exemption_certificate : str
-        The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
     first_name : str
     hosted_login_token : str
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
     last_name : str
-    parent_account_id : str
-        The UUID of the parent account associated with this account.
-    preferred_locale : str
-        Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
     shipping_addresses : :obj:`list` of :obj:`ShippingAddress`
         The shipping addresses on the account.
     state : str
@@ -164,22 +149,17 @@ class Account(Resource):
 
     schema = {
         "address": "Address",
-        "bill_to": str,
         "billing_info": "BillingInfo",
         "cc_emails": str,
         "code": str,
         "company": str,
         "created_at": datetime,
-        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "email": str,
-        "exemption_certificate": str,
         "first_name": str,
         "hosted_login_token": str,
         "id": str,
         "last_name": str,
-        "parent_account_id": str,
-        "preferred_locale": str,
         "shipping_addresses": ["ShippingAddress"],
         "state": str,
         "tax_exempt": bool,
@@ -345,19 +325,6 @@ class BillingInfoUpdatedBy(Resource):
     schema = {"country": str, "ip": str}
 
 
-class CustomField(Resource):
-    """
-    Attributes
-    ----------
-    name : str
-        Fields must be created in the UI before values can be assigned to them.
-    value : str
-        Any values that resemble a credit card number or security code (CVV/CVC) will be rejected.
-    """
-
-    schema = {"name": str, "value": str}
-
-
 class ErrorMayHaveTransaction(Resource):
     """
     Attributes
@@ -453,28 +420,16 @@ class AccountMini(Resource):
     """
     Attributes
     ----------
-    bill_to : str
     code : str
         The unique identifier of the account.
-    company : str
     email : str
         The email address used for communicating with this customer.
     first_name : str
     id : str
     last_name : str
-    parent_account_id : str
     """
 
-    schema = {
-        "bill_to": str,
-        "code": str,
-        "company": str,
-        "email": str,
-        "first_name": str,
-        "id": str,
-        "last_name": str,
-        "parent_account_id": str,
-    }
+    schema = {"code": str, "email": str, "first_name": str, "id": str, "last_name": str}
 
 
 class AccountBalance(Resource):
@@ -579,7 +534,7 @@ class Coupon(Resource):
     name : str
         The internal name for the coupon.
     plans : :obj:`list` of :obj:`PlanMini`
-        A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
+        Plans
     plans_names : :obj:`list` of :obj:`str`
         TODO
     redeem_by : datetime
@@ -708,10 +663,7 @@ class CreditPayment(Resource):
         3-letter ISO 4217 currency code.
     id : str
         Credit Payment ID
-    original_credit_payment_id : str
-        For credit payments with action `refund`, this is the credit payment that was refunded.
     original_invoice : InvoiceMini
-    refund_transaction : Transaction
     updated_at : datetime
         Last updated at
     uuid : str
@@ -728,9 +680,7 @@ class CreditPayment(Resource):
         "created_at": datetime,
         "currency": str,
         "id": str,
-        "original_credit_payment_id": str,
         "original_invoice": "InvoiceMini",
-        "refund_transaction": "Transaction",
         "updated_at": datetime,
         "uuid": str,
         "voided_at": datetime,
@@ -754,143 +704,12 @@ class InvoiceMini(Resource):
     schema = {"id": str, "number": str, "state": str, "type": str}
 
 
-class Transaction(Resource):
-    """
-    Attributes
-    ----------
-    account : AccountMini
-    amount : float
-        Total transaction amount sent to the payment gateway.
-    avs_check : str
-        When processed, result from checking the overall AVS on the transaction.
-    billing_address : Address
-    collected_at : datetime
-        Collected at, or if not collected yet, the time the transaction was created.
-    collection_method : str
-        The method by which the payment was collected.
-    created_at : datetime
-        Created at
-    currency : str
-        3-letter ISO 4217 currency code.
-    customer_message : str
-        For declined (`success=false`) transactions, the message displayed to the customer.
-    customer_message_locale : str
-        Language code for the message
-    cvv_check : str
-        When processed, result from checking the CVV/CVC value on the transaction.
-    gateway_approval_code : str
-        Transaction approval code from the payment gateway.
-    gateway_message : str
-        Transaction message from the payment gateway.
-    gateway_reference : str
-        Transaction reference number from the payment gateway.
-    gateway_response_code : str
-        For declined transactions (`success=false`), this field lists the gateway error code.
-    gateway_response_time : float
-        Time, in seconds, for gateway to process the transaction.
-    gateway_response_values : dict
-        The values in this field will vary from gateway to gateway.
-    id : str
-        Transaction ID
-    invoice : InvoiceMini
-    ip_address_country : str
-        IP address's country
-    ip_address_v4 : str
-        IP address provided when the billing information was collected:
-
-        - When the customer enters billing information into the Recurly.JS or Hosted Payment Pages, Recurly records the IP address.
-        - When the merchant enters billing information using the API, the merchant may provide an IP address.
-        - When the merchant enters billing information using the UI, no IP address is recorded.
-    origin : str
-        Describes how the transaction was triggered.
-    original_transaction_id : str
-        If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
-    payment_gateway : TransactionPaymentGateway
-    payment_method : PaymentMethod
-    refunded : bool
-        Indicates if part or all of this transaction was refunded.
-    status : str
-        The current transaction status. Note that the status may change, e.g. a `pending` transaction may become `declined` or `success` may later become `void`.
-    status_code : str
-        Status code
-    status_message : str
-        For declined (`success=false`) transactions, the message displayed to the merchant.
-    subscription_ids : :obj:`list` of :obj:`str`
-        If the transaction is charging or refunding for one or more subscriptions, these are their IDs.
-    success : bool
-        Did this transaction complete successfully?
-    type : str
-        - `authorization` – verifies billing information and places a hold on money in the customer's account.
-        - `capture` – captures funds held by an authorization and completes a purchase.
-        - `purchase` – combines the authorization and capture in one transaction.
-        - `refund` – returns all or a portion of the money collected in a previous transaction to the customer.
-        - `verify` – a $0 or $1 transaction used to verify billing information which is immediately voided.
-    uuid : str
-        The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
-    voided_at : datetime
-        Voided at
-    voided_by_invoice : InvoiceMini
-    """
-
-    schema = {
-        "account": "AccountMini",
-        "amount": float,
-        "avs_check": str,
-        "billing_address": "Address",
-        "collected_at": datetime,
-        "collection_method": str,
-        "created_at": datetime,
-        "currency": str,
-        "customer_message": str,
-        "customer_message_locale": str,
-        "cvv_check": str,
-        "gateway_approval_code": str,
-        "gateway_message": str,
-        "gateway_reference": str,
-        "gateway_response_code": str,
-        "gateway_response_time": float,
-        "gateway_response_values": dict,
-        "id": str,
-        "invoice": "InvoiceMini",
-        "ip_address_country": str,
-        "ip_address_v4": str,
-        "origin": str,
-        "original_transaction_id": str,
-        "payment_gateway": "TransactionPaymentGateway",
-        "payment_method": "PaymentMethod",
-        "refunded": bool,
-        "status": str,
-        "status_code": str,
-        "status_message": str,
-        "subscription_ids": list,
-        "success": bool,
-        "type": str,
-        "uuid": str,
-        "voided_at": datetime,
-        "voided_by_invoice": "InvoiceMini",
-    }
-
-
-class TransactionPaymentGateway(Resource):
-    """
-    Attributes
-    ----------
-    id : str
-    name : str
-    type : str
-    """
-
-    schema = {"id": str, "name": str, "type": str}
-
-
 class Invoice(Resource):
     """
     Attributes
     ----------
     account : AccountMini
-    address : InvoiceAddress
-    balance : float
-        The outstanding balance remaining on this invoice.
+    address : Address
     closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
@@ -905,6 +724,8 @@ class Invoice(Resource):
         This will default to the Customer Notes text specified on the Invoice Settings. Specify custom notes to add or override Customer Notes.
     discount : float
         Total discounts applied to this invoice.
+    due : float
+        The outstanding balance remaining on this invoice.
     due_at : datetime
         Date invoice is due. This is the date the net terms are reached.
     id : str
@@ -924,7 +745,6 @@ class Invoice(Resource):
         On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
-    shipping_address : ShippingAddress
     state : str
         Invoice state
     subscription_ids : :obj:`list` of :obj:`str`
@@ -952,8 +772,7 @@ class Invoice(Resource):
 
     schema = {
         "account": "AccountMini",
-        "address": "InvoiceAddress",
-        "balance": float,
+        "address": "Address",
         "closed_at": datetime,
         "collection_method": str,
         "created_at": datetime,
@@ -961,6 +780,7 @@ class Invoice(Resource):
         "currency": str,
         "customer_notes": str,
         "discount": float,
+        "due": float,
         "due_at": datetime,
         "id": str,
         "line_items": "LineItemList",
@@ -971,7 +791,6 @@ class Invoice(Resource):
         "po_number": str,
         "previous_invoice_id": str,
         "refundable_amount": float,
-        "shipping_address": "ShippingAddress",
         "state": str,
         "subscription_ids": list,
         "subtotal": float,
@@ -984,49 +803,6 @@ class Invoice(Resource):
         "updated_at": datetime,
         "vat_number": str,
         "vat_reverse_charge_notes": str,
-    }
-
-
-class InvoiceAddress(Resource):
-    """
-    Attributes
-    ----------
-    city : str
-        City
-    company : str
-        Company
-    country : str
-        Country, 2-letter ISO code.
-    first_name : str
-        First name
-    last_name : str
-        Last name
-    name_on_account : str
-        Name on account
-    phone : str
-        Phone number
-    postal_code : str
-        Zip or postal code.
-    region : str
-        State or province.
-    street1 : str
-        Street 1
-    street2 : str
-        Street 2
-    """
-
-    schema = {
-        "city": str,
-        "company": str,
-        "country": str,
-        "first_name": str,
-        "last_name": str,
-        "name_on_account": str,
-        "phone": str,
-        "postal_code": str,
-        "region": str,
-        "street1": str,
-        "street2": str,
     }
 
 
@@ -1096,7 +872,7 @@ class LineItem(Resource):
         Category to describe the role of a line item on a legacy invoice:
         - "charges" refers to charges being billed for on this invoice.
         - "credits" refers to refund or proration credits. This portion of the invoice can be considered a credit memo.
-        - "applied_credits" refers to previous credits applied to this invoice. See their original_line_item_id to determine where the credit first originated.
+        - "applied_credits" refers to previous credits applied to this invoice. See their `original_line_item_invoice_id` to determine where the credit first originated.
         - "carryforwards" can be ignored. They exist to consume any remaining credit balance. A new credit with the same amount will be created and placed back on the account.
     origin : str
         A credit created from an original charge will have the value of the charge's origin.
@@ -1130,10 +906,9 @@ class LineItem(Resource):
     tax : float
         The tax amount for the line item.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
-    tax_info : TaxInfo
     taxable : bool
         `true` if the line item is taxable, `false` if it is not.
     type : str
@@ -1181,13 +956,139 @@ class LineItem(Resource):
         "tax": float,
         "tax_code": str,
         "tax_exempt": bool,
-        "tax_info": "TaxInfo",
         "taxable": bool,
         "type": str,
         "unit_amount": float,
         "updated_at": datetime,
         "uuid": str,
     }
+
+
+class Transaction(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+    amount : float
+        Total transaction amount sent to the payment gateway.
+    avs_check : str
+        When processed, result from checking the overall AVS on the transaction.
+    billing_address : Address
+    collected_at : datetime
+        Collected at, or if not collected yet, the time the transaction was created.
+    collection_method : str
+        The method by which the payment was collected.
+    created_at : datetime
+        Created at
+    currency : str
+        3-letter ISO 4217 currency code.
+    customer_message : str
+        For declined (`success=false`) transactions, the message displayed to the customer.
+    customer_message_locale : str
+        Language code for the message
+    cvv_check : str
+        When processed, result from checking the CVV/CVC value on the transaction.
+    gateway_approval_code : str
+        Transaction approval code from the payment gateway.
+    gateway_message : str
+        Transaction message from the payment gateway.
+    gateway_reference : str
+        Transaction reference number from the payment gateway.
+    gateway_response_code : str
+        For declined transactions (`success=false`), this field lists the gateway error code.
+    gateway_response_time : float
+        Time, in seconds, for gateway to process the transaction.
+    gateway_response_values : dict
+        The values in this field will vary from gateway to gateway.
+    id : str
+        Transaction ID
+    invoice : InvoiceMini
+    ip_address_country : str
+        IP address's country
+    ip_address_v4 : str
+        IP address provided when the billing information was collected:
+
+        - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
+        - When the merchant enters billing information using the API, the merchant may provide an IP address.
+        - When the merchant enters billing information using the UI, no IP address is recorded.
+    origin : str
+        Describes how the transaction was triggered.
+    original_transaction_id : str
+        If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
+    payment_gateway : TransactionPaymentGateway
+    payment_method : PaymentMethod
+    refunded : bool
+        Indicates if part or all of this transaction was refunded.
+    status : str
+        The current transaction status. Note that the status may change, e.g. a `pending` transaction may become `declined` or `success` may later become `void`.
+    status_code : str
+        Status code
+    status_message : str
+        For declined (`success=false`) transactions, the message displayed to the merchant.
+    subscription_ids : :obj:`list` of :obj:`str`
+        If the transaction is charging or refunding for one or more subscriptions, these are their IDs.
+    success : bool
+        Did this transaction complete successfully?
+    type : str
+        - `authorization` – verifies billing information and places a hold on money in the customer's account.
+        - `capture` – captures funds held by an authorization and completes a purchase.
+        - `purchase` – combines the authorization and capture in one transaction.
+        - `refund` – returns all or a portion of the money collected in a previous transaction to the customer.
+        - `verify` – a $0 or $1 transaction used to verify billing information which is immediately voided.
+    uuid : str
+        The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    voided_at : datetime
+        Voided at
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "amount": float,
+        "avs_check": str,
+        "billing_address": "Address",
+        "collected_at": datetime,
+        "collection_method": str,
+        "created_at": datetime,
+        "currency": str,
+        "customer_message": str,
+        "customer_message_locale": str,
+        "cvv_check": str,
+        "gateway_approval_code": str,
+        "gateway_message": str,
+        "gateway_reference": str,
+        "gateway_response_code": str,
+        "gateway_response_time": float,
+        "gateway_response_values": dict,
+        "id": str,
+        "invoice": "InvoiceMini",
+        "ip_address_country": str,
+        "ip_address_v4": str,
+        "origin": str,
+        "original_transaction_id": str,
+        "payment_gateway": "TransactionPaymentGateway",
+        "payment_method": "PaymentMethod",
+        "refunded": bool,
+        "status": str,
+        "status_code": str,
+        "status_message": str,
+        "subscription_ids": list,
+        "success": bool,
+        "type": str,
+        "uuid": str,
+        "voided_at": datetime,
+    }
+
+
+class TransactionPaymentGateway(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+    name : str
+    type : str
+    """
+
+    schema = {"id": str, "name": str, "type": str}
 
 
 class InvoiceCollection(Resource):
@@ -1257,8 +1158,6 @@ class Subscription(Resource):
         Add-ons
     add_ons_total : float
         Total price of add-ons
-    auto_renew : bool
-        Whether the subscription renews at the end of its term.
     bank_account_authorized_at : datetime
         Recurring subscriptions paid with ACH will have this attribute set. This timestamp is used for alerting customers to reauthorize in 3 years in accordance with NACHA rules. If a subscription becomes inactive or the billing info is no longer a bank account, this timestamp is cleared.
     canceled_at : datetime
@@ -1275,11 +1174,6 @@ class Subscription(Resource):
         Current billing period ends at
     current_period_started_at : datetime
         Current billing period started at
-    current_term_ends_at : datetime
-        When the term ends. This is calculated by a plan's interval and `total_billing_cycles` in a term. Subscription changes with a `timeframe=renewal` will be applied on this date.
-    current_term_started_at : datetime
-        The start date of the term when the first billing period starts. The subscription term is the length of time that a customer will be committed to a subscription. A term can span multiple billing periods.
-    custom_fields : :obj:`list` of :obj:`CustomField`
     customer_notes : str
         Customer notes
     expiration_reason : str
@@ -1290,8 +1184,6 @@ class Subscription(Resource):
         Subscription ID
     net_terms : int
         Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
-    paused_at : datetime
-        Null unless subscription is paused or will pause at the end of the current billing period.
     pending_change : SubscriptionChange
     plan : PlanMini
     po_number : str
@@ -1299,20 +1191,14 @@ class Subscription(Resource):
     quantity : int
         Subscription quantity
     remaining_billing_cycles : int
-        The remaining billing cycles in the current term.
-    remaining_pause_cycles : int
-        Null unless subscription is paused or will pause at the end of the current billing period.
-    renewal_billing_cycles : int
-        If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
-    shipping : SubscriptionShipping
+        Remaining billing cycles
+    shipping_address : ShippingAddress
     state : str
         State
     subtotal : float
         Estimated total, before tax.
     terms_and_conditions : str
         Terms and conditions
-    total_billing_cycles : int
-        The number of cycles/billing periods in a term. When `remaining_billing_cycles=0`, if `auto_renew=true` the subscription will renew and a new term will begin, otherwise the subscription will expire.
     trial_ends_at : datetime
         Trial period ends at
     trial_started_at : datetime
@@ -1330,7 +1216,6 @@ class Subscription(Resource):
         "activated_at": datetime,
         "add_ons": ["SubscriptionAddOn"],
         "add_ons_total": float,
-        "auto_renew": bool,
         "bank_account_authorized_at": datetime,
         "canceled_at": datetime,
         "collection_method": str,
@@ -1339,65 +1224,26 @@ class Subscription(Resource):
         "currency": str,
         "current_period_ends_at": datetime,
         "current_period_started_at": datetime,
-        "current_term_ends_at": datetime,
-        "current_term_started_at": datetime,
-        "custom_fields": ["CustomField"],
         "customer_notes": str,
         "expiration_reason": str,
         "expires_at": datetime,
         "id": str,
         "net_terms": int,
-        "paused_at": datetime,
         "pending_change": "SubscriptionChange",
         "plan": "PlanMini",
         "po_number": str,
         "quantity": int,
         "remaining_billing_cycles": int,
-        "remaining_pause_cycles": int,
-        "renewal_billing_cycles": int,
-        "shipping": "SubscriptionShipping",
+        "shipping_address": "ShippingAddress",
         "state": str,
         "subtotal": float,
         "terms_and_conditions": str,
-        "total_billing_cycles": int,
         "trial_ends_at": datetime,
         "trial_started_at": datetime,
         "unit_amount": float,
         "updated_at": datetime,
         "uuid": str,
     }
-
-
-class SubscriptionShipping(Resource):
-    """
-    Attributes
-    ----------
-    address : ShippingAddress
-    amount : float
-        Subscription's shipping cost
-    method : ShippingMethodMini
-    """
-
-    schema = {
-        "address": "ShippingAddress",
-        "amount": float,
-        "method": "ShippingMethodMini",
-    }
-
-
-class ShippingMethodMini(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        The internal name used identify the shipping method.
-    id : str
-        Shipping Method ID
-    name : str
-        The name of the shipping method displayed to customers.
-    """
-
-    schema = {"code": str, "id": str, "name": str}
 
 
 class CouponRedemptionMini(Resource):
@@ -1473,7 +1319,6 @@ class SubscriptionChange(Resource):
     plan : PlanMini
     quantity : int
         Subscription quantity
-    shipping : SubscriptionShipping
     subscription_id : str
         The ID of the subscription that is going to be changed.
     unit_amount : float
@@ -1491,7 +1336,6 @@ class SubscriptionChange(Resource):
         "id": str,
         "plan": "PlanMini",
         "quantity": int,
-        "shipping": "SubscriptionShipping",
         "subscription_id": str,
         "unit_amount": float,
         "updated_at": datetime,
@@ -1579,60 +1423,17 @@ class UniqueCouponCode(Resource):
     }
 
 
-class CustomFieldDefinition(Resource):
-    """
-    Attributes
-    ----------
-    created_at : datetime
-        Created at
-    deleted_at : datetime
-        Definitions are initially soft deleted, and once all the values are removed from the accouts or subscriptions, will be hard deleted an no longer visible.
-    display_name : str
-        Used to label the field when viewing and editing the field in Recurly's admin UI.
-    id : str
-        Custom field definition ID
-    name : str
-        Used by the API to identify the field or reading and writing. The name can only be used once per Recurly object type.
-    related_type : str
-        Related Recurly object type
-    tooltip : str
-        Displayed as a tooltip when editing the field in the Recurly admin UI.
-    updated_at : datetime
-        Last updated at
-    user_access : str
-        The access control applied inside Recurly's admin UI:
-        - `api_only` - No one will be able to view or edit this field's data via the admin UI.
-        - `read_only` - Users with the Customers role will be able to view this field's data via the admin UI, but
-          editing will only be available via the API.
-        - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
-    """
-
-    schema = {
-        "created_at": datetime,
-        "deleted_at": datetime,
-        "display_name": str,
-        "id": str,
-        "name": str,
-        "related_type": str,
-        "tooltip": str,
-        "updated_at": datetime,
-        "user_access": str,
-    }
-
-
 class Plan(Resource):
     """
     Attributes
     ----------
     accounting_code : str
         Accounting code for invoice line items for the plan. If no value is provided, it defaults to plan's code.
-    auto_renew : bool
-        Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
     code : str
         Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
     created_at : datetime
         Created at
-    currencies : :obj:`list` of :obj:`PlanPricing`
+    currencies : :obj:`list` of :obj:`dict`
         Pricing
     deleted_at : datetime
         Deleted at
@@ -1653,7 +1454,7 @@ class Plan(Resource):
     state : str
         The current state of the plan.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
     tax_exempt : bool
         `true` exempts tax on the plan, `false` applies tax on the plan.
     total_billing_cycles : int
@@ -1668,10 +1469,9 @@ class Plan(Resource):
 
     schema = {
         "accounting_code": str,
-        "auto_renew": bool,
         "code": str,
         "created_at": datetime,
-        "currencies": ["PlanPricing"],
+        "currencies": list,
         "deleted_at": datetime,
         "description": str,
         "hosted_pages": "PlanHostedPages",
@@ -1688,21 +1488,6 @@ class Plan(Resource):
         "trial_unit": str,
         "updated_at": datetime,
     }
-
-
-class PlanPricing(Resource):
-    """
-    Attributes
-    ----------
-    currency : str
-        3-letter ISO 4217 currency code.
-    setup_fee : float
-        Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
-    unit_amount : float
-        Unit price
-    """
-
-    schema = {"currency": str, "setup_fee": float, "unit_amount": float}
 
 
 class PlanHostedPages(Resource):
@@ -1754,7 +1539,7 @@ class AddOn(Resource):
     state : str
         Add-ons can be either active or inactive.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature `P0000000` is `physical`, `D0000000` is `digital`, and an empty string is `unknown`.
     updated_at : datetime
         Last updated at
     """
@@ -1787,44 +1572,3 @@ class AddOnPricing(Resource):
     """
 
     schema = {"currency": str, "unit_amount": float}
-
-
-class ShippingMethod(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        The internal name used identify the shipping method.
-    created_at : datetime
-        Created at
-    deleted_at : datetime
-        Deleted at
-    id : str
-        Shipping Method ID
-    name : str
-        The name of the shipping method displayed to customers.
-    tax_code : str
-        Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
-        code values are specific to each tax system. If you are using Recurly’s
-        built-in taxes the values are:
-
-        - `FR` – Common Carrier FOB Destination
-        - `FR022000` – Common Carrier FOB Origin
-        - `FR020400` – Non Common Carrier FOB Destination
-        - `FR020500` – Non Common Carrier FOB Origin
-        - `FR010100` – Delivery by Company Vehicle Before Passage of Title
-        - `FR010200` – Delivery by Company Vehicle After Passage of Title
-        - `NT` – Non-Taxable
-    updated_at : datetime
-        Last updated at
-    """
-
-    schema = {
-        "code": str,
-        "created_at": datetime,
-        "deleted_at": datetime,
-        "id": str,
-        "name": str,
-        "tax_code": str,
-        "updated_at": datetime,
-    }
