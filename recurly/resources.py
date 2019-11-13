@@ -392,6 +392,8 @@ class TransactionError(Resource):
         Merchant message
     message : str
         Customer message
+    three_d_secure_action_token_id : str
+        Returned when 3-D Secure authentication is required for a transaction. Pass this value to Recurly.js so it can continue the challenge flow.
     transaction_id : str
         Transaction ID
     """
@@ -401,6 +403,7 @@ class TransactionError(Resource):
         "code": str,
         "merchant_advice": str,
         "message": str,
+        "three_d_secure_action_token_id": str,
         "transaction_id": str,
     }
 
@@ -798,7 +801,7 @@ class Transaction(Resource):
     ip_address_v4 : str
         IP address provided when the billing information was collected:
 
-        - When the customer enters billing information into the Recurly.JS or Hosted Payment Pages, Recurly records the IP address.
+        - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
         - When the merchant enters billing information using the API, the merchant may provide an IP address.
         - When the merchant enters billing information using the UI, no IP address is recorded.
     origin : str
