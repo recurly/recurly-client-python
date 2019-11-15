@@ -12,8 +12,6 @@ class Response:
         self.status = response.status
         http_body = response.read()
         self.body = None
-        if http_body and len(http_body) > 0:
-            self.body = json.loads(http_body.decode("utf-8"))
 
         try:
             self.__headers = response.headers
@@ -24,10 +22,13 @@ class Response:
                 int(self.__headers.get("X-RateLimit-Reset"))
             )
             self.date = self.__headers.get("Date")
+            self.content_type = self.__headers.get("Content-Type", "").split(";")[0]
             self.proxy_metadata = {
                 "server": self.__headers.get("Server"),
                 "cf-ray": self.__headers.get("CF-RAY"),
             }
+            if http_body and len(http_body) > 0:
+                self.body = http_body
         except:
             # Re-raise the exception in strict-mode
             if recurly.STRICT_MODE:

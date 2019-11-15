@@ -1,6 +1,7 @@
 from pydoc import locate
 import datetime
 import recurly
+import json
 from .response import Response
 
 # TODO - more resilient parsing
@@ -14,7 +15,31 @@ class Resource:
     locator = lambda class_name: locate("recurly.resources.%s" % class_name)
 
     @classmethod
-    def cast(cls, properties, class_name=None, response=None):
+    def cast_file(cls, response):
+        klass = cls.locator("BinaryFile")
+        resource = klass()
+        setattr(resource, "data", response.body)
+        return resource
+
+    @classmethod
+    def cast_error(cls, response):
+        json_body = json.loads(response.body.decode("utf-8"))
+
+        error_json = json_body["error"]
+        error_json["object"] = "error"
+        error = cls.cast_json(error_json, response=response)
+        error_type = error.type
+        name_parts = error_type.split("_")
+        class_name = "".join(x.title() for x in name_parts)
+        if not class_name.endswith("Error"):
+            class_name += "Error"
+        klass = locate("recurly.errors.%s" % class_name)
+        return klass(
+            error.message + ". Recurly Request Id: " + response.request_id, error
+        )
+
+    @classmethod
+    def cast_json(cls, properties, class_name=None, response=None):
         """Casts a dict of properties into a Recurly Resource"""
 
         if class_name is None and "object" in properties:
@@ -24,7 +49,7 @@ class Resource:
                 and "data" in properties
                 and "has_more" in properties
             ):
-                properties["data"] = [Resource.cast(i) for i in properties["data"]]
+                properties["data"] = [Resource.cast_json(i) for i in properties["data"]]
                 return Page(properties)
 
             # If it's not a Page, we need to derive the class name
@@ -72,7 +97,7 @@ class Resource:
                 # If the schema type a string, it's a reference
                 # to another resource
                 elif isinstance(attr_type, str) and isinstance(v, dict):
-                    attr = Resource.cast(v, class_name=attr_type)
+                    attr = Resource.cast_json(v, class_name=attr_type)
 
                 # If the schema type is a list of strings, it's a reference
                 # to a list of resources
@@ -81,7 +106,7 @@ class Resource:
                     and isinstance(attr_type[0], str)
                     and isinstance(v, list)
                 ):
-                    attr = [Resource.cast(r, class_name=attr_type[0]) for r in v]
+                    attr = [Resource.cast_json(r, class_name=attr_type[0]) for r in v]
 
             # We want to explode in strict mode because
             # the schema doesn't know about this attribute. In production
@@ -95,6 +120,9 @@ class Resource:
                 setattr(resource, k, attr)
 
         if response:
+            # Maintain JSON parsed body for version < 4
+            response.body = properties
+            # TODO: Remove this (^^) for version 4
             resource.__response = response
 
         return resource

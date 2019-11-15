@@ -13,6 +13,8 @@ import urllib.parse
 PORT = 443
 HOST = "v3.recurly.com"
 
+BINARY_TYPES = ["application/pdf"]
+
 
 class BaseClient:
     def __init__(self, api_key):
@@ -40,29 +42,20 @@ class BaseClient:
 
             if resp.status >= 400:
                 if resp.body:
-                    resp_json = resp.body["error"]
-                    resp_json["object"] = "error"
-                    error = Resource.cast(resp_json, response=resp)
-                    typ = error.type
-                    name_parts = typ.split("_")
-                    class_name = "".join(x.title() for x in name_parts)
-                    # gets around inconsistencies in error naming
-                    if not class_name.endswith("Error"):
-                        class_name += "Error"
-                    klass = locate("recurly.errors.%s" % class_name)
-                    raise klass(
-                        error.message + ". Recurly Request Id: " + resp.request_id,
-                        error,
-                    )
+                    raise Resource.cast_error(resp)
                 else:
                     raise ApiError(
                         "Unknown Error. Recurly Request Id: " + resp.request_id, None
                     )
 
             if resp.body:
-                return Resource.cast(resp.body, response=resp)
+                if resp.content_type in BINARY_TYPES:
+                    return Resource.cast_file(resp)
+                else:
+                    json_body = json.loads(resp.body.decode("utf-8"))
+                    return Resource.cast_json(json_body, response=resp)
             else:
-                return Resource.cast({}, Empty, resp)
+                return Resource.cast_json({}, Empty, resp)
 
         except socket.error as e:
             raise NetworkError(e)
