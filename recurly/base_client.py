@@ -13,9 +13,8 @@ import urllib.parse
 PORT = 443
 HOST = "v3.recurly.com"
 
-BINARY_TYPES = [
-    "application/pdf"
-]
+BINARY_TYPES = ["application/pdf"]
+
 
 class BaseClient:
     def __init__(self, api_key):

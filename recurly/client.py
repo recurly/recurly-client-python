@@ -1216,6 +1216,8 @@ class Client(BaseClient):
         end_time : datetime
             Filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        related_type : str
+            Filter by related type.
 
         Returns
         -------
@@ -1243,6 +1245,138 @@ class Client(BaseClient):
             "/custom_field_definitions/%s", custom_field_definition_id
         )
         return self._make_request("GET", path, None, None)
+
+    def list_items(self, **kwargs):
+        """List a site's items
+
+        Parameters
+        ----------
+
+        Keyword Arguments
+        =================
+        ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        limit : int
+            Limit number of records 1-200.
+        order : str
+            Sort order.
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : datetime
+            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : datetime
+            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        state : str
+            Filter by state.
+
+        Returns
+        -------
+        Pager
+            A list of the site's items.
+        """
+        path = self._interpolate_path("/items")
+        return Pager(self, path, kwargs)
+
+    def create_item(self, body):
+        """Create a new item
+
+        Parameters
+        ----------
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Item
+            A new item.
+        """
+        path = self._interpolate_path("/items")
+        return self._make_request("POST", path, body, None)
+
+    def get_item(self, item_id):
+        """Fetch an item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+
+
+        Returns
+        -------
+        Item
+            An item.
+        """
+        path = self._interpolate_path("/items/%s", item_id)
+        return self._make_request("GET", path, None, None)
+
+    def update_item(self, item_id, body):
+        """Update an active item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Item
+            The updated item.
+        """
+        path = self._interpolate_path("/items/%s", item_id)
+        return self._make_request("PUT", path, body, None)
+
+    def deactivate_item(self, item_id):
+        """Deactivate an item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+
+
+        Returns
+        -------
+        Item
+            An item.
+        """
+        path = self._interpolate_path("/items/%s", item_id)
+        return self._make_request("DELETE", path, None, None)
+
+    def reactivate_item(self, item_id):
+        """Reactivate an inactive item
+
+        Parameters
+        ----------
+        item_id : str
+            Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+
+
+        Returns
+        -------
+        Item
+            An item.
+        """
+        path = self._interpolate_path("/items/%s/reactivate", item_id)
+        return self._make_request("PUT", path, None, None)
 
     def list_invoices(self, **kwargs):
         """List a site's invoices
@@ -1328,6 +1462,23 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/invoices/%s", invoice_id)
         return self._make_request("PUT", path, body, None)
+
+    def get_invoice_pdf(self, invoice_id):
+        """Fetch an invoice as a PDF
+
+        Parameters
+        ----------
+        invoice_id : str
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+
+        Returns
+        -------
+        BinaryFile
+            An invoice as a PDF.
+        """
+        path = self._interpolate_path("/invoices/%s.pdf", invoice_id)
+        return self._make_request("GET", path, None, None)
 
     def collect_invoice(self, invoice_id, **kwargs):
         """Collect a pending or past due, automatic invoice
