@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.22'
+API_VERSION = '2.24'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -668,6 +668,27 @@ class TaxDetail(Resource):
         'tax_in_cents',
     )
 
+class Item(Resource):
+
+    """An item for a customer to apply to their account."""
+    
+    member_path = 'items/%s'
+    collection_path = 'items'
+    nodename = 'item'
+
+    attributes = (
+        'item_code',
+        'name',
+        'description',
+        'external_sku',
+        'accounting_code',
+        'revenue_schedule_type',
+        'state',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    )
+
 class Adjustment(Resource):
 
     """A charge or credit applied (or to be applied) to an account's invoice."""
@@ -680,6 +701,7 @@ class Adjustment(Resource):
         'description',
         'accounting_code',
         'product_code',
+        'item_code',
         'quantity',
         'unit_amount_in_cents',
         'discount_in_cents',
