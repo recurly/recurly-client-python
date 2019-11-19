@@ -1054,6 +1054,9 @@ class TestResources(RecurlyTest):
             item.description = 'A mocked description'
             with self.mock_request('item/updated.xml'):
                 item.save()
+
+            with self.mock_request('item/reactivated.xml'):
+                item.reactivate()
         finally:
             with self.mock_request('item/deleted.xml'):
                 item.delete()
