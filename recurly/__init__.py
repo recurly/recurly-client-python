@@ -688,6 +688,12 @@ class Item(Resource):
         'updated_at',
         'deleted_at',
     )
+    # Method can be removed when the action starts 
+    # to get rendered on the server.
+    def reactivate(self):
+        """Reactivate a disabled item."""
+        url = urljoin(self._url, '/reactivate')
+        self.put(url)
 
 class Adjustment(Resource):
 
