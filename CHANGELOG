@@ -2,6 +2,8 @@
 
 ## Version 2.9.12 - November 21, 2019 ##
 
+This version brings us up to API version 2.24, but has no breaking changes
+
 - Add Item class [PR] (https://github.com/recurly/recurly-client-python/pull/331)
 - Add reactivation functionality to Item class [PR] (https://github.com/recurly/recurly-client-python/pull/335)
 
