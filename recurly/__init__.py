@@ -436,6 +436,7 @@ class ShippingAddress(Resource):
         'nickname',
         'phone',
         'state',
+        'vat_number',
         'zip',
     )
 
