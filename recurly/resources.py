@@ -213,6 +213,8 @@ class ShippingAddress(Resource):
         Shipping Address ID
     last_name : str
     nickname : str
+    object : str
+        Object type
     phone : str
     postal_code : str
         Zip or postal code.
@@ -236,6 +238,7 @@ class ShippingAddress(Resource):
         "id": str,
         "last_name": str,
         "nickname": str,
+        "object": str,
         "phone": str,
         "postal_code": str,
         "region": str,
