@@ -4,6 +4,7 @@ import datetime
 
 class MyResource(Resource):
     schema = {
+        "object": str,
         "my_string": str,
         "my_int": int,
         "my_float": float,
@@ -15,11 +16,11 @@ class MyResource(Resource):
 
 
 class MySubResource(Resource):
-    schema = {"my_string": str}
+    schema = {"object": str, "my_string": str}
 
 
 class Error(Resource):
-    schema = {"message": str, "params": list, "type": str}
+    schema = {"object": str, "message": str, "params": list, "type": str}
 
 
 class Empty(Resource):

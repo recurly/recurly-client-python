@@ -22,6 +22,8 @@ class Site(Resource):
         Site ID
     mode : str
         Mode
+    object : str
+        Object type
     public_api_key : str
         This value is used to configure RecurlyJS to submit tokenized billing information.
     settings : Settings
@@ -37,6 +39,7 @@ class Site(Resource):
         "features": list,
         "id": str,
         "mode": str,
+        "object": str,
         "public_api_key": str,
         "settings": "Settings",
         "subdomain": str,
@@ -144,6 +147,8 @@ class Account(Resource):
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
     last_name : str
+    object : str
+        Object type
     parent_account_id : str
         The UUID of the parent account associated with this account.
     preferred_locale : str
@@ -178,6 +183,7 @@ class Account(Resource):
         "hosted_login_token": str,
         "id": str,
         "last_name": str,
+        "object": str,
         "parent_account_id": str,
         "preferred_locale": str,
         "shipping_addresses": ["ShippingAddress"],
@@ -254,6 +260,8 @@ class BillingInfo(Resource):
         Most recent fraud result.
     id : str
     last_name : str
+    object : str
+        Object type
     payment_method : PaymentMethod
     updated_at : datetime
         When the billing information was last changed.
@@ -272,6 +280,7 @@ class BillingInfo(Resource):
         "fraud": "FraudInfo",
         "id": str,
         "last_name": str,
+        "object": str,
         "payment_method": "PaymentMethod",
         "updated_at": datetime,
         "updated_by": "BillingInfoUpdatedBy",
@@ -298,6 +307,7 @@ class PaymentMethod(Resource):
         Credit card number's first six digits.
     last_four : str
         Credit card number's last four digits. Will refer to bank account if payment method is ACH.
+    object : str
     routing_number : str
         The bank account's routing number. Only present for ACH payment methods.
     routing_number_bank : str
@@ -312,6 +322,7 @@ class PaymentMethod(Resource):
         "exp_year": int,
         "first_six": str,
         "last_four": str,
+        "object": str,
         "routing_number": str,
         "routing_number_bank": str,
     }
@@ -392,6 +403,8 @@ class TransactionError(Resource):
         Merchant message
     message : str
         Customer message
+    object : str
+        Object type
     three_d_secure_action_token_id : str
         Returned when 3-D Secure authentication is required for a transaction. Pass this value to Recurly.js so it can continue the challenge flow.
     transaction_id : str
@@ -403,6 +416,7 @@ class TransactionError(Resource):
         "code": str,
         "merchant_advice": str,
         "message": str,
+        "object": str,
         "three_d_secure_action_token_id": str,
         "transaction_id": str,
     }
@@ -421,6 +435,8 @@ class AccountAcquisition(Resource):
     created_at : datetime
         When the account acquisition data was created.
     id : str
+    object : str
+        Object type
     subchannel : str
         An arbitrary subchannel string representing a distinction/subcategory within a broader channel.
     updated_at : datetime
@@ -434,6 +450,7 @@ class AccountAcquisition(Resource):
         "cost": "AccountAcquisitionCost",
         "created_at": datetime,
         "id": str,
+        "object": str,
         "subchannel": str,
         "updated_at": datetime,
     }
@@ -465,6 +482,8 @@ class AccountMini(Resource):
     first_name : str
     id : str
     last_name : str
+    object : str
+        Object type
     parent_account_id : str
     """
 
@@ -476,6 +495,7 @@ class AccountMini(Resource):
         "first_name": str,
         "id": str,
         "last_name": str,
+        "object": str,
         "parent_account_id": str,
     }
 
@@ -486,12 +506,15 @@ class AccountBalance(Resource):
     ----------
     account : AccountMini
     balances : :obj:`list` of :obj:`AccountBalanceAmount`
+    object : str
+        Object type
     past_due : bool
     """
 
     schema = {
         "account": "AccountMini",
         "balances": ["AccountBalanceAmount"],
+        "object": str,
         "past_due": bool,
     }
 
@@ -524,6 +547,8 @@ class CouponRedemption(Resource):
         The amount that was discounted upon the application of the coupon, formatted with the currency.
     id : str
         Coupon Redemption ID
+    object : str
+        Will always be `coupon`.
     removed_at : datetime
         The date and time the redemption was removed from the account (un-redeemed).
     state : str
@@ -539,6 +564,7 @@ class CouponRedemption(Resource):
         "currency": str,
         "discounted": float,
         "id": str,
+        "object": str,
         "removed_at": datetime,
         "state": str,
         "updated_at": datetime,
@@ -581,6 +607,8 @@ class Coupon(Resource):
         Redemptions per account is the number of times a specific account can redeem the coupon. Set redemptions per account to `1` if you want to keep customers from gaming the system and getting more than one discount from the coupon campaign.
     name : str
         The internal name for the coupon.
+    object : str
+        Object type
     plans : :obj:`list` of :obj:`PlanMini`
         A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
     plans_names : :obj:`list` of :obj:`str`
@@ -620,6 +648,7 @@ class Coupon(Resource):
         "max_redemptions": int,
         "max_redemptions_per_account": int,
         "name": str,
+        "object": str,
         "plans": ["PlanMini"],
         "plans_names": list,
         "redeem_by": datetime,
@@ -643,9 +672,11 @@ class PlanMini(Resource):
         Plan ID
     name : str
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+    object : str
+        Object type
     """
 
-    schema = {"code": str, "id": str, "name": str}
+    schema = {"code": str, "id": str, "name": str, "object": str}
 
 
 class CouponDiscount(Resource):
@@ -711,6 +742,8 @@ class CreditPayment(Resource):
         3-letter ISO 4217 currency code.
     id : str
         Credit Payment ID
+    object : str
+        Object type
     original_credit_payment_id : str
         For credit payments with action `refund`, this is the credit payment that was refunded.
     original_invoice : InvoiceMini
@@ -731,6 +764,7 @@ class CreditPayment(Resource):
         "created_at": datetime,
         "currency": str,
         "id": str,
+        "object": str,
         "original_credit_payment_id": str,
         "original_invoice": "InvoiceMini",
         "refund_transaction": "Transaction",
@@ -748,13 +782,15 @@ class InvoiceMini(Resource):
         Invoice ID
     number : str
         Invoice number
+    object : str
+        Object type
     state : str
         Invoice state
     type : str
         Invoice type
     """
 
-    schema = {"id": str, "number": str, "state": str, "type": str}
+    schema = {"id": str, "number": str, "object": str, "state": str, "type": str}
 
 
 class Transaction(Resource):
@@ -804,6 +840,8 @@ class Transaction(Resource):
         - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
         - When the merchant enters billing information using the API, the merchant may provide an IP address.
         - When the merchant enters billing information using the UI, no IP address is recorded.
+    object : str
+        Object type
     origin : str
         Describes how the transaction was triggered.
     original_transaction_id : str
@@ -857,6 +895,7 @@ class Transaction(Resource):
         "invoice": "InvoiceMini",
         "ip_address_country": str,
         "ip_address_v4": str,
+        "object": str,
         "origin": str,
         "original_transaction_id": str,
         "payment_gateway": "TransactionPaymentGateway",
@@ -880,10 +919,12 @@ class TransactionPaymentGateway(Resource):
     ----------
     id : str
     name : str
+    object : str
+        Object type
     type : str
     """
 
-    schema = {"id": str, "name": str, "type": str}
+    schema = {"id": str, "name": str, "object": str, "type": str}
 
 
 class Invoice(Resource):
@@ -917,6 +958,8 @@ class Invoice(Resource):
         Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     number : str
         If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
+    object : str
+        Object type
     origin : str
         The event that created the invoice.
     paid : float
@@ -969,6 +1012,7 @@ class Invoice(Resource):
         "line_items": "LineItemList",
         "net_terms": int,
         "number": str,
+        "object": str,
         "origin": str,
         "paid": float,
         "po_number": str,
@@ -1057,9 +1101,11 @@ class LineItemList(Resource):
         Indicates there are more results on subsequent pages.
     next : str
         Path to subsequent page of results.
+    object : str
+        Will always be List.
     """
 
-    schema = {"data": ["LineItem"], "has_more": bool, "next": str}
+    schema = {"data": ["LineItem"], "has_more": bool, "next": str, "object": str}
 
 
 class LineItem(Resource):
@@ -1105,6 +1151,8 @@ class LineItem(Resource):
         - "credits" refers to refund or proration credits. This portion of the invoice can be considered a credit memo.
         - "applied_credits" refers to previous credits applied to this invoice. See their original_line_item_id to determine where the credit first originated.
         - "carryforwards" can be ignored. They exist to consume any remaining credit balance. A new credit with the same amount will be created and placed back on the account.
+    object : str
+        Object type
     origin : str
         A credit created from an original charge will have the value of the charge's origin.
     original_line_item_invoice_id : str
@@ -1174,6 +1222,7 @@ class LineItem(Resource):
         "item_code": str,
         "item_id": str,
         "legacy_category": str,
+        "object": str,
         "origin": str,
         "original_line_item_invoice_id": str,
         "plan_code": str,
@@ -1209,9 +1258,15 @@ class InvoiceCollection(Resource):
     charge_invoice : Invoice
     credit_invoices : :obj:`list` of :obj:`Invoice`
         Credit invoices
+    object : str
+        Object type
     """
 
-    schema = {"charge_invoice": "Invoice", "credit_invoices": ["Invoice"]}
+    schema = {
+        "charge_invoice": "Invoice",
+        "credit_invoices": ["Invoice"],
+        "object": str,
+    }
 
 
 class AccountNote(Resource):
@@ -1222,6 +1277,8 @@ class AccountNote(Resource):
     created_at : datetime
     id : str
     message : str
+    object : str
+        Object type
     user : User
     """
 
@@ -1230,6 +1287,7 @@ class AccountNote(Resource):
         "created_at": datetime,
         "id": str,
         "message": str,
+        "object": str,
         "user": "User",
     }
 
@@ -1244,6 +1302,8 @@ class User(Resource):
     first_name : str
     id : str
     last_name : str
+    object : str
+        Object type
     time_zone : str
     """
 
@@ -1254,6 +1314,7 @@ class User(Resource):
         "first_name": str,
         "id": str,
         "last_name": str,
+        "object": str,
         "time_zone": str,
     }
 
@@ -1302,6 +1363,8 @@ class Subscription(Resource):
         Subscription ID
     net_terms : int
         Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
+    object : str
+        Object type
     paused_at : datetime
         Null unless subscription is paused or will pause at the end of the current billing period.
     pending_change : SubscriptionChange
@@ -1359,6 +1422,7 @@ class Subscription(Resource):
         "expires_at": datetime,
         "id": str,
         "net_terms": int,
+        "object": str,
         "paused_at": datetime,
         "pending_change": "SubscriptionChange",
         "plan": "PlanMini",
@@ -1388,12 +1452,15 @@ class SubscriptionShipping(Resource):
     amount : float
         Subscription's shipping cost
     method : ShippingMethodMini
+    object : str
+        Object type
     """
 
     schema = {
         "address": "ShippingAddress",
         "amount": float,
         "method": "ShippingMethodMini",
+        "object": str,
     }
 
 
@@ -1407,9 +1474,11 @@ class ShippingMethodMini(Resource):
         Shipping Method ID
     name : str
         The name of the shipping method displayed to customers.
+    object : str
+        Object type
     """
 
-    schema = {"code": str, "id": str, "name": str}
+    schema = {"code": str, "id": str, "name": str, "object": str}
 
 
 class CouponRedemptionMini(Resource):
@@ -1423,6 +1492,8 @@ class CouponRedemptionMini(Resource):
         The amount that was discounted upon the application of the coupon, formatted with the currency.
     id : str
         Coupon Redemption ID
+    object : str
+        Will always be `coupon`.
     state : str
         Invoice state
     """
@@ -1432,6 +1503,7 @@ class CouponRedemptionMini(Resource):
         "created_at": datetime,
         "discounted": float,
         "id": str,
+        "object": str,
         "state": str,
     }
 
@@ -1451,6 +1523,8 @@ class CouponMini(Resource):
         Coupon ID
     name : str
         The internal name for the coupon.
+    object : str
+        Object type
     state : str
         Indicates if the coupon is redeemable, and if it is not, why.
     """
@@ -1462,6 +1536,7 @@ class CouponMini(Resource):
         "expired_at": datetime,
         "id": str,
         "name": str,
+        "object": str,
         "state": str,
     }
 
@@ -1482,6 +1557,8 @@ class SubscriptionChange(Resource):
         Deleted at
     id : str
         The ID of the Subscription Change.
+    object : str
+        Object type
     plan : PlanMini
     quantity : int
         Subscription quantity
@@ -1501,6 +1578,7 @@ class SubscriptionChange(Resource):
         "created_at": datetime,
         "deleted_at": datetime,
         "id": str,
+        "object": str,
         "plan": "PlanMini",
         "quantity": int,
         "shipping": "SubscriptionShipping",
@@ -1521,6 +1599,8 @@ class SubscriptionAddOn(Resource):
         Expired at
     id : str
         Subscription Add-on ID
+    object : str
+        Object type
     quantity : int
         Add-on quantity
     subscription_id : str
@@ -1536,6 +1616,7 @@ class SubscriptionAddOn(Resource):
         "created_at": datetime,
         "expired_at": datetime,
         "id": str,
+        "object": str,
         "quantity": int,
         "subscription_id": str,
         "unit_amount": float,
@@ -1555,9 +1636,17 @@ class AddOnMini(Resource):
         Add-on ID
     name : str
         Describes your add-on and will appear in subscribers' invoices.
+    object : str
+        Object type
     """
 
-    schema = {"accounting_code": str, "code": str, "id": str, "name": str}
+    schema = {
+        "accounting_code": str,
+        "code": str,
+        "id": str,
+        "name": str,
+        "object": str,
+    }
 
 
 class UniqueCouponCode(Resource):
@@ -1572,6 +1661,8 @@ class UniqueCouponCode(Resource):
         The date and time the coupon was expired early or reached its `max_redemptions`.
     id : str
         Unique Coupon Code ID
+    object : str
+        Object type
     redeemed_at : datetime
         The date and time the unique coupon code was redeemed.
     state : str
@@ -1585,6 +1676,7 @@ class UniqueCouponCode(Resource):
         "created_at": datetime,
         "expired_at": datetime,
         "id": str,
+        "object": str,
         "redeemed_at": datetime,
         "state": str,
         "updated_at": datetime,
@@ -1605,6 +1697,8 @@ class CustomFieldDefinition(Resource):
         Custom field definition ID
     name : str
         Used by the API to identify the field or reading and writing. The name can only be used once per Recurly object type.
+    object : str
+        Object type
     related_type : str
         Related Recurly object type
     tooltip : str
@@ -1625,6 +1719,7 @@ class CustomFieldDefinition(Resource):
         "display_name": str,
         "id": str,
         "name": str,
+        "object": str,
         "related_type": str,
         "tooltip": str,
         "updated_at": datetime,
@@ -1655,6 +1750,8 @@ class Item(Resource):
         Item ID
     name : str
         This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    object : str
+        Object type
     revenue_schedule_type : str
         Revenue schedule type
     state : str
@@ -1678,6 +1775,7 @@ class Item(Resource):
         "external_sku": str,
         "id": str,
         "name": str,
+        "object": str,
         "revenue_schedule_type": str,
         "state": str,
         "tax_code": str,
@@ -1737,6 +1835,8 @@ class Plan(Resource):
         Unit for the plan's billing interval.
     name : str
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+    object : str
+        Object type
     setup_fee_accounting_code : str
         Accounting code for invoice line items for the plan's setup fee. If no value is provided, it defaults to plan's accounting code.
     state : str
@@ -1768,6 +1868,7 @@ class Plan(Resource):
         "interval_length": int,
         "interval_unit": str,
         "name": str,
+        "object": str,
         "setup_fee_accounting_code": str,
         "state": str,
         "tax_code": str,
@@ -1838,6 +1939,8 @@ class AddOn(Resource):
         Add-on ID
     name : str
         Describes your add-on and will appear in subscribers' invoices.
+    object : str
+        Object type
     plan_id : str
         Plan ID
     state : str
@@ -1858,6 +1961,7 @@ class AddOn(Resource):
         "display_quantity": bool,
         "id": str,
         "name": str,
+        "object": str,
         "plan_id": str,
         "state": str,
         "tax_code": str,
@@ -1892,6 +1996,8 @@ class ShippingMethod(Resource):
         Shipping Method ID
     name : str
         The name of the shipping method displayed to customers.
+    object : str
+        Object type
     tax_code : str
         Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
         code values are specific to each tax system. If you are using Recurly’s
@@ -1914,6 +2020,7 @@ class ShippingMethod(Resource):
         "deleted_at": datetime,
         "id": str,
         "name": str,
+        "object": str,
         "tax_code": str,
         "updated_at": datetime,
     }
