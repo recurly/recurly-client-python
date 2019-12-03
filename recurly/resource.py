@@ -74,10 +74,6 @@ class Resource:
 
         resource = klass()
         for k, v in properties.items():
-            # Skip "object" attributes
-            if k == "object":
-                continue
-
             attr = None
             attr_type = klass.schema.get(k)
             if attr_type:
