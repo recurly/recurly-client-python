@@ -1,10 +1,12 @@
-PUT https://api.recurly.com/v2/items/itemmock/reactivate HTTP/1.1
+PUT https://api.recurly.com/v2/items/itemmock HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
-Content-Length: 0
+Content-Type: application/xml; charset=utf-8
 
+
+<item />
 
 HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
@@ -24,6 +26,7 @@ Content-Type: application/xml; charset=utf-8
         <value>blue</value>
     </custom_field>
   </custom_fields>
+  <a name="reactivate" href="https://api.recurly.com/v2/items/itemmock/reactivate" method="put"/> 
   <created_at type="datetime">2019-09-23T21:25:45Z</created_at>
   <updated_at type="datetime">2019-09-23T21:25:45Z</updated_at>
   <deleted_at nil="nil"/>
