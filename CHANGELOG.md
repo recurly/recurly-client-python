@@ -1,15 +1,20 @@
 ## Unreleased
 
+## Version 2.9.13 - December 18, 2019 ##
+
+- Add `vat_number` to ShippingAddress resource [PR](https://github.com/recurly/recurly-client-python/pull/337)
+- Remove reactivate function from Item class [PR](https://github.com/recurly/recurly-client-python/pull/340)
+
 ## Version 2.9.12 - November 21, 2019 ##
 
 This version brings us up to API version 2.24, but has no breaking changes
 
-- Add Item class [PR] (https://github.com/recurly/recurly-client-python/pull/331)
-- Add reactivation functionality to Item class [PR] (https://github.com/recurly/recurly-client-python/pull/335)
+- Add Item class [PR](https://github.com/recurly/recurly-client-python/pull/331)
+- Add reactivation functionality to Item class [PR](https://github.com/recurly/recurly-client-python/pull/335)
 
 ## Version 2.9.11 - October 22, 2019 ##
 
-- Add shipping address to purchase object [PR] (https://github.com/recurly/recurly-client-python/pull/327)
+- Add shipping address to purchase object [PR](https://github.com/recurly/recurly-client-python/pull/327)
 
 ## Version 2.9.10 – September 13th, 2019 ##
 
