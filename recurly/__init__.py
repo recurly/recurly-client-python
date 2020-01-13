@@ -1035,6 +1035,16 @@ class Purchase(Resource):
         """
         return self.__invoice(self.collection_path + '/authorize')
 
+    def capture(self, transaction_uuid):
+        """
+        Allows the merchant to initiate a capture transaction tied to the original authorization.
+        transaction_uuid: The uuid for the transaction representing the authorization. Can typically be found at invoice_collection.charge_invoice.transactions[0].uuid.
+
+        Returns:
+            InvoiceCollection: The captured invoice collection
+        """
+        return self.__request_invoice(self.collection_path + '/transaction-uuid-' + transaction_uuid + '/capture')
+
     def pending(self):
         """
         Use for Adyen HPP transaction requests. Runs validations
@@ -1044,6 +1054,15 @@ class Purchase(Resource):
             InvoiceCollection: The pending collection of invoices
         """
         return self.__invoice(self.collection_path + '/pending')
+
+    def cancel(self, transaction_uuid):
+        """
+        Allows the merchant to cancel an authorization.
+
+        Returns:
+            InvoiceCollection: The canceled invoice collection
+        """
+        return self.__request_invoice(self.collection_path + '/transaction-uuid-' + transaction_uuid + '/cancel')
 
     def __invoice(self, url):
         # We must null out currency in subscriptions and adjustments
@@ -1061,8 +1080,11 @@ class Purchase(Resource):
         except AttributeError:
             pass
 
+        return self.__request_invoice(url, self)
+
+    def __request_invoice(self, url, body=None):
         url = urljoin(recurly.base_uri(), url)
-        response = self.http_request(url, 'POST', self)
+        response = self.http_request(url, 'POST', body)
         if response.status not in (200, 201):
             self.raise_http_error(response)
         response_xml = response.read()

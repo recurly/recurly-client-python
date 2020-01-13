@@ -119,6 +119,14 @@ class TestResources(RecurlyTest):
             collection = purchase.authorize()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
+        with self.mock_request('purchase/captured.xml'):
+            captured_collection = purchase.capture('40625fdb0d71f87624a285476ba7d73d')
+            self.assertIsInstance(captured_collection, InvoiceCollection)
+            self.assertEquals(captured_collection.charge_invoice.state, 'paid')
+        with self.mock_request('purchase/cancelled.xml'):
+            cancelled_collection = purchase.cancel('40625fdb0d71f87624a285476ba7d73d')
+            self.assertIsInstance(cancelled_collection, InvoiceCollection)
+            self.assertEquals(cancelled_collection.charge_invoice.state, 'failed')
         with self.mock_request('purchase/pending.xml'):
             purchase.account.email = 'benjamin.dumonde@example.com'
             purchase.account.billing_info.external_hpp_type = 'adyen'
