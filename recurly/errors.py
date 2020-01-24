@@ -68,3 +68,7 @@ class ValidationError(recurly.ApiError):
 
 class MissingFeatureError(recurly.ApiError):
     pass
+
+
+class RateLimitedError(recurly.ApiError):
+    pass
