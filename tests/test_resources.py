@@ -885,6 +885,14 @@ class TestResources(RecurlyTest):
             refund_invoice = invoice.refund(line_items, options)
         self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
 
+    def test_invoice_collect(self):
+        with self.mock_request('invoice/show-invoice.xml'):
+            invoice = Invoice.get("6019")      
+
+        with self.mock_request('invoice/collect-invoice.xml'):
+            collection = invoice.force_collect()
+            self.assertIsInstance(collection, InvoiceCollection)
+
     def test_invoice_with_optionals(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):
