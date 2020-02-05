@@ -1,0 +1,43 @@
+GET https://api.recurly.com/v2/accounts/chargemock/adjustments HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+X-Records: 1
+
+<adjustments type="array">
+  <adjustment type="charge">
+    <item_code>cardigan_bushwick</item_code>
+    <external_sku>tester-sku</external_sku>
+    <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+    <description>test charge</description>
+    <account_code>chargemock</account_code>
+    <tax_in_cents type="integer">5000</tax_in_cents>
+    <tax_type>usst</tax_type>
+    <tax_region>CA</tax_region>
+    <tax_rate type="float">0.0875</tax_rate>
+    <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+    <currency>USD</currency>
+    <tax_details type="array">
+      <tax_detail>
+        <name>california</name>
+        <type>state</type>
+        <tax_rate type="float">0.065</tax_rate>
+        <tax_in_cents type="integer">3000</tax_in_cents>
+      </tax_detail>
+      <tax_detail>
+        <name>san francisco</name>
+        <type>county</type>
+        <tax_rate type="float">0.02</tax_rate>
+        <tax_in_cents type="integer">2000</tax_in_cents>
+      </tax_detail>
+    </tax_details>
+    <start_date type="datetime">2009-11-03T23:27:46Z</start_date>
+    <end_date nil="nil" type="datetime"></end_date>
+    <created_at type="datetime">2009-11-03T23:27:46Z</created_at>
+  </adjustment>
+</adjustments>
