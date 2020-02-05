@@ -602,6 +602,13 @@ class TestResources(RecurlyTest):
             self.assertEqual(county.tax_rate, 0.02)
             self.assertEqual(county.tax_in_cents, 2000)
 
+            with self.mock_request('adjustment/account-has-item-backed-adjustments.xml'):
+                charges = account.adjustments()
+            self.assertEqual(len(charges), 1)
+            same_charge = charges[0]
+            self.assertEqual(same_charge.item_code, 'cardigan_bushwick')
+            self.assertEqual(same_charge.external_sku, 'tester-sku')
+
             with self.mock_request('adjustment/account-has-charges.xml'):
                 charges = account.adjustments(type='charge')
             self.assertEqual(len(charges), 1)

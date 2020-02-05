@@ -703,6 +703,7 @@ class Adjustment(Resource):
         'accounting_code',
         'product_code',
         'item_code',
+        'external_sku',
         'quantity',
         'unit_amount_in_cents',
         'discount_in_cents',
