@@ -923,6 +923,16 @@ class Invoice(Resource):
 
         return collection
 
+    def force_collect(self, options={}):
+        url = urljoin(self._url, '/collect')
+        response = self.http_request(url, 'PUT')
+        if response.status not in (200, 201):
+            self.raise_http_error(response)
+        response_xml = response.read()
+        elem = ElementTree.fromstring(response_xml)
+        invoice_collection = InvoiceCollection.from_element(elem)
+        return invoice_collection
+
     def _create_refund_invoice(self, element):
         url = urljoin(self._url, '/refund')
         body = ElementTree.tostring(element, encoding='UTF-8')

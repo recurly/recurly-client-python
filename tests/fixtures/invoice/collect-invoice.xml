@@ -1,0 +1,72 @@
+PUT https://api.recurly.com/v2/invoices/6019/collect HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Length: 0
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/invoices/6019
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice_collection>
+    <charge_invoice href="https://api.recurly.com/v2/invoices/6019">
+    <account href="https://api.recurly.com/v2/accounts/aa463d59-a618-4b71-b1f4-0410f835fe74"/>
+    <address>
+      <address1 nil="nil"></address1>
+      <address2 nil="nil"></address2>
+      <city nil="nil"></city>
+      <state nil="nil"></state>
+      <zip nil="nil"></zip>
+      <country nil="nil"></country>
+      <phone nil="nil"></phone>
+    </address>
+    <uuid>46036dca820357dae40c94420ab52632</uuid>
+    <state>paid</state>
+    <invoice_number_prefix></invoice_number_prefix>
+    <invoice_number type="integer">6019</invoice_number>
+    <vat_number nil="nil"></vat_number>
+    <tax_in_cents type="integer">0</tax_in_cents>
+    <total_in_cents type="integer">5000</total_in_cents>
+    <currency>USD</currency>
+    <created_at type="datetime">2018-07-13T17:13:57Z</created_at>
+    <updated_at type="datetime">2018-07-13T17:13:57Z</updated_at>
+    <attempt_next_collection_at nil="nil"></attempt_next_collection_at>
+    <closed_at nil="nil">2019-07-13T17:13:57Z</closed_at>
+    <customer_notes>notes</customer_notes>
+    <recovery_reason nil="nil"></recovery_reason>
+    <net_terms type="integer">0</net_terms>
+    <collection_method>manual</collection_method>
+    <line_items type="array">
+      <adjustment href="https://api.recurly.com/v2/adjustments/46036dc9823500f96f43ef44769df449" type="charge">
+        <account href="https://api.recurly.com/v2/accounts/aa463d59-a618-4b71-b1f4-0410f835fe74"/>
+        <invoice href="https://api.recurly.com/v2/invoices/6019"/>
+        <uuid>46036dc9823500f96f43ef44769df449</uuid>
+        <state>invoiced</state>
+        <description>Charge for extra bandwidth</description>
+        <accounting_code>bandwidth</accounting_code>
+        <product_code nil="nil"></product_code>
+        <origin>debit</origin>
+        <unit_amount_in_cents type="integer">5000</unit_amount_in_cents>
+        <quantity type="integer">1</quantity>
+        <discount_in_cents type="integer">0</discount_in_cents>
+        <tax_in_cents type="integer">0</tax_in_cents>
+        <total_in_cents type="integer">5000</total_in_cents>
+        <currency>USD</currency>
+        <taxable type="boolean">false</taxable>
+        <tax_exempt type="boolean">false</tax_exempt>
+        <tax_code nil="nil"></tax_code>
+        <start_date type="datetime">2018-07-13T17:13:57Z</start_date>
+        <end_date nil="nil"></end_date>
+        <created_at type="datetime">2018-07-13T17:13:57Z</created_at>
+        <updated_at type="datetime">2018-07-13T17:13:57Z</updated_at>
+        <revenue_schedule_type></revenue_schedule_type>
+      </adjustment>
+    </line_items>
+    <transactions type="array">
+    </transactions>
+    <a name="refund" href="https://api.recurly.com/v2/invoices/6019/refund" method="post"/>
+  </charge_invoice>
+</invoice_collection>
