@@ -136,6 +136,7 @@ class Account(Resource):
     created_at : datetime
         When the account was created.
     custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         If present, when the account was last marked inactive.
     email : str
@@ -143,6 +144,18 @@ class Account(Resource):
     exemption_certificate : str
         The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
     first_name : str
+    has_active_subscription : bool
+        Indicates if the account has an active subscription.
+    has_canceled_subscription : bool
+        Indicates if the account has a canceled subscription.
+    has_future_subscription : bool
+        Indicates if the account has a future subscription.
+    has_live_subscription : bool
+        Indicates if the account has a subscription that is either active, canceled, future, or paused.
+    has_past_due_invoice : bool
+        Indicates if the account has a past due invoice.
+    has_paused_subscription : bool
+        Indicates if the account has a paused subscription.
     hosted_login_token : str
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
@@ -180,6 +193,12 @@ class Account(Resource):
         "email": str,
         "exemption_certificate": str,
         "first_name": str,
+        "has_active_subscription": bool,
+        "has_canceled_subscription": bool,
+        "has_future_subscription": bool,
+        "has_live_subscription": bool,
+        "has_past_due_invoice": bool,
+        "has_paused_subscription": bool,
         "hosted_login_token": str,
         "id": str,
         "last_name": str,
@@ -308,6 +327,10 @@ class PaymentMethod(Resource):
         Expiration year.
     first_six : str
         Credit card number's first six digits.
+    gateway_code : str
+        An identifier for a specific payment gateway.
+    gateway_token : str
+        A token used in place of a credit card in order to perform transactions.
     last_four : str
         Credit card number's last four digits. Will refer to bank account if payment method is ACH.
     object : str
@@ -324,6 +347,8 @@ class PaymentMethod(Resource):
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
+        "gateway_code": str,
+        "gateway_token": str,
         "last_four": str,
         "object": str,
         "routing_number": str,
@@ -430,11 +455,13 @@ class AccountAcquisition(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     campaign : str
         An arbitrary identifier for the marketing campaign that led to the acquisition of this account.
     channel : str
         The channel through which the account was acquired.
     cost : AccountAcquisitionCost
+        Account balance
     created_at : datetime
         When the account acquisition data was created.
     id : str
@@ -508,6 +535,7 @@ class AccountBalance(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     balances : :obj:`list` of :obj:`AccountBalanceAmount`
     object : str
         Object type
@@ -589,6 +617,8 @@ class Coupon(Resource):
     created_at : datetime
         Created at
     discount : CouponDiscount
+        Details of the discount a coupon applies. Will contain a `type`
+        property and one of the following properties: `percent`, `fixed`, `trial`.
     duration : str
         - "single_use" coupons applies to the first invoice only.
         - "temporal" coupons will apply to invoices for the duration determined by the `temporal_unit` and `temporal_amount` attributes.
@@ -734,11 +764,13 @@ class CreditPayment(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     action : str
         The action for which the credit was created.
     amount : float
         Total credit payment amount applied to the charge invoice.
     applied_to_invoice : InvoiceMini
+        Invoice mini details
     created_at : datetime
         Created at
     currency : str
@@ -750,6 +782,7 @@ class CreditPayment(Resource):
     original_credit_payment_id : str
         For credit payments with action `refund`, this is the credit payment that was refunded.
     original_invoice : InvoiceMini
+        Invoice mini details
     refund_transaction : Transaction
     updated_at : datetime
         Last updated at
@@ -801,6 +834,7 @@ class Transaction(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     amount : float
         Total transaction amount sent to the payment gateway.
     avs_check : str
@@ -835,6 +869,7 @@ class Transaction(Resource):
     id : str
         Transaction ID
     invoice : InvoiceMini
+        Invoice mini details
     ip_address_country : str
         IP address's country
     ip_address_v4 : str
@@ -874,6 +909,7 @@ class Transaction(Resource):
     voided_at : datetime
         Voided at
     voided_by_invoice : InvoiceMini
+        Invoice mini details
     """
 
     schema = {
@@ -935,6 +971,7 @@ class Invoice(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     address : InvoiceAddress
     balance : float
         The outstanding balance remaining on this invoice.
@@ -983,6 +1020,7 @@ class Invoice(Resource):
     tax : float
         The total tax on this invoice.
     tax_info : TaxInfo
+        Tax info
     terms_and_conditions : str
         This will default to the Terms and Conditions text specified on the Invoice Settings page in your Recurly admin. Specify custom notes to add or override Terms and Conditions.
     total : float
@@ -1116,6 +1154,7 @@ class LineItem(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     accounting_code : str
         Internal accounting code to help you reconcile your revenue to the correct ledger. Line items created as part of a subscription invoice will use the plan or add-on's accounting code, otherwise the value will only be present if you define an accounting code when creating the line item.
     add_on_code : str
@@ -1138,6 +1177,8 @@ class LineItem(Resource):
         The discount applied to the line item.
     end_date : datetime
         If this date is provided, it indicates the end of a time range.
+    external_sku : str
+        Optional Stock Keeping Unit assigned to an item, when the Catalog feature is enabled.
     id : str
         Line item ID
     invoice_id : str
@@ -1194,6 +1235,7 @@ class LineItem(Resource):
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
     tax_info : TaxInfo
+        Tax info
     taxable : bool
         `true` if the line item is taxable, `false` if it is not.
     type : str
@@ -1219,6 +1261,7 @@ class LineItem(Resource):
         "description": str,
         "discount": float,
         "end_date": datetime,
+        "external_sku": str,
         "id": str,
         "invoice_id": str,
         "invoice_number": str,
@@ -1327,6 +1370,7 @@ class Subscription(Resource):
     Attributes
     ----------
     account : AccountMini
+        Account mini details
     activated_at : datetime
         Activated at
     add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
@@ -1356,6 +1400,7 @@ class Subscription(Resource):
     current_term_started_at : datetime
         The start date of the term when the first billing period starts. The subscription term is the length of time that a customer will be committed to a subscription. A term can span multiple billing periods.
     custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     customer_notes : str
         Customer notes
     expiration_reason : str
@@ -1371,7 +1416,9 @@ class Subscription(Resource):
     paused_at : datetime
         Null unless subscription is paused or will pause at the end of the current billing period.
     pending_change : SubscriptionChange
+        Subscription Change
     plan : PlanMini
+        Just the important parts.
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
     quantity : int
@@ -1383,6 +1430,7 @@ class Subscription(Resource):
     renewal_billing_cycles : int
         If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
     shipping : SubscriptionShipping
+        Subscription shipping details
     state : str
         State
     subtotal : float
@@ -1520,6 +1568,8 @@ class CouponMini(Resource):
     coupon_type : str
         Whether the coupon is "single_code" or "bulk". Bulk coupons will require a `unique_code_template` and will generate unique codes through the `/generate` endpoint.
     discount : CouponDiscount
+        Details of the discount a coupon applies. Will contain a `type`
+        property and one of the following properties: `percent`, `fixed`, `trial`.
     expired_at : datetime
         The date and time the coupon was expired early or reached its `max_redemptions`.
     id : str
@@ -1563,9 +1613,11 @@ class SubscriptionChange(Resource):
     object : str
         Object type
     plan : PlanMini
+        Just the important parts.
     quantity : int
         Subscription quantity
     shipping : SubscriptionShipping
+        Subscription shipping details
     subscription_id : str
         The ID of the subscription that is going to be changed.
     unit_amount : float
@@ -1596,6 +1648,7 @@ class SubscriptionAddOn(Resource):
     Attributes
     ----------
     add_on : AddOnMini
+        Just the important parts.
     created_at : datetime
         Created at
     expired_at : datetime
@@ -1743,6 +1796,7 @@ class Item(Resource):
     currencies : :obj:`list` of :obj:`Pricing`
         Item Pricing
     custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     description : str
