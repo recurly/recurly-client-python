@@ -233,7 +233,7 @@ class Client(BaseClient):
         Returns
         -------
         Empty
-            An Empty Response.
+            Acquisition data was succesfully deleted.
         """
         path = self._interpolate_path("/accounts/%s/acquisition", account_id)
         return self._make_request("DELETE", path, None, None)
@@ -320,7 +320,7 @@ class Client(BaseClient):
         Returns
         -------
         Empty
-            An Empty Response.
+            Billing information deleted
         """
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, None)
@@ -791,7 +791,7 @@ class Client(BaseClient):
         Returns
         -------
         Empty
-            An Empty Response.
+            Shipping address deleted.
         """
         path = self._interpolate_path(
             "/accounts/%s/shipping_addresses/%s", account_id, shipping_address_id
@@ -1776,7 +1776,7 @@ class Client(BaseClient):
         Returns
         -------
         Empty
-            An Empty Response.
+            Line item deleted.
         """
         path = self._interpolate_path("/line_items/%s", line_item_id)
         return self._make_request("DELETE", path, None, None)
@@ -2397,7 +2397,7 @@ class Client(BaseClient):
         Returns
         -------
         Empty
-            An Empty Response.
+            Subscription change was deleted.
         """
         path = self._interpolate_path("/subscriptions/%s/change", subscription_id)
         return self._make_request("DELETE", path, None, None)
