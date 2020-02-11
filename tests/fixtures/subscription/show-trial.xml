@@ -1,0 +1,49 @@
+GET https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+X-Records: 1
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<subscription
+    href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab">
+  <redemptions href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/redemptions" />
+  <uuid>123456789012345678901234567890ab</uuid>
+  <account href="https://api.recurly.com/v2/accounts/subscribemock"/>
+  <plan href="https://api.recurly.com/v2/plans/basicplan">
+    <plan_code>basicplan</plan_code>
+    <name>Basic Plan</name>
+  </plan>
+  <state>active</state>
+  <quantity type="integer">1</quantity>
+  <currency>EUR</currency>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+  <activated_at type="datetime">2011-05-27T07:00:00Z</activated_at>
+  <canceled_at nil="nil"></canceled_at>
+  <expires_at nil="nil"></expires_at>
+  <current_period_started_at type="datetime">2020-02-10T20:38:21Z</current_period_started_at>
+  <current_period_ends_at type="datetime">2020-03-10T20:38:21Z</current_period_ends_at>
+  <trial_started_at type="datetime">2020-02-10T20:38:21Z</trial_started_at>
+  <trial_ends_at type="datetime">2020-03-10T20:38:21Z</trial_ends_at>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <tax_type>usst</tax_type>
+  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>
+  <gateway_code>A gateway code</gateway_code>
+  <subscription_add_ons type="array">
+    <subscription_add_on>
+        <add_on_type>usage</add_on_type>
+        <measured_unit href="https://api.recurly.com/v2/measured_units/123456"/>
+        <usage href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/add_ons/marketing_emails/usage"/>
+        <add_on_code>marketing_emails</add_on_code>
+        <unit_amount_in_cents type="integer">5</unit_amount_in_cents>
+        <quantity type="integer">1</quantity>
+        <usage_type>price</usage_type>
+        <usage_percentage nil="nil"/>
+    </subscription_add_on>
+  </subscription_add_ons>
+</subscription>

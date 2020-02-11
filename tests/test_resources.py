@@ -1383,6 +1383,22 @@ class TestResources(RecurlyTest):
         with self.mock_request('subscription/resume.xml'):
             sub.resume()
 
+    def test_subscription_convert_trial(self):
+        with self.mock_request('subscription/show-trial.xml'):
+            sub = Subscription.get('123456789012345678901234567890ab')
+        
+        with self.mock_request('subscription/convert-trial.xml'):
+            sub.convert_trial()
+        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)   
+
+        with self.mock_request('subscription/convert-trial-3ds.xml'):
+            sub.convert_trial("token")
+        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)   
+
+        with self.mock_request('subscription/convert-trial-moto.xml'):
+            sub.convert_trial_moto()
+        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)            
+
     def test_usage(self):
         usage = Usage()
         usage.amount = 100 # record 100 emails
