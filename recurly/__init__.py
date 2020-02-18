@@ -9,7 +9,7 @@ import sys
 __version__ = "3.3.1"
 __python_version__ = ".".join(map(str, sys.version_info[:3]))
 
-USER_AGENT = "recurly-python/%s; python %s; %s" % (
+USER_AGENT = "Recurly/%s; python %s; %s" % (
     __version__,
     __python_version__,
     ssl.OPENSSL_VERSION,
