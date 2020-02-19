@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.24'
+API_VERSION = '2.25'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -1250,6 +1250,44 @@ class Subscription(Resource):
         """Resume a subscription"""
         url = urljoin(self._url, '/resume')
         self.put(url)
+
+    def convert_trial_moto(self):
+        """Convert trial to paid subscription when transaction_type == 'moto'"""
+        url = urljoin(self._url, '/convert_trial')
+
+        request = ElementTreeBuilder.Element('subscription')
+        transaction_type = ElementTreeBuilder.SubElement(request, 'transaction_type')
+        transaction_type.text = "moto"
+        body = ElementTree.tostring(request, encoding='UTF-8')
+        
+        response = self.http_request(url, 'PUT', body, { 'Content-Type':
+            'application/xml; charset=utf-8' })
+
+        if response.status not in (200, 201, 204):
+            self.raise_http_error(response)
+
+        self.update_from_element(ElementTree.fromstring(response.read()))
+
+    def convert_trial(self, three_d_secure_action_result_token_id = None):
+        """Convert trial to paid subscription"""
+        url = urljoin(self._url, '/convert_trial')
+
+        if not three_d_secure_action_result_token_id == None:
+            request = ElementTreeBuilder.Element('subscription')
+            account = ElementTreeBuilder.SubElement(request, 'account')
+            billing_info = ElementTreeBuilder.SubElement(account, 'billing_info')
+            token = ElementTreeBuilder.SubElement(billing_info, 'three_d_secure_action_result_token_id')
+            token.text = three_d_secure_action_result_token_id
+            body = ElementTree.tostring(request, encoding='UTF-8')
+            response = self.http_request(url, 'PUT', body, { 'Content-Type':
+                'application/xml; charset=utf-8' })
+        else:
+            response = self.http_request(url, 'PUT')
+
+        if response.status not in (200, 201, 204):
+            self.raise_http_error(response)
+
+        self.update_from_element(ElementTree.fromstring(response.read()))
 
     def _update(self):
         if not hasattr(self, 'timeframe'):
