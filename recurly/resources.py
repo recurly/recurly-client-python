@@ -333,6 +333,8 @@ class PaymentMethod(Resource):
         A token used in place of a credit card in order to perform transactions.
     last_four : str
         Credit card number's last four digits. Will refer to bank account if payment method is ACH.
+    last_two : str
+        The IBAN bank account's last two digits.
     object : str
     routing_number : str
         The bank account's routing number. Only present for ACH payment methods.
@@ -350,6 +352,7 @@ class PaymentMethod(Resource):
         "gateway_code": str,
         "gateway_token": str,
         "last_four": str,
+        "last_two": str,
         "object": str,
         "routing_number": str,
         "routing_number_bank": str,
@@ -1688,8 +1691,12 @@ class AddOnMini(Resource):
         Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
     code : str
         The unique identifier for the add-on within its plan.
+    external_sku : str
+        Optional, stock keeping unit to link the item to other inventory systems.
     id : str
         Add-on ID
+    item_id : str
+        Item ID
     name : str
         Describes your add-on and will appear in subscribers' invoices.
     object : str
@@ -1699,7 +1706,9 @@ class AddOnMini(Resource):
     schema = {
         "accounting_code": str,
         "code": str,
+        "external_sku": str,
         "id": str,
+        "item_id": str,
         "name": str,
         "object": str,
     }
@@ -1992,12 +2001,18 @@ class AddOn(Resource):
         Deleted at
     display_quantity : bool
         Determines if the quantity field is displayed on the hosted pages for the add-on.
+    external_sku : str
+        Optional, stock keeping unit to link the item to other inventory systems.
     id : str
         Add-on ID
+    item : ItemMini
+        Just the important parts.
     name : str
         Describes your add-on and will appear in subscribers' invoices.
     object : str
         Object type
+    optional : bool
+        Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
     plan_id : str
         Plan ID
     state : str
@@ -2016,9 +2031,12 @@ class AddOn(Resource):
         "default_quantity": int,
         "deleted_at": datetime,
         "display_quantity": bool,
+        "external_sku": str,
         "id": str,
+        "item": "ItemMini",
         "name": str,
         "object": str,
+        "optional": bool,
         "plan_id": str,
         "state": str,
         "tax_code": str,
@@ -2037,6 +2055,34 @@ class AddOnPricing(Resource):
     """
 
     schema = {"currency": str, "unit_amount": float}
+
+
+class ItemMini(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Unique code to identify the item.
+    description : str
+        Optional, description.
+    id : str
+        Item ID
+    name : str
+        This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    object : str
+        Object type
+    state : str
+        The current state of the item.
+    """
+
+    schema = {
+        "code": str,
+        "description": str,
+        "id": str,
+        "name": str,
+        "object": str,
+        "state": str,
+    }
 
 
 class ShippingMethod(Resource):

@@ -2349,6 +2349,25 @@ class Client(BaseClient):
         path = self._interpolate_path("/subscriptions/%s/resume", subscription_id)
         return self._make_request("PUT", path, None, None)
 
+    def convert_trial(self, subscription_id):
+        """Convert trial subscription
+
+        Parameters
+        ----------
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+
+        Returns
+        -------
+        Subscription
+            A subscription.
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/convert_trial", subscription_id
+        )
+        return self._make_request("PUT", path, None, None)
+
     def get_subscription_change(self, subscription_id):
         """Fetch a subscription's pending change
 
