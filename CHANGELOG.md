@@ -1,5 +1,14 @@
 ## Unreleased
 
+## Version 2.9.14 - February 20, 2020 ##
+
+This version brings us up to API version 2.25, but has no breaking changes
+
+- Add `capture()` and `cancel()` to Purchase object [PR](https://github.com/recurly/recurly-client-python/pull/344)
+- Add `force_collect()` to Invoice [PR](https://github.com/recurly/recurly-client-python/pull/347)
+- Add `external_sku` to Adjustment (included in API version 2.24) [PR](https://github.com/recurly/recurly-client-python/pull/348)
+- Add `convert_trial()` to Subscription [PR](https://github.com/recurly/recurly-client-python/pull/351)
+
 ## Version 2.9.13 - December 18, 2019 ##
 
 - Add `vat_number` to ShippingAddress resource [PR](https://github.com/recurly/recurly-client-python/pull/337)
