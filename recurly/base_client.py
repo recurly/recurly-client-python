@@ -45,7 +45,8 @@ class BaseClient:
                     raise Resource.cast_error(resp)
                 else:
                     raise ApiError(
-                        "Unknown Error. Recurly Request Id: " + resp.request_id, None
+                        "Unknown Error. Recurly Request Id: " + str(resp.request_id),
+                        None,
                     )
 
             if resp.body:
