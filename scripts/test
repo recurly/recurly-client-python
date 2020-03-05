@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 # First check formatting
 echo "Checking style..."
@@ -10,6 +9,8 @@ if [ $? -ne 0 ]; then
 else
   echo "Style check passed"
 fi
+
+set -e
 
 # Run tests
 RECURLY_STRICT_MODE=true coverage run --omit=recurly/client.py,recurly/resources.py --source recurly setup.py test
