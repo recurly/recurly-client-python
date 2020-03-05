@@ -1,11 +1,19 @@
 from pydoc import locate
 import datetime
+from datetime import timezone
 import recurly
 import json
+import platform
 from .response import Response
 
 # TODO - more resilient parsing
-DT_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+DT_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
+major, minor, patch = platform.python_version_tuple()
+# For versions 3.6 and prior, timezone queries will return "None"
+# instead of "UTC"
+if major <= "3" and minor <= "6":
+    DT_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 
 class Resource:

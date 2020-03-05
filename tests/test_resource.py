@@ -1,10 +1,14 @@
 import unittest
 import recurly
+import platform
 from datetime import datetime
+from datetime import timezone
 from recurly import Resource, Response, Request
 from pydoc import locate
 from .mock_resources import MyResource, MySubResource
 from unittest.mock import Mock, MagicMock
+
+major, minor, patch = platform.python_version_tuple()
 
 
 def cast(obj, class_name=None, resp=None):
@@ -107,7 +111,13 @@ class TestResource(unittest.TestCase):
         self.assertEqual(obj.my_int, 123)
         self.assertEqual(obj.my_float, 1.123)
         self.assertEqual(obj.my_bool, False)
-        self.assertEqual(obj.my_datetime, datetime(2022, 1, 1, 0, 0, 0))
+        if major >= "3" and minor >= "7":
+            self.assertEqual(
+                obj.my_datetime, datetime(2022, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+            )
+            self.assertEqual(obj.my_datetime.tzinfo, timezone.utc)
+        else:
+            self.assertEqual(obj.my_datetime, datetime(2022, 1, 1, 0, 0, 0))
         self.assertEqual(obj.my_sub_resource.my_string, "string")
         self.assertEqual(obj.my_sub_resources[0].my_string, "string1")
         self.assertEqual(obj.my_sub_resources[1].my_string, "string2")
