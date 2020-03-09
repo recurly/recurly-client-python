@@ -23,6 +23,14 @@ def get_pager_client():
     return mock.patch("http.client.HTTPSConnection", return_value=conn)
 
 
+def get_pager_first_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    conn.getresponse = MagicMock()
+    conn.getresponse.side_effect = [first_page(), second_page()]
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
 def empty_page():
     response = MagicMock()
     response.status = 200
@@ -40,6 +48,23 @@ def empty_page():
     return response
 
 
+def get_pager_first_item_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    conn.getresponse = MagicMock()
+    conn.getresponse.side_effect = [single_item_page()]
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
+def get_pager_count_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    conn.getresponse = MagicMock()
+    conn.getresponse.side_effect = [single_item_page()]
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
+# Mock responses
 def first_page():
     response = MagicMock()
     response.status = 200
@@ -81,7 +106,46 @@ def second_page():
     return response
 
 
+def single_item_page():
+    response = MagicMock()
+    response.status = 200
+    response.read.return_value = bytes(
+        """
+        {
+            "object": "list",
+            "has_more": false,
+            "next": null,
+            "data": [
+                { "object": "my_resource", "my_int": 127 }
+            ]
+        }
+        """,
+        "UTF-8",
+    )
+    return response
+
+
 class TestPager(unittest.TestCase):
+    def test_first(self):
+        with get_pager_first_item_client() as conn:
+            client = MockClient("apikey")
+            client._make_request = MagicMock()
+            pager = Pager(client, "/resources", {"limit": 3})
+            pager.first()
+            client._make_request.assert_called_with(
+                "GET", "/resources", None, {"limit": 1}
+            )
+
+    def test_count(self):
+        with get_pager_count_client() as conn:
+            client = MockClient("apikey")
+            client._make_request = MagicMock()
+            pager = Pager(client, "/resources", {"limit": 3})
+            pager.count()
+            client._make_request.assert_called_with(
+                "HEAD", "/resources", None, {"limit": 3}
+            )
+
     def test_items(self):
         with get_pager_client() as conn:
             client = MockClient("apikey")

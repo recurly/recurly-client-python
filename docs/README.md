@@ -65,7 +65,8 @@ There are 2 methods for pagination:
 *Warning: These are being worked on and will likely change*
 
 All `client.*_list` methods return a `Pager`. On the pager, `pages()` returns a `PageIterator` and `items()`
-returns an `ItemIterator`.
+returns an `ItemIterator`. The `first()` method will return only the first item from the API. The `count()`
+method will return the total number of records available from the API.
 
 #### per-page
 ```python
@@ -78,6 +79,35 @@ for page in pages:
 #### per-item
 ```python
 accounts = client.list_accounts(limit=200).items()
+for account in accounts:
+    print(account.code)
+```
+
+### Additional Pager Methods
+
+In addition to the methods to facilitate pagination, the Pager class provides 2 helper methods:
+
+1. first 
+2. count
+
+#### First
+
+The Pager's `first` method can be used to fetch only the first resource from the endpoint.
+
+```python
+accounts = client.list_accounts()
+account = accounts.first()
+print(account.code)
+```
+
+#### Count
+
+The Pager's `count` method will return the total number of resources that are available at the requested endpoint.
+
+```python
+accounts = client.list_accounts()
+total = accounts.count()
+print("There are %s accounts in total." % total)
 for account in accounts:
     print(account.code)
 ```
