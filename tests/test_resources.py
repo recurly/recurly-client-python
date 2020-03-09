@@ -439,6 +439,32 @@ class TestResources(RecurlyTest):
             with self.mock_request('add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_item_backed_add_on(self):
+        plan_code = 'plan%s' % self.test_id
+        item_code = 'item%s' % self.test_id
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('add-on/plan-created.xml'):
+            plan.save()
+
+        try:
+            add_on = AddOn(
+                item_code= item_code,
+                unit_amount_in_cents = Money(500)
+            )
+
+            with self.mock_request('add-on/created-item-backed.xml'):
+                plan.create_add_on(add_on)
+            self.assertEqual(add_on.add_on_code, item_code)
+        finally:
+            with self.mock_request('add-on/plan-deleted.xml'):
+                plan.delete()
+
     def test_billing_info(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')
