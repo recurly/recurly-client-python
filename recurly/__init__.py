@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.25'
+API_VERSION = '2.26'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -413,8 +413,9 @@ class BillingInfo(Resource):
         'gateway_code',
         'three_d_secure_action_result_token_id',
         'transaction_type',
+        'iban'
     )
-    sensitive_attributes = ('number', 'verification_value', 'account_number')
+    sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
 
 class ShippingAddress(Resource):
