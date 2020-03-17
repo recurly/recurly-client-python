@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.9.15 - March 17, 2020 ##
+
+ - Add item_code attribute to AddOn [PR](https://github.com/recurly/recurly-client-python/pull/366)
+
 ## Version 2.9.14 - February 20, 2020 ##
 
 This version brings us up to API version 2.25, but has no breaking changes
