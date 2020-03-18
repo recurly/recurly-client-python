@@ -1,6 +1,7 @@
 import unittest
 import recurly
 import platform
+import json
 from datetime import datetime
 from datetime import timezone
 from recurly import Resource, Response, Request
@@ -13,6 +14,10 @@ major, minor, patch = platform.python_version_tuple()
 
 def cast(obj, class_name=None, resp=None):
     return Resource.cast_json(obj, class_name, resp)
+
+
+def cast_error(obj, resp=None):
+    return Resource.cast_error(obj)
 
 
 class TestResource(unittest.TestCase):
@@ -82,6 +87,29 @@ class TestResource(unittest.TestCase):
         self.assertEqual(page.next, "/resources?cursor=123")
         self.assertEqual(type(page.data[0]), MyResource)
         self.assertEqual(page.data[0].my_string, "kmxu3f3qof17")
+
+    def test_cast_unknown_error(self):
+        resp = MagicMock()
+        resp.request_id = "1234"
+        resp.body = json.dumps(
+            {"error": {"type": "unknown", "message": "Error Message"}}
+        ).encode("UTF-8")
+        err = cast_error(resp)
+
+        # When the error class is unknown, it should fallback to ApiError
+        self.assertEqual(type(err), recurly.ApiError)
+        self.assertEqual(str(err), "Error Message. Recurly Request Id: 1234")
+
+    def test_cast_error(self):
+        resp = MagicMock()
+        resp.request_id = "1234"
+        resp.body = json.dumps(
+            {"error": {"type": "validation", "message": "Invalid"}}
+        ).encode("UTF-8")
+        err = cast_error(resp)
+
+        self.assertEqual(type(err), recurly.errors.ValidationError)
+        self.assertEqual(str(err), "Invalid. Recurly Request Id: 1234")
 
     def test_cast(self):
         obj = cast(

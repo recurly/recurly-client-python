@@ -42,9 +42,13 @@ class Resource:
         if not class_name.endswith("Error"):
             class_name += "Error"
         klass = locate("recurly.errors.%s" % class_name)
-        return klass(
-            error.message + ". Recurly Request Id: " + response.request_id, error
-        )
+        msg = error.message + ". Recurly Request Id: " + response.request_id
+        # Use a specific error class if we can find one, else
+        # fall back to a generic ApiError
+        if klass:
+            return klass(msg, error)
+        else:
+            return recurly.ApiError(msg, error)
 
     @classmethod
     def cast_json(cls, properties, class_name=None, response=None):
