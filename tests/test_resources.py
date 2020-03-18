@@ -952,10 +952,11 @@ class TestResources(RecurlyTest):
         self.assertIsInstance(invoice, Invoice)
 
         with self.mock_request('invoice/offline-payment.xml'):
-            transaction = Transaction(amount_in_cents=5000, description="Collected externally")
+            transaction = Transaction(payment_method="paypal", amount_in_cents=5000, description="Collected externally")
             transaction = invoice.enter_offline_payment(transaction)
 
         self.assertIsInstance(transaction, Transaction)
+        self.assertEqual(transaction.payment_method, "paypal")
 
     def test_invoice_create(self):
         # Invoices should not be created with save method
