@@ -1405,6 +1405,8 @@ class Transaction(Resource):
         'origin',
         'message',
         'approval_code',
+        'payment_method',
+        'collected_at'
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
