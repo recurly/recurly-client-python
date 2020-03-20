@@ -651,6 +651,8 @@ class Coupon(Resource):
         TODO
     redeem_by : datetime
         The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
+    redeemed_at : datetime
+        The date and time the unique coupon code was redeemed. This is only present for bulk coupons.
     redemption_resource : str
         Whether the discount is for all eligible charges on the account, or only a specific subscription.
     state : str
@@ -688,6 +690,7 @@ class Coupon(Resource):
         "plans": ["PlanMini"],
         "plans_names": list,
         "redeem_by": datetime,
+        "redeemed_at": datetime,
         "redemption_resource": str,
         "state": str,
         "temporal_amount": int,
@@ -1181,7 +1184,7 @@ class LineItem(Resource):
     end_date : datetime
         If this date is provided, it indicates the end of a time range.
     external_sku : str
-        Optional Stock Keeping Unit assigned to an item, when the Catalog feature is enabled.
+        Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
     id : str
         Line item ID
     invoice_id : str
@@ -1189,9 +1192,9 @@ class LineItem(Resource):
     invoice_number : str
         Once the line item has been invoiced this will be the invoice's number. If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     item_code : str
-        Unique code to identify an item, when the Catalog feature is enabled.
+        Unique code to identify an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
     item_id : str
-        Available when the Catalog feature is enabled.
+        System-generated unique identifier for an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
     legacy_category : str
         Category to describe the role of a line item on a legacy invoice:
         - "charges" refers to charges being billed for on this invoice.
@@ -1432,6 +1435,8 @@ class Subscription(Resource):
         Null unless subscription is paused or will pause at the end of the current billing period.
     renewal_billing_cycles : int
         If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
+    revenue_schedule_type : str
+        Revenue schedule type
     shipping : SubscriptionShipping
         Subscription shipping details
     state : str
@@ -1485,6 +1490,7 @@ class Subscription(Resource):
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
+        "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "state": str,
         "subtotal": float,
@@ -1619,6 +1625,10 @@ class SubscriptionChange(Resource):
         Just the important parts.
     quantity : int
         Subscription quantity
+    revenue_schedule_type : str
+        Revenue schedule type
+    setup_fee_revenue_schedule_type : str
+        Setup fee revenue schedule type
     shipping : SubscriptionShipping
         Subscription shipping details
     subscription_id : str
@@ -1639,6 +1649,8 @@ class SubscriptionChange(Resource):
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
+        "revenue_schedule_type": str,
+        "setup_fee_revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "subscription_id": str,
         "unit_amount": float,
@@ -1903,8 +1915,12 @@ class Plan(Resource):
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
     object : str
         Object type
+    revenue_schedule_type : str
+        Revenue schedule type
     setup_fee_accounting_code : str
         Accounting code for invoice line items for the plan's setup fee. If no value is provided, it defaults to plan's accounting code.
+    setup_fee_revenue_schedule_type : str
+        Setup fee revenue schedule type
     state : str
         The current state of the plan.
     tax_code : str
@@ -1935,7 +1951,9 @@ class Plan(Resource):
         "interval_unit": str,
         "name": str,
         "object": str,
+        "revenue_schedule_type": str,
         "setup_fee_accounting_code": str,
+        "setup_fee_revenue_schedule_type": str,
         "state": str,
         "tax_code": str,
         "tax_exempt": bool,
@@ -2015,6 +2033,8 @@ class AddOn(Resource):
         Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
     plan_id : str
         Plan ID
+    revenue_schedule_type : str
+        When this add-on is invoiced, the line item will use this revenue schedule. If `item_code`/`item_id` is part of the request then `revenue_schedule_type` must be absent in the request as the value will be set from the item.
     state : str
         Add-ons can be either active or inactive.
     tax_code : str
@@ -2038,6 +2058,7 @@ class AddOn(Resource):
         "object": str,
         "optional": bool,
         "plan_id": str,
+        "revenue_schedule_type": str,
         "state": str,
         "tax_code": str,
         "updated_at": datetime,
