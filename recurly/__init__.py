@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.9.14'
+__version__ = '2.9.15'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -1404,6 +1404,8 @@ class Transaction(Resource):
         'origin',
         'message',
         'approval_code',
+        'payment_method',
+        'collected_at'
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
@@ -1566,6 +1568,7 @@ class AddOn(Resource):
 
     attributes = (
         'add_on_code',
+        'item_code',
         'name',
         'display_quantity_on_hosted_page',
         'display_quantity',

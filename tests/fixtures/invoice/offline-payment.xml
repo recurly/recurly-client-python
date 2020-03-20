@@ -10,6 +10,7 @@ Content-Type: application/xml; charset=utf-8
   <currency>USD</currency>
   <amount_in_cents type="integer">5000</amount_in_cents>
   <description>Collected externally</description>
+  <payment_method>paypal</payment_method>
 </transaction>
 
 HTTP/1.1 201 Created
@@ -26,7 +27,7 @@ Location: https://api.recurly.com/v2/transactions/46036dcc04137580364f244e959181
   <tax_in_cents type="integer">0</tax_in_cents>
   <currency>USD</currency>
   <status>success</status>
-  <payment_method>credit_card</payment_method>
+  <payment_method>paypal</payment_method>
   <reference nil="nil"></reference>
   <source>transaction</source>
   <recurring type="boolean">false</recurring>
