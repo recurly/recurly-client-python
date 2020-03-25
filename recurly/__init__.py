@@ -1584,6 +1584,8 @@ class AddOn(Resource):
         'optional',
         'created_at',
         'updated_at',
+        'tier_type',
+        'tiers',
     )
 
 class SubscriptionAddOn(Resource):
@@ -1603,6 +1605,16 @@ class SubscriptionAddOn(Resource):
         'quantity',
         'unit_amount_in_cents',
         'address',
+    )
+
+class Tier(Resource):
+    """Pricing tier for plans, subscriptions and invoices"""
+
+    nodename = 'tier'
+
+    attributes = (
+        'ending_quantity',
+        'unit_amount_in_cents',
     )
 
 class Note(Resource):
