@@ -1089,6 +1089,23 @@ class Client(BaseClient):
         path = self._interpolate_path("/coupons/%s", coupon_id)
         return self._make_request("PUT", path, body, None)
 
+    def deactivate_coupon(self, coupon_id):
+        """Expire a coupon
+
+        Parameters
+        ----------
+        coupon_id : str
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
+
+
+        Returns
+        -------
+        Coupon
+            The expired Coupon
+        """
+        path = self._interpolate_path("/coupons/%s", coupon_id)
+        return self._make_request("DELETE", path, None, None)
+
     def list_unique_coupon_codes(self, coupon_id, **kwargs):
         """List unique coupon codes associated with a bulk coupon
 
