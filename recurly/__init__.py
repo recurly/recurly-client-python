@@ -378,6 +378,7 @@ class BillingInfo(Resource):
         'name_on_account',
         'first_name',
         'last_name',
+        'mandate_reference',
         'number',
         'verification_value',
         'year',
