@@ -1,5 +1,14 @@
 ## Unreleased
 
+## Version 2.9.16 - March 26, 2020 ##
+
+This version brings us up to API version 2.26, but has no breaking changes
+
+- Add IBAN attribute to BillingInfo [PR](https://github.com/recurly/recurly-client-python/pull/368)
+- Add payment_method and collected_at as attributes to Transaction [PR](https://github.com/recurly/recurly-client-python/pull/371)
+- Tiered pricing [PR](https://github.com/recurly/recurly-client-python/pull/373)
+- Add mandate_reference attribute to BillingInfo [PR](https://github.com/recurly/recurly-client-python/pull/379)
+
 ## Version 2.9.15 - March 17, 2020 ##
 
  - Add item_code attribute to AddOn [PR](https://github.com/recurly/recurly-client-python/pull/366)
