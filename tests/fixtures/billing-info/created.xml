@@ -31,6 +31,7 @@ Location: https://api.recurly.com/v2/accounts/binfomock/billing_info
 <billing_info url="https://api.recurly.com/v2/accounts/binfomock/billing_info" type="credit_card">
   <first_name>Verena</first_name>
   <last_name>Example</last_name>
+  <mandate_reference>ref-126</mandate_reference>
   <address1>123 Main St</address1>
   <city>San José</city>
   <state>CA</state>

@@ -439,6 +439,51 @@ class TestResources(RecurlyTest):
             with self.mock_request('add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_add_on_with_tiered_pricing(self):
+        plan_code = 'plan%s' % self.test_id
+        add_on_code = 'addon%s' % self.test_id
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('add-on/plan-created.xml'):
+            plan.save()
+
+        try:
+            add_on = AddOn(
+                add_on_code = add_on_code,
+                name = 'Mock Add-On',
+                tier_type = "tiered",
+                tiers = [
+                    recurly.Tier(
+                        ending_quantity = 2000,
+                        unit_amount_in_cents = recurly.Money(USD=1000)
+                    ),
+                    recurly.Tier(
+                        unit_amount_in_cents = recurly.Money(USD=800)
+                    )
+                ]  
+            )
+            with self.mock_request('add-on/created-tiered.xml'):
+                plan.create_add_on(add_on)
+            self.assertEqual(add_on.add_on_code, add_on_code)
+
+            try:
+                with self.mock_request('add-on/exists-tiered.xml'):
+                    tiered_add_on = plan.get_add_on(add_on_code)
+                self.assertEqual(tiered_add_on.add_on_code, add_on_code)
+                self.assertEqual(tiered_add_on.tier_type, "tiered")
+
+            finally:
+                with self.mock_request('add-on/deleted.xml'):
+                    add_on.delete()
+        finally:
+            with self.mock_request('add-on/plan-deleted.xml'):
+                plan.delete()
+
     def test_item_backed_add_on(self):
         plan_code = 'plan%s' % self.test_id
         item_code = 'item%s' % self.test_id
@@ -586,6 +631,26 @@ class TestResources(RecurlyTest):
         log_content = log_content.getvalue()
         self.assertTrue('<billing_info' in log_content)
         self.assertTrue('<token_id' in log_content)
+
+        # IBAN
+        log_content = StringIO()
+        log_handler = logging.StreamHandler(log_content)
+        logger.addHandler(log_handler)
+
+        account = Account(account_code='binfo-%s-4' % self.test_id)
+        account.billing_info = BillingInfo(
+            name_on_account='Account Name',
+            iban='FR1420041010050500013M02606',
+        )
+        with self.mock_request('billing-info/account-iban-created.xml'):
+            account.save()
+
+        self.assertEqual(account.billing_info.name_on_account, 'Account Name')
+
+        logger.removeHandler(log_handler)
+        log_content = log_content.getvalue()
+        self.assertTrue('<billing_info' in log_content)
+        self.assertTrue('<iban' in log_content)
 
     def test_charge(self):
         account = Account(account_code='charge%s' % self.test_id)
