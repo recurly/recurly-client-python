@@ -25,7 +25,9 @@ hub release create -c -F $RELEASED_LOG $THIS_VERSION
 
 # Copy-pasteable messages for announcments
 echo ":python: Python $THIS_VERSION Released :python:"
-echo "PyPi (:pypi:): https://pypi.org/project/recurly/$THIS_VERSION/"
+echo ":pypi: PyPi: https://pypi.org/project/recurly/$THIS_VERSION/"
 echo "Release: https://github.com/recurly/recurly-client-python/releases/tag/$THIS_VERSION"
 echo "Changelog:"
+echo "\`\`\`"
 cat "$RELEASED_LOG"
+echo "\`\`\`"
