@@ -1676,6 +1676,10 @@ class SubscriptionAddOn(Resource):
         Add-on quantity
     subscription_id : str
         Subscription ID
+    tier_type : str
+        The type of tiering used by the Add-on.
+    tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
+        Empty unless `tier_type` is `tiered`, `volume`, or `stairstep`.
     unit_amount : float
         This is priced in the subscription's currency.
     updated_at : datetime
@@ -1690,6 +1694,8 @@ class SubscriptionAddOn(Resource):
         "object": str,
         "quantity": int,
         "subscription_id": str,
+        "tier_type": str,
+        "tiers": ["SubscriptionAddOnTier"],
         "unit_amount": float,
         "updated_at": datetime,
     }
@@ -1724,6 +1730,19 @@ class AddOnMini(Resource):
         "name": str,
         "object": str,
     }
+
+
+class SubscriptionAddOnTier(Resource):
+    """
+    Attributes
+    ----------
+    ending_quantity : int
+        Ending quantity
+    unit_amount : float
+        Unit amount
+    """
+
+    schema = {"ending_quantity": int, "unit_amount": float}
 
 
 class UniqueCouponCode(Resource):
@@ -2039,6 +2058,10 @@ class AddOn(Resource):
         Add-ons can be either active or inactive.
     tax_code : str
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    tier_type : str
+        The type of tiering used by the Add-on.
+    tiers : :obj:`list` of :obj:`Tier`
+        Tiers
     updated_at : datetime
         Last updated at
     """
@@ -2061,6 +2084,8 @@ class AddOn(Resource):
         "revenue_schedule_type": str,
         "state": str,
         "tax_code": str,
+        "tier_type": str,
+        "tiers": ["Tier"],
         "updated_at": datetime,
     }
 
@@ -2104,6 +2129,19 @@ class ItemMini(Resource):
         "object": str,
         "state": str,
     }
+
+
+class Tier(Resource):
+    """
+    Attributes
+    ----------
+    currencies : :obj:`list` of :obj:`Pricing`
+        Tier pricing
+    ending_quantity : int
+        Ending quantity
+    """
+
+    schema = {"currencies": ["Pricing"], "ending_quantity": int}
 
 
 class ShippingMethod(Resource):
