@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.5.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.4.2...HEAD)
+
+**Implemented enhancements:**
+
+- Tue Apr 14 20:25:42 UTC 2020 Upgrade API version v2019-10-10 [\#386](https://github.com/recurly/recurly-client-python/pull/386) ([bhelx](https://github.com/bhelx))
+- Adding \#first and \#count methods to Pager [\#367](https://github.com/recurly/recurly-client-python/pull/367) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.5.0 [\#387](https://github.com/recurly/recurly-client-python/pull/387) ([douglasmiller](https://github.com/douglasmiller))
+- Included the to-be released changes in the changelog [\#385](https://github.com/recurly/recurly-client-python/pull/385) ([douglasmiller](https://github.com/douglasmiller))
+- Updating release script to be uniform across all clients [\#383](https://github.com/recurly/recurly-client-python/pull/383) ([douglasmiller](https://github.com/douglasmiller))
+- Thu Mar 26 20:45:45 UTC 2020 Upgrade API version v2019-10-10 [\#380](https://github.com/recurly/recurly-client-python/pull/380) ([bhelx](https://github.com/bhelx))
+
+## [3.4.2](https://github.com/recurly/recurly-client-python/tree/3.4.2) (2020-03-20)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.16...3.4.2)
+
+**Merged pull requests:**
+
+- Release 3.4.2 [\#377](https://github.com/recurly/recurly-client-python/pull/377) ([douglasmiller](https://github.com/douglasmiller))
+- Adding changelog and updated release scripts [\#376](https://github.com/recurly/recurly-client-python/pull/376) ([douglasmiller](https://github.com/douglasmiller))
+- Fri Mar 20 17:44:47 UTC 2020 Upgrade API version v2019-10-10 [\#375](https://github.com/recurly/recurly-client-python/pull/375) ([douglasmiller](https://github.com/douglasmiller))
+- Unknown error types should fallback to generic ApiError [\#372](https://github.com/recurly/recurly-client-python/pull/372) ([bhelx](https://github.com/bhelx))
+
 ## [3.4.1](https://github.com/recurly/recurly-client-python/tree/3.4.1) (2020-03-06)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.4.0...3.4.1)
