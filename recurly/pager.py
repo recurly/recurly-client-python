@@ -66,6 +66,24 @@ class Pager:
         """
         return ItemIterator(self.__client, self.__path, self.__params)
 
+    def first(self):
+        """Performs a request with the pager `limit` set to 1 and only returns the
+        first result in the response.
+        """
+        params = self.__params.copy()
+        params.update({"limit": 1})
+        items = ItemIterator(self.__client, self.__path, params)
+        try:
+            return next(items)
+        except StopIteration:
+            return None
+
+    def count(self):
+        """Makes a HEAD request to the API to determine how many total records exist.
+        """
+        resource = self.__client._make_request("HEAD", self.__path, None, self.__params)
+        return int(resource.get_response().total_records)
+
     def __map_array_params(self, params):
         """Converts array parameters to CSV strings to maintain consistency with
         how the server expects the request to be formatted while providing the

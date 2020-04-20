@@ -27,6 +27,7 @@ class Response:
                 "server": self.__headers.get("Server"),
                 "cf-ray": self.__headers.get("CF-RAY"),
             }
+            self.total_records = self.__headers.get("recurly-total-records")
             if http_body and len(http_body) > 0:
                 self.body = http_body
         except:
