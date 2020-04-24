@@ -28,46 +28,6 @@ class TestResource(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.assertEqual(cast(obj), obj)
 
-    def test_cast_from_response(self):
-        resp = MagicMock()
-        resp.headers = {
-            "X-Request-Id": "0av50sm5l2n2gkf88ehg",
-            "X-RateLimit-Limit": "2000",
-            "X-RateLimit-Remaining": "1985",
-            "X-RateLimit-Reset": "1564624560",
-            "Date": "Thu, 01 Aug 2019 01:26:44 GMT",
-            "Server": "cloudflare",
-            "CF-RAY": "4ff4b71268424738-EWR",
-        }
-
-        request = Request("GET", "/sites", {})
-        empty = cast({}, "Empty", Response(resp, request))
-        response = empty.get_response()
-
-        self.assertEqual(type(response), Response)
-        self.assertEqual(response.request_id, "0av50sm5l2n2gkf88ehg")
-        self.assertEqual(response.rate_limit, 2000)
-        self.assertEqual(response.rate_limit_remaining, 1985)
-        self.assertEqual(response.rate_limit_reset, datetime(2019, 8, 1, 1, 56))
-        self.assertEqual(response.date, "Thu, 01 Aug 2019 01:26:44 GMT")
-        self.assertEqual(response.proxy_metadata["server"], "cloudflare")
-        self.assertEqual(response.proxy_metadata["cf-ray"], "4ff4b71268424738-EWR")
-        self.assertEqual(response.request.method, "GET")
-        self.assertEqual(response.request.path, "/sites")
-        self.assertEqual(response.request.body, {})
-
-        resp = MagicMock()
-        resp.headers = {
-            "X-Request-Id": "abcd123",
-            "X-RateLimit-Limit": "invalid2000",
-            "X-RateLimit-Remaining": "1985",
-            "X-RateLimit-Reset": "1564624560",
-            "Date": "Thu, 01 Aug 2019 01:26:44 GMT",
-        }
-
-        with self.assertRaises(ValueError):
-            cast({}, "Empty", Response(resp, request))
-
     def test_cast_page(self):
         # should return a page of cast data
         page = cast(
