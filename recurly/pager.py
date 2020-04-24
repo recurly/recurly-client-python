@@ -82,7 +82,7 @@ class Pager:
         """Makes a HEAD request to the API to determine how many total records exist.
         """
         resource = self.__client._make_request("HEAD", self.__path, None, self.__params)
-        return int(resource.get_response().total_records)
+        return resource.get_response().total_records
 
     def __map_array_params(self, params):
         """Converts array parameters to CSV strings to maintain consistency with
