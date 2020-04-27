@@ -9,10 +9,8 @@ import sys
 __version__ = "3.5.0"
 __python_version__ = ".".join(map(str, sys.version_info[:3]))
 
-USER_AGENT = "Recurly/%s; python %s; %s" % (
-    __version__,
-    __python_version__,
-    ssl.OPENSSL_VERSION,
+USER_AGENT = "Recurly/{}; python {}; {}".format(
+    __version__, __python_version__, ssl.OPENSSL_VERSION
 )
 
 # Running in strict mode will throw exceptions
