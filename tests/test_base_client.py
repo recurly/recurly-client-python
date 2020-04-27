@@ -173,3 +173,8 @@ class TestBaseClient(unittest.TestCase):
             client = MockClient("apikey")
             with self.assertRaises(recurly.NetworkError) as e:
                 resource = client.update_resource("123", {"my_int": 123})
+
+    def test_pathParameterEncoding(self):
+        client = MockClient("apikey")
+        path = client._interpolate_path("/resource/%s", "asdf/,123")
+        self.assertEqual(path, "/resource/asdf%2F%2C123")

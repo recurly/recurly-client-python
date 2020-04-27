@@ -64,4 +64,4 @@ class BaseClient:
     def _interpolate_path(self, path, *args):
         """Encodes components and interpolates path"""
 
-        return path % tuple(map(urllib.parse.quote, args))
+        return path % tuple(map(lambda arg: urllib.parse.quote(arg, safe=""), args))
