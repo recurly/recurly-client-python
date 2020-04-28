@@ -1,8 +1,26 @@
 # Changelog
 
-## [3.5.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.5.1](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.4.2...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.5.0...HEAD)
+
+**Implemented enhancements:**
+
+- Deprecation warning due to invalid escape sequences [\#391](https://github.com/recurly/recurly-client-python/issues/391)
+
+**Fixed bugs:**
+
+- RateLimiter Exception  [\#388](https://github.com/recurly/recurly-client-python/issues/388)
+
+**Merged pull requests:**
+
+- Release 3.5.1 [\#394](https://github.com/recurly/recurly-client-python/pull/394) ([douglasmiller](https://github.com/douglasmiller))
+- Fix python3 deprecation warnings [\#392](https://github.com/recurly/recurly-client-python/pull/392) ([bhelx](https://github.com/bhelx))
+- More defensive parsing of Response headers [\#389](https://github.com/recurly/recurly-client-python/pull/389) ([bhelx](https://github.com/bhelx))
+
+## [3.5.0](https://github.com/recurly/recurly-client-python/tree/3.5.0) (2020-04-20)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.4.2...3.5.0)
 
 **Implemented enhancements:**
 
