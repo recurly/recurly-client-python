@@ -75,4 +75,4 @@ class BaseClient:
         """Encodes components and interpolates path"""
         self._validate_path_parameters(args)
 
-        return path % tuple(map(urllib.parse.quote, args))
+        return path % tuple(map(lambda arg: urllib.parse.quote(arg, safe=""), args))
