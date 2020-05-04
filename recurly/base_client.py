@@ -61,7 +61,18 @@ class BaseClient:
         except socket.error as e:
             raise NetworkError(e)
 
+    def _validate_path_parameters(self, args):
+        """Checks that path parameters are valid"""
+        # Check that parameters are valid types
+        if any(type(arg) not in [str, int, float] for arg in args):
+            raise ApiError("Invalid parameter type", None)
+
+        # Check that string parameters are not empty
+        if any(isinstance(arg, str) and not bool(arg.strip()) for arg in args):
+            raise ApiError("Parameters cannot be empty strings", None)
+
     def _interpolate_path(self, path, *args):
         """Encodes components and interpolates path"""
+        self._validate_path_parameters(args)
 
         return path % tuple(map(urllib.parse.quote, args))

@@ -107,6 +107,22 @@ class TestBaseClient(unittest.TestCase):
         client = MockClient("apikey")
         self.assertEqual(client.api_version(), "v2018-08-09")
 
+    def test_pathParameterValidationEmpty(self):
+        with get_resource_client(False) as conn:
+            client = MockClient("apikey")
+            with self.assertRaises(recurly.ApiError) as e:
+                resource = client.get_resource("")
+
+            self.assertEqual("Parameters cannot be empty strings", str(e.exception))
+
+    def test_pathParameterValidationNone(self):
+        with get_resource_client(False) as conn:
+            client = MockClient("apikey")
+            with self.assertRaises(recurly.ApiError) as e:
+                resource = client.get_resource(None)
+
+            self.assertEqual("Invalid parameter type", str(e.exception))
+
     def test_successful_GET_200(self):
         with get_resource_client(True) as conn:
             client = MockClient("apikey")
