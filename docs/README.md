@@ -100,6 +100,21 @@ account = accounts.first()
 print(account.code)
 ```
 
+#### Take
+
+The Pager's `take` method is similar in implementation to `first`, but instead, it returns the first `n` items. This is useful in scenarios where you know exactly how many items you wish to fetch. The value  `n` is bound by the maximum page size that the API supports. Here is an example of doing a bulk fetch of some accounts given 3 ids:
+
+```python
+ids = (
+    "mtgswv3w2dyv",
+    "mtgpxse20g6a",
+    "mtgpwoqswd5y",
+)
+accounts = client.list_accounts(ids=ids).take(len(ids))
+for account in accounts:
+    print(account.id)
+```
+
 #### Count
 
 The Pager's `count` method will return the total number of resources that are available at the requested endpoint.
@@ -111,6 +126,7 @@ print("There are %s accounts in total." % total)
 for account in accounts:
     print(account.code)
 ```
+
 
 ### Creating Resources
 
