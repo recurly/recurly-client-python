@@ -102,17 +102,18 @@ print(account.code)
 
 #### Take
 
-The Pager's `take` method is similar in implementation to `first`, but instead, it returns the first `n` items. This is useful in scenarios where you know exactly how many items you wish to fetch. The value  `n` is bound by the maximum page size that the API supports. Here is an example of doing a bulk fetch of some accounts given 3 ids:
+The Pager's `take` method is similar in implementation to `first`, but instead, it returns the first `n` items. This is useful in scenarios you only want the first `n` items of a pager. The value  `n` is bound by the maximum page size that the API supports. Here is an example:
 
 ```python
-ids = (
-    "mtgswv3w2dyv",
-    "mtgpxse20g6a",
-    "mtgpwoqswd5y",
-)
-accounts = client.list_accounts(ids=ids).take(len(ids))
+params = {
+    'end_time': '2020-01-01T00:00:00Z',
+    'order': 'desc',
+    'sort': 'created_at'
+}
+# Take the last 5 accounts created in 2019
+accounts = client.list_accounts(**params).take(5)
 for account in accounts:
-    print(account.id)
+    print(account.created_at)
 ```
 
 #### Count
