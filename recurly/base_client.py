@@ -34,7 +34,7 @@ class BaseClient:
                 body = json.dumps(body)
 
             if params:
-                path += "?" + urllib.parse.urlencode(params)
+                path += "?" + self._url_encode(params)
 
             self.__conn.request(method, path, body, headers=headers)
             request = Request(method, path, body)
@@ -76,3 +76,19 @@ class BaseClient:
         self._validate_path_parameters(args)
 
         return path % tuple(map(lambda arg: urllib.parse.quote(arg, safe=""), args))
+
+    def _url_encode(self, params):
+        """Encode query params for URL. We need to customize this to conform to Recurly's API"""
+        r_params = {}
+
+        for k, v in params.items():
+            # join lists w/ a comma (CSV encoding)
+            if isinstance(v, list) or isinstance(v, tuple):
+                r_params[k] = ",".join(v)
+            # booleans need to be downcased
+            elif isinstance(v, bool):
+                r_params[k] = "true" if v else "false"
+            else:
+                r_params[k] = v
+
+        return urllib.parse.urlencode(r_params)
