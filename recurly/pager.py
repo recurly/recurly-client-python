@@ -54,7 +54,7 @@ class Pager:
     def __init__(self, client, path, params):
         self.__client = client
         self.__path = path
-        self.__params = self.__map_array_params(params)
+        self.__params = params
 
     def pages(self):
         """An iterator that enumerates each page of results."""
@@ -83,10 +83,3 @@ class Pager:
         """
         resource = self.__client._make_request("HEAD", self.__path, None, self.__params)
         return resource.get_response().total_records
-
-    def __map_array_params(self, params):
-        """Converts array parameters to CSV strings to maintain consistency with
-        how the server expects the request to be formatted while providing the
-        developer with an array type to maintain developer happiness!
-        """
-        return {k: ",".join(v) if isinstance(v, list) else v for k, v in params.items()}
