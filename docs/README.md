@@ -85,10 +85,23 @@ for account in accounts:
 
 ### Additional Pager Methods
 
-In addition to the methods to facilitate pagination, the Pager class provides 2 helper methods:
+In addition to the methods to facilitate pagination, the Pager class provides 3 helper methods:
 
-1. first 
-2. count
+1. [count](#count)
+2. [first](#first)
+3. [take](#take)
+
+#### Count
+
+The Pager's `count` method will return the total number of resources that are available at the requested endpoint.
+
+```python
+accounts = client.list_accounts()
+total = accounts.count()
+print("There are %s accounts in total." % total)
+for account in accounts:
+    print(account.code)
+```
 
 #### First
 
@@ -115,19 +128,6 @@ accounts = client.list_accounts(**params).take(5)
 for account in accounts:
     print(account.created_at)
 ```
-
-#### Count
-
-The Pager's `count` method will return the total number of resources that are available at the requested endpoint.
-
-```python
-accounts = client.list_accounts()
-total = accounts.count()
-print("There are %s accounts in total." % total)
-for account in accounts:
-    print(account.code)
-```
-
 
 ### Creating Resources
 
