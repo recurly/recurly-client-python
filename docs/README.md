@@ -85,20 +85,11 @@ for account in accounts:
 
 ### Additional Pager Methods
 
-In addition to the methods to facilitate pagination, the Pager class provides 2 helper methods:
+In addition to the methods to facilitate pagination, the Pager class provides 3 helper methods:
 
-1. first 
-2. count
-
-#### First
-
-The Pager's `first` method can be used to fetch only the first resource from the endpoint.
-
-```python
-accounts = client.list_accounts()
-account = accounts.first()
-print(account.code)
-```
+1. [count](#count)
+2. [first](#first)
+3. [take](#take)
 
 #### Count
 
@@ -110,6 +101,32 @@ total = accounts.count()
 print("There are %s accounts in total." % total)
 for account in accounts:
     print(account.code)
+```
+
+#### First
+
+The Pager's `first` method can be used to fetch only the first resource from the endpoint.
+
+```python
+accounts = client.list_accounts()
+account = accounts.first()
+print(account.code)
+```
+
+#### Take
+
+The Pager's `take` method is similar in implementation to `first`, but instead, it returns the first `n` items. This is useful in scenarios you only want the first `n` items of a pager. The value  `n` is bound by the maximum page size that the API supports. Here is an example:
+
+```python
+params = {
+    'end_time': '2020-01-01T00:00:00Z',
+    'order': 'desc',
+    'sort': 'created_at'
+}
+# Take the last 5 accounts created in 2019
+accounts = client.list_accounts(**params).take(5)
+for account in accounts:
+    print(account.created_at)
 ```
 
 ### Creating Resources

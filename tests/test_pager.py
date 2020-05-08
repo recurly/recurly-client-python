@@ -56,6 +56,14 @@ def get_pager_first_item_client():
     return mock.patch("http.client.HTTPSConnection", return_value=conn)
 
 
+def get_pager_take_item_client():
+    conn = MagicMock()
+    conn.request = MagicMock(return_value=None)
+    conn.getresponse = MagicMock()
+    conn.getresponse.side_effect = [first_page()]
+    return mock.patch("http.client.HTTPSConnection", return_value=conn)
+
+
 def get_pager_count_client():
     conn = MagicMock()
     conn.request = MagicMock(return_value=None)
@@ -134,6 +142,16 @@ class TestPager(unittest.TestCase):
             pager.first()
             client._make_request.assert_called_with(
                 "GET", "/resources", None, {"limit": 1}
+            )
+
+    def test_take(self):
+        with get_pager_first_item_client() as conn:
+            client = MockClient("apikey")
+            client._make_request = MagicMock()
+            pager = Pager(client, "/resources", {"limit": 10})
+            pager.take(3)
+            client._make_request.assert_called_with(
+                "GET", "/resources", None, {"limit": 3}
             )
 
     def test_count(self):

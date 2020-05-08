@@ -78,6 +78,18 @@ class Pager:
         except StopIteration:
             return None
 
+    def take(self, n):
+        """Performs a request with the pager `limit` set to `n` and only returns the
+        first `n` results in the response. `n` is limited to the maximum page size.
+        """
+        params = self.__params.copy()
+        params.update({"limit": n})
+        items = PageIterator(self.__client, self.__path, params)
+        try:
+            return next(items)
+        except StopIteration:
+            return None
+
     def count(self):
         """Makes a HEAD request to the API to determine how many total records exist.
         """
