@@ -9,6 +9,7 @@ from .response import Response
 from recurly import USER_AGENT, ApiError, NetworkError
 from pydoc import locate
 import urllib.parse
+from datetime import datetime
 
 PORT = 443
 HOST = "v3.recurly.com"
@@ -88,6 +89,9 @@ class BaseClient:
             # booleans need to be downcased
             elif isinstance(v, bool):
                 r_params[k] = "true" if v else "false"
+            # datetimes should be iso8601 strings
+            elif isinstance(v, datetime):
+                r_params[k] = v.isoformat()
             else:
                 r_params[k] = v
 

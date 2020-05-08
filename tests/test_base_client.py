@@ -1,17 +1,20 @@
 import unittest
 import recurly
 import socket
-from recurly import Resource
+from recurly import Resource, USER_AGENT
 from recurly.resource import Empty
 from .mock_resources import MyResource, MySubResource
 from .mock_client import MockClient
 import unittest.mock as mock
 from unittest.mock import Mock, MagicMock
+from datetime import datetime
+from collections import OrderedDict
+import sys
 
 
-def delete_resource_client():
+def delete_resource_client(request):
     conn = MagicMock()
-    conn.request = MagicMock(return_value=None)
+    conn.request = request
     response = MagicMock()
     # empty response
     response.status = 204
@@ -20,9 +23,9 @@ def delete_resource_client():
     return mock.patch("http.client.HTTPSConnection", return_value=conn)
 
 
-def update_resource_client(success):
+def update_resource_client(success, request):
     conn = MagicMock()
-    conn.request = MagicMock(return_value=None)
+    conn.request = request
     response = MagicMock()
     if success:
         response.status = 201
@@ -61,9 +64,9 @@ def get_socket_error_client():
     return mock.patch("http.client.HTTPSConnection", return_value=conn)
 
 
-def get_resource_client(success):
+def get_resource_client(success, request):
     conn = MagicMock()
-    conn.request = MagicMock(return_value=None)
+    conn.request = request
     response = MagicMock()
     if success:
         response.status = 200
@@ -99,6 +102,7 @@ expected_headers = {
     "Authorization": "Basic YXBpa2V5Og==",
     "Accept": "application/vnd.recurly.v2018-08-09",
     "Content-Type": "application/json",
+    "User-Agent": USER_AGENT,
 }
 
 
@@ -108,7 +112,8 @@ class TestBaseClient(unittest.TestCase):
         self.assertEqual(client.api_version(), "v2018-08-09")
 
     def test_pathParameterValidationEmpty(self):
-        with get_resource_client(False) as conn:
+        request = MagicMock(return_value=None)
+        with get_resource_client(False, request) as conn:
             client = MockClient("apikey")
             with self.assertRaises(recurly.ApiError) as e:
                 resource = client.get_resource("")
@@ -116,7 +121,8 @@ class TestBaseClient(unittest.TestCase):
             self.assertEqual("Parameters cannot be empty strings", str(e.exception))
 
     def test_pathParameterValidationNone(self):
-        with get_resource_client(False) as conn:
+        request = MagicMock(return_value=None)
+        with get_resource_client(False, request) as conn:
             client = MockClient("apikey")
             with self.assertRaises(recurly.ApiError) as e:
                 resource = client.get_resource(None)
@@ -124,64 +130,60 @@ class TestBaseClient(unittest.TestCase):
             self.assertEqual("Invalid parameter type", str(e.exception))
 
     def test_successful_GET_200(self):
-        with get_resource_client(True) as conn:
+        request = MagicMock(return_value=None)
+        with get_resource_client(True, request) as conn:
             client = MockClient("apikey")
             resource = client.get_resource("123", {"q": 123})
-            # conn.request.assert_called_with(
-            #     "GET", "/resources/123?q=123", None, headers=expected_headers
-            # )
+            request.assert_called_with(
+                "GET", "/resources/123?q=123", None, headers=expected_headers
+            )
             self.assertEqual(type(resource), MyResource)
 
     def test_failure_GET_404(self):
-        with get_resource_client(False) as conn:
+        request = MagicMock(return_value=None)
+        with get_resource_client(False, request) as conn:
             client = MockClient("apikey")
             with self.assertRaises(recurly.errors.NotFoundError) as e:
                 resource = client.get_resource("123")
 
-            # conn.request.assert_called_with(
-            #     "GET", "/resources/123?q=123", None, headers=expected_headers
-            # )
+            request.assert_called_with(
+                "GET", "/resources/123", None, headers=expected_headers
+            )
             err = e.exception.error
             self.assertEqual(err.type, "not_found")
 
     def test_successful_PUT_201(self):
-        with update_resource_client(True) as conn:
+        request = MagicMock(return_value=None)
+        with update_resource_client(True, request) as conn:
             client = MockClient("apikey")
             resource = client.update_resource("123", {"my_int": 123})
-            # conn.request.assert_called_with(
-            #     "GET",
-            #     "/resources/123?q=123",
-            #     """{"my_int", 123}""",
-            #     headers=expected_headers,
-            # )
+            request.assert_called_with(
+                "PUT", "/resources/123", """{"my_int": 123}""", headers=expected_headers
+            )
             self.assertEqual(type(resource), MyResource)
             self.assertEqual(resource.my_int, 123)
 
     def test_failure_PUT_422(self):
-        with update_resource_client(False) as conn:
+        request = MagicMock(return_value=None)
+        with update_resource_client(False, request) as conn:
             client = MockClient("apikey")
             with self.assertRaises(recurly.errors.ValidationError) as e:
                 resource = client.update_resource("123", {"my_int": 123})
 
-            # conn.request.assert_called_with(
-            #     "GET",
-            #     "/resources/123?q=123",
-            #     """{"my_int", 123}""",
-            #     headers=expected_headers,
-            # )
+            request.assert_called_with(
+                "PUT", "/resources/123", """{"my_int": 123}""", headers=expected_headers
+            )
             err = e.exception.error
             self.assertEqual(err.type, "validation")
 
     def test_DELETE_204(self):
-        with delete_resource_client() as conn:
+        request = MagicMock(return_value=None)
+        with delete_resource_client(request) as conn:
             client = MockClient("apikey")
             resource = client.delete_resource("123")
-            # conn.request.assert_called_with(
-            #     "DELETE",
-            #     "/resources/123",
-            #     None,
-            #     headers=expected_headers,
-            # )
+            request.assert_called_with(
+                "DELETE", "/resources/123", None, headers=expected_headers
+            )
             self.assertIsInstance(resource, Empty)
 
     def test_failure_socket_error(self):
@@ -194,3 +196,18 @@ class TestBaseClient(unittest.TestCase):
         client = MockClient("apikey")
         path = client._interpolate_path("/resource/%s", "asdf/,123")
         self.assertEqual(path, "/resource/asdf%2F%2C123")
+
+    def test_query_param_encoding(self):
+        # This test does not work in python 3.5
+        # TODO remove the if statement when we drop 3.5 support
+        if sys.version_info[1] > 5:
+            request = MagicMock(return_value=None)
+            with get_resource_client(True, request) as conn:
+                client = MockClient("apikey")
+                d = datetime(2020, 10, 5)
+                params = {"q": 123, "d": d, "c": False, "b": True}
+                resource = client.get_resource("123", params)
+                url = "/resources/123?q=123&d=2020-10-05T00%3A00%3A00&c=false&b=true"
+
+                request.assert_called_with("GET", url, None, headers=expected_headers)
+                self.assertEqual(type(resource), MyResource)
