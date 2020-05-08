@@ -59,8 +59,8 @@ account = client.get_account("code-benjamin.dumonde@example.com")
 
 There are 2 methods for pagination:
 
-1. Per-page
-2. Per-item
+1. [Per-page](#per-page)
+2. [Per-item](#per-item)
 
 *Warning: These are being worked on and will likely change*
 
@@ -85,11 +85,13 @@ for account in accounts:
 
 ### Additional Pager Methods
 
-In addition to the methods to facilitate pagination, the Pager class provides 3 helper methods:
+In addition to the methods to facilitate pagination, the Pager class provides 3 helper methods.
 
-1. [count](#count)
-2. [first](#first)
-3. [take](#take)
+1. [count](#id2)
+2. [first](#id3)
+3. [take](#id4)
+
+> **Note**: Unlike the lazy nature of `pages()` and `items()`, all of these methods execute the request upon being called and return a value immediately.
 
 #### Count
 
@@ -115,7 +117,7 @@ print(account.code)
 
 #### Take
 
-The Pager's `take` method is similar in implementation to `first`, but instead, it returns the first `n` items. This is useful in scenarios you only want the first `n` items of a pager. The value  `n` is bound by the maximum page size that the API supports. Here is an example:
+The Pager's `take` method is similar in implementation to `first`, but instead, it returns the first `n` items as a list. This is useful in scenarios where you only want the first `n` items of a pager. The value `n` is bound by the maximum page size that the API supports. Here is an example:
 
 ```python
 params = {
