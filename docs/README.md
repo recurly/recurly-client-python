@@ -8,7 +8,7 @@ This library is the official python client for Recurly's V3 API.
 
 We recommend specifying this dependency in your requirements.txt:
 ```
-recurly~=3.2
+recurly~=3.5
 ```
 
 Or installing via the command line:
@@ -59,8 +59,8 @@ account = client.get_account("code-benjamin.dumonde@example.com")
 
 There are 2 methods for pagination:
 
-1. [Per-page](#per-page)
-2. [Per-item](#per-item)
+1. Per-page
+2. Per-item
 
 *Warning: These are being worked on and will likely change*
 
@@ -87,9 +87,9 @@ for account in accounts:
 
 In addition to the methods to facilitate pagination, the Pager class provides 3 helper methods.
 
-1. [count](#id2)
-2. [first](#id3)
-3. [take](#id4)
+1. count
+2. first
+3. take
 
 > **Note**: Unlike the lazy nature of `pages()` and `items()`, all of these methods execute the request upon being called and return a value immediately.
 
