@@ -13,8 +13,15 @@ from datetime import datetime
 
 PORT = 443
 HOST = "v3.recurly.com"
-
 BINARY_TYPES = ["application/pdf"]
+
+
+def request_converter(value):
+    """Used by json serializer to cast values"""
+    if isinstance(value, datetime):
+        return value.isoformat()
+    else:
+        return value
 
 
 class BaseClient:
@@ -32,7 +39,7 @@ class BaseClient:
                 "Content-Type": "application/json",
             }
             if body:
-                body = json.dumps(body)
+                body = json.dumps(body, default=request_converter)
 
             if params:
                 path += "?" + self._url_encode(params)

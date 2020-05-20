@@ -186,6 +186,18 @@ class TestBaseClient(unittest.TestCase):
             )
             self.assertIsInstance(resource, Empty)
 
+    def test_datetimes_in_bodies_are_converted(self):
+        request = MagicMock(return_value=None)
+        with update_resource_client(True, request) as conn:
+            client = MockClient("apikey")
+            resource = client.update_resource("123", {"my_dt": datetime(2020, 1, 1)})
+            request.assert_called_with(
+                "PUT",
+                "/resources/123",
+                """{"my_dt": "2020-01-01T00:00:00"}""",
+                headers=expected_headers,
+            )
+
     def test_failure_socket_error(self):
         with get_socket_error_client() as conn:
             client = MockClient("apikey")
