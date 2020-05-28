@@ -5,25 +5,26 @@
 # need and we will usher them to the appropriate places.
 import recurly
 
+ERROR_MAP = {
+    500: "InternalServerError",
+    502: "BadGatewayError",
+    503: "ServiceUnavailableError",
+    304: "NotModifiedError",
+    400: "BadRequestError",
+    401: "UnauthorizedError",
+    402: "PaymentRequiredError",
+    403: "ForbiddenError",
+    404: "NotFoundError",
+    406: "NotAcceptableError",
+    412: "PreconditionFailedError",
+    422: "UnprocessableEntityError",
+    429: "TooManyRequestsError",
+}
+
 
 def error_from_status(status):
-    error_map = {
-        500: "InternalServerError",
-        502: "BadGatewayError",
-        503: "ServiceUnavailableError",
-        304: "NotModifiedError",
-        400: "BadRequestError",
-        401: "UnauthorizedError",
-        402: "PaymentRequiredError",
-        403: "ForbiddenError",
-        404: "NotFoundError",
-        406: "NotAcceptableError",
-        412: "PreconditionFailedError",
-        422: "UnprocessableEntityError",
-        429: "TooManyRequestsError",
-    }
-    if status in error_map:
-        return error_map[status]
+    if status in ERROR_MAP:
+        return ERROR_MAP[status]
     else:
         return ""
 
