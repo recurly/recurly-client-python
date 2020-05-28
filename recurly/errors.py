@@ -6,69 +6,143 @@
 import recurly
 
 
-class BadRequestError(recurly.ApiError):
+def error_from_status(status):
+    error_map = {
+        500: "InternalServerError",
+        502: "BadGatewayError",
+        503: "ServiceUnavailableError",
+        304: "NotModifiedError",
+        400: "BadRequestError",
+        401: "UnauthorizedError",
+        402: "PaymentRequiredError",
+        403: "ForbiddenError",
+        404: "NotFoundError",
+        406: "NotAcceptableError",
+        412: "PreconditionFailedError",
+        422: "UnprocessableEntityError",
+        429: "TooManyRequestsError",
+    }
+    if status in error_map:
+        return error_map[status]
+    else:
+        return ""
+
+
+class ResponseError(recurly.ApiError):
     pass
 
 
-class InternalServerError(recurly.ApiError):
+class ServerError(ResponseError):
     pass
 
 
-class ImmutableSubscriptionError(recurly.ApiError):
+class InternalServerError(ServerError):
     pass
 
 
-class InvalidApiKeyError(recurly.ApiError):
+class BadGatewayError(ServerError):
     pass
 
 
-class InvalidApiVersionError(recurly.ApiError):
+class ServiceUnavailableError(ServerError):
     pass
 
 
-class InvalidContentTypeError(recurly.ApiError):
+class RedirectionError(ResponseError):
     pass
 
 
-class InvalidPermissionsError(recurly.ApiError):
+class NotModifiedError(ResponseError):
     pass
 
 
-class InvalidTokenError(recurly.ApiError):
+class ClientError(recurly.ApiError):
     pass
 
 
-class NotFoundError(recurly.ApiError):
+class BadRequestError(ClientError):
     pass
 
 
-class SimultaneousRequestError(recurly.ApiError):
+class InvalidContentTypeError(BadRequestError):
     pass
 
 
-class TransactionError(recurly.ApiError):
+class UnauthorizedError(ClientError):
     pass
 
 
-class UnauthorizedError(recurly.ApiError):
+class PaymentRequiredError(ClientError):
     pass
 
 
-class UnavailableInApiVersionError(recurly.ApiError):
+class ForbiddenError(ClientError):
     pass
 
 
-class UnknownApiVersionError(recurly.ApiError):
+class InvalidApiKeyError(ForbiddenError):
     pass
 
 
-class ValidationError(recurly.ApiError):
+class InvalidPermissionsError(ForbiddenError):
     pass
 
 
-class MissingFeatureError(recurly.ApiError):
+class NotFoundError(ClientError):
     pass
 
 
-class RateLimitedError(recurly.ApiError):
+class NotAcceptableError(ClientError):
+    pass
+
+
+class UnknownApiVersionError(NotAcceptableError):
+    pass
+
+
+class UnavailableInApiVersionError(NotAcceptableError):
+    pass
+
+
+class InvalidApiVersionError(NotAcceptableError):
+    pass
+
+
+class PreconditionFailedError(ClientError):
+    pass
+
+
+class UnprocessableEntityError(ClientError):
+    pass
+
+
+class ValidationError(UnprocessableEntityError):
+    pass
+
+
+class MissingFeatureError(UnprocessableEntityError):
+    pass
+
+
+class TransactionError(UnprocessableEntityError):
+    pass
+
+
+class SimultaneousRequestError(UnprocessableEntityError):
+    pass
+
+
+class ImmutableSubscriptionError(UnprocessableEntityError):
+    pass
+
+
+class InvalidTokenError(UnprocessableEntityError):
+    pass
+
+
+class TooManyRequestsError(ClientError):
+    pass
+
+
+class RateLimitedError(TooManyRequestsError):
     pass

@@ -29,6 +29,10 @@ def update_resource_client(success, request):
     response = MagicMock()
     if success:
         response.status = 201
+        response.headers = {
+            "Content-Type": "application/json",
+            "X-Request-Id": "request-id",
+        }
         response.read.return_value = bytes(
             """
             {
@@ -39,6 +43,10 @@ def update_resource_client(success, request):
         )
     else:
         response.status = 422
+        response.headers = {
+            "Content-Type": "application/json",
+            "X-Request-Id": "request-id",
+        }
         response.read.return_value = bytes(
             """
             {
@@ -70,6 +78,10 @@ def get_resource_client(success, request):
     response = MagicMock()
     if success:
         response.status = 200
+        response.headers = {
+            "Content-Type": "application/json",
+            "X-Request-Id": "request-id",
+        }
         response.read.return_value = bytes(
             """
             {
@@ -80,6 +92,10 @@ def get_resource_client(success, request):
         )
     else:
         response.status = 404
+        response.headers = {
+            "Content-Type": "application/json",
+            "X-Request-Id": "request-id",
+        }
         response.read.return_value = bytes(
             """
             {

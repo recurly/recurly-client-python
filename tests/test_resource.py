@@ -48,9 +48,30 @@ class TestResource(unittest.TestCase):
         self.assertEqual(type(page.data[0]), MyResource)
         self.assertEqual(page.data[0].my_string, "kmxu3f3qof17")
 
+    def test_cast_non_json_error_0(self):
+        resp = MagicMock()
+        resp.request_id = "1234"
+        resp.status = 0
+        err = cast_error(resp)
+
+        # When the error class is unknown, it should fallback to ApiError
+        self.assertEqual(type(err), recurly.ApiError)
+        self.assertEqual(str(err), "Unexpected 0 Error. Recurly Request Id: 1234")
+
+    def test_cast_non_json_error_500(self):
+        resp = MagicMock()
+        resp.request_id = "1234"
+        resp.status = 500
+        err = cast_error(resp)
+
+        # Error class should be determined from HTTP status code when not json
+        self.assertEqual(type(err), recurly.errors.InternalServerError)
+        self.assertEqual(str(err), "Unexpected 500 Error. Recurly Request Id: 1234")
+
     def test_cast_unknown_error(self):
         resp = MagicMock()
         resp.request_id = "1234"
+        resp.content_type = "application/json"
         resp.body = json.dumps(
             {"error": {"type": "unknown", "message": "Error Message"}}
         ).encode("UTF-8")
@@ -63,6 +84,7 @@ class TestResource(unittest.TestCase):
     def test_cast_error(self):
         resp = MagicMock()
         resp.request_id = "1234"
+        resp.content_type = "application/json"
         resp.body = json.dumps(
             {"error": {"type": "validation", "message": "Invalid"}}
         ).encode("UTF-8")
