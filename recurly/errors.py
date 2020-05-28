@@ -22,13 +22,6 @@ ERROR_MAP = {
 }
 
 
-def error_from_status(status):
-    if status in ERROR_MAP:
-        return ERROR_MAP[status]
-    else:
-        return ""
-
-
 class ResponseError(recurly.ApiError):
     pass
 
