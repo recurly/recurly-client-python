@@ -42,7 +42,7 @@ class Resource:
             class_name = "".join(x.title() for x in name_parts)
             msg = error.message + ". Recurly Request Id: " + response.request_id
         else:
-            class_name = recurly.errors.error_from_status(response.status)
+            class_name = recurly.RecurlyError.error_from_status(response.status)
             error = None
             msg = "Unexpected %i Error. Recurly Request Id: %s" % (
                 response.status,
