@@ -4,10 +4,7 @@ import recurly
 class RecurlyError(Exception):
     @classmethod
     def error_from_status(cls, status):
-        if status in recurly.errors.ERROR_MAP:
-            return recurly.errors.ERROR_MAP[status]
-        else:
-            return ""
+        return recurly.errors.ERROR_MAP.get(status, "")
 
 
 class ApiError(RecurlyError):
