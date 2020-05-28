@@ -12,6 +12,14 @@ recurly.base\_client module
     :undoc-members:
     :show-inheritance:
 
+recurly.base\_errors module
+---------------------------
+
+.. automodule:: recurly.base_errors
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 recurly.client module
 ---------------------
 

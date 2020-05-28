@@ -31,18 +31,26 @@ class Resource:
 
     @classmethod
     def cast_error(cls, response):
-        json_body = json.loads(response.body.decode("utf-8"))
+        if response.content_type == "application/json":
+            json_body = json.loads(response.body.decode("utf-8"))
 
-        error_json = json_body["error"]
-        error_json["object"] = "error"
-        error = cls.cast_json(error_json, response=response)
-        error_type = error.type
-        name_parts = error_type.split("_")
-        class_name = "".join(x.title() for x in name_parts)
+            error_json = json_body["error"]
+            error_json["object"] = "error"
+            error = cls.cast_json(error_json, response=response)
+            error_type = error.type
+            name_parts = error_type.split("_")
+            class_name = "".join(x.title() for x in name_parts)
+            msg = error.message + ". Recurly Request Id: " + response.request_id
+        else:
+            class_name = recurly.RecurlyError.error_from_status(response.status)
+            error = None
+            msg = "Unexpected %i Error. Recurly Request Id: %s" % (
+                response.status,
+                response.request_id,
+            )
         if not class_name.endswith("Error"):
             class_name += "Error"
         klass = locate("recurly.errors.%s" % class_name)
-        msg = error.message + ". Recurly Request Id: " + response.request_id
         # Use a specific error class if we can find one, else
         # fall back to a generic ApiError
         if klass:
