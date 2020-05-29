@@ -31,7 +31,7 @@ class Resource:
 
     @classmethod
     def cast_error(cls, response):
-        if response.content_type == "application/json":
+        if "application/json" in response.content_type:
             json_body = json.loads(response.body.decode("utf-8"))
 
             error_json = json_body["error"]
