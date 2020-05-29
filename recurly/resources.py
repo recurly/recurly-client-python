@@ -335,6 +335,8 @@ class PaymentMethod(Resource):
         Credit card number's last four digits. Will refer to bank account if payment method is ACH.
     last_two : str
         The IBAN bank account's last two digits.
+    name_on_account : str
+        The name associated with the bank account.
     object : str
     routing_number : str
         The bank account's routing number. Only present for ACH payment methods.
@@ -353,6 +355,7 @@ class PaymentMethod(Resource):
         "gateway_token": str,
         "last_four": str,
         "last_two": str,
+        "name_on_account": str,
         "object": str,
         "routing_number": str,
         "routing_number_bank": str,
@@ -1214,7 +1217,7 @@ class LineItem(Resource):
     previous_line_item_id : str
         Will only have a value if the line item is a credit created from a previous credit, or if the credit was created from a charge refund.
     product_code : str
-        For plan-related line items this will be the plan's code, for add-on related line items it will be the add-on's code. For item-related line itmes it will be the item's `external_sku`.
+        For plan-related line items this will be the plan's code, for add-on related line items it will be the add-on's code. For item-related line items it will be the item's `external_sku`.
     proration_rate : float
         When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
     quantity : int
@@ -1674,6 +1677,8 @@ class SubscriptionAddOn(Resource):
         Object type
     quantity : int
         Add-on quantity
+    revenue_schedule_type : str
+        Revenue schedule type
     subscription_id : str
         Subscription ID
     tier_type : str
@@ -1693,6 +1698,7 @@ class SubscriptionAddOn(Resource):
         "id": str,
         "object": str,
         "quantity": int,
+        "revenue_schedule_type": str,
         "subscription_id": str,
         "tier_type": str,
         "tiers": ["SubscriptionAddOnTier"],
@@ -2148,6 +2154,8 @@ class ShippingMethod(Resource):
     """
     Attributes
     ----------
+    accounting_code : str
+        Accounting code for shipping method.
     code : str
         The internal name used identify the shipping method.
     created_at : datetime
@@ -2177,6 +2185,7 @@ class ShippingMethod(Resource):
     """
 
     schema = {
+        "accounting_code": str,
         "code": str,
         "created_at": datetime,
         "deleted_at": datetime,
