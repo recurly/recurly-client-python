@@ -39,6 +39,8 @@ class Client(BaseClient):
             Sort field. You *really* only want to sort by `updated_at` in ascending
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
+        state : str
+            Filter by state.
 
         Returns
         -------
@@ -1586,6 +1588,25 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/invoices/%s/void", invoice_id)
         return self._make_request("PUT", path, None, None)
+
+    def record_external_transaction(self, invoice_id, body):
+        """Record an external payment for a manual invoices.
+
+        Parameters
+        ----------
+        invoice_id : str
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Transaction
+            The recorded transaction.
+        """
+        path = self._interpolate_path("/invoices/%s/transactions", invoice_id)
+        return self._make_request("POST", path, body, None)
 
     def list_invoice_line_items(self, invoice_id, **kwargs):
         """List an invoice's line items
