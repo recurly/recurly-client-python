@@ -1,8 +1,31 @@
 # Changelog
 
-## [3.5.1](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.6.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.5.0...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.5.1...HEAD)
+
+**Implemented enhancements:**
+
+- Latest Features [\#403](https://github.com/recurly/recurly-client-python/pull/403) ([bhelx](https://github.com/bhelx))
+- Updating error hierarchy and providing error handling for non-json error responses [\#401](https://github.com/recurly/recurly-client-python/pull/401) ([douglasmiller](https://github.com/douglasmiller))
+
+**Fixed bugs:**
+
+- Properly encode boolean query params [\#397](https://github.com/recurly/recurly-client-python/pull/397) ([bhelx](https://github.com/bhelx))
+
+**Merged pull requests:**
+
+- Release 3.6.0 [\#404](https://github.com/recurly/recurly-client-python/pull/404) ([bhelx](https://github.com/bhelx))
+- Convert datetimes objects in request bodies [\#400](https://github.com/recurly/recurly-client-python/pull/400) ([bhelx](https://github.com/bhelx))
+- README: Use 3.5 install instr, remove link formatting [\#399](https://github.com/recurly/recurly-client-python/pull/399) ([bhelx](https://github.com/bhelx))
+- Small changes to readme [\#398](https://github.com/recurly/recurly-client-python/pull/398) ([bhelx](https://github.com/bhelx))
+- Implement Pager\#take [\#396](https://github.com/recurly/recurly-client-python/pull/396) ([bhelx](https://github.com/bhelx))
+- Updating path parameter encoding to include forward slashes [\#393](https://github.com/recurly/recurly-client-python/pull/393) ([douglasmiller](https://github.com/douglasmiller))
+- Ensure that path parameters are not empty strings [\#390](https://github.com/recurly/recurly-client-python/pull/390) ([douglasmiller](https://github.com/douglasmiller))
+
+## [3.5.1](https://github.com/recurly/recurly-client-python/tree/3.5.1) (2020-04-28)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.5.0...3.5.1)
 
 **Implemented enhancements:**
 
