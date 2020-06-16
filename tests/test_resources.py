@@ -652,6 +652,35 @@ class TestResources(RecurlyTest):
         self.assertTrue('<billing_info' in log_content)
         self.assertTrue('<iban' in log_content)
 
+        # BACS
+        log_content = StringIO()
+        log_handler = logging.StreamHandler(log_content)
+        logger.addHandler(log_handler)
+
+        account = Account(account_code='binfo-%s-5' % self.test_id)
+        account.billing_info = BillingInfo(
+          name_on_account = 'Account Name',
+          account_number = '55779911',
+          sort_code = '200000',
+          city = 'London',
+          zip = 'W1K 6AH',
+          country = 'GB',
+          type = 'bacs'
+        )
+
+        with self.mock_request('billing-info/account-bacs-created.xml'):
+          account.save()
+
+        self.assertEqual(account.billing_info.name_on_account, 'Account Name')
+        self.assertEqual(account.billing_info.sort_code, '200000')
+        self.assertEqual(account.billing_info.type, 'bacs')
+
+        logger.removeHandler(log_handler)
+        log_content = log_content.getvalue()
+        self.assertTrue('<billing_info' in log_content)
+        self.assertTrue('type="bacs"' in log_content)
+        self.assertTrue('<sort_code' in log_content)
+
     def test_charge(self):
         account = Account(account_code='charge%s' % self.test_id)
         with self.mock_request('adjustment/account-created.xml'):
