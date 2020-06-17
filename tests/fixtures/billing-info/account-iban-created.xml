@@ -20,11 +20,11 @@ Content-Type: application/xml; charset=utf-8
 Location: https://api.recurly.com/v2/accounts/binfo-mock-4
 
 <?xml version="1.0" encoding="UTF-8"?>
-<account href="https://api.recurly.com/v2/accounts/binfo-mock-3">
-  <adjustments href="https://api.recurly.com/v2/accounts/binfo-mock-3/adjustments"/>
-  <invoices href="https://api.recurly.com/v2/accounts/binfo-mock-3/invoices"/>
-  <subscriptions href="https://api.recurly.com/v2/accounts/binfo-mock-3/subscriptions"/>
-  <transactions href="https://api.recurly.com/v2/accounts/binfo-mock-3/transactions"/>
+<account href="https://api.recurly.com/v2/accounts/binfo-mock-4">
+  <adjustments href="https://api.recurly.com/v2/accounts/binfo-mock-4/adjustments"/>
+  <invoices href="https://api.recurly.com/v2/accounts/binfo-mock-4/invoices"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/binfo-mock-4/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/binfo-mock-4/transactions"/>
   <account_code>binfo-mock-4</account_code>
   <username nil="nil"></username>
   <email nil="nil"></email>

@@ -660,7 +660,7 @@ class TestResources(RecurlyTest):
         account = Account(account_code='binfo-%s-5' % self.test_id)
         account.billing_info = BillingInfo(
           name_on_account = 'Account Name',
-          account_number = '55779911',
+          account_number = '12345678',
           sort_code = '200000',
           city = 'London',
           zip = 'W1K 6AH',

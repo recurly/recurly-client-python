@@ -13,7 +13,7 @@ Content-Type: application/xml; charset=utf-8
     <city>London</city>
     <zip>W1K 6AH</zip>
     <country>GB</country>
-    <account_number>55779911</account_number>
+    <account_number>12345678</account_number>
     <currency>USD</currency>
     <sort_code>200000</sort_code>
   </billing_info>
