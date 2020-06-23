@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.26'
+API_VERSION = '2.27'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -1510,6 +1510,7 @@ class Plan(Resource):
         'setup_fee_revenue_schedule_type',
         'trial_requires_billing_info',
         'auto_renew',
+        'allow_any_item_on_subscriptions',
     )
 
     def get_add_on(self, add_on_code):
@@ -1607,6 +1608,7 @@ class SubscriptionAddOn(Resource):
         'quantity',
         'unit_amount_in_cents',
         'address',
+        'add_on_source',
     )
 
 class Tier(Resource):
