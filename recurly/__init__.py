@@ -1511,6 +1511,7 @@ class Plan(Resource):
         'setup_fee_revenue_schedule_type',
         'trial_requires_billing_info',
         'auto_renew',
+        'allow_any_item_on_subscriptions',
     )
 
     def get_add_on(self, add_on_code):
@@ -1608,6 +1609,7 @@ class SubscriptionAddOn(Resource):
         'quantity',
         'unit_amount_in_cents',
         'address',
+        'add_on_source',
     )
 
 class Tier(Resource):

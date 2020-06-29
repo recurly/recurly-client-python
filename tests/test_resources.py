@@ -1568,6 +1568,15 @@ class TestResources(RecurlyTest):
         with self.mock_request('subscribe-add-on/plan-created.xml'):
             plan.save()
 
+        item_code = 'item%s' % self.test_id
+        item = Item(
+            item_code=item_code,
+            name='Mock Item',
+            description='An item of the mocked variety'
+        )
+        with self.mock_request('subscribe-add-on/item-created.xml'):
+            item.save()
+
         try:
 
             add_on = AddOn(
@@ -1596,6 +1605,11 @@ class TestResources(RecurlyTest):
                     SubscriptionAddOn(
                         add_on_code='second_add_on',
                     ),
+                    SubscriptionAddOn(
+                        add_on_code=item.item_code,
+                        unit_amount_in_cents=200,
+                        add_on_source='type'
+                    )
                 ],
                 currency='USD',
                 account=Account(
@@ -1624,11 +1638,15 @@ class TestResources(RecurlyTest):
             self.assertEqual(sub_amount, 1000)
 
             # Test that the add-ons' amounts aren't real Money instances either.
-            add_on_1, add_on_2 = sub.subscription_add_ons
+            add_on_1, add_on_2, add_on_3 = sub.subscription_add_ons
             self.assertIsInstance(add_on_1, SubscriptionAddOn)
             amount_1 = add_on_1.unit_amount_in_cents
             self.assertTrue(not isinstance(amount_1, Money))
             self.assertEqual(amount_1, 100)
+
+            # Items can be used for subscription add-ons
+            add_on_source = add_on_3.add_on_source
+            self.assertEqual(add_on_source, "item")
 
             with self.mock_request('subscribe-add-on/account-exists.xml'):
                 account = Account.get(account_code)

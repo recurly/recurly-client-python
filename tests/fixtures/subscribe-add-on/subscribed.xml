@@ -16,6 +16,11 @@ Content-Type: application/xml; charset=utf-8
     <subscription_add_on>
       <add_on_code>second_add_on</add_on_code>
     </subscription_add_on>
+    <subscription_add_on>
+      <add_on_code>itemmock</add_on_code>
+      <unit_amount_in_cents type="integer">200</unit_amount_in_cents>
+      <add_on_source>type</add_on_source>
+    </subscription_add_on>
   </subscription_add_ons>
   <account>
     <account_code>sad-on-mock</account_code>
@@ -65,11 +70,19 @@ Location: https://api.recurly.com/v2/subscriptions/12345678901234567890123456789
       <add_on_code>mock_add_on</add_on_code>
       <unit_amount_in_cents type="integer">100</unit_amount_in_cents>
       <quantity type="integer">1</quantity>
+      <add_on_source>plan_add_on</add_on_source>
     </subscription_add_on>
     <subscription_add_on>
       <add_on_code>second_add_on</add_on_code>
       <unit_amount_in_cents type="integer">50</unit_amount_in_cents>
       <quantity type="integer">1</quantity>
+      <add_on_source>plan_add_on</add_on_source>
+    </subscription_add_on>
+    <subscription_add_on>
+      <add_on_code>itemmock</add_on_code>
+      <unit_amount_in_cents type="integer">200</unit_amount_in_cents>
+      <quantity type="integer">1</quantity>
+      <add_on_source>item</add_on_source>
     </subscription_add_on>
   </subscription_add_ons>
   <a name="cancel" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel" method="put"/>
