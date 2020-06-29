@@ -913,6 +913,8 @@ class Transaction(Resource):
         - `purchase` – combines the authorization and capture in one transaction.
         - `refund` – returns all or a portion of the money collected in a previous transaction to the customer.
         - `verify` – a $0 or $1 transaction used to verify billing information which is immediately voided.
+    updated_at : datetime
+        Updated at
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
     voided_at : datetime
@@ -955,6 +957,7 @@ class Transaction(Resource):
         "subscription_ids": list,
         "success": bool,
         "type": str,
+        "updated_at": datetime,
         "uuid": str,
         "voided_at": datetime,
         "voided_by_invoice": "InvoiceMini",
@@ -1916,6 +1919,10 @@ class Plan(Resource):
     ----------
     accounting_code : str
         Accounting code for invoice line items for the plan. If no value is provided, it defaults to plan's code.
+    allow_any_item_on_subscriptions : bool
+        Used to determine whether items can be assigned as add-ons to individual subscriptions.
+        If `true`, items can be assigned as add-ons to individual subscription add-ons.
+        If `false`, only plan add-ons can be used.
     auto_renew : bool
         Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
     code : str
@@ -1956,6 +1963,8 @@ class Plan(Resource):
         Automatically terminate subscriptions after a defined number of billing cycles. Number of billing cycles before the plan automatically stops renewing, defaults to `null` for continuous, automatic renewal.
     trial_length : int
         Length of plan's trial period in `trial_units`. `0` means `no trial`.
+    trial_requires_billing_info : bool
+        Allow free trial subscriptions to be created without billing info.
     trial_unit : str
         Units for the plan's trial period.
     updated_at : datetime
@@ -1964,6 +1973,7 @@ class Plan(Resource):
 
     schema = {
         "accounting_code": str,
+        "allow_any_item_on_subscriptions": bool,
         "auto_renew": bool,
         "code": str,
         "created_at": datetime,
@@ -1984,6 +1994,7 @@ class Plan(Resource):
         "tax_exempt": bool,
         "total_billing_cycles": int,
         "trial_length": int,
+        "trial_requires_billing_info": bool,
         "trial_unit": str,
         "updated_at": datetime,
     }
