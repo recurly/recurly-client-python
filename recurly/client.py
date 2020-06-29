@@ -2164,6 +2164,23 @@ class Client(BaseClient):
         path = self._interpolate_path("/shipping_methods")
         return Pager(self, path, kwargs)
 
+    def create_shipping_method(self, body):
+        """Create a new shipping method
+
+        Parameters
+        ----------
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        ShippingMethod
+            A new shipping method.
+        """
+        path = self._interpolate_path("/shipping_methods")
+        return self._make_request("POST", path, body, None)
+
     def get_shipping_method(self, id):
         """Fetch a shipping method
 
@@ -2176,10 +2193,46 @@ class Client(BaseClient):
         Returns
         -------
         ShippingMethod
-            A shipping_method.
+            A shipping method.
         """
         path = self._interpolate_path("/shipping_methods/%s", id)
         return self._make_request("GET", path, None, None)
+
+    def update_shipping_method(self, shipping_method_id, body):
+        """Update an active Shipping Method
+
+        Parameters
+        ----------
+        shipping_method_id : str
+            Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        ShippingMethod
+            The updated shipping method.
+        """
+        path = self._interpolate_path("/shipping_methods/%s", shipping_method_id)
+        return self._make_request("PUT", path, body, None)
+
+    def deactivate_shipping_method(self, shipping_method_id):
+        """Deactivate a shipping method
+
+        Parameters
+        ----------
+        shipping_method_id : str
+            Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`.
+
+
+        Returns
+        -------
+        ShippingMethod
+            A shipping method.
+        """
+        path = self._interpolate_path("/shipping_methods/%s", shipping_method_id)
+        return self._make_request("DELETE", path, None, None)
 
     def list_subscriptions(self, **kwargs):
         """List a site's subscriptions
