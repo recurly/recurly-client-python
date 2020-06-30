@@ -1,5 +1,13 @@
 ## Unreleased
 
+## Version 2.9.17 - June 30, 2020 ##
+
+This version brings us up to API version 2.27, but has no breaking changes
+
+- BACS support [PR](https://github.com/recurly/recurly-client-python/pull/405)
+- Support items on subscriptions [PR](https://github.com/recurly/recurly-client-python/pull/407)
+- BACS patch [PR](https://github.com/recurly/recurly-client-python/pull/409)
+
 ## Version 2.9.16 - March 26, 2020 ##
 
 This version brings us up to API version 2.26, but has no breaking changes
