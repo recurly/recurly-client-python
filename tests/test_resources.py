@@ -678,7 +678,7 @@ class TestResources(RecurlyTest):
         logger.removeHandler(log_handler)
         log_content = log_content.getvalue()
         self.assertTrue('<billing_info' in log_content)
-        self.assertTrue('type="bacs"' in log_content)
+        self.assertTrue('<type' in log_content)
         self.assertTrue('<sort_code' in log_content)
 
     def test_charge(self):
