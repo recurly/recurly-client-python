@@ -1,8 +1,22 @@
 # Changelog
 
-## [3.6.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.7.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.5.1...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.6.0...HEAD)
+
+**Implemented enhancements:**
+
+- Mon Jun 29 17:13:09 UTC 2020 Upgrade API version v2019-10-10 [\#408](https://github.com/recurly/recurly-client-python/pull/408) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.7.0 [\#410](https://github.com/recurly/recurly-client-python/pull/410) ([douglasmiller](https://github.com/douglasmiller))
+- Remove sphinx scaffold comment [\#406](https://github.com/recurly/recurly-client-python/pull/406) ([bhelx](https://github.com/bhelx))
+- Updating content\_type check to be more flexible [\#402](https://github.com/recurly/recurly-client-python/pull/402) ([douglasmiller](https://github.com/douglasmiller))
+
+## [3.6.0](https://github.com/recurly/recurly-client-python/tree/3.6.0) (2020-06-01)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.5.1...3.6.0)
 
 **Implemented enhancements:**
 
