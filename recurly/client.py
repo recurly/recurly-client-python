@@ -2512,6 +2512,27 @@ class Client(BaseClient):
         path = self._interpolate_path("/subscriptions/%s/change", subscription_id)
         return self._make_request("DELETE", path, None, None)
 
+    def preview_subscription_change(self, subscription_id, body):
+        """Preview a new subscription change
+
+        Parameters
+        ----------
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        SubscriptionChangePreview
+            A subscription change.
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/change/preview", subscription_id
+        )
+        return self._make_request("POST", path, body, None)
+
     def list_subscription_invoices(self, subscription_id, **kwargs):
         """List a subscription's invoices
 
