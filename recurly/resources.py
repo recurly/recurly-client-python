@@ -1670,6 +1670,11 @@ class SubscriptionAddOn(Resource):
     ----------
     add_on : AddOnMini
         Just the important parts.
+    add_on_source : str
+        Used to determine where the associated add-on data is pulled from. If this value is set to
+        `plan_add_on` or left blank, then add-on data will be pulled from the plan's add-ons. If the associated
+        `plan` has `allow_any_item_on_subscriptions` set to `true` and this field is set to `item`, then
+        the associated add-on data will be pulled from the site's item catalog.
     created_at : datetime
         Created at
     expired_at : datetime
@@ -1696,6 +1701,7 @@ class SubscriptionAddOn(Resource):
 
     schema = {
         "add_on": "AddOnMini",
+        "add_on_source": str,
         "created_at": datetime,
         "expired_at": datetime,
         "id": str,
@@ -2204,5 +2210,63 @@ class ShippingMethod(Resource):
         "name": str,
         "object": str,
         "tax_code": str,
+        "updated_at": datetime,
+    }
+
+
+class SubscriptionChangePreview(Resource):
+    """
+    Attributes
+    ----------
+    activate_at : datetime
+        Activated at
+    activated : bool
+        Returns `true` if the subscription change is activated.
+    add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
+        These add-ons will be used when the subscription renews.
+    created_at : datetime
+        Created at
+    deleted_at : datetime
+        Deleted at
+    id : str
+        The ID of the Subscription Change.
+    invoice_collection : InvoiceCollection
+        Invoice collection
+    object : str
+        Object type
+    plan : PlanMini
+        Just the important parts.
+    quantity : int
+        Subscription quantity
+    revenue_schedule_type : str
+        Revenue schedule type
+    setup_fee_revenue_schedule_type : str
+        Setup fee revenue schedule type
+    shipping : SubscriptionShipping
+        Subscription shipping details
+    subscription_id : str
+        The ID of the subscription that is going to be changed.
+    unit_amount : float
+        Unit amount
+    updated_at : datetime
+        Updated at
+    """
+
+    schema = {
+        "activate_at": datetime,
+        "activated": bool,
+        "add_ons": ["SubscriptionAddOn"],
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "id": str,
+        "invoice_collection": "InvoiceCollection",
+        "object": str,
+        "plan": "PlanMini",
+        "quantity": int,
+        "revenue_schedule_type": str,
+        "setup_fee_revenue_schedule_type": str,
+        "shipping": "SubscriptionShipping",
+        "subscription_id": str,
+        "unit_amount": float,
         "updated_at": datetime,
     }
