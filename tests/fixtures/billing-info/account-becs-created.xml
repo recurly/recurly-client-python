@@ -1,0 +1,71 @@
+POST https://api.recurly.com/v2/accounts HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <account_code>binfo-mock-6</account_code>
+  <email>verena@example.com</email>
+  <billing_info>
+    <type>becs</type>
+    <name_on_account>BECS Test</name_on_account>
+    <address1>125 Paper Street</address1>
+    <city>Adelaide</city>
+    <zip>123456</zip>
+    <country>AU</country>
+    <phone>213-555-5555</phone>
+    <account_number>123456</account_number>
+    <currency>AUD</currency>
+    <bsb_code>082-082</bsb_code>
+  </billing_info>
+</account>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/binfo-mock-5
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/binfo-mock-6">
+  <adjustments href="https://api.recurly.com/v2/accounts/binfo-mock-6/adjustments"/>
+  <account_balance href="https://api.recurly.com/v2/accounts/binfo-mock-6/balance"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/binfo-mock-6/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/binfo-mock-6/invoices"/>
+  <shipping_addresses href="https://api.recurly.com/v2/accounts/binfo-mock-6/shipping_addresses"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/binfo-mock-6/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/binfo-mock-6/transactions"/>
+  <notes href="https://api.recurly.com/v2/accounts/binfo-mock-6/notes"/>
+  <account_code>binfo-mock-6</account_code>
+  <state>active</state>
+  <username nil="nil"></username>
+  <email>verena@example.com</email>
+  <cc_emails nil="nil"></cc_emails>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <vat_number nil="nil"></vat_number>
+  <preferred_locale nil="nil"></preferred_locale>
+  <address>
+    <address1 nil="nil"></address1>
+    <address2 nil="nil"></address2>
+    <city nil="nil"></city>
+    <state nil="nil"></state>
+    <zip nil="nil"></zip>
+    <country nil="nil"></country>
+    <phone nil="nil"></phone>
+  </address>
+  <accept_language nil="nil"></accept_language>
+  <hosted_login_token>TDMzdQZtAzuUBZb3wF9fMTEMCzPbKZnx</hosted_login_token>
+  <created_at type="datetime">2020-07-14T21:30:52Z</created_at>
+  <updated_at type="datetime">2020-07-14T21:30:52Z</updated_at>
+  <closed_at nil="nil"></closed_at>
+  <custom_fields type="array"></custom_fields>
+  <has_live_subscription type="boolean">false</has_live_subscription>
+  <has_active_subscription type="boolean">false</has_active_subscription>
+  <has_future_subscription type="boolean">false</has_future_subscription>
+  <has_canceled_subscription type="boolean">false</has_canceled_subscription>
+  <has_past_due_invoice type="boolean">false</has_past_due_invoice>
+  <has_paused_subscription type="boolean">false</has_paused_subscription>
+</account>
