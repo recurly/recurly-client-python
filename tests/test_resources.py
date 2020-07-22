@@ -681,6 +681,39 @@ class TestResources(RecurlyTest):
         self.assertTrue('<type' in log_content)
         self.assertTrue('<sort_code' in log_content)
 
+        # BECS
+        log_content = StringIO()
+        log_handler = logging.StreamHandler(log_content)
+        logger.addHandler(log_handler)
+
+        account = Account(account_code='binfo-%s-6' % self.test_id)
+        account.email = 'verena@example.com'
+        account.billing_info = BillingInfo(
+          name_on_account = 'BECS Test',
+          account_number = '123456',
+          bsb_code = '082-082',
+          address1 = '125 Paper Street',
+          city = 'Adelaide',
+          zip = '123456',
+          country = 'AU',
+          phone = '213-555-5555',
+          type = 'becs',
+          currency = 'AUD'
+        )
+
+        with self.mock_request('billing-info/account-becs-created.xml'):
+          account.save()
+
+        self.assertEqual(account.billing_info.name_on_account, 'BECS Test')
+        self.assertEqual(account.billing_info.bsb_code, '082-082')
+        self.assertEqual(account.billing_info.type, 'becs')
+
+        logger.removeHandler(log_handler)
+        log_content = log_content.getvalue()
+        self.assertTrue('<billing_info' in log_content)
+        self.assertTrue('<type' in log_content)
+        self.assertTrue('<bsb_code' in log_content)
+
     def test_charge(self):
         account = Account(account_code='charge%s' % self.test_id)
         with self.mock_request('adjustment/account-created.xml'):

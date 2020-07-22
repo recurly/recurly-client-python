@@ -1,5 +1,11 @@
 ## Unreleased
 
+## Version 2.9.18 - July 22, 2020 ##
+
+This version brings us up to API version 2.28, but has no breaking changes
+
+- BECS support [PR](https://github.com/recurly/recurly-client-python/pull/415)
+
 ## Version 2.9.17 - June 30, 2020 ##
 
 This version brings us up to API version 2.27, but has no breaking changes

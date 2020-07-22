@@ -715,9 +715,12 @@ class Resource(object):
             except KeyError:
                 continue
             # With one exception, type is an element xml attribute, e.g. <billing info type="credit_card"> or <adjustment type="charge">
-            # For billing_info, type property takes precedence over xml attribute when type = bacs, e.g. <billing info><type>bacs</type></billing_info>. 
-            if attrname in self.xml_attribute_attributes and ((root_name != 'billing_info' and attrname == 'type') or (root_name == 'billing_info' and value != 'bacs')):
-                elem.attrib[attrname] = six.text_type(value)
+            # For billing_info, type property takes precedence over xml attribute when type = bacs or becs, e.g. <billing info><type>bacs</type></billing_info>. 
+            if attrname in self.xml_attribute_attributes and (
+              (root_name != 'billing_info' and attrname == 'type') 
+              or (root_name == 'billing_info' and value not in ('bacs', 'becs'))
+            ):
+              elem.attrib[attrname] = six.text_type(value)
             else:
                 sub_elem = self.element_for_value(attrname, value)
                 elem.append(sub_elem)
