@@ -19,7 +19,10 @@ Content-Type: application/xml; charset=utf-8
     <subscription_add_on>
       <add_on_code>itemmock</add_on_code>
       <unit_amount_in_cents type="integer">200</unit_amount_in_cents>
-      <add_on_source>type</add_on_source>
+      <add_on_source>item</add_on_source>
+    </subscription_add_on>
+    <subscription_add_on>
+      <add_on_code>tiered_add_on</add_on_code>
     </subscription_add_on>
   </subscription_add_ons>
   <account>
@@ -84,6 +87,23 @@ Location: https://api.recurly.com/v2/subscriptions/12345678901234567890123456789
       <quantity type="integer">1</quantity>
       <add_on_source>item</add_on_source>
     </subscription_add_on>
+    <subscription_add_on>
+      <add_on_type>fixed</add_on_type>
+      <add_on_code>tiered_add_on</add_on_code>
+      <quantity type="integer">1</quantity>
+      <revenue_schedule_type>evenly</revenue_schedule_type>
+      <tier_type>tiered</tier_type>
+      <tiers type="array">
+        <tier>
+          <ending_quantity type="integer">2000</ending_quantity>
+          <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+        </tier>
+        <tier>
+          <ending_quantity type="integer">999999999</ending_quantity>
+          <unit_amount_in_cents type="integer">800</unit_amount_in_cents>
+        </tier>
+      </tiers>
+      </subscription_add_on>
   </subscription_add_ons>
   <a name="cancel" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel" method="put"/>
   <a name="terminate" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/terminate" method="put"/>

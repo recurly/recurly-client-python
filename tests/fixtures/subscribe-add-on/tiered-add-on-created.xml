@@ -1,0 +1,57 @@
+POST https://api.recurly.com/v2/plans/basicplan/add_ons HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on>
+  <add_on_code>tiered_add_on</add_on_code>
+  <name>Quantity-Based Pricing Add-On</name>
+  <display_quantity_on_hosted_page>true</display_quantity_on_hosted_page>
+  <tier_type>tiered</tier_type>
+  <tiers>
+    <tier>
+      <ending_quantity type="integer">2000</ending_quantity>
+      <unit_amount_in_cents><USD type="integer">1000</USD></unit_amount_in_cents>
+    </tier>
+    <tier>
+      <unit_amount_in_cents><USD type="integer">800</USD></unit_amount_in_cents>
+    </tier>
+  </tiers>
+</add_on>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/plans/basicplan/add_ons/tiered_add_on
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on href="https://api.recurly.com/v2/plans/basicplan/add_ons/tiered_add_on">
+  <plan href="https://api.recurly.com/v2/plans/basicplan"/>
+  <add_on_code>tiered_add_on</add_on_code>
+  <name>Quantity-Based Pricing Add-On</name>
+  <default_quantity type="integer">1</default_quantity>
+  <display_quantity_on_hosted_page type="boolean">true</display_quantity_on_hosted_page>
+  <tiers type="array">
+    <tier>
+      <ending_quantity type="integer">2000</ending_quantity>
+      <unit_amount_in_cents>
+        <USD type="integer">1000</USD>
+      </unit_amount_in_cents>
+    </tier>
+    <tier>
+      <ending_quantity type="integer">999999999</ending_quantity>
+      <unit_amount_in_cents>
+        <USD type="integer">800</USD>
+      </unit_amount_in_cents>
+    </tier>
+  </tiers>
+  <accounting_code nil="nil"></accounting_code>
+  <add_on_type>fixed</add_on_type>
+  <optional type="boolean">true</optional>
+  <revenue_schedule_type>evenly</revenue_schedule_type>
+  <tier_type>tiered</tier_type>
+  <created_at type="datetime">2020-07-29T18:45:04Z</created_at>
+  <updated_at type="datetime">2020-07-29T18:45:04Z</updated_at>
+</add_on> 

@@ -1628,6 +1628,26 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscribe-add-on/second-add-on-created.xml'):
                 plan.create_add_on(second_add_on)
 
+            # create tiered add-on
+            tiered_add_on = AddOn(
+              add_on_code = 'tiered_add_on',
+              name = 'Quantity-Based Pricing Add-On',
+              tier_type = "tiered",
+              display_quantity_on_hosted_page = "true",
+              tiers = [
+                recurly.Tier(
+                  ending_quantity = 2000,
+                  unit_amount_in_cents = recurly.Money(USD=1000)
+                ),
+                recurly.Tier(
+                  unit_amount_in_cents = recurly.Money(USD=800)
+                )
+              ]  
+            )
+
+            with self.mock_request('subscribe-add-on/tiered-add-on-created.xml'):
+              plan.create_add_on(tiered_add_on)
+
             account_code='sad-on-%s' % self.test_id
             sub = Subscription(
                 plan_code='basicplan',
@@ -1638,10 +1658,15 @@ class TestResources(RecurlyTest):
                     SubscriptionAddOn(
                         add_on_code='second_add_on',
                     ),
+                    # create sub add-on with item
                     SubscriptionAddOn(
                         add_on_code=item.item_code,
                         unit_amount_in_cents=200,
-                        add_on_source='type'
+                        add_on_source='item'
+                    ),
+                    # create sub add-on with tiers
+                    SubscriptionAddOn(
+                      add_on_code='tiered_add_on',
                     )
                 ],
                 currency='USD',
@@ -1671,7 +1696,7 @@ class TestResources(RecurlyTest):
             self.assertEqual(sub_amount, 1000)
 
             # Test that the add-ons' amounts aren't real Money instances either.
-            add_on_1, add_on_2, add_on_3 = sub.subscription_add_ons
+            add_on_1, add_on_2, add_on_3, add_on_4 = sub.subscription_add_ons
             self.assertIsInstance(add_on_1, SubscriptionAddOn)
             amount_1 = add_on_1.unit_amount_in_cents
             self.assertTrue(not isinstance(amount_1, Money))
@@ -1680,6 +1705,10 @@ class TestResources(RecurlyTest):
             # Items can be used for subscription add-ons
             add_on_source = add_on_3.add_on_source
             self.assertEqual(add_on_source, "item")
+
+            # Tiered add-ons can be used for subscription add-ons
+            self.assertEqual(add_on_4.tier_type, "tiered")
+            self.assertTrue(len(add_on_4.tiers) == 2)
 
             with self.mock_request('subscribe-add-on/account-exists.xml'):
                 account = Account.get(account_code)
