@@ -1625,6 +1625,8 @@ class SubscriptionChange(Resource):
         Deleted at
     id : str
         The ID of the Subscription Change.
+    invoice_collection : InvoiceCollection
+        Invoice Collection
     object : str
         Object type
     plan : PlanMini
@@ -1652,6 +1654,7 @@ class SubscriptionChange(Resource):
         "created_at": datetime,
         "deleted_at": datetime,
         "id": str,
+        "invoice_collection": "InvoiceCollection",
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
@@ -1692,11 +1695,14 @@ class SubscriptionAddOn(Resource):
     tier_type : str
         The type of tiering used by the Add-on.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
-        Empty unless `tier_type` is `tiered`, `volume`, or `stairstep`.
+        If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
+        removed and replaced by the tiers in the request.
     unit_amount : float
         This is priced in the subscription's currency.
     updated_at : datetime
         Updated at
+    usage_percentage : float
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
     """
 
     schema = {
@@ -1713,6 +1719,7 @@ class SubscriptionAddOn(Resource):
         "tiers": ["SubscriptionAddOnTier"],
         "unit_amount": float,
         "updated_at": datetime,
+        "usage_percentage": float,
     }
 
 
@@ -1722,6 +1729,8 @@ class AddOnMini(Resource):
     ----------
     accounting_code : str
         Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
+    add_on_type : str
+        Whether the add-on type is fixed, or usage-based.
     code : str
         The unique identifier for the add-on within its plan.
     external_sku : str
@@ -1730,20 +1739,30 @@ class AddOnMini(Resource):
         Add-on ID
     item_id : str
         Item ID
+    measured_unit_id : str
+        System-generated unique identifier for an measured unit associated with the add-on.
     name : str
         Describes your add-on and will appear in subscribers' invoices.
     object : str
         Object type
+    usage_percentage : float
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
+    usage_type : str
+        Type of usage, returns usage type if `add_on_type` is `usage`.
     """
 
     schema = {
         "accounting_code": str,
+        "add_on_type": str,
         "code": str,
         "external_sku": str,
         "id": str,
         "item_id": str,
+        "measured_unit_id": str,
         "name": str,
         "object": str,
+        "usage_percentage": float,
+        "usage_type": str,
     }
 
 
@@ -1909,6 +1928,43 @@ class Pricing(Resource):
     schema = {"currency": str, "unit_amount": float}
 
 
+class MeasuredUnit(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        Created at
+    deleted_at : datetime
+        Deleted at
+    description : str
+        Optional internal description.
+    display_name : str
+        Display name for the measured unit. Can only contain spaces, underscores and must be alphanumeric.
+    id : str
+        Item ID
+    name : str
+        Unique internal name of the measured unit on your site.
+    object : str
+        Object type
+    state : str
+        The current state of the measured unit.
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "created_at": datetime,
+        "deleted_at": datetime,
+        "description": str,
+        "display_name": str,
+        "id": str,
+        "name": str,
+        "object": str,
+        "state": str,
+        "updated_at": datetime,
+    }
+
+
 class BinaryFile(Resource):
     """
     Attributes
@@ -2049,6 +2105,8 @@ class AddOn(Resource):
     ----------
     accounting_code : str
         Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
+    add_on_type : str
+        Whether the add-on type is fixed, or usage-based.
     code : str
         The unique identifier for the add-on within its plan.
     created_at : datetime
@@ -2067,6 +2125,8 @@ class AddOn(Resource):
         Add-on ID
     item : ItemMini
         Just the important parts.
+    measured_unit_id : str
+        System-generated unique identifier for an measured unit associated with the add-on.
     name : str
         Describes your add-on and will appear in subscribers' invoices.
     object : str
@@ -2087,10 +2147,15 @@ class AddOn(Resource):
         Tiers
     updated_at : datetime
         Last updated at
+    usage_percentage : float
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
+    usage_type : str
+        Type of usage, returns usage type if `add_on_type` is `usage`.
     """
 
     schema = {
         "accounting_code": str,
+        "add_on_type": str,
         "code": str,
         "created_at": datetime,
         "currencies": ["AddOnPricing"],
@@ -2100,6 +2165,7 @@ class AddOn(Resource):
         "external_sku": str,
         "id": str,
         "item": "ItemMini",
+        "measured_unit_id": str,
         "name": str,
         "object": str,
         "optional": bool,
@@ -2110,6 +2176,8 @@ class AddOn(Resource):
         "tier_type": str,
         "tiers": ["Tier"],
         "updated_at": datetime,
+        "usage_percentage": float,
+        "usage_type": str,
     }
 
 
@@ -2231,7 +2299,7 @@ class SubscriptionChangePreview(Resource):
     id : str
         The ID of the Subscription Change.
     invoice_collection : InvoiceCollection
-        Invoice collection
+        Invoice Collection
     object : str
         Object type
     plan : PlanMini
@@ -2269,4 +2337,53 @@ class SubscriptionChangePreview(Resource):
         "subscription_id": str,
         "unit_amount": float,
         "updated_at": datetime,
+    }
+
+
+class Usage(Resource):
+    """
+    Attributes
+    ----------
+    amount : float
+        The amount of usage. Can be positive, negative, or 0. No decimals allowed, we will strip them. If the usage-based add-on is billed with a percentage, your usage will be a monetary amount you will want to format in cents. (e.g., $5.00 is "500").
+    billed_at : datetime
+        When the usage record was billed on an invoice.
+    created_at : datetime
+        When the usage record was created in Recurly.
+    id : str
+    measured_unit_id : str
+        The ID of the measured unit associated with the add-on the usage record is for.
+    merchant_tag : str
+        Custom field for recording the id in your own system associated with the usage, so you can provide auditable usage displays to your customers using a GET on this endpoint.
+    object : str
+        Object type
+    recording_timestamp : datetime
+        When the usage was recorded in your system.
+    tier_type : str
+        The pricing model for the add-on.  For more information,
+        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
+    tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
+        The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = null
+    updated_at : datetime
+        When the usage record was billed on an invoice.
+    usage_timestamp : datetime
+        When the usage actually happened. This will define the line item dates this usage is billed under and is important for revenue recognition.
+    usage_type : str
+        Type of usage, returns usage type if `add_on_type` is `usage`.
+    """
+
+    schema = {
+        "amount": float,
+        "billed_at": datetime,
+        "created_at": datetime,
+        "id": str,
+        "measured_unit_id": str,
+        "merchant_tag": str,
+        "object": str,
+        "recording_timestamp": datetime,
+        "tier_type": str,
+        "tiers": ["SubscriptionAddOnTier"],
+        "updated_at": datetime,
+        "usage_timestamp": datetime,
+        "usage_type": str,
     }

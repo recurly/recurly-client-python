@@ -9,6 +9,7 @@ ERROR_MAP = {
     500: "InternalServerError",
     502: "BadGatewayError",
     503: "ServiceUnavailableError",
+    504: "TimeoutError",
     304: "NotModifiedError",
     400: "BadRequestError",
     401: "UnauthorizedError",
@@ -39,6 +40,10 @@ class BadGatewayError(ServerError):
 
 
 class ServiceUnavailableError(ServerError):
+    pass
+
+
+class TimeoutError(ServerError):
     pass
 
 
