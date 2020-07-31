@@ -96,10 +96,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         email : str
             Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
@@ -354,10 +354,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -446,10 +446,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -491,10 +491,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
             Filter by type when:
@@ -580,10 +580,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         original : str
             Filter by original field.
@@ -702,10 +702,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -831,10 +831,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         state : str
             Filter by state.
@@ -882,10 +882,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
             Filter by type field. The value `payment` will return both `purchase` and `capture` transactions.
@@ -931,10 +931,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         email : str
             Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
@@ -981,10 +981,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -1024,10 +1024,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -1139,10 +1139,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -1170,10 +1170,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -1230,10 +1230,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         related_type : str
             Filter by related type.
@@ -1294,10 +1294,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         state : str
             Filter by state.
@@ -1397,6 +1397,121 @@ class Client(BaseClient):
         path = self._interpolate_path("/items/%s/reactivate", item_id)
         return self._make_request("PUT", path, None, None)
 
+    def list_measured_unit(self, **kwargs):
+        """List a site's measured units
+
+        Parameters
+        ----------
+
+        Keyword Arguments
+        =================
+        ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        limit : int
+            Limit number of records 1-200.
+        order : str
+            Sort order.
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : datetime
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : datetime
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        state : str
+            Filter by state.
+
+        Returns
+        -------
+        Pager
+            A list of the site's measured units.
+        """
+        path = self._interpolate_path("/measured_units")
+        return Pager(self, path, kwargs)
+
+    def create_measured_unit(self, body):
+        """Create a new measured unit
+
+        Parameters
+        ----------
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        MeasuredUnit
+            A new measured unit.
+        """
+        path = self._interpolate_path("/measured_units")
+        return self._make_request("POST", path, body, None)
+
+    def get_measured_unit(self, measured_unit_id):
+        """Fetch a measured unit
+
+        Parameters
+        ----------
+        measured_unit_id : str
+            Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`.
+
+
+        Returns
+        -------
+        MeasuredUnit
+            An item.
+        """
+        path = self._interpolate_path("/measured_units/%s", measured_unit_id)
+        return self._make_request("GET", path, None, None)
+
+    def update_measured_unit(self, measured_unit_id, body):
+        """Update a measured unit
+
+        Parameters
+        ----------
+        measured_unit_id : str
+            Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        MeasuredUnit
+            The updated measured_unit.
+        """
+        path = self._interpolate_path("/measured_units/%s", measured_unit_id)
+        return self._make_request("PUT", path, body, None)
+
+    def remove_measured_unit(self, measured_unit_id):
+        """Remove a measured unit
+
+        Parameters
+        ----------
+        measured_unit_id : str
+            Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`.
+
+
+        Returns
+        -------
+        MeasuredUnit
+            A measured unit.
+        """
+        path = self._interpolate_path("/measured_units/%s", measured_unit_id)
+        return self._make_request("DELETE", path, None, None)
+
     def list_invoices(self, **kwargs):
         """List a site's invoices
 
@@ -1426,10 +1541,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
             Filter by type when:
@@ -1639,10 +1754,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         original : str
             Filter by original field.
@@ -1686,10 +1801,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -1765,10 +1880,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         original : str
             Filter by original field.
@@ -1848,10 +1963,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         state : str
             Filter by state.
@@ -1965,10 +2080,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         state : str
             Filter by state.
@@ -2088,10 +2203,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         state : str
             Filter by state.
@@ -2150,10 +2265,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -2263,10 +2378,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         state : str
             Filter by state.
@@ -2564,10 +2679,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
             Filter by type when:
@@ -2615,10 +2730,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         original : str
             Filter by original field.
@@ -2662,10 +2777,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
 
         Returns
@@ -2677,6 +2792,121 @@ class Client(BaseClient):
             "/subscriptions/%s/coupon_redemptions", subscription_id
         )
         return Pager(self, path, kwargs)
+
+    def list_usage(self, subscription_id, add_on_id, **kwargs):
+        """List a subscription add-on's usage records
+
+        Parameters
+        ----------
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+        add_on_id : str
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
+
+        Keyword Arguments
+        =================
+        limit : int
+            Limit number of records 1-200.
+        order : str
+            Sort order.
+        sort : str
+            Sort field. You *really* only want to sort by `usage_timestamp` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : datetime
+            Inclusively filter by begin_time when `sort=usage_timestamp` or `sort=recorded_timestamp`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : datetime
+            Inclusively filter by end_time when `sort=usage_timestamp` or `sort=recorded_timestamp`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        billing_status : str
+            Filter by usage record's billing status
+
+        Returns
+        -------
+        Pager
+            A list of the subscription add-on's usage records.
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/add_ons/%s/usage", subscription_id, add_on_id
+        )
+        return Pager(self, path, kwargs)
+
+    def create_usage(self, subscription_id, add_on_id, body):
+        """Log a usage record on this subscription add-on
+
+        Parameters
+        ----------
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+        add_on_id : str
+            Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Usage
+            The created usage record.
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/add_ons/%s/usage", subscription_id, add_on_id
+        )
+        return self._make_request("POST", path, body, None)
+
+    def get_usage(self, usage_id):
+        """Get a usage record
+
+        Parameters
+        ----------
+        usage_id : str
+            Usage Record ID.
+
+
+        Returns
+        -------
+        Usage
+            The usage record.
+        """
+        path = self._interpolate_path("/usage/%s", usage_id)
+        return self._make_request("GET", path, None, None)
+
+    def update_usage(self, usage_id, body):
+        """Update a usage record
+
+        Parameters
+        ----------
+        usage_id : str
+            Usage Record ID.
+        body
+            The body of the request.
+
+
+        Returns
+        -------
+        Usage
+            The updated usage record.
+        """
+        path = self._interpolate_path("/usage/%s", usage_id)
+        return self._make_request("PUT", path, body, None)
+
+    def remove_usage(self, usage_id):
+        """Delete a usage record.
+
+        Parameters
+        ----------
+        usage_id : str
+            Usage Record ID.
+
+
+        Returns
+        -------
+        Empty
+            Usage was successfully deleted.
+        """
+        path = self._interpolate_path("/usage/%s", usage_id)
+        return self._make_request("DELETE", path, None, None)
 
     def list_transactions(self, **kwargs):
         """List a site's transactions
@@ -2707,10 +2937,10 @@ class Client(BaseClient):
             order. In descending order updated records will move behind the cursor and could
             prevent some records from being returned.
         begin_time : datetime
-            Filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         end_time : datetime
-            Filter by end_time when `sort=created_at` or `sort=updated_at`.
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
         type : str
             Filter by type field. The value `payment` will return both `purchase` and `capture` transactions.
