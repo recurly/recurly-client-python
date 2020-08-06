@@ -1611,6 +1611,7 @@ class SubscriptionAddOn(Resource):
         'unit_amount_in_cents',
         'address',
         'add_on_source',
+        'tiers'
     )
 
 class Tier(Resource):
