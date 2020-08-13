@@ -1625,8 +1625,6 @@ class SubscriptionChange(Resource):
         Deleted at
     id : str
         The ID of the Subscription Change.
-    invoice_collection : InvoiceCollection
-        Invoice Collection
     object : str
         Object type
     plan : PlanMini
@@ -1635,8 +1633,6 @@ class SubscriptionChange(Resource):
         Subscription quantity
     revenue_schedule_type : str
         Revenue schedule type
-    setup_fee_revenue_schedule_type : str
-        Setup fee revenue schedule type
     shipping : SubscriptionShipping
         Subscription shipping details
     subscription_id : str
@@ -1654,12 +1650,10 @@ class SubscriptionChange(Resource):
         "created_at": datetime,
         "deleted_at": datetime,
         "id": str,
-        "invoice_collection": "InvoiceCollection",
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
         "revenue_schedule_type": str,
-        "setup_fee_revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "subscription_id": str,
         "unit_amount": float,
@@ -1693,7 +1687,8 @@ class SubscriptionAddOn(Resource):
     subscription_id : str
         Subscription ID
     tier_type : str
-        The type of tiering used by the Add-on.
+        The pricing model for the add-on.  For more information,
+        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
         removed and replaced by the tiers in the request.
@@ -2026,7 +2021,7 @@ class Plan(Resource):
     trial_length : int
         Length of plan's trial period in `trial_units`. `0` means `no trial`.
     trial_requires_billing_info : bool
-        Allow free trial subscriptions to be created without billing info.
+        Allow free trial subscriptions to be created without billing info. Should not be used if billing info is needed for initial invoice due to existing uninvoiced charges or setup fee.
     trial_unit : str
         Units for the plan's trial period.
     updated_at : datetime
@@ -2111,7 +2106,7 @@ class AddOn(Resource):
         The unique identifier for the add-on within its plan.
     created_at : datetime
         Created at
-    currencies : :obj:`list` of :obj:`AddOnPricing`
+    currencies : :obj:`list` of :obj:`Pricing`
         Add-on pricing
     default_quantity : int
         Default quantity for the hosted pages.
@@ -2142,7 +2137,8 @@ class AddOn(Resource):
     tax_code : str
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tier_type : str
-        The type of tiering used by the Add-on.
+        The pricing model for the add-on.  For more information,
+        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
     tiers : :obj:`list` of :obj:`Tier`
         Tiers
     updated_at : datetime
@@ -2158,7 +2154,7 @@ class AddOn(Resource):
         "add_on_type": str,
         "code": str,
         "created_at": datetime,
-        "currencies": ["AddOnPricing"],
+        "currencies": ["Pricing"],
         "default_quantity": int,
         "deleted_at": datetime,
         "display_quantity": bool,
@@ -2179,19 +2175,6 @@ class AddOn(Resource):
         "usage_percentage": float,
         "usage_type": str,
     }
-
-
-class AddOnPricing(Resource):
-    """
-    Attributes
-    ----------
-    currency : str
-        3-letter ISO 4217 currency code.
-    unit_amount : float
-        Unit price
-    """
-
-    schema = {"currency": str, "unit_amount": float}
 
 
 class ItemMini(Resource):
@@ -2278,64 +2261,6 @@ class ShippingMethod(Resource):
         "name": str,
         "object": str,
         "tax_code": str,
-        "updated_at": datetime,
-    }
-
-
-class SubscriptionChangePreview(Resource):
-    """
-    Attributes
-    ----------
-    activate_at : datetime
-        Activated at
-    activated : bool
-        Returns `true` if the subscription change is activated.
-    add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
-        These add-ons will be used when the subscription renews.
-    created_at : datetime
-        Created at
-    deleted_at : datetime
-        Deleted at
-    id : str
-        The ID of the Subscription Change.
-    invoice_collection : InvoiceCollection
-        Invoice Collection
-    object : str
-        Object type
-    plan : PlanMini
-        Just the important parts.
-    quantity : int
-        Subscription quantity
-    revenue_schedule_type : str
-        Revenue schedule type
-    setup_fee_revenue_schedule_type : str
-        Setup fee revenue schedule type
-    shipping : SubscriptionShipping
-        Subscription shipping details
-    subscription_id : str
-        The ID of the subscription that is going to be changed.
-    unit_amount : float
-        Unit amount
-    updated_at : datetime
-        Updated at
-    """
-
-    schema = {
-        "activate_at": datetime,
-        "activated": bool,
-        "add_ons": ["SubscriptionAddOn"],
-        "created_at": datetime,
-        "deleted_at": datetime,
-        "id": str,
-        "invoice_collection": "InvoiceCollection",
-        "object": str,
-        "plan": "PlanMini",
-        "quantity": int,
-        "revenue_schedule_type": str,
-        "setup_fee_revenue_schedule_type": str,
-        "shipping": "SubscriptionShipping",
-        "subscription_id": str,
-        "unit_amount": float,
         "updated_at": datetime,
     }
 
