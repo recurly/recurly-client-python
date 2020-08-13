@@ -416,7 +416,9 @@ class BillingInfo(Resource):
         'transaction_type',
         'iban',
         'sort_code',
-        'bsb_code'
+        'bsb_code',
+        'tax_identifier',
+        'tax_identifier_type'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
