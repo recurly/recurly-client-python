@@ -7033,7 +7033,7 @@ paths:
       - lang: Python
         source: |
           params = {"limit": 200}
-          invoices = client.list_invoices(params).items()
+          invoices = client.list_invoices(params=params).items()
           for invoice in invoices:
               print(invoice.number)
       - lang: ".NET"
