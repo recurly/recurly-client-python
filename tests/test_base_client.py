@@ -149,7 +149,7 @@ class TestBaseClient(unittest.TestCase):
         request = MagicMock(return_value=None)
         with get_resource_client(True, request) as conn:
             client = MockClient("apikey")
-            resource = client.get_resource("123", {"q": 123})
+            resource = client.get_resource("123", params={"q": 123})
             request.assert_called_with(
                 "GET", "/resources/123?q=123", None, headers=expected_headers
             )
@@ -234,7 +234,7 @@ class TestBaseClient(unittest.TestCase):
                 client = MockClient("apikey")
                 d = datetime(2020, 10, 5)
                 params = {"q": 123, "d": d, "c": False, "b": True}
-                resource = client.get_resource("123", params)
+                resource = client.get_resource("123", params=params)
                 url = "/resources/123?q=123&d=2020-10-05T00%3A00%3A00&c=false&b=true"
 
                 request.assert_called_with("GET", url, None, headers=expected_headers)

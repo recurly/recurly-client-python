@@ -29,7 +29,7 @@ class BaseClient:
         self.__api_key = api_key
         self.__conn = http.client.HTTPSConnection(HOST, PORT)
 
-    def _make_request(self, method, path, body, params):
+    def _make_request(self, method, path, body, **options):
         try:
             basic_auth = b64encode(bytes(self.__api_key + ":", "ascii")).decode("ascii")
             headers = {
@@ -38,11 +38,17 @@ class BaseClient:
                 "Accept": "application/vnd.recurly.%s" % self.api_version(),
                 "Content-Type": "application/json",
             }
+
+            # override headers with custom headers in the options
+            if "headers" in options:
+                for k, v in options["headers"].items():
+                    headers[k] = v
+
             if body:
                 body = json.dumps(body, default=request_converter)
 
-            if params:
-                path += "?" + self._url_encode(params)
+            if "params" in options:
+                path += "?" + self._url_encode(options["params"])
 
             self.__conn.request(method, path, body, headers=headers)
             request = Request(method, path, body)

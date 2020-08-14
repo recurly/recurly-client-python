@@ -329,7 +329,8 @@ paths:
           }
       - lang: Python
         source: |
-          sites = client.list_sites(limit=200).items()
+          params = {"limit": 200}
+          sites = client.list_sites(params=params).items()
           for site in sites:
               print(site.subdomain)
       - lang: ".NET"
@@ -545,7 +546,8 @@ paths:
           }
       - lang: Python
         source: |
-          accounts = client.list_accounts(limit=200).items()
+          params = {"limit": 200}
+          accounts = client.list_accounts(params=params).items()
           for account in accounts:
               print(account.code)
       - lang: ".NET"
@@ -2304,7 +2306,8 @@ paths:
           }
       - lang: Python
         source: |
-          redemptions = client.list_account_coupon_redemptions(account_id, limit=200).items()
+          params = {"limit": 200}
+          redemptions = client.list_account_coupon_redemptions(account_id, params=params).items()
           for redemption in redemptions:
               print(redemption.id)
       - lang: ".NET"
@@ -2772,7 +2775,8 @@ paths:
           }
       - lang: Python
         source: |
-          payments = client.list_account_credit_payments(account_id, limit=200).items()
+          params = {"limit": 200}
+          payments = client.list_account_credit_payments(account_id, params=params).items()
           for payment in payments:
               print(payment.id)
       - lang: ".NET"
@@ -2877,7 +2881,8 @@ paths:
           }
       - lang: Python
         source: |
-          invoices = client.list_account_invoices(account_id, limit=200).items()
+          params = {"limit": 200}
+          invoices = client.list_account_invoices(account_id, params=params).items()
           for invoice in invoices:
               print(invoice.number)
       - lang: ".NET"
@@ -3325,7 +3330,8 @@ paths:
           }
       - lang: Python
         source: |
-          line_items = client.list_account_line_items(account_id, limit=200).items()
+          params = {"limit": 200}
+          line_items = client.list_account_line_items(account_id, params=params).items()
           for line_item in line_items:
               print(line_item.id)
       - lang: ".NET"
@@ -3587,7 +3593,8 @@ paths:
           }
       - lang: Python
         source: |
-          line_items = client.list_account_line_items(account_id, limit=200).items()
+          params = {"limit": 200}
+          line_items = client.list_account_line_items(account_id, params=params).items()
           for line_item in line_items:
               print(line_item.id)
       - lang: ".NET"
@@ -4507,7 +4514,8 @@ paths:
           }
       - lang: Python
         source: |
-          subscriptions = client.list_account_subscriptions(account.id, limit=200).items()
+          params = {"limit": 200}
+          subscriptions = client.list_account_subscriptions(account.id, params=params).items()
           for subscription in subscriptions:
               print(subscription.uuid)
       - lang: ".NET"
@@ -4612,7 +4620,8 @@ paths:
           }
       - lang: Python
         source: |
-          transactions = client.list_account_transactions(account_id, limit=200).items()
+          params = {"limit": 200}
+          transactions = client.list_account_transactions(account_id, params=params).items()
           for transaction in transactions:
               print("Transaction %s" % transaction.id)
       - lang: ".NET"
@@ -4711,7 +4720,8 @@ paths:
       x-code-samples:
       - lang: Python
         source: |
-          child_accounts = client.list_child_accounts(account_id, limit=200).items()
+          params = {"limit": 200}
+          child_accounts = client.list_child_accounts(account_id, params=params).items()
           for account in child_accounts:
               print("Child Account %s" % account.code)
       - lang: Ruby
@@ -4796,7 +4806,8 @@ paths:
           }
       - lang: Python
         source: |
-          acquisitions = client.list_account_acquisition(limit=200).items()
+          params = {"limit": 200}
+          acquisitions = client.list_account_acquisition(params=params).items()
           for acquisition in acquisitions:
               print(acquisition.id)
       - lang: ".NET"
@@ -4895,7 +4906,8 @@ paths:
           }
       - lang: Python
         source: |
-          coupons = client.list_coupons(limit=200).items()
+          params = {"limit": 200}
+          coupons = client.list_coupons(params=params).items()
           for coupon in coupons:
               print(coupon.code)
       - lang: ".NET"
@@ -5647,7 +5659,8 @@ paths:
           }
       - lang: Python
         source: |
-          payments = client.list_credit_payments(limit=200).items()
+          params = {"limit": 200}
+          payments = client.list_credit_payments(params=params).items()
           for payment in payments:
               print("Credit Payment %s" % payment.id)
       - lang: ".NET"
@@ -5779,7 +5792,8 @@ paths:
           }
       - lang: Python
         source: |
-          custom_fields = client.list_custom_field_definitions(limit=200).items()
+          params = {"limit": 200}
+          custom_fields = client.list_custom_field_definitions(params=params).items()
           for custom_field in custom_fields:
               print(custom_field.name)
       - lang: ".NET"
@@ -5996,7 +6010,8 @@ paths:
           }
       - lang: Python
         source: |
-          items = client.list_items(limit=200).items()
+          params = {"limit": 200}
+          items = client.list_items(params=params).items()
           for item in items:
               print(item.code)
       - lang: ".NET"
@@ -7017,7 +7032,8 @@ paths:
           }
       - lang: Python
         source: |
-          invoices = client.list_invoices(limit=200).items()
+          params = {"limit": 200}
+          invoices = client.list_invoices(params=params).items()
           for invoice in invoices:
               print(invoice.number)
       - lang: ".NET"
@@ -7786,7 +7802,8 @@ paths:
       - lang: Python
         source: |
           try:
-              invoice = client.mark_invoice_successful(invoice_id)
+              params = {"limit": 200}
+              invoice = client.mark_invoice_successful(invoice_id, params=params)
               print("Marked Invoice successful %s" % invoice)
           except recurly.errors.ValidationError as e:
               # If the request was invalid, you may want to tell your user
@@ -8209,9 +8226,10 @@ paths:
       - lang: Python
         source: |
           try:
-              line_items = client.list_invoice_line_items(invoice_id, limit=200).items()
+              params = {"limit": 200}
+              line_items = client.list_invoice_line_items(invoice_id, params=params).items()
               for item in line_items:
-                print("Invoice Line Items %s" % item.id)
+                  print("Invoice Line Items %s" % item.id)
           except recurly.errors.NotFoundError:
               # If the resource was not found, you may want to alert the user or
               # just return nil
@@ -8307,14 +8325,10 @@ paths:
           }
       - lang: Python
         source: |
-          try:
-              redemptions = client.list_invoice_coupon_redemptions(invoice_id, limit=200).items()
-              for redemption in redemptions:
-                print("Invoice Coupon Redemption %s" % redemption)
-          except recurly.errors.NotFoundError:
-              # If the resource was not found, you may want to alert the user or
-              # just return nil
-              print("Resource Not Found")
+          params = {"limit": 200}
+          redemptions = client.list_invoice_coupon_redemptions(invoice_id, params=params).items()
+          for redemption in redemptions:
+              print("Invoice Coupon Redemption %s" % redemption)
       - lang: ".NET"
         source: |
           var couponRedemptions = client.ListInvoiceCouponRedemptions(invoiceId);
@@ -8408,9 +8422,10 @@ paths:
       - lang: Python
         source: |
           try:
-              related_invoices = client.list_related_invoices(invoice_id, limit=200).items()
+              params = {"limit": 200}
+              related_invoices = client.list_related_invoices(invoice_id, params=params).items()
               for invoice in related_invoices:
-                print("Related invoice %s" % invoice.id)
+                  print("Related invoice %s" % invoice.id)
           except recurly.errors.NotFoundError:
               # If the resource was not found, you may want to alert the user or
               # just return nil
@@ -8674,7 +8689,8 @@ paths:
           }
       - lang: Python
         source: |
-          line_items = client.list_line_items(limit=200).items()
+          params = {"limit": 200}
+          line_items = client.list_line_items(params=params).items()
           for line_item in line_items:
               print(line_item.id)
       - lang: ".NET"
@@ -9009,7 +9025,8 @@ paths:
           }
       - lang: Python
         source: |
-          plans = client.list_plans(limit=200).items()
+          params = {"limit": 200}
+          plans = client.list_plans(params=params).items()
           for plan in plans:
               print(plan.code)
       - lang: ".NET"
@@ -9679,7 +9696,8 @@ paths:
           }
       - lang: Python
         source: |
-          add_ons = client.list_plan_add_ons(plan_id).items()
+          params = {"limit": 200}
+          add_ons = client.list_plan_add_ons(plan_id, params=params).items()
           for add_on in add_ons:
               print(add_on.code)
       - lang: ".NET"
@@ -10351,7 +10369,8 @@ paths:
           }
       - lang: Python
         source: |
-          add_ons = client.list_add_ons().items()
+          params = {"limit": 200}
+          add_ons = client.list_add_ons(params=params).items()
           for add_on in add_ons:
               print("Add-On %s" % add_on.code)
       - lang: ".NET"
@@ -10567,9 +10586,10 @@ paths:
           }
       - lang: Python
         source: |
-          shipping_methods = client.list_shipping_methods(limit=200).items()
+          params = {"limit": 200}
+          shipping_methods = client.list_shipping_methods(params=params).items()
           for shipping_method in shipping_methods:
-            print("Shipping Method %s" % shipping_method.code)
+              print("Shipping Method %s" % shipping_method.code)
       - lang: ".NET"
         source: |
           var shippingMethods = client.ListShippingMethods();
@@ -10819,7 +10839,8 @@ paths:
           }
       - lang: Python
         source: |
-          subscriptions = client.list_subscriptions(limit=200).items()
+          params = {"limit": 200}
+          subscriptions = client.list_subscriptions(params=params).items()
           for subscription in subscriptions:
               print(subscription.uuid)
       - lang: ".NET"
@@ -12563,7 +12584,8 @@ paths:
           }
       - lang: Python
         source: |
-          invoices = client.list_subscription_invoices(subscription_id).items()
+          params = {"limit": 200}
+          invoices = client.list_subscription_invoices(subscription_id, params=params).items()
           for invoice in invoices:
               print(invoice.number)
       - lang: ".NET"
@@ -12669,7 +12691,8 @@ paths:
           }
       - lang: Python
         source: |
-          line_items = client.list_subscription_line_items(subscription_id).items()
+          params = {"limit": 200}
+          line_items = client.list_subscription_line_items(subscription_id, params=params).items()
           for line_item in line_items:
               print(line_item.id)
       - lang: ".NET"
@@ -12765,7 +12788,10 @@ paths:
           }
       - lang: Python
         source: |
-          redemptions = client.list_subscription_coupon_redemptions(subscription_id).items()
+          params = {"limit": 200}
+          redemptions = client.list_subscription_coupon_redemptions(
+              subscription_id, params=params
+          ).items()
           for redemption in redemptions:
               print(redemption.uuid)
       - lang: ".NET"
@@ -13085,7 +13111,8 @@ paths:
           }
       - lang: Python
         source: |
-          transactions = client.list_transactions(limit=200).items()
+          params = {"limit": 200}
+          transactions = client.list_transactions(params=params).items()
           for transaction in transactions:
               print(transaction.uuid)
       - lang: ".NET"

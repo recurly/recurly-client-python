@@ -138,36 +138,36 @@ class TestPager(unittest.TestCase):
         with get_pager_first_item_client() as conn:
             client = MockClient("apikey")
             client._make_request = MagicMock()
-            pager = Pager(client, "/resources", {"limit": 3})
+            pager = Pager(client, "/resources", params={"limit": 3})
             pager.first()
             client._make_request.assert_called_with(
-                "GET", "/resources", None, {"limit": 1}
+                "GET", "/resources", None, params={"limit": 1}
             )
 
     def test_take(self):
         with get_pager_first_item_client() as conn:
             client = MockClient("apikey")
             client._make_request = MagicMock()
-            pager = Pager(client, "/resources", {"limit": 10})
+            pager = Pager(client, "/resources", params={"limit": 10})
             pager.take(3)
             client._make_request.assert_called_with(
-                "GET", "/resources", None, {"limit": 3}
+                "GET", "/resources", None, params={"limit": 3}
             )
 
     def test_count(self):
         with get_pager_count_client() as conn:
             client = MockClient("apikey")
             client._make_request = MagicMock()
-            pager = Pager(client, "/resources", {"limit": 3})
+            pager = Pager(client, "/resources", params={"limit": 3})
             pager.count()
             client._make_request.assert_called_with(
-                "HEAD", "/resources", None, {"limit": 3}
+                "HEAD", "/resources", None, params={"limit": 3}
             )
 
     def test_items(self):
         with get_pager_client() as conn:
             client = MockClient("apikey")
-            pager = Pager(client, "/resources", {})
+            pager = Pager(client, "/resources")
             item_count = 0
             for item in pager.items():
                 self.assertEqual(type(item), MyResource)
@@ -178,7 +178,7 @@ class TestPager(unittest.TestCase):
     def test_pages(self):
         with get_pager_client() as conn:
             client = MockClient("apikey")
-            pager = Pager(client, "/resources", {"limit": 3})
+            pager = Pager(client, "/resources", params={"limit": 3})
             page_count = 0
             item_count = 0
             for page in pager.pages():
@@ -193,7 +193,7 @@ class TestPager(unittest.TestCase):
     def test_empty_page(self):
         with get_empty_pager_client() as conn:
             client = MockClient("apikey")
-            pager = Pager(client, "/resources", {"limit": 3})
+            pager = Pager(client, "/resources", params={"limit": 3})
             item_count = 0
             for item in pager.items():
                 item_count += 1
