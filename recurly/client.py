@@ -2030,7 +2030,7 @@ class Client(BaseClient):
         Invoice
             The updated invoice.
         """
-        body = kwargs.pop("body", None)
+        body = options.pop("body", None)
         path = self._interpolate_path("/invoices/%s/collect", invoice_id)
         return self._make_request("PUT", path, body, **options)
 
@@ -3121,7 +3121,7 @@ class Client(BaseClient):
         Subscription
             A canceled or failed subscription.
         """
-        body = kwargs.pop("body", None)
+        body = options.pop("body", None)
         path = self._interpolate_path("/subscriptions/%s/cancel", subscription_id)
         return self._make_request("PUT", path, body, **options)
 
