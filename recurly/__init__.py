@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.9.18'
+__version__ = '2.9.19'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -46,7 +46,7 @@ SUBDOMAIN = 'api'
 API_KEY = None
 """The API key to use when authenticating API requests."""
 
-API_VERSION = '2.28'
+API_VERSION = '2.29'
 """The API version to use when making API requests."""
 
 CA_CERTS_FILE = None
@@ -416,7 +416,9 @@ class BillingInfo(Resource):
         'transaction_type',
         'iban',
         'sort_code',
-        'bsb_code'
+        'bsb_code',
+        'tax_identifier',
+        'tax_identifier_type'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)

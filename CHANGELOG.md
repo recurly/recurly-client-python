@@ -1,5 +1,12 @@
 ## Unreleased
 
+## Version 2.9.19 - August 20, 2020 ##
+
+This version brings us up to API version 2.29, but has no breaking changes
+
+- Add tiers attribute to sub add-on [PR](https://github.com/recurly/recurly-client-python/pull/417)
+- Add tax identifier fields to billing info [PR](https://github.com/recurly/recurly-client-python/pull/421)
+
 ## Version 2.9.18 - July 22, 2020 ##
 
 This version brings us up to API version 2.28, but has no breaking changes
