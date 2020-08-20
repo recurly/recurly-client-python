@@ -239,3 +239,15 @@ class TestBaseClient(unittest.TestCase):
 
                 request.assert_called_with("GET", url, None, headers=expected_headers)
                 self.assertEqual(type(resource), MyResource)
+
+    def test_client_can_set_timeout(self):
+        timeout = 3
+        client = MockClient("apikey", timeout=timeout)
+        self.assertEqual(client.timeout, timeout)
+
+    def test_client_timeout(self):
+        client = MockClient("apikey", timeout=0)
+        with self.assertRaises(recurly.NetworkError) as e:
+            client._make_request("GET", "wef", body=None, params=None)
+
+        self.assertIn("Operation now in progress", str(e.exception))
