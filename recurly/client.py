@@ -11,14 +11,12 @@ class Client(BaseClient):
     def api_version(self):
         return "v2019-10-10"
 
-    def list_sites(self, **kwargs):
+    def list_sites(self, **options):
         """List sites
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -44,37 +42,41 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of sites.
         """
         path = self._interpolate_path("/sites")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_site(self, site_id):
         """Fetch a site
 
         Parameters
         ----------
+
         site_id : str
             Site ID or subdomain. For ID no prefix is used e.g. `e28zov4fw0v2`. For subdomain use prefix `subdomain-`, e.g. `subdomain-recurly`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Site
             A site.
         """
         path = self._interpolate_path("/sites/%s", site_id)
         return self._make_request("GET", path, None, None)
 
-    def list_accounts(self, **kwargs):
+    def list_accounts(self, **options):
         """List a site's accounts
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -111,23 +113,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's accounts.
         """
         path = self._interpolate_path("/accounts")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_account(self, body):
         """Create an account
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of AccountCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Account
             An account.
         """
@@ -139,12 +147,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Account
             An account.
         """
@@ -156,14 +169,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of AccountUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Account
             An account.
         """
@@ -175,12 +193,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Account
             An account.
         """
@@ -192,12 +215,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         AccountAcquisition
             An account's acquisition data.
         """
@@ -209,14 +237,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of AccountAcquisitionUpdatable.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         AccountAcquisition
             An account's updated acquisition data.
         """
@@ -228,12 +261,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Empty
             Acquisition data was succesfully deleted.
         """
@@ -245,12 +283,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Account
             An account.
         """
@@ -262,12 +305,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         AccountBalance
             An account's balance.
         """
@@ -279,12 +327,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         BillingInfo
             An account's billing information.
         """
@@ -296,14 +349,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of BillingInfoCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         BillingInfo
             Updated billing information.
         """
@@ -315,28 +373,35 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Empty
             Billing information deleted
         """
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_account_coupon_redemptions(self, account_id, **kwargs):
+    def list_account_coupon_redemptions(self, account_id, **options):
         """Show the coupon redemptions for an account
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -362,23 +427,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the the coupon redemptions on an account.
         """
         path = self._interpolate_path("/accounts/%s/coupon_redemptions", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_active_coupon_redemption(self, account_id):
         """Show the coupon redemption that is active on an account
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         CouponRedemption
             An active coupon redemption on an account.
         """
@@ -392,14 +463,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of CouponRedemptionCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         CouponRedemption
             Returns the new coupon redemption.
         """
@@ -413,12 +489,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         CouponRedemption
             Coupon redemption deleted.
         """
@@ -427,16 +508,18 @@ class Client(BaseClient):
         )
         return self._make_request("DELETE", path, None, None)
 
-    def list_account_credit_payments(self, account_id, **kwargs):
+    def list_account_credit_payments(self, account_id, **options):
         """List an account's credit payments
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         limit : int
             Limit number of records 1-200.
         order : str
@@ -454,22 +537,25 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the account's credit payments.
         """
         path = self._interpolate_path("/accounts/%s/credit_payments", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_account_invoices(self, account_id, **kwargs):
+    def list_account_invoices(self, account_id, **options):
         """List an account's invoices
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -505,25 +591,31 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the account's invoices.
         """
         path = self._interpolate_path("/accounts/%s/invoices", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_invoice(self, account_id, body):
         """Create an invoice for pending line items
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of InvoiceCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         InvoiceCollection
             Returns the new invoices.
         """
@@ -535,30 +627,37 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of InvoiceCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         InvoiceCollection
             Returns the invoice previews.
         """
         path = self._interpolate_path("/accounts/%s/invoices/preview", account_id)
         return self._make_request("POST", path, body, None)
 
-    def list_account_line_items(self, account_id, **kwargs):
+    def list_account_line_items(self, account_id, **options):
         """List an account's line items
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -594,41 +693,49 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the account's line items.
         """
         path = self._interpolate_path("/accounts/%s/line_items", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_line_item(self, account_id, body):
         """Create a new line item for the account
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of LineItemCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         LineItem
             Returns the new line item.
         """
         path = self._interpolate_path("/accounts/%s/line_items", account_id)
         return self._make_request("POST", path, body, None)
 
-    def list_account_notes(self, account_id, **kwargs):
+    def list_account_notes(self, account_id, **options):
         """Fetch a list of an account's notes
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -644,25 +751,31 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of an account's notes.
         """
         path = self._interpolate_path("/accounts/%s/notes", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_account_note(self, account_id, account_note_id):
         """Fetch an account note
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         account_note_id : str
             Account Note ID.
 
+        Keyword Arguments
+        -----------------
+
 
         Returns
         -------
+
         AccountNote
             An account note.
         """
@@ -671,16 +784,18 @@ class Client(BaseClient):
         )
         return self._make_request("GET", path, None, None)
 
-    def list_shipping_addresses(self, account_id, **kwargs):
+    def list_shipping_addresses(self, account_id, **options):
         """Fetch a list of an account's shipping addresses
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -710,25 +825,31 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of an account's shipping addresses.
         """
         path = self._interpolate_path("/accounts/%s/shipping_addresses", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_shipping_address(self, account_id, body):
         """Create a new shipping address for the account
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of ShippingAddressCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         ShippingAddress
             Returns the new shipping address.
         """
@@ -740,14 +861,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
 
+        Keyword Arguments
+        -----------------
+
 
         Returns
         -------
+
         ShippingAddress
             A shipping address.
         """
@@ -761,16 +887,21 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of ShippingAddressUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         ShippingAddress
             The updated shipping address.
         """
@@ -784,14 +915,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         shipping_address_id : str
             Shipping Address ID.
 
+        Keyword Arguments
+        -----------------
+
 
         Returns
         -------
+
         Empty
             Shipping address deleted.
         """
@@ -800,16 +936,18 @@ class Client(BaseClient):
         )
         return self._make_request("DELETE", path, None, None)
 
-    def list_account_subscriptions(self, account_id, **kwargs):
+    def list_account_subscriptions(self, account_id, **options):
         """List an account's subscriptions
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -845,22 +983,25 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the account's subscriptions.
         """
         path = self._interpolate_path("/accounts/%s/subscriptions", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_account_transactions(self, account_id, **kwargs):
+    def list_account_transactions(self, account_id, **options):
         """List an account's transactions
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -894,22 +1035,25 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the account's transactions.
         """
         path = self._interpolate_path("/accounts/%s/transactions", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_child_accounts(self, account_id, **kwargs):
+    def list_child_accounts(self, account_id, **options):
         """List an account's child accounts
 
         Parameters
         ----------
+
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -946,20 +1090,19 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of an account's child accounts.
         """
         path = self._interpolate_path("/accounts/%s/accounts", account_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_account_acquisition(self, **kwargs):
+    def list_account_acquisition(self, **options):
         """List a site's account acquisition data
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -989,20 +1132,19 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's account acquisition data.
         """
         path = self._interpolate_path("/acquisitions")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_coupons(self, **kwargs):
+    def list_coupons(self, **options):
         """List a site's coupons
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1032,23 +1174,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's coupons.
         """
         path = self._interpolate_path("/coupons")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_coupon(self, body):
         """Create a new coupon
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of CouponCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Coupon
             A new coupon.
         """
@@ -1060,12 +1208,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         coupon_id : str
             Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Coupon
             A coupon.
         """
@@ -1077,14 +1230,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         coupon_id : str
             Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of CouponUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Coupon
             The updated coupon.
         """
@@ -1096,28 +1254,35 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         coupon_id : str
             Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Coupon
             The expired Coupon
         """
         path = self._interpolate_path("/coupons/%s", coupon_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_unique_coupon_codes(self, coupon_id, **kwargs):
+    def list_unique_coupon_codes(self, coupon_id, **options):
         """List unique coupon codes associated with a bulk coupon
 
         Parameters
         ----------
+
         coupon_id : str
             Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1147,20 +1312,19 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of unique coupon codes that were generated
         """
         path = self._interpolate_path("/coupons/%s/unique_coupon_codes", coupon_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_credit_payments(self, **kwargs):
+    def list_credit_payments(self, **options):
         """List a site's credit payments
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         limit : int
             Limit number of records 1-200.
         order : str
@@ -1178,37 +1342,41 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's credit payments.
         """
         path = self._interpolate_path("/credit_payments")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_credit_payment(self, credit_payment_id):
         """Fetch a credit payment
 
         Parameters
         ----------
+
         credit_payment_id : str
             Credit Payment ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         CreditPayment
             A credit payment.
         """
         path = self._interpolate_path("/credit_payments/%s", credit_payment_id)
         return self._make_request("GET", path, None, None)
 
-    def list_custom_field_definitions(self, **kwargs):
+    def list_custom_field_definitions(self, **options):
         """List a site's custom field definitions
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1240,23 +1408,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's custom field definitions.
         """
         path = self._interpolate_path("/custom_field_definitions")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_custom_field_definition(self, custom_field_definition_id):
         """Fetch an custom field definition
 
         Parameters
         ----------
+
         custom_field_definition_id : str
             Custom Field Definition ID
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         CustomFieldDefinition
             An custom field definition.
         """
@@ -1265,14 +1439,12 @@ class Client(BaseClient):
         )
         return self._make_request("GET", path, None, None)
 
-    def list_items(self, **kwargs):
+    def list_items(self, **options):
         """List a site's items
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1304,23 +1476,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's items.
         """
         path = self._interpolate_path("/items")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_item(self, body):
         """Create a new item
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of ItemCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Item
             A new item.
         """
@@ -1332,12 +1510,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         item_id : str
             Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Item
             An item.
         """
@@ -1349,14 +1532,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         item_id : str
             Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of ItemUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Item
             The updated item.
         """
@@ -1368,12 +1556,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         item_id : str
             Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Item
             An item.
         """
@@ -1385,26 +1578,29 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         item_id : str
             Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Item
             An item.
         """
         path = self._interpolate_path("/items/%s/reactivate", item_id)
         return self._make_request("PUT", path, None, None)
 
-    def list_measured_unit(self, **kwargs):
+    def list_measured_unit(self, **options):
         """List a site's measured units
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1436,23 +1632,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's measured units.
         """
         path = self._interpolate_path("/measured_units")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_measured_unit(self, body):
         """Create a new measured unit
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of MeasuredUnitCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         MeasuredUnit
             A new measured unit.
         """
@@ -1464,12 +1666,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         measured_unit_id : str
             Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         MeasuredUnit
             An item.
         """
@@ -1481,14 +1688,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         measured_unit_id : str
             Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of MeasuredUnitUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         MeasuredUnit
             The updated measured_unit.
         """
@@ -1500,26 +1712,29 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         measured_unit_id : str
             Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         MeasuredUnit
             A measured unit.
         """
         path = self._interpolate_path("/measured_units/%s", measured_unit_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_invoices(self, **kwargs):
+    def list_invoices(self, **options):
         """List a site's invoices
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1555,23 +1770,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's invoices.
         """
         path = self._interpolate_path("/invoices")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_invoice(self, invoice_id):
         """Fetch an invoice
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             An invoice.
         """
@@ -1583,14 +1804,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of InvoiceUpdatable.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             An invoice.
         """
@@ -1602,51 +1828,64 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         BinaryFile
             An invoice as a PDF.
         """
         path = self._interpolate_path("/invoices/%s.pdf", invoice_id)
         return self._make_request("GET", path, None, None)
 
-    def collect_invoice(self, invoice_id, **kwargs):
+    def collect_invoice(self, invoice_id, **options):
         """Collect a pending or past due, automatic invoice
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
-        =================
-        body
+        -----------------
+
+        body : InvoiceCollect
             The body of the request.
 
         Returns
         -------
+
         Invoice
             The updated invoice.
         """
-        body = kwargs.pop("body", None)
+        body = options.pop("body", None)
         path = self._interpolate_path("/invoices/%s/collect", invoice_id)
-        return self._make_request("PUT", path, body, kwargs)
+        return self._make_request("PUT", path, body, options)
 
     def fail_invoice(self, invoice_id):
         """Mark an open invoice as failed
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             The updated invoice.
         """
@@ -1658,12 +1897,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             The updated invoice.
         """
@@ -1675,12 +1919,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             The updated invoice.
         """
@@ -1692,12 +1941,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             The updated invoice.
         """
@@ -1709,30 +1963,37 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of ExternalTransaction.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Transaction
             The recorded transaction.
         """
         path = self._interpolate_path("/invoices/%s/transactions", invoice_id)
         return self._make_request("POST", path, body, None)
 
-    def list_invoice_line_items(self, invoice_id, **kwargs):
+    def list_invoice_line_items(self, invoice_id, **options):
         """List an invoice's line items
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1768,22 +2029,25 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the invoice's line items.
         """
         path = self._interpolate_path("/invoices/%s/line_items", invoice_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_invoice_coupon_redemptions(self, invoice_id, **kwargs):
+    def list_invoice_coupon_redemptions(self, invoice_id, **options):
         """Show the coupon redemptions applied to an invoice
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1809,56 +2073,65 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the the coupon redemptions associated with the invoice.
         """
         path = self._interpolate_path("/invoices/%s/coupon_redemptions", invoice_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_related_invoices(self, invoice_id, **kwargs):
+    def list_related_invoices(self, invoice_id, **options):
         """List an invoice's related credit or charge invoices
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Pager
             A list of the credit or charge invoices associated with the invoice.
         """
         path = self._interpolate_path("/invoices/%s/related_invoices", invoice_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def refund_invoice(self, invoice_id, body):
         """Refund an invoice
 
         Parameters
         ----------
+
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of InvoiceRefund.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Invoice
             Returns the new credit invoice.
         """
         path = self._interpolate_path("/invoices/%s/refund", invoice_id)
         return self._make_request("POST", path, body, None)
 
-    def list_line_items(self, **kwargs):
+    def list_line_items(self, **options):
         """List a site's line items
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1894,23 +2167,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's line items.
         """
         path = self._interpolate_path("/line_items")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_line_item(self, line_item_id):
         """Fetch a line item
 
         Parameters
         ----------
+
         line_item_id : str
             Line Item ID.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         LineItem
             A line item.
         """
@@ -1922,26 +2201,29 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         line_item_id : str
             Line Item ID.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Empty
             Line item deleted.
         """
         path = self._interpolate_path("/line_items/%s", line_item_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_plans(self, **kwargs):
+    def list_plans(self, **options):
         """List a site's plans
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -1973,23 +2255,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of plans.
         """
         path = self._interpolate_path("/plans")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_plan(self, body):
         """Create a plan
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of PlanCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Plan
             A plan.
         """
@@ -2001,12 +2289,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Plan
             A plan.
         """
@@ -2018,14 +2311,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of PlanUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Plan
             A plan.
         """
@@ -2037,28 +2335,35 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Plan
             Plan deleted
         """
         path = self._interpolate_path("/plans/%s", plan_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_plan_add_ons(self, plan_id, **kwargs):
+    def list_plan_add_ons(self, plan_id, **options):
         """List a plan's add-ons
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2090,25 +2395,31 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of add-ons.
         """
         path = self._interpolate_path("/plans/%s/add_ons", plan_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_plan_add_on(self, plan_id, body):
         """Create an add-on
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of AddOnCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         AddOn
             An add-on.
         """
@@ -2120,14 +2431,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
             Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
+        Keyword Arguments
+        -----------------
+
 
         Returns
         -------
+
         AddOn
             An add-on.
         """
@@ -2139,16 +2455,21 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
             Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of AddOnUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         AddOn
             An add-on.
         """
@@ -2160,28 +2481,31 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         plan_id : str
             Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
         add_on_id : str
             Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
+        Keyword Arguments
+        -----------------
+
 
         Returns
         -------
+
         AddOn
             Add-on deleted
         """
         path = self._interpolate_path("/plans/%s/add_ons/%s", plan_id, add_on_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_add_ons(self, **kwargs):
+    def list_add_ons(self, **options):
         """List a site's add-ons
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2213,37 +2537,41 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of add-ons.
         """
         path = self._interpolate_path("/add_ons")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_add_on(self, add_on_id):
         """Fetch an add-on
 
         Parameters
         ----------
+
         add_on_id : str
             Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         AddOn
             An add-on.
         """
         path = self._interpolate_path("/add_ons/%s", add_on_id)
         return self._make_request("GET", path, None, None)
 
-    def list_shipping_methods(self, **kwargs):
+    def list_shipping_methods(self, **options):
         """List a site's shipping methods
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2273,23 +2601,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's shipping methods.
         """
         path = self._interpolate_path("/shipping_methods")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_shipping_method(self, body):
         """Create a new shipping method
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of ShippingMethodCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         ShippingMethod
             A new shipping method.
         """
@@ -2301,12 +2635,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         id : str
             Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         ShippingMethod
             A shipping method.
         """
@@ -2318,14 +2657,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         shipping_method_id : str
             Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of ShippingMethodUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         ShippingMethod
             The updated shipping method.
         """
@@ -2337,26 +2681,29 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         shipping_method_id : str
             Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         ShippingMethod
             A shipping method.
         """
         path = self._interpolate_path("/shipping_methods/%s", shipping_method_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_subscriptions(self, **kwargs):
+    def list_subscriptions(self, **options):
         """List a site's subscriptions
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2392,23 +2739,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's subscriptions.
         """
         path = self._interpolate_path("/subscriptions")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_subscription(self, body):
         """Create a new subscription
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of SubscriptionCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             A subscription.
         """
@@ -2420,12 +2773,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             A subscription.
         """
@@ -2437,30 +2795,37 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of SubscriptionUpdate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             A subscription.
         """
         path = self._interpolate_path("/subscriptions/%s", subscription_id)
         return self._make_request("PUT", path, body, None)
 
-    def terminate_subscription(self, subscription_id, **kwargs):
+    def terminate_subscription(self, subscription_id, **options):
         """Terminate a subscription
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         refund : str
             The type of refund to perform:
 
@@ -2474,45 +2839,54 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Subscription
             An expired subscription.
         """
         path = self._interpolate_path("/subscriptions/%s", subscription_id)
-        return self._make_request("DELETE", path, None, kwargs)
+        return self._make_request("DELETE", path, None, options)
 
-    def cancel_subscription(self, subscription_id, **kwargs):
+    def cancel_subscription(self, subscription_id, **options):
         """Cancel a subscription
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
-        =================
-        body
+        -----------------
+
+        body : SubscriptionCancel
             The body of the request.
 
         Returns
         -------
+
         Subscription
             A canceled or failed subscription.
         """
-        body = kwargs.pop("body", None)
+        body = options.pop("body", None)
         path = self._interpolate_path("/subscriptions/%s/cancel", subscription_id)
-        return self._make_request("PUT", path, body, kwargs)
+        return self._make_request("PUT", path, body, options)
 
     def reactivate_subscription(self, subscription_id):
         """Reactivate a canceled subscription
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             An active subscription.
         """
@@ -2524,14 +2898,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of SubscriptionPause.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             A subscription.
         """
@@ -2543,12 +2922,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             A subscription.
         """
@@ -2560,12 +2944,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Subscription
             A subscription.
         """
@@ -2579,12 +2968,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         SubscriptionChange
             A subscription's pending change.
         """
@@ -2596,14 +2990,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of SubscriptionChangeCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         SubscriptionChange
             A subscription change.
         """
@@ -2615,12 +3014,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Empty
             Subscription change was deleted.
         """
@@ -2632,14 +3036,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of SubscriptionChangeCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         SubscriptionChangePreview
             A subscription change.
         """
@@ -2648,16 +3057,18 @@ class Client(BaseClient):
         )
         return self._make_request("POST", path, body, None)
 
-    def list_subscription_invoices(self, subscription_id, **kwargs):
+    def list_subscription_invoices(self, subscription_id, **options):
         """List a subscription's invoices
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2693,22 +3104,25 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the subscription's invoices.
         """
         path = self._interpolate_path("/subscriptions/%s/invoices", subscription_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_subscription_line_items(self, subscription_id, **kwargs):
+    def list_subscription_line_items(self, subscription_id, **options):
         """List a subscription's line items
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2744,22 +3158,25 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the subscription's line items.
         """
         path = self._interpolate_path("/subscriptions/%s/line_items", subscription_id)
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_subscription_coupon_redemptions(self, subscription_id, **kwargs):
+    def list_subscription_coupon_redemptions(self, subscription_id, **options):
         """Show the coupon redemptions for a subscription
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
 
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2785,26 +3202,41 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the the coupon redemptions on a subscription.
         """
         path = self._interpolate_path(
             "/subscriptions/%s/coupon_redemptions", subscription_id
         )
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
-    def list_usage(self, subscription_id, add_on_id, **kwargs):
+    def list_usage(self, subscription_id, add_on_id, **options):
         """List a subscription add-on's usage records
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         add_on_id : str
             Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
 
         Keyword Arguments
-        =================
+        -----------------
+
+        ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
         limit : int
             Limit number of records 1-200.
         order : str
@@ -2824,29 +3256,35 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the subscription add-on's usage records.
         """
         path = self._interpolate_path(
             "/subscriptions/%s/add_ons/%s/usage", subscription_id, add_on_id
         )
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def create_usage(self, subscription_id, add_on_id, body):
         """Log a usage record on this subscription add-on
 
         Parameters
         ----------
+
         subscription_id : str
             Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
         add_on_id : str
             Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of UsageCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Usage
             The created usage record.
         """
@@ -2860,12 +3298,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         usage_id : str
             Usage Record ID.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Usage
             The usage record.
         """
@@ -2877,14 +3320,19 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         usage_id : str
             Usage Record ID.
-        body
-            The body of the request.
+        body : dict
+            The request body. It should follow the schema of UsageCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Usage
             The updated usage record.
         """
@@ -2896,26 +3344,29 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         usage_id : str
             Usage Record ID.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Empty
             Usage was successfully deleted.
         """
         path = self._interpolate_path("/usage/%s", usage_id)
         return self._make_request("DELETE", path, None, None)
 
-    def list_transactions(self, **kwargs):
+    def list_transactions(self, **options):
         """List a site's transactions
 
-        Parameters
-        ----------
-
         Keyword Arguments
-        =================
+        -----------------
+
         ids : :obj:`list` of :obj:`str`
             Filter results by their IDs. Up to 200 IDs can be passed at once using
             commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
@@ -2949,23 +3400,29 @@ class Client(BaseClient):
 
         Returns
         -------
+
         Pager
             A list of the site's transactions.
         """
         path = self._interpolate_path("/transactions")
-        return Pager(self, path, kwargs)
+        return Pager(self, path, options)
 
     def get_transaction(self, transaction_id):
         """Fetch a transaction
 
         Parameters
         ----------
+
         transaction_id : str
             Transaction ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         Transaction
             A transaction.
         """
@@ -2977,12 +3434,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         unique_coupon_code_id : str
             Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         UniqueCouponCode
             A unique coupon code.
         """
@@ -2994,12 +3456,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         unique_coupon_code_id : str
             Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         UniqueCouponCode
             A unique coupon code.
         """
@@ -3011,12 +3478,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
+
         unique_coupon_code_id : str
             Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         UniqueCouponCode
             A unique coupon code.
         """
@@ -3030,12 +3502,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of PurchaseCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         InvoiceCollection
             Returns the new invoices
         """
@@ -3047,12 +3524,17 @@ class Client(BaseClient):
 
         Parameters
         ----------
-        body
-            The body of the request.
+
+        body : dict
+            The request body. It should follow the schema of PurchaseCreate.
+
+        Keyword Arguments
+        -----------------
 
 
         Returns
         -------
+
         InvoiceCollection
             Returns preview of the new invoices
         """

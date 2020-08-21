@@ -1175,6 +1175,10 @@ class LineItem(Resource):
         If the line item is a charge or credit for an add-on this is its ID.
     amount : float
         `(quantity * unit_amount) - (discount + tax)`
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     created_at : datetime
         When the line item was created.
     credit_applied : float
@@ -1266,6 +1270,8 @@ class LineItem(Resource):
         "add_on_code": str,
         "add_on_id": str,
         "amount": float,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "created_at": datetime,
         "credit_applied": float,
         "credit_reason_code": str,
@@ -1863,6 +1869,10 @@ class Item(Resource):
     ----------
     accounting_code : str
         Accounting code for invoice line items.
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     code : str
         Unique code to identify the item.
     created_at : datetime
@@ -1897,6 +1907,8 @@ class Item(Resource):
 
     schema = {
         "accounting_code": str,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "code": str,
         "created_at": datetime,
         "currencies": ["Pricing"],
@@ -1987,6 +1999,10 @@ class Plan(Resource):
         If `false`, only plan add-ons can be used.
     auto_renew : bool
         Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     code : str
         Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
     created_at : datetime
@@ -2037,6 +2053,8 @@ class Plan(Resource):
         "accounting_code": str,
         "allow_any_item_on_subscriptions": bool,
         "auto_renew": bool,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "code": str,
         "created_at": datetime,
         "currencies": ["PlanPricing"],
@@ -2107,6 +2125,10 @@ class AddOn(Resource):
         Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
     add_on_type : str
         Whether the add-on type is fixed, or usage-based.
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     code : str
         The unique identifier for the add-on within its plan.
     created_at : datetime
@@ -2156,6 +2178,8 @@ class AddOn(Resource):
     schema = {
         "accounting_code": str,
         "add_on_type": str,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "code": str,
         "created_at": datetime,
         "currencies": ["AddOnPricing"],
