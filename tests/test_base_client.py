@@ -244,10 +244,3 @@ class TestBaseClient(unittest.TestCase):
         timeout = 3
         client = MockClient("apikey", timeout=timeout)
         self.assertEqual(client.timeout, timeout)
-
-    def test_client_timeout(self):
-        client = MockClient("apikey", timeout=0)
-        with self.assertRaises(recurly.NetworkError) as e:
-            client._make_request("GET", "wef", body=None, params=None)
-
-        self.assertIn("Operation now in progress", str(e.exception))
