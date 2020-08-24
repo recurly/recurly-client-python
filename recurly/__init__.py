@@ -20,7 +20,7 @@ USER_AGENT = "Recurly/{}; python {}; {}".format(
 # You do not want to enable this for production.
 STRICT_MODE = os.getenv("RECURLY_STRICT_MODE", "FALSE").upper() == "TRUE"
 
-DEFAULT_REQUEST_TIMEOUT = os.getenv("RECURLY_REQUEST_TIMEOUT")
+DEFAULT_REQUEST_TIMEOUT = os.getenv("RECURLY_DEFAULT_REQUEST_TIMEOUT")
 
 
 from .base_errors import RecurlyError, ApiError, NetworkError
