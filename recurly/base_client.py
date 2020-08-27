@@ -27,8 +27,8 @@ def request_converter(value):
 class BaseClient:
     def __init__(self, api_key, timeout=None):
         self.__api_key = api_key
-        self.timeout = timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
-        self.__conn = http.client.HTTPSConnection(HOST, PORT, timeout=self.timeout)
+        actual_timeout = timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
+        self.__conn = http.client.HTTPSConnection(HOST, PORT, timeout=actual_timeout)
 
     def _make_request(self, method, path, body, params):
         try:

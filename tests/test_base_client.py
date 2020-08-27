@@ -243,4 +243,4 @@ class TestBaseClient(unittest.TestCase):
     def test_client_can_set_timeout(self):
         timeout = 3
         client = MockClient("apikey", timeout=timeout)
-        self.assertEqual(client.timeout, timeout)
+        self.assertEqual(client.__dict__["_BaseClient__conn"].timeout, timeout)
