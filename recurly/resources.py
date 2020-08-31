@@ -1627,6 +1627,8 @@ class SubscriptionChange(Resource):
         These add-ons will be used when the subscription renews.
     created_at : datetime
         Created at
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     id : str
@@ -1658,6 +1660,7 @@ class SubscriptionChange(Resource):
         "activated": bool,
         "add_ons": ["SubscriptionAddOn"],
         "created_at": datetime,
+        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "id": str,
         "invoice_collection": "InvoiceCollection",
@@ -2318,6 +2321,8 @@ class SubscriptionChangePreview(Resource):
         These add-ons will be used when the subscription renews.
     created_at : datetime
         Created at
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     id : str
@@ -2349,6 +2354,7 @@ class SubscriptionChangePreview(Resource):
         "activated": bool,
         "add_ons": ["SubscriptionAddOn"],
         "created_at": datetime,
+        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "id": str,
         "invoice_collection": "InvoiceCollection",
