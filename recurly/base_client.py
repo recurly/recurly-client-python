@@ -14,6 +14,7 @@ from datetime import datetime
 PORT = 443
 HOST = "v3.recurly.com"
 BINARY_TYPES = ["application/pdf"]
+ALLOWED_OPTIONS = ["body", "params", "headers"]
 
 
 def request_converter(value):
@@ -31,8 +32,9 @@ class BaseClient:
 
     def _make_request(self, method, path, body, **options):
         try:
+            self._validate_options(options)
             basic_auth = b64encode(bytes(self.__api_key + ":", "ascii")).decode("ascii")
-            headers = {
+            internal_headers = {
                 "User-Agent": USER_AGENT,
                 "Authorization": "Basic %s" % basic_auth,
                 "Accept": "application/vnd.recurly.%s" % self.api_version(),
@@ -40,9 +42,7 @@ class BaseClient:
             }
 
             # override headers with custom headers in the options
-            if "headers" in options:
-                for k, v in options["headers"].items():
-                    headers[k] = v
+            headers = {**options.get("headers", {}), **internal_headers}
 
             if body:
                 body = json.dumps(body, default=request_converter)
@@ -74,6 +74,17 @@ class BaseClient:
 
         except socket.error as e:
             raise NetworkError(e)
+
+    def _validate_options(self, options):
+        invalid_options = list(
+            filter(lambda option: option not in ALLOWED_OPTIONS, options.keys())
+        )
+        if len(invalid_options) > 0:
+            error = "Invalid options: %s. Allowed options: %s" % (
+                ", ".join(invalid_options),
+                ", ".join(ALLOWED_OPTIONS),
+            )
+            raise ApiError(error, None)
 
     def _validate_path_parameters(self, args):
         """Checks that path parameters are valid"""
