@@ -616,6 +616,10 @@ class Coupon(Resource):
         The coupon is valid for all plans if true. If false then `plans` and `plans_names` will list the applicable plans.
     applies_to_non_plan_charges : bool
         The coupon is valid for one-time, non-plan charges if true.
+    bulk_coupon_code : str
+        The Coupon code of the parent Bulk Coupon
+    bulk_coupon_id : str
+        The Coupon ID of the parent Bulk Coupon
     code : str
         The code the customer enters to redeem the coupon.
     coupon_type : str
@@ -675,6 +679,8 @@ class Coupon(Resource):
     schema = {
         "applies_to_all_plans": bool,
         "applies_to_non_plan_charges": bool,
+        "bulk_coupon_code": str,
+        "bulk_coupon_id": str,
         "code": str,
         "coupon_type": str,
         "created_at": datetime,
@@ -1792,6 +1798,10 @@ class UniqueCouponCode(Resource):
     """
     Attributes
     ----------
+    bulk_coupon_code : str
+        The Coupon code of the parent Bulk Coupon
+    bulk_coupon_id : str
+        The Coupon ID of the parent Bulk Coupon
     code : str
         The code the customer enters to redeem the coupon.
     created_at : datetime
@@ -1811,6 +1821,8 @@ class UniqueCouponCode(Resource):
     """
 
     schema = {
+        "bulk_coupon_code": str,
+        "bulk_coupon_id": str,
         "code": str,
         "created_at": datetime,
         "expired_at": datetime,
@@ -2394,8 +2406,12 @@ class Usage(Resource):
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = null
+    unit_amount : float
+        Unit price
     updated_at : datetime
         When the usage record was billed on an invoice.
+    usage_percentage : float
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
     usage_timestamp : datetime
         When the usage actually happened. This will define the line item dates this usage is billed under and is important for revenue recognition.
     usage_type : str
@@ -2413,7 +2429,45 @@ class Usage(Resource):
         "recording_timestamp": datetime,
         "tier_type": str,
         "tiers": ["SubscriptionAddOnTier"],
+        "unit_amount": float,
         "updated_at": datetime,
+        "usage_percentage": float,
         "usage_timestamp": datetime,
         "usage_type": str,
     }
+
+
+class ExportDates(Resource):
+    """
+    Attributes
+    ----------
+    dates : :obj:`list` of :obj:`str`
+        An array of dates that have available exports.
+    """
+
+    schema = {"dates": list}
+
+
+class ExportFiles(Resource):
+    """
+    Attributes
+    ----------
+    files : :obj:`list` of :obj:`ExportFile`
+    """
+
+    schema = {"files": ["ExportFile"]}
+
+
+class ExportFile(Resource):
+    """
+    Attributes
+    ----------
+    href : str
+        A presigned link to download the export file.
+    md5sum : str
+        MD5 hash of the export file.
+    name : str
+        Name of the export file.
+    """
+
+    schema = {"href": str, "md5sum": str, "name": str}
