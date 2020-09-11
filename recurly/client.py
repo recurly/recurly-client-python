@@ -3553,14 +3553,18 @@ class Client(BaseClient):
         path = self._interpolate_path("/export_dates")
         return self._make_request("GET", path, None, None)
 
-    def get_export_files(self, **options):
+    def get_export_files(self, export_date):
         """List of the export files that are available to download.
+
+        Parameters
+        ----------
+
+        export_date : str
+            Date for which to get a list of available automated export files. Date must be in YYYY-MM-DD format.
 
         Keyword Arguments
         -----------------
 
-        date : str
-            Date for which to get a list of available automated export files. Date must be in YYYY-MM-DD format.
 
         Returns
         -------
@@ -3568,5 +3572,5 @@ class Client(BaseClient):
         ExportFiles
             Returns a list of export files to download.
         """
-        path = self._interpolate_path("/export_dates/%s/export_files")
-        return self._make_request("GET", path, None, options)
+        path = self._interpolate_path("/export_dates/%s/export_files", export_date)
+        return self._make_request("GET", path, None, None)
