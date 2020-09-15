@@ -20,7 +20,7 @@ class MySubResource(Resource):
 
 
 class Error(Resource):
-    schema = {"object": str, "message": str, "params": list, "type": str}
+    schema = {"message": str, "params": list, "type": str}
 
 
 class Empty(Resource):
