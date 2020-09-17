@@ -424,7 +424,7 @@ class BillingInfo(Resource):
     xml_attribute_attributes = ('type',)
 
     def verify(self, gateway_code = None):
-      url_value = self._elem.attrib.get('url')
+      url_value = self._elem.attrib.get('href') or self._elem.attrib.get('url')
       url = urljoin(url_value, '/verify')
 
       if gateway_code:
