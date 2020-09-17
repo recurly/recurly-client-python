@@ -145,11 +145,36 @@ class TestBaseClient(unittest.TestCase):
 
             self.assertEqual("Invalid parameter type", str(e.exception))
 
+    def test_optionsValidationSuccess(self):
+        request = MagicMock(return_value=None)
+        with get_resource_client(True, request) as conn:
+            client = MockClient("apikey")
+            resource = client.get_resource(
+                "123", params={"q": 123}, headers={"AcceptLanguage": "en"}
+            )
+            self.assertEqual(type(resource), MyResource)
+
+    def test_optionsValidationFailure(self):
+        request = MagicMock(return_value=None)
+        with get_resource_client(True, request) as conn:
+            client = MockClient("apikey")
+            with self.assertRaises(recurly.ApiError) as e:
+                resource = client.get_resource(
+                    "123", params={"q": 123}, invalid="invalid"
+                )
+
+            self.assertEqual(
+                "Invalid options: invalid. Allowed options: body, params, headers",
+                str(e.exception),
+            )
+
     def test_successful_GET_200(self):
         request = MagicMock(return_value=None)
         with get_resource_client(True, request) as conn:
             client = MockClient("apikey")
-            resource = client.get_resource("123", params={"q": 123})
+            resource = client.get_resource(
+                "123", params={"q": 123}, headers={"Accept": "cannot override"}
+            )
             request.assert_called_with(
                 "GET", "/resources/123?q=123", None, headers=expected_headers
             )
