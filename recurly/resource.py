@@ -94,6 +94,9 @@ class Resource:
 
         resource = klass()
         for k, v in properties.items():
+            # Skip "object" attribute for Errors
+            if k == "object" and class_name == "Error":
+                continue
             attr = None
             attr_type = klass.schema.get(k)
             if attr_type:
