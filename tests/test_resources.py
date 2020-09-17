@@ -570,7 +570,6 @@ class TestResources(RecurlyTest):
                 same_binfo = same_account.billing_info
             self.assertEqual(same_binfo.first_name, 'Verena')
             self.assertEqual(same_binfo.city, six.u('San Jos\xe9'))
-
             with self.mock_request('billing-info/deleted.xml'):
                 binfo.delete()
         finally:
@@ -613,6 +612,11 @@ class TestResources(RecurlyTest):
             with self.mock_request('billing-info/embedded-exists.xml'):
                 binfo = same_account.billing_info
             self.assertEqual(binfo.first_name, 'Verena')
+            # test credit card billing info verification
+            with self.mock_request('billing-info/verified-with-gateway-code-200.xml'):
+                verified = binfo.verify('gateway-code')
+                self.assertEqual(verified.origin, 'api_verify_card')
+
         finally:
             with self.mock_request('billing-info/account-embed-deleted.xml'):
                 account.delete()

@@ -423,6 +423,25 @@ class BillingInfo(Resource):
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
 
+    def verify(self, gateway_code = None):
+      url_value = self._elem.attrib.get('url')
+      url = urljoin(url_value, '/verify')
+
+      if gateway_code:
+          elem = ElementTreeBuilder.Element('verify')
+          elem.append(Resource.element_for_value('gateway_code', gateway_code))
+          body = ElementTree.tostring(elem, encoding='UTF-8')
+          response = self.http_request(url, 'POST', body, {'Content-Type':'application/xml; charset=utf-8'})
+      else:
+          response = self.http_request(url, 'POST')
+
+      if response.status != 200:
+        self.raise_http_error(response)
+      response_xml = response.read()
+      logging.getLogger('recurly.http.response').debug(response_xml)
+      elem = ElementTree.fromstring(response_xml)
+      return Transaction.from_element(elem)
+
 class ShippingAddress(Resource):
 
     """Shipping Address information"""
