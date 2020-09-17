@@ -3,7 +3,7 @@
 ## Version 2.9.20 - September 17, 2020 ##
 
 - New endpoint to verify an account's billing information [PR](https://github.com/recurly/recurly-client-python/pull/431)
-- Set url value to access either href and url [PR](https://github.com/recurly/recurly-client-python/pull/434)
+- Set url value to access either href and url [PR](https://github.com/recurly/recurly-client-python/pull/435)
 
 ## Version 2.9.19 - August 20, 2020 ##
 
