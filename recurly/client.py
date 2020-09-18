@@ -3541,7 +3541,7 @@ class Client(BaseClient):
         path = self._interpolate_path("/purchases/preview")
         return self._make_request("POST", path, body, None)
 
-    def get_export_dates(self,):
+    def get_export_dates(self):
         """List the dates that have an available export to download.
 
         Returns

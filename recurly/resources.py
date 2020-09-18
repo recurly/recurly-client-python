@@ -655,7 +655,7 @@ class Coupon(Resource):
     plans : :obj:`list` of :obj:`PlanMini`
         A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
     plans_names : :obj:`list` of :obj:`str`
-        TODO
+        A list of plan names for which this coupon applies.
     redeem_by : datetime
         The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
     redeemed_at : datetime
@@ -2443,9 +2443,11 @@ class ExportDates(Resource):
     ----------
     dates : :obj:`list` of :obj:`str`
         An array of dates that have available exports.
+    object : str
+        Object type
     """
 
-    schema = {"dates": list}
+    schema = {"dates": list, "object": str}
 
 
 class ExportFiles(Resource):
@@ -2453,9 +2455,11 @@ class ExportFiles(Resource):
     Attributes
     ----------
     files : :obj:`list` of :obj:`ExportFile`
+    object : str
+        Object type
     """
 
-    schema = {"files": ["ExportFile"]}
+    schema = {"files": ["ExportFile"], "object": str}
 
 
 class ExportFile(Resource):
