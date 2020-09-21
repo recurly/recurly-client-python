@@ -3540,3 +3540,37 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/purchases/preview")
         return self._make_request("POST", path, body, None)
+
+    def get_export_dates(self):
+        """List the dates that have an available export to download.
+
+        Returns
+        -------
+
+        ExportDates
+            Returns a list of dates.
+        """
+        path = self._interpolate_path("/export_dates")
+        return self._make_request("GET", path, None, None)
+
+    def get_export_files(self, export_date):
+        """List of the export files that are available to download.
+
+        Parameters
+        ----------
+
+        export_date : str
+            Date for which to get a list of available automated export files. Date must be in YYYY-MM-DD format.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        ExportFiles
+            Returns a list of export files to download.
+        """
+        path = self._interpolate_path("/export_dates/%s/export_files", export_date)
+        return self._make_request("GET", path, None, None)
