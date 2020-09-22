@@ -1,8 +1,21 @@
 # Changelog
 
-## [3.11.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.12.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.10.0...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.11.0...HEAD)
+
+**Implemented enhancements:**
+
+- Latest Changes for 2019-10-10 \(Automated Exports, additional resource data attributes\) [\#436](https://github.com/recurly/recurly-client-python/pull/436) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.12.0 [\#437](https://github.com/recurly/recurly-client-python/pull/437) ([douglasmiller](https://github.com/douglasmiller))
+- Skipping object attribute for Errors [\#433](https://github.com/recurly/recurly-client-python/pull/433) ([douglasmiller](https://github.com/douglasmiller))
+
+## [3.11.0](https://github.com/recurly/recurly-client-python/tree/3.11.0) (2020-08-31)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.10.0...3.11.0)
 
 **Implemented enhancements:**
 
