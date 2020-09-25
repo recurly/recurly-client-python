@@ -614,7 +614,7 @@ class TestResources(RecurlyTest):
             self.assertEqual(binfo.first_name, 'Verena')
             # test credit card billing info verification
             with self.mock_request('billing-info/verified-with-gateway-code-200.xml'):
-                verified = binfo.verify('gateway-code')
+                verified = same_account.verify('gateway-code')
                 self.assertEqual(verified.origin, 'api_verify_card')
 
         finally:

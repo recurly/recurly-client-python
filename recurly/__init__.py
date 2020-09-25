@@ -344,6 +344,25 @@ class Account(Resource):
         url = urljoin(self._url, '/subscriptions')
         return subscription.post(url)
 
+    # Verifies an account's billing_info
+    # If billing_info does not exist, will result in NotFoundError
+    def verify(self, gateway_code = None):
+      url = urljoin(self._url, '/billing_info/verify')
+      if gateway_code:
+          elem = ElementTreeBuilder.Element('verify')
+          elem.append(Resource.element_for_value('gateway_code', gateway_code))
+          body = ElementTree.tostring(elem, encoding='UTF-8')
+          response = self.http_request(url, 'POST', body, {'Content-Type':'application/xml; charset=utf-8'})
+      else:
+          response = self.http_request(url, 'POST')
+
+      if response.status != 200:
+          self.raise_http_error(response)
+      response_xml = response.read()
+      logging.getLogger('recurly.http.response').debug(response_xml)
+      elem = ElementTree.fromstring(response_xml)
+      return Transaction.from_element(elem)
+
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '/billing_info')
@@ -423,24 +442,10 @@ class BillingInfo(Resource):
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
 
-    def verify(self, gateway_code = None):
-      url_value = self._elem.attrib.get('href') or self._elem.attrib.get('url')
-      url = urljoin(url_value, '/verify')
-
-      if gateway_code:
-          elem = ElementTreeBuilder.Element('verify')
-          elem.append(Resource.element_for_value('gateway_code', gateway_code))
-          body = ElementTree.tostring(elem, encoding='UTF-8')
-          response = self.http_request(url, 'POST', body, {'Content-Type':'application/xml; charset=utf-8'})
-      else:
-          response = self.http_request(url, 'POST')
-
-      if response.status != 200:
-        self.raise_http_error(response)
-      response_xml = response.read()
-      logging.getLogger('recurly.http.response').debug(response_xml)
-      elem = ElementTree.fromstring(response_xml)
-      return Transaction.from_element(elem)
+    # Allows user to call verify() on billing_info object
+    # References Account#verify
+    def verify(self, account_code, gateway_code = None):
+      recurly.Account.get(account_code).verify(gateway_code)
 
 class ShippingAddress(Resource):
 
