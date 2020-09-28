@@ -34,6 +34,7 @@ Location: https://api.recurly.com/v2/accounts/binfo-mock-2
   <invoices href="https://api.recurly.com/v2/accounts/binfo-mock-2/invoices"/>
   <subscriptions href="https://api.recurly.com/v2/accounts/binfo-mock-2/subscriptions"/>
   <transactions href="https://api.recurly.com/v2/accounts/binfo-mock-2/transactions"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/binfo-mock-2/billing_info"/>
   <account_code>binfo-mock-2</account_code>
   <username nil="nil"></username>
   <email nil="nil"></email>
