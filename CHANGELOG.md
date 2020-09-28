@@ -1,9 +1,10 @@
 ## Unreleased
 
-## Version 2.9.20 - September 17, 2020 ##
+## Version 2.9.20 - September 28, 2020 ##
 
 - New endpoint to verify an account's billing information [PR](https://github.com/recurly/recurly-client-python/pull/431)
 - Set url value to access either href and url [PR](https://github.com/recurly/recurly-client-python/pull/435)
+- Add ability to verify billing_info without fetching account first [PR](https://github.com/recurly/recurly-client-python/pull/438)
 
 ## Version 2.9.19 - August 20, 2020 ##
 
