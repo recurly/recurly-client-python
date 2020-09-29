@@ -35,7 +35,7 @@ class Resource:
             json_body = json.loads(response.body.decode("utf-8"))
 
             error_json = json_body["error"]
-            error_json["object"] = "error"
+            error_json["object"] = "error_may_have_transaction"
             error = cls.cast_json(error_json, response=response)
             error_type = error.type
             name_parts = error_type.split("_")
@@ -95,7 +95,7 @@ class Resource:
         resource = klass()
         for k, v in properties.items():
             # Skip "object" attribute for Errors
-            if k == "object" and class_name == "Error":
+            if k == "object" and class_name == "ErrorMayHaveTransaction":
                 continue
             attr = None
             attr_type = klass.schema.get(k)
