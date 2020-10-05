@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.8.9 - October 5th, 2020 ##
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive
+
 ## Version 2.8.8 – August 29th, 2018 ##
 
 - Added `scripts` folder
