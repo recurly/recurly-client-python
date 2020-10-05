@@ -71,9 +71,9 @@ def cache_rate_limit_headers(resp_headers):
     try:
         recurly.cached_rate_limits = {
                 'cached_at': datetime.utcnow(),
-                'limit': int(resp_headers['X-RateLimit-Limit']),
-                'remaining': int(resp_headers['X-RateLimit-Remaining']),
-                'resets_at': datetime.utcfromtimestamp(int(resp_headers['X-RateLimit-Reset']))
+                'limit': int(resp_headers['x-ratelimit-limit']),
+                'remaining': int(resp_headers['x-ratelimit-remaining']),
+                'resets_at': datetime.utcfromtimestamp(int(resp_headers['x-ratelimit-reset']))
                 }
     except:
         log = logging.getLogger('recurly.cached_rate_limits')
