@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.9.21 - October 5, 2020 ##
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive [PR](https://github.com/recurly/recurly-client-python/pull/440)
+
 ## Version 2.9.20 - September 28, 2020 ##
 
 - New endpoint to verify an account's billing information [PR](https://github.com/recurly/recurly-client-python/pull/431)

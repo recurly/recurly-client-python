@@ -144,7 +144,7 @@ class Page(list):
     def count_for_url(cls, url):
         """Return the count of server side resources given a url"""
         headers = Resource.headers_for_url(url)
-        return int(headers['X-Records'])
+        return int(headers['x-records'])
 
     @classmethod
     def page_for_value(cls, resp, value):
@@ -310,9 +310,9 @@ class Resource(object):
         """Turns an array of response headers into a dictionary"""
         if six.PY2:
             pairs = [header.split(':', 1) for header in resp.msg.headers]
-            return dict([(k, v.strip()) for k, v in pairs])
+            return dict([(k.lower(), v.strip()) for k, v in pairs])
         else:
-            return dict([(k, v.strip()) for k, v in resp.msg._headers])
+            return dict([(k.lower(), v.strip()) for k, v in resp.msg._headers])
 
     def as_log_output(self):
         """Returns an XML string containing a serialization of this
