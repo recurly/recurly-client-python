@@ -7,9 +7,9 @@ User-Agent: {user-agent}
 
 HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
-X-RateLimit-Limit: 2000
-X-RateLimit-Reset: 1486064760
-X-RateLimit-Remaining: 1992
+x-ratelimit-limit: 2000
+x-ratelimit-reset: 1486064760
+x-ratelimit-remaining: 1992
 
 <?xml version="1.0" encoding="UTF-8"?>
 <account href="https://api.recurly.com/v2/accounts/testmock">

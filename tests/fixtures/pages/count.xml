@@ -6,4 +6,4 @@ User-Agent: {user-agent}
 
 
 HTTP/1.1 200 OK
-X-Records: 23
+x-records: 23
