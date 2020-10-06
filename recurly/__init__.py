@@ -287,7 +287,7 @@ class Account(Resource):
         url = urljoin(self._url, '/invoices')
 
         if kwargs:
-            response = self.http_request(url, 'POST', Invoice(**kwargs), {'Content-Type':
+            response = self.http_request(url, 'POST', Invoice(**kwargs), {'content-type':
                 'application/xml; charset=utf-8'})
         else:
             response = self.http_request(url, 'POST')
@@ -352,7 +352,7 @@ class Account(Resource):
           elem = ElementTreeBuilder.Element('verify')
           elem.append(Resource.element_for_value('gateway_code', gateway_code))
           body = ElementTree.tostring(elem, encoding='UTF-8')
-          response = self.http_request(url, 'POST', body, {'Content-Type':'application/xml; charset=utf-8'})
+          response = self.http_request(url, 'POST', body, {'content-type':'application/xml; charset=utf-8'})
       else:
           response = self.http_request(url, 'POST')
 
@@ -367,7 +367,7 @@ class Account(Resource):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '/billing_info')
         response = billing_info.http_request(url, 'PUT', billing_info,
-            {'Content-Type': 'application/xml; charset=utf-8'})
+            {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
             pass
         elif response.status == 201:
@@ -657,7 +657,7 @@ class Coupon(Resource):
         url = urljoin(self._url, '/generate')
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
-        response = self.http_request(url, 'POST', body, { 'Content-Type':
+        response = self.http_request(url, 'POST', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
@@ -1268,7 +1268,7 @@ class Subscription(Resource):
                                                remaining_pause_cycles))
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
-        response = self.http_request(url, 'PUT', body, { 'Content-Type':
+        response = self.http_request(url, 'PUT', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
@@ -1290,7 +1290,7 @@ class Subscription(Resource):
         transaction_type.text = "moto"
         body = ElementTree.tostring(request, encoding='UTF-8')
         
-        response = self.http_request(url, 'PUT', body, { 'Content-Type':
+        response = self.http_request(url, 'PUT', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
@@ -1309,7 +1309,7 @@ class Subscription(Resource):
             token = ElementTreeBuilder.SubElement(billing_info, 'three_d_secure_action_result_token_id')
             token.text = three_d_secure_action_result_token_id
             body = ElementTree.tostring(request, encoding='UTF-8')
-            response = self.http_request(url, 'PUT', body, { 'Content-Type':
+            response = self.http_request(url, 'PUT', body, { 'content-type':
                 'application/xml; charset=utf-8' })
         else:
             response = self.http_request(url, 'PUT')

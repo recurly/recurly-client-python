@@ -264,12 +264,12 @@ class Resource(object):
             connection = http_client.HTTPSConnection(urlparts.netloc, **connection_options)
 
         headers = {} if headers is None else dict(headers)
-        headers.setdefault('Accept', 'application/xml')
+        headers.setdefault('accept', 'application/xml')
         headers.update({
-            'User-Agent': recurly.USER_AGENT
+            'user-agent': recurly.USER_AGENT
         })
-        headers['X-Api-Version'] = recurly.api_version()
-        headers['Authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
+        headers['x-api-version'] = recurly.api_version()
+        headers['authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
 
         log = logging.getLogger('recurly.http.request')
         if log.isEnabledFor(logging.DEBUG):
@@ -287,9 +287,9 @@ class Resource(object):
 
         if isinstance(body, Resource):
             body = ElementTreeBuilder.tostring(body.to_element(), encoding='UTF-8')
-            headers['Content-Type'] = 'application/xml; charset=utf-8'
+            headers['content-type'] = 'application/xml; charset=utf-8'
         if method in ('POST', 'PUT') and body is None:
-            headers['Content-Length'] = '0'
+            headers['content-length'] = '0'
         connection.request(method, url, body, headers)
         resp = connection.getresponse()
 
@@ -377,7 +377,7 @@ class Resource(object):
         if response.status != 200:
             cls.raise_http_error(response)
 
-        assert response.getheader('Content-Type').startswith('application/xml')
+        assert response.getheader('content-type').startswith('application/xml')
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
@@ -662,7 +662,7 @@ class Resource(object):
     def put(self, url):
         """Sends this `Resource` instance to the service with a
         ``PUT`` request to the given URL."""
-        response = self.http_request(url, 'PUT', self, {'Content-Type': 'application/xml; charset=utf-8'})
+        response = self.http_request(url, 'PUT', self, {'content-type': 'application/xml; charset=utf-8'})
         if response.status != 200:
             self.raise_http_error(response)
 
@@ -673,7 +673,7 @@ class Resource(object):
     def post(self, url, body=None):
         """Sends this `Resource` instance to the service with a
         ``POST`` request to the given URL. Takes an optional body"""
-        response = self.http_request(url, 'POST', body or self, {'Content-Type': 'application/xml; charset=utf-8'})
+        response = self.http_request(url, 'POST', body or self, {'content-type': 'application/xml; charset=utf-8'})
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
