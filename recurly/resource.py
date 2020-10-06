@@ -156,7 +156,7 @@ class Page(list):
 
         """
         page = cls(value)
-        links = parse_link_value(resp.getheader('Link'))
+        links = parse_link_value(resp.getheader('link'))
         for url, data in six.iteritems(links):
             if data.get('rel') == 'start':
                 page.start_url = url
