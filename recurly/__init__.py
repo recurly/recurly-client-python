@@ -371,7 +371,7 @@ class Account(Resource):
         if response.status == 200:
             pass
         elif response.status == 201:
-            billing_info._url = response.getheader('Location')
+            billing_info._url = response.getheader('location')
         else:
             billing_info.raise_http_error(response)
 
@@ -663,7 +663,7 @@ class Coupon(Resource):
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
-        return Page.page_for_url(response.getheader('Location'))
+        return Page.page_for_url(response.getheader('location'))
 
     def restore(self):
         url = urljoin(self._url, '/restore')
@@ -873,7 +873,7 @@ class Invoice(Resource):
 
         """
         url = urljoin(base_uri(), cls.member_path % (uuid,))
-        pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
+        pdf_response = cls.http_request(url, headers={'accept': 'application/pdf'})
         return pdf_response.read()
 
     def refund_amount(self, amount_in_cents, refund_options = {}):
@@ -1449,7 +1449,7 @@ class Transaction(Resource):
         if response.status != 202:
             self.raise_http_error(response)
 
-        self._refund_transaction_url = response.getheader('Location')
+        self._refund_transaction_url = response.getheader('location')
         return self
 
     def get_refund_transaction(self):

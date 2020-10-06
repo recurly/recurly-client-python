@@ -157,7 +157,7 @@ class Page(list):
 
         """
         page = cls(value)
-        links = parse_link_value(resp.getheader('Link'))
+        links = parse_link_value(resp.getheader('link'))
         for url, data in six.iteritems(links):
             if data.get('rel') == 'start':
                 page.start_url = url
@@ -275,7 +275,7 @@ class Resource(object):
         if log.isEnabledFor(logging.DEBUG):
             log.debug("%s %s HTTP/1.1", method, url)
             for header, value in six.iteritems(headers):
-                if header == 'Authorization':
+                if header == 'authorization':
                     value = '<redacted>'
                 log.debug("%s: %s", header, value)
             log.debug('')
@@ -677,7 +677,7 @@ class Resource(object):
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
-        self._url = response.getheader('Location')
+        self._url = response.getheader('location')
 
         if response.status in (200, 201):
             response_xml = response.read()
