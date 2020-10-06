@@ -283,7 +283,7 @@ class Account(Resource):
         url = urljoin(self._url, '/invoices')
 
         if kwargs:
-            response = self.http_request(url, 'POST', Invoice(**kwargs), {'Content-Type':
+            response = self.http_request(url, 'POST', Invoice(**kwargs), {'content-type':
                 'application/xml; charset=utf-8'})
         else:
             response = self.http_request(url, 'POST')
@@ -344,11 +344,11 @@ class Account(Resource):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '/billing_info')
         response = billing_info.http_request(url, 'PUT', billing_info,
-            {'Content-Type': 'application/xml; charset=utf-8'})
+            {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
             pass
         elif response.status == 201:
-            billing_info._url = response.getheader('Location')
+            billing_info._url = response.getheader('location')
         else:
             billing_info.raise_http_error(response)
 
@@ -618,13 +618,13 @@ class Coupon(Resource):
         url = urljoin(self._url, '/generate')
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
-        response = self.http_request(url, 'POST', body, { 'Content-Type':
+        response = self.http_request(url, 'POST', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
-        return Page.page_for_url(response.getheader('Location'))
+        return Page.page_for_url(response.getheader('location'))
 
     def restore(self):
         url = urljoin(self._url, '/restore')
@@ -1103,7 +1103,7 @@ class Subscription(Resource):
                                                remaining_pause_cycles))
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
-        response = self.http_request(url, 'PUT', body, { 'Content-Type':
+        response = self.http_request(url, 'PUT', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
