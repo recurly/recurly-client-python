@@ -59,12 +59,12 @@ class MockRequestManager(object):
 
         if six.PY2:
             msg = http_client.HTTPMessage(self.fixture_file, 0)
-            self.headers = dict((k, v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
+            self.headers = dict((k.lower(), v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
         else:
             # http.client.HTTPMessage doesn't have importing headers from file
             msg = http_client.HTTPMessage()
             headers = email.message_from_bytes(six.b('').join(read_headers(self.fixture_file)))
-            self.headers = dict((k, v.strip()) for k, v in headers._headers)
+            self.headers = dict((k.lower(), v.strip()) for k, v in headers._headers)
             # self.headers = {k: v for k, v in headers._headers}
         msg.fp = None
 
@@ -82,8 +82,8 @@ class MockRequestManager(object):
         body = six.b('').join(nextline(self.fixture_file))  # exhaust the request either way
         self.body = None
         if self.method in ('PUT', 'POST'):
-            if 'Content-Type' in self.headers:
-                if 'application/xml' in self.headers['Content-Type']:
+            if 'content-type' in self.headers:
+                if 'application/xml' in self.headers['content-type']:
                     self.body = xml(body)
                 else:
                     self.body = body
@@ -101,10 +101,10 @@ class MockRequestManager(object):
 
     def assert_request(self):
         headers = dict(self.headers)
-        if 'User-Agent' in headers:
+        if 'user-agent' in headers:
             import recurly
-            headers['User-Agent'] = headers['User-Agent'].replace('{user-agent}', recurly.USER_AGENT)
-        headers['X-Api-Version'] = headers['X-Api-Version'].replace('{api-version}', recurly.API_VERSION)
+            headers['user-agent'] = headers['user-agent'].replace('{user-agent}', recurly.USER_AGENT)
+        headers['x-api-version'] = headers['x-api-version'].replace('{api-version}', recurly.API_VERSION)
         self.request_mock.assert_called_once_with(self.method, self.uri, self.body, headers)
 
     def __exit__(self, exc_type, exc_value, traceback):

@@ -202,7 +202,7 @@ class Account(Resource):
         url = urljoin(self._url, '%s/invoices' % self.account_code)
 
         if kwargs:
-            response = self.http_request(url, 'POST', Invoice(**kwargs), {'Content-Type':
+            response = self.http_request(url, 'POST', Invoice(**kwargs), {'content-type':
                 'application/xml; charset=utf-8'})
         else:
             response = self.http_request(url, 'POST')
@@ -264,7 +264,7 @@ class Account(Resource):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '%s/billing_info' % self.account_code)
         response = billing_info.http_request(url, 'PUT', billing_info,
-            {'Content-Type': 'application/xml; charset=utf-8'})
+            {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
             pass
         elif response.status == 201:
@@ -416,7 +416,7 @@ class Coupon(Resource):
         url = urljoin(self._url, '%s/generate' % (self.coupon_code, ))
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
-        response = self.http_request(url, 'POST', body, { 'Content-Type':
+        response = self.http_request(url, 'POST', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
@@ -591,7 +591,7 @@ class Invoice(Resource):
 
         """
         url = urljoin(base_uri(), cls.member_path % (uuid,))
-        pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
+        pdf_response = cls.http_request(url, headers={'accept': 'application/pdf'})
         return pdf_response.read()
 
     def refund_amount(self, amount_in_cents, refund_apply_order = 'credit'):
