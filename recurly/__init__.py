@@ -215,7 +215,7 @@ class Account(Resource):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '%s/billing_info' % self.account_code)
         response = billing_info.http_request(url, 'PUT', billing_info,
-            {'Content-Type': 'application/xml; charset=utf-8'})
+            {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
             pass
         elif response.status == 201:
@@ -454,7 +454,7 @@ class Invoice(Resource):
 
         """
         url = urljoin(base_uri(), cls.member_path % (uuid,))
-        pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
+        pdf_response = cls.http_request(url, headers={'accept': 'application/pdf'})
         return pdf_response.read()
 
 
