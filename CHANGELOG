@@ -1,3 +1,7 @@
+## Version 2.2.24 October 6, 2020
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive
+
 ## Version 2.2.21 June 29, 2016
 
 - Adding `collection_path` to `MeasuredUnit`

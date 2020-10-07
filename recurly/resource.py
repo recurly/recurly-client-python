@@ -153,8 +153,8 @@ class Page(list):
 
         """
         page = cls(value)
-        page.record_size = resp.getheader('X-Records')
-        links = parse_link_value(resp.getheader('Link'))
+        page.record_size = resp.getheader('x-records')
+        links = parse_link_value(resp.getheader('link'))
         for url, data in six.iteritems(links):
             if data.get('rel') == 'start':
                 page.start_url = url
@@ -261,18 +261,18 @@ class Resource(object):
             connection = http_client.HTTPSConnection(urlparts.netloc, **connection_options)
 
         headers = {} if headers is None else dict(headers)
-        headers.setdefault('Accept', 'application/xml')
+        headers.setdefault('accept', 'application/xml')
         headers.update({
-            'User-Agent': recurly.USER_AGENT
+            'user-agent': recurly.USER_AGENT
         })
-        headers['X-Api-Version'] = recurly.api_version()
-        headers['Authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
+        headers['x-api-version'] = recurly.api_version()
+        headers['authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
 
         log = logging.getLogger('recurly.http.request')
         if log.isEnabledFor(logging.DEBUG):
             log.debug("%s %s HTTP/1.1", method, url)
             for header, value in six.iteritems(headers):
-                if header == 'Authorization':
+                if header == 'authorization':
                     value = '<redacted>'
                 log.debug("%s: %s", header, value)
             log.debug('')
@@ -284,9 +284,9 @@ class Resource(object):
 
         if isinstance(body, Resource):
             body = ElementTree.tostring(body.to_element(), encoding='UTF-8')
-            headers['Content-Type'] = 'application/xml; charset=utf-8'
+            headers['content-type'] = 'application/xml; charset=utf-8'
         if method in ('POST', 'PUT') and body is None:
-            headers['Content-Length'] = '0'
+            headers['content-length'] = '0'
         connection.request(method, url, body, headers)
         resp = connection.getresponse()
 
@@ -295,6 +295,9 @@ class Resource(object):
             log.debug("HTTP/1.1 %d %s", resp.status, resp.reason)
             if six.PY2:
                 for header in resp.msg.headers:
+                    pairs = [header.split(': ')]
+                    for k, v in pairs:
+                      k = k.lower()
                     log.debug(header.rstrip('\n'))
             else:
                 log.debug(resp.msg._headers)
@@ -354,7 +357,7 @@ class Resource(object):
         if response.status != 200:
             cls.raise_http_error(response)
 
-        assert response.getheader('Content-Type').startswith('application/xml')
+        assert response.getheader('content-type').startswith('application/xml')
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
@@ -624,7 +627,7 @@ class Resource(object):
     def put(self, url):
         """Sends this `Resource` instance to the service with a
         ``PUT`` request to the given URL."""
-        response = self.http_request(url, 'PUT', self, {'Content-Type': 'application/xml; charset=utf-8'})
+        response = self.http_request(url, 'PUT', self, {'content-type': 'application/xml; charset=utf-8'})
         if response.status != 200:
             self.raise_http_error(response)
 
@@ -635,11 +638,11 @@ class Resource(object):
     def post(self, url, body=None):
         """Sends this `Resource` instance to the service with a
         ``POST`` request to the given URL. Takes an optional body"""
-        response = self.http_request(url, 'POST', body or self, {'Content-Type': 'application/xml; charset=utf-8'})
+        response = self.http_request(url, 'POST', body or self, {'content-type': 'application/xml; charset=utf-8'})
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
-        self._url = response.getheader('Location')
+        self._url = response.getheader('location')
 
         if response.status in (200, 201):
             response_xml = response.read()
