@@ -563,7 +563,7 @@ class TestResources(RecurlyTest):
             # See if we redacted our sensitive fields properly.
             self.assertTrue('4111' not in log_content)
             self.assertTrue('7777' not in log_content)
-
+              
             with self.mock_request('billing-info/account-exists.xml'):
                 same_account = Account.get('binfo%s' % self.test_id)
             with self.mock_request('billing-info/exists.xml'):
