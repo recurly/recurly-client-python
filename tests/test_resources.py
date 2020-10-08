@@ -20,7 +20,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('authentication/unauthenticated.xml'):
             try:
                 Account.get(account_code)
-            except recurly.UnauthorizedError, exc:
+            except recurly.UnauthorizedError as exc:
                 pass
             else:
                 self.fail("Updating account with invalid email address did not raise a ValidationError")
@@ -59,7 +59,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('account/update-bad-email.xml'):
             try:
                 account.save()
-            except ValidationError, exc:
+            except ValidationError as exc:
                 self.assertTrue(isinstance(exc.errors, collections.Mapping))
                 self.assertTrue('account.email' in exc.errors)
                 suberror = exc.errors['account.email']
@@ -131,7 +131,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('add-on/need-amount.xml'):
                 try:
                     plan.create_add_on(add_on)
-                except ValidationError, exc:
+                except ValidationError as exc:
                     pass
                 else:
                     self.fail("Creating a plan add-on without an amount did not raise a ValidationError")
@@ -409,7 +409,7 @@ class TestResources(RecurlyTest):
             with self.mock_request('invoice/error-no-charges.xml'):
                 try:
                     account.invoice()
-                except ValidationError, exc:
+                except ValidationError as exc:
                     error = exc
                 else:
                     self.fail("Invoicing an account with no charges did not raise a ValidationError")
@@ -534,7 +534,7 @@ class TestResources(RecurlyTest):
                 with self.mock_request('subscription/error-no-billing-info.xml'):
                     try:
                         account.subscribe(sub)
-                    except BadRequestError, exc:
+                    except BadRequestError as exc:
                         error = exc
                     else:
                         self.fail("Subscribing with no billing info did not raise a BadRequestError")
