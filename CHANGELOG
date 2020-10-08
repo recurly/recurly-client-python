@@ -1,5 +1,9 @@
 ## Unreleased
 #
+## Version 2.7.2 - October 5, 2020 ##
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive
+
 ## Version 2.7.0 – November 20, 2017 ##
 
 - Implement API version 2.9 changes

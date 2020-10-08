@@ -71,9 +71,9 @@ def cache_rate_limit_headers(resp_headers):
     try:
         recurly.cached_rate_limits = {
                 'cached_at': datetime.utcnow(),
-                'limit': int(resp_headers['X-RateLimit-Limit']),
-                'remaining': int(resp_headers['X-RateLimit-Remaining']),
-                'resets_at': datetime.utcfromtimestamp(int(resp_headers['X-RateLimit-Reset']))
+                'limit': int(resp_headers['x-ratelimit-limit']),
+                'remaining': int(resp_headers['x-ratelimit-remaining']),
+                'resets_at': datetime.utcfromtimestamp(int(resp_headers['x-ratelimit-reset']))
                 }
     except:
         log = logging.getLogger('recurly.cached_rate_limits')
@@ -247,7 +247,7 @@ class Account(Resource):
         url = urljoin(self._url, '%s/invoices' % self.account_code)
 
         if kwargs:
-            response = self.http_request(url, 'POST', Invoice(**kwargs), {'Content-Type':
+            response = self.http_request(url, 'POST', Invoice(**kwargs), {'content-type':
                 'application/xml; charset=utf-8'})
         else:
             response = self.http_request(url, 'POST')
@@ -260,7 +260,7 @@ class Account(Resource):
         elem = ElementTree.fromstring(response_xml)
 
         invoice = Invoice.from_element(elem)
-        invoice._url = response.getheader('Location')
+        invoice._url = response.getheader('location')
         return invoice
 
     def build_invoice(self):
@@ -309,11 +309,11 @@ class Account(Resource):
         """Change this account's billing information to the given `BillingInfo`."""
         url = urljoin(self._url, '%s/billing_info' % self.account_code)
         response = billing_info.http_request(url, 'PUT', billing_info,
-            {'Content-Type': 'application/xml; charset=utf-8'})
+            {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
             pass
         elif response.status == 201:
-            billing_info._url = response.getheader('Location')
+            billing_info._url = response.getheader('location')
         else:
             billing_info.raise_http_error(response)
 
@@ -580,13 +580,13 @@ class Coupon(Resource):
         url = urljoin(self._url, '%s/generate' % (self.coupon_code, ))
         body = ElementTree.tostring(elem, encoding='UTF-8')
 
-        response = self.http_request(url, 'POST', body, { 'Content-Type':
+        response = self.http_request(url, 'POST', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
-        return Page.page_for_url(response.getheader('Location'))
+        return Page.page_for_url(response.getheader('location'))
 
     def restore(self):
         url = urljoin(self._url, '%s/restore' % self.coupon_code)
@@ -761,7 +761,7 @@ class Invoice(Resource):
 
         """
         url = urljoin(base_uri(), cls.member_path % (uuid,))
-        pdf_response = cls.http_request(url, headers={'Accept': 'application/pdf'})
+        pdf_response = cls.http_request(url, headers={'accept': 'application/pdf'})
         return pdf_response.read()
 
     def refund_amount(self, amount_in_cents, refund_apply_order = 'credit'):
@@ -1099,7 +1099,7 @@ class Transaction(Resource):
         if response.status != 202:
             self.raise_http_error(response)
 
-        self._refund_transaction_url = response.getheader('Location')
+        self._refund_transaction_url = response.getheader('location')
         return self
 
     def get_refund_transaction(self):
