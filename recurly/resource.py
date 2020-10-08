@@ -295,10 +295,10 @@ class Resource(object):
             log.debug("HTTP/1.1 %d %s", resp.status, resp.reason)
             if six.PY2:
                 for header in resp.msg.headers:
-                    pairs = [header.split(': ')]
+                    pairs = [header.split(':', 1)]
                     for k, v in pairs:
-                      k = k.lower()
-                    log.debug(header.rstrip('\n'))
+                        header = ": ".join((k.lower(), v.strip()))
+                    log.debug(header)              
             else:
                 log.debug(resp.msg._headers)
             log.debug('')
