@@ -1,3 +1,7 @@
+## Version 2.1.18 October 8, 2020
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive
+
 ## Version 2.1.15 April 8, 2014
 
 - Added token_id support to BillingInfo
