@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.5.3 October 5, 2020
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive
+
 ## Version 2.5.0 April 17, 2017
 
 - Remove parsing of X-Records header
