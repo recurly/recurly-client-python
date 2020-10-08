@@ -185,11 +185,11 @@ class Resource(object):
 
         headers = {} if headers is None else dict(headers)
         headers.update({
-            'Accept': 'application/xml',
-            'User-Agent': 'recurly-python/%s' % recurly.__version__,
+            'accept': 'application/xml',
+            'user-agent': 'recurly-python/%s' % recurly.__version__,
         })
         if recurly.API_KEY is not None:
-            headers['Authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
+            headers['authorization'] = 'Basic %s' % base64.b64encode('%s:' % recurly.API_KEY)
 
         log = logging.getLogger('recurly.http.request')
         if log.isEnabledFor(logging.DEBUG):
@@ -207,9 +207,9 @@ class Resource(object):
 
         if isinstance(body, Resource):
             body = ElementTree.tostring(body.to_element(), encoding='UTF-8')
-            headers['Content-Type'] = 'application/xml; charset=utf-8'
+            headers['content-type'] = 'application/xml; charset=utf-8'
         if method in ('POST', 'PUT') and body is None:
-            headers['Content-Length'] = '0'
+            headers['content-length'] = '0'
         connection.request(method, url, body, headers)
         resp = connection.getresponse()
 
@@ -217,7 +217,10 @@ class Resource(object):
         if log.isEnabledFor(logging.DEBUG):
             log.debug("HTTP/1.1 %d %s", resp.status, resp.reason)
             for header in resp.msg.headers:
-                log.debug(header.rstrip('\n'))
+                pairs = [header.split(':', 1)]
+                for k, v in pairs:
+                    header = ": ".join((k.lower(), v.strip()))
+                log.debug(header)              
             log.debug('')
 
         return resp
@@ -274,7 +277,7 @@ class Resource(object):
         if response.status != 200:
             cls.raise_http_error(response)
 
-        assert response.getheader('Content-Type').startswith('application/xml')
+        assert response.getheader('content-type').startswith('application/xml')
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
@@ -522,7 +525,7 @@ class Resource(object):
 
     def _update(self):
         url = self._url
-        response = self.http_request(url, 'PUT', self, {'Content-Type': 'application/xml; charset=utf-8'})
+        response = self.http_request(url, 'PUT', self, {'content-type': 'application/xml; charset=utf-8'})
         if response.status != 200:
             self.raise_http_error(response)
 
@@ -537,7 +540,7 @@ class Resource(object):
     def post(self, url):
         """Sends this `Resource` instance to the service with a
         ``POST`` request to the given URL."""
-        response = self.http_request(url, 'POST', self, {'Content-Type': 'application/xml; charset=utf-8'})
+        response = self.http_request(url, 'POST', self, {'content-type': 'application/xml; charset=utf-8'})
         if response.status != 201:
             self.raise_http_error(response)
 

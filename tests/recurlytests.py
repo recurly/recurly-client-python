@@ -42,7 +42,7 @@ class MockRequestManager(object):
             raise ValueError("Couldn't parse preamble line from fixture file %r; does it have a fixture in it?"
                 % self.fixture)
         msg = httplib.HTTPMessage(self.fixture_file, 0)
-        self.headers = dict((k, v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
+        self.headers = dict((k.lower(), v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
         msg.fp = None
 
         # Read through to the vertical space.
@@ -59,8 +59,8 @@ class MockRequestManager(object):
         body = ''.join(nextline(self.fixture_file))  # exhaust the request either way
         self.body = None
         if self.method in ('PUT', 'POST'):
-            if 'Content-Type' in self.headers:
-                if 'application/xml' in self.headers['Content-Type']:
+            if 'content-type' in self.headers:
+                if 'application/xml' in self.headers['content-type']:
                     self.body = xml(body)
                 else:
                     self.body = body
@@ -78,9 +78,9 @@ class MockRequestManager(object):
 
     def assert_request(self):
         headers = dict(self.headers)
-        if 'User-Agent' in headers:
+        if 'user-agent' in headers:
             import recurly
-            headers['User-Agent'] = headers['User-Agent'].replace('{version}', recurly.__version__)
+            headers['user-agent'] = headers['user-agent'].replace('{version}', recurly.__version__)
         self.request_mock.assert_called_once_with(self.method, self.uri, self.body, headers)
 
     def __exit__(self, exc_type, exc_value, traceback):
