@@ -370,7 +370,7 @@ class Resource(object):
         if response.status != 200:
             cls.raise_http_error(response)
 
-        assert response.getheader('content-type').startswith('application/xml')
+        assert response.getheader('Content-Type').startswith('application/xml')
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
