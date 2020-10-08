@@ -87,7 +87,7 @@ class Page(list):
     """
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         page = self
         while page:
             for x in list.__iter__(page):
@@ -99,7 +99,7 @@ class Page(list):
                     del self.next_url
                 except AttributeError:
                     pass
-                raise StopIteration
+                return
 
     def next_page(self):
         """Return the next `Page` after this one in the result sequence
