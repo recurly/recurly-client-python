@@ -1,5 +1,9 @@
 ## Unreleased
 #
+## Version 2.6.4 October 5, 2020
+
+- Fixed issue with RFC 2616 compliance: field names are case-insensitive
+
 ## Version 2.6.1 October 26, 2017
 
 - Added missing attributes on Delivery resource
