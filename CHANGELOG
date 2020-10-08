@@ -1,6 +1,6 @@
 ## Unreleased
 #
-## Version 2.7.2 - October 5, 2010 ##
+## Version 2.7.2 - October 5, 2020 ##
 
 - Fixed issue with RFC 2616 compliance: field names are case-insensitive
 
