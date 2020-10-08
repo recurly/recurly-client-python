@@ -154,7 +154,7 @@ class Page(list):
         """
         page = cls(value)
         page.record_size = resp.getheader('X-Records')
-        links = parse_link_value(resp.getheader('link'))
+        links = parse_link_value(resp.getheader('Link'))
         for url, data in six.iteritems(links):
             if data.get('rel') == 'start':
                 page.start_url = url
@@ -357,7 +357,7 @@ class Resource(object):
         if response.status != 200:
             cls.raise_http_error(response)
 
-        assert response.getheader('content-type').startswith('application/xml')
+        assert response.getheader('Content-Type').startswith('application/xml')
 
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
