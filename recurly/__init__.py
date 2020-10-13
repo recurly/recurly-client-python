@@ -19,7 +19,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.2.23'
+__version__ = '2.2.24'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 VALID_DOMAINS = ('.recurly.com',)
