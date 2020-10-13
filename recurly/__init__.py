@@ -18,7 +18,7 @@ http://docs.recurly.com/api/
 """
 
 
-__version__ = '2.1.17'
+__version__ = '2.1.18'
 
 VALID_DOMAINS = ('.recurly.com',)
 """A tuple of whitelisted domains that this client can connect to."""
