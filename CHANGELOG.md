@@ -1,8 +1,24 @@
 # Changelog
 
-## [3.12.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.13.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.11.0...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.12.0...HEAD)
+
+**Implemented enhancements:**
+
+- Mon Oct 19 20:41:06 UTC 2020 Upgrade API version v2019-10-10 [\#457](https://github.com/recurly/recurly-client-python/pull/457) ([douglasmiller](https://github.com/douglasmiller))
+
+**Fixed bugs:**
+
+- Use ErrorMayHaveTransaction instead of Error [\#439](https://github.com/recurly/recurly-client-python/pull/439) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.13.0 [\#458](https://github.com/recurly/recurly-client-python/pull/458) ([douglasmiller](https://github.com/douglasmiller))
+
+## [3.12.0](https://github.com/recurly/recurly-client-python/tree/3.12.0) (2020-09-22)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.11.0...3.12.0)
 
 **Implemented enhancements:**
 
