@@ -582,12 +582,14 @@ class Coupon(Resource):
         'temporal_amount',
         'max_redemptions',
         'applies_to_all_plans',
+        'applies_to_all_items',
         'applies_to_non_plan_charges',
         'redemption_resource',
         'created_at',
         'updated_at',
         'deleted_at',
         'plan_codes',
+        'item_codes',
         'hosted_description',
         'max_redemptions_per_account',
         'coupon_type',
@@ -600,20 +602,21 @@ class Coupon(Resource):
 
     @classmethod
     def value_for_element(cls, elem):
-        if elem is None or elem.tag != 'plan_codes' or elem.attrib.get('type') != 'array':
+        if elem is None or elem.tag != 'plan_codes' and elem.tag != 'item_codes' or elem.attrib.get('type') != 'array':
             return super(Coupon, cls).value_for_element(elem)
 
         return [code_elem.text for code_elem in elem]
 
     @classmethod
     def element_for_value(cls, attrname, value):
-        if attrname != 'plan_codes':
+        if attrname != 'plan_codes' and attrname != 'item_codes':
             return super(Coupon, cls).element_for_value(attrname, value)
 
         elem = ElementTreeBuilder.Element(attrname)
         elem.attrib['type'] = 'array'
         for code in value:
-            code_el = ElementTreeBuilder.Element('plan_code')
+          # create element from singular version of attrname
+            code_el = ElementTreeBuilder.Element(attrname[0 : -1])
             code_el.text = code
             elem.append(code_el)
 

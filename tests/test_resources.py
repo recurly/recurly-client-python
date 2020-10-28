@@ -964,6 +964,23 @@ class TestResources(RecurlyTest):
                 with self.mock_request('coupon/plan-deleted.xml'):
                     plan.delete()
 
+            try:
+                item_coupon = Coupon(
+                  coupon_code='itemcoupon%s' %self.test_id,
+                  name='Item Coupon',
+                  discount_type='dollars',
+                  discount_in_cents=Money(2000),
+                  item_codes=('newitem',),
+                )
+                with self.mock_request('coupon/item-coupon-created.xml'):
+                  item_coupon.save()
+                coupon_items = list(item_coupon.item_codes)
+                self.assertEqual(len(coupon_items), 1)
+                self.assertEqual(coupon_items[0], 'newitem')
+            finally:
+              with self.mock_request('coupon/item-coupon-deleted.xml'):
+                item_coupon.delete()
+
         finally:
             with self.mock_request('coupon/deleted.xml'):
                 coupon.delete()
