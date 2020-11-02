@@ -390,7 +390,7 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, None)
 
-    def get_billing_infos(self, account_id, **options):
+    def list_billing_infos(self, account_id, **options):
         """Get the list of billing information associated with an account
 
         Parameters
@@ -512,7 +512,7 @@ class Client(BaseClient):
         )
         return self._make_request("PUT", path, body, None)
 
-    def remove_one_billing_info(self, account_id, billing_info_id):
+    def remove_a_billing_info(self, account_id, billing_info_id):
         """Remove an account's billing information
 
         Parameters
