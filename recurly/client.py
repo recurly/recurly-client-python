@@ -390,6 +390,154 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, None)
 
+    def get_billing_infos(self, account_id, **options):
+        """Get the list of billing information associated with an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        begin_time : datetime
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        end_time : datetime
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the billing information for an account's
+        """
+        path = self._interpolate_path("/accounts/%s/billing_infos", account_id)
+        return Pager(self, path, options)
+
+    def create_billing_info(self, account_id, body):
+        """Set an account's billing information when the wallet feature is enabled
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of BillingInfoCreate.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        BillingInfo
+            Updated billing information.
+        """
+        path = self._interpolate_path("/accounts/%s/billing_infos", account_id)
+        return self._make_request("POST", path, body, None)
+
+    def get_a_billing_info(self, account_id, billing_info_id):
+        """Fetch a billing info
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        BillingInfo
+            A billing info.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s", account_id, billing_info_id
+        )
+        return self._make_request("GET", path, None, None)
+
+    def update_a_billing_info(self, account_id, billing_info_id, body):
+        """Update an account's billing information
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID.
+        body : dict
+            The request body. It should follow the schema of BillingInfoCreate.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        BillingInfo
+            Updated billing information.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s", account_id, billing_info_id
+        )
+        return self._make_request("PUT", path, body, None)
+
+    def remove_one_billing_info(self, account_id, billing_info_id):
+        """Remove an account's billing information
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        Empty
+            Billing information deleted
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s", account_id, billing_info_id
+        )
+        return self._make_request("DELETE", path, None, None)
+
     def list_account_coupon_redemptions(self, account_id, **options):
         """Show the coupon redemptions for an account
 

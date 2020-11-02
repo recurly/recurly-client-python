@@ -285,6 +285,8 @@ class BillingInfo(Resource):
     object : str
         Object type
     payment_method : PaymentMethod
+    primary_payment_method : bool
+        The `primary_payment_method` indicator is used to designate the primary billing info on the account. The first billing info created on an account will always become primary. Adding additional billing infos provides the flexibility to mark another billing info as primary, or adding additional non-primary billing infos. This can be accomplished by passing the `primary_payment_method` indicator. When adding billing infos via the billing_info and /accounts endpoints, this value is not permitted, and will return an error if provided.
     updated_at : datetime
         When the billing information was last changed.
     updated_by : BillingInfoUpdatedBy
@@ -304,6 +306,7 @@ class BillingInfo(Resource):
         "last_name": str,
         "object": str,
         "payment_method": "PaymentMethod",
+        "primary_payment_method": bool,
         "updated_at": datetime,
         "updated_by": "BillingInfoUpdatedBy",
         "valid": bool,
@@ -612,6 +615,9 @@ class Coupon(Resource):
     """
     Attributes
     ----------
+    applies_to_all_items : bool
+        The coupon is valid for all items if true. If false then `items`
+        will list the applicable items.
     applies_to_all_plans : bool
         The coupon is valid for all plans if true. If false then `plans` and `plans_names` will list the applicable plans.
     applies_to_non_plan_charges : bool
@@ -644,6 +650,9 @@ class Coupon(Resource):
         Coupon ID
     invoice_description : str
         Description of the coupon on the invoice.
+    items : :obj:`list` of :obj:`ItemMini`
+        A list of items for which this coupon applies. This will be
+        `null` if `applies_to_all_items=true`.
     max_redemptions : int
         A maximum number of redemptions for the coupon. The coupon will expire when it hits its maximum redemptions.
     max_redemptions_per_account : int
@@ -677,6 +686,7 @@ class Coupon(Resource):
     """
 
     schema = {
+        "applies_to_all_items": bool,
         "applies_to_all_plans": bool,
         "applies_to_non_plan_charges": bool,
         "bulk_coupon_code": str,
@@ -692,6 +702,7 @@ class Coupon(Resource):
         "hosted_page_description": str,
         "id": str,
         "invoice_description": str,
+        "items": ["ItemMini"],
         "max_redemptions": int,
         "max_redemptions_per_account": int,
         "name": str,
@@ -725,6 +736,34 @@ class PlanMini(Resource):
     """
 
     schema = {"code": str, "id": str, "name": str, "object": str}
+
+
+class ItemMini(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Unique code to identify the item.
+    description : str
+        Optional, description.
+    id : str
+        Item ID
+    name : str
+        This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    object : str
+        Object type
+    state : str
+        The current state of the item.
+    """
+
+    schema = {
+        "code": str,
+        "description": str,
+        "id": str,
+        "name": str,
+        "object": str,
+        "state": str,
+    }
 
 
 class CouponDiscount(Resource):
@@ -993,6 +1032,8 @@ class Invoice(Resource):
     address : InvoiceAddress
     balance : float
         The outstanding balance remaining on this invoice.
+    billing_info_id : str
+        The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info.
     closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
@@ -1059,6 +1100,7 @@ class Invoice(Resource):
         "account": "AccountMini",
         "address": "InvoiceAddress",
         "balance": float,
+        "billing_info_id": str,
         "closed_at": datetime,
         "collection_method": str,
         "created_at": datetime,
@@ -1405,6 +1447,8 @@ class Subscription(Resource):
         Whether the subscription renews at the end of its term.
     bank_account_authorized_at : datetime
         Recurring subscriptions paid with ACH will have this attribute set. This timestamp is used for alerting customers to reauthorize in 3 years in accordance with NACHA rules. If a subscription becomes inactive or the billing info is no longer a bank account, this timestamp is cleared.
+    billing_info_id : str
+        Billing Info ID.
     canceled_at : datetime
         Canceled at
     collection_method : str
@@ -1484,6 +1528,7 @@ class Subscription(Resource):
         "add_ons_total": float,
         "auto_renew": bool,
         "bank_account_authorized_at": datetime,
+        "billing_info_id": str,
         "canceled_at": datetime,
         "collection_method": str,
         "coupon_redemptions": ["CouponRedemptionMini"],
@@ -2231,34 +2276,6 @@ class AddOnPricing(Resource):
     """
 
     schema = {"currency": str, "unit_amount": float}
-
-
-class ItemMini(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        Unique code to identify the item.
-    description : str
-        Optional, description.
-    id : str
-        Item ID
-    name : str
-        This name describes your item and will appear on the invoice when it's purchased on a one time basis.
-    object : str
-        Object type
-    state : str
-        The current state of the item.
-    """
-
-    schema = {
-        "code": str,
-        "description": str,
-        "id": str,
-        "name": str,
-        "object": str,
-        "state": str,
-    }
 
 
 class Tier(Resource):
