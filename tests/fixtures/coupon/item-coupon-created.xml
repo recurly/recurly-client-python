@@ -1,0 +1,57 @@
+POST https://api.recurly.com/v2/coupons HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<coupon>
+    <coupon_code>itemcouponmock</coupon_code>
+    <name>Item Coupon</name>
+    <discount_type>dollars</discount_type>
+    <discount_in_cents>
+        <USD type="integer">2000</USD>
+    </discount_in_cents>
+    <item_codes type="array">
+        <item_code>newitem</item_code>
+    </item_codes>
+</coupon>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/coupons/itemcouponmock
+
+<?xml version="1.0" encoding="UTF-8"?>
+<coupon href="https://api.recurly.com/v2/coupons/itemcouponmock">
+  <coupon_code>itemcouponmock</coupon_code>
+  <name>Item Coupon</name>
+  <state>redeemable</state>
+  <description nil="nil"></description>
+  <discount_type>percent</discount_type>
+  <discount_percent type="integer">20</discount_percent>
+  <invoice_description nil="nil"></invoice_description>
+  <redeem_by_date nil="nil"></redeem_by_date>
+  <single_use type="boolean">false</single_use>
+  <applies_for_months nil="nil"></applies_for_months>
+  <max_redemptions nil="nil"></max_redemptions>
+  <applies_to_all_plans type="boolean">true</applies_to_all_plans>
+  <applies_to_all_items type="boolean">false</applies_to_all_items>
+  <created_at type="datetime">2020-10-27T21:05:58Z</created_at>
+  <updated_at type="datetime">2020-10-27T21:05:58Z</updated_at>
+  <deleted_at nil="nil"></deleted_at>
+  <duration>forever</duration>
+  <temporal_unit nil="nil"></temporal_unit>
+  <temporal_amount nil="nil"></temporal_amount>
+  <applies_to_non_plan_charges type="boolean">false</applies_to_non_plan_charges>
+  <redemption_resource>account</redemption_resource>
+  <max_redemptions_per_account type="integer">50</max_redemptions_per_account>
+  <coupon_type>single_code</coupon_type>
+  <id type="integer">3129494014099465742</id>
+  <plan_codes type="array">
+  </plan_codes>
+  <item_codes type="array">
+    <item_code>newitem</item_code>
+  </item_codes>
+  <a name="redeem" href="https://api.recurly.com/v2/coupons/itemcouponmock/redeem" method="put"/>
+</coupon>

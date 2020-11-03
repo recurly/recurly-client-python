@@ -1,0 +1,8 @@
+DELETE https://api.recurly.com/v2/coupons/itemcouponmock HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 204 No Content
