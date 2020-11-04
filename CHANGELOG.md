@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Version 2.9.22 - November 5, 2020 ##
+
+- Support item-specific coupons [PR](https://github.com/recurly/recurly-client-python/pull/459)
+
 ## Version 2.9.21 - October 5, 2020 ##
 
 - Fixed issue with RFC 2616 compliance: field names are case-insensitive [PR](https://github.com/recurly/recurly-client-python/pull/440)
