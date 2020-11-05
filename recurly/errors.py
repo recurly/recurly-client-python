@@ -35,6 +35,10 @@ class InternalServerError(ServerError):
     pass
 
 
+class ServiceNotAvailableError(InternalServerError):
+    pass
+
+
 class BadGatewayError(ServerError):
     pass
 
