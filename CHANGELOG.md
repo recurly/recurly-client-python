@@ -1,8 +1,24 @@
 # Changelog
 
-## [3.13.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.14.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.12.0...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.13.0...HEAD)
+
+**Implemented enhancements:**
+
+- Latest Changes for 2019-10-10 \(Wallet, Item Coupons\) [\#461](https://github.com/recurly/recurly-client-python/pull/461) ([douglasmiller](https://github.com/douglasmiller))
+
+**Fixed bugs:**
+
+- Get coupon by strange code API error [\#456](https://github.com/recurly/recurly-client-python/issues/456)
+
+**Merged pull requests:**
+
+- Release 3.14.0 [\#463](https://github.com/recurly/recurly-client-python/pull/463) ([douglasmiller](https://github.com/douglasmiller))
+
+## [3.13.0](https://github.com/recurly/recurly-client-python/tree/3.13.0) (2020-10-20)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.12.0...3.13.0)
 
 **Implemented enhancements:**
 
