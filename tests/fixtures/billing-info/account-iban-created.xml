@@ -22,6 +22,7 @@ Location: https://api.recurly.com/v2/accounts/binfo-mock-4
 <?xml version="1.0" encoding="UTF-8"?>
 <account href="https://api.recurly.com/v2/accounts/binfo-mock-4">
   <adjustments href="https://api.recurly.com/v2/accounts/binfo-mock-4/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/binfo-mock-4//billing_info"/>
   <invoices href="https://api.recurly.com/v2/accounts/binfo-mock-4/invoices"/>
   <subscriptions href="https://api.recurly.com/v2/accounts/binfo-mock-4/subscriptions"/>
   <transactions href="https://api.recurly.com/v2/accounts/binfo-mock-4/transactions"/>

@@ -1604,6 +1604,8 @@ class AddOn(Resource):
     attributes = (
         'add_on_code',
         'item_code',
+        'item_state',
+        'external_sku',
         'name',
         'display_quantity_on_hosted_page',
         'display_quantity',
