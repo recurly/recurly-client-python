@@ -572,6 +572,8 @@ class Client(BaseClient):
         end_time : datetime
             Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        state : str
+            Filter by state.
 
         Returns
         -------
@@ -3008,6 +3010,8 @@ class Client(BaseClient):
             In the event that the most recent invoice is a $0 invoice paid entirely by credit, Recurly will apply the credit back to the customer’s account.
 
             You may also terminate a subscription with no refund and then manually refund specific invoices.
+        charge : bool
+            Applicable only if the subscription has usage based add-ons and unbilled usage logged for the current billing cycle. If true, current billing cycle unbilled usage is billed on the final invoice. If false, Recurly will create a negative usage record for current billing cycle usage that will zero out the final invoice line items.
 
         Returns
         -------

@@ -1454,7 +1454,7 @@ class Subscription(Resource):
     collection_method : str
         Collection method
     coupon_redemptions : :obj:`list` of :obj:`CouponRedemptionMini`
-        Coupon redemptions
+        Returns subscription level coupon redemptions that are tied to this subscription.
     created_at : datetime
         Created at
     currency : str
