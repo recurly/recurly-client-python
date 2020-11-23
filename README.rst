@@ -39,6 +39,11 @@ Set your API key and optionally set a certificate authority certificate file and
    # Set a default currency for your API requests
    recurly.DEFAULT_CURRENCY = 'USD'
 
+A Note on Headers
+-----------------
+
+In accordance with `section 4.2 of RFC 2616 <https://www.ietf.org/rfc/rfc2616.txt>`_, HTTP header fields are case-insensitive.
+
 
 Recurly Python Client Tests
 ---------------------------
