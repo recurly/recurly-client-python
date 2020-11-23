@@ -1,5 +1,10 @@
 ## Unreleased
 
+## Version 2.9.23 - November 23, 2020 ##
+
+- Expose response fields and add field to test fixture [PR](https://github.com/recurly/recurly-client-python/pull/464)
+- Update readme with memo about headers [PR](https://github.com/recurly/recurly-client-python/pull/466)
+
 ## Version 2.9.22 - November 5, 2020 ##
 
 - Support item-specific coupons [PR](https://github.com/recurly/recurly-client-python/pull/459)
