@@ -556,6 +556,8 @@ class TestResources(RecurlyTest):
 
             self.assertEqual(binfo.gateway_token, 'gatewaytoken123')
             self.assertEqual(binfo.gateway_code, 'gatewaycode123')
+            self.assertEqual(binfo.fraud.score, 87)
+            self.assertEqual(binfo.fraud.decision, 'DECLINED')
 
             logger.removeHandler(log_handler)
             log_content = log_content.getvalue()

@@ -386,6 +386,13 @@ class Account(Resource):
         url = urljoin(self._url, '/shipping_addresses')
         return shipping_address.post(url)
 
+class BillingInfoFraudInfo(recurly.Resource):
+    node_name = 'fraud'
+    attributes = (
+        'score',
+        'decision',
+    )
+
 class BillingInfo(Resource):
 
     """A set of billing information for an account."""
@@ -437,10 +444,14 @@ class BillingInfo(Resource):
         'sort_code',
         'bsb_code',
         'tax_identifier',
-        'tax_identifier_type'
+        'tax_identifier_type',
+        'fraud'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
+    _classes_for_nodename = {
+        'fraud': BillingInfoFraudInfo,
+    }
 
     # Allows user to call verify() on billing_info object
     # References Account#verify

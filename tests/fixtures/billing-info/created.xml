@@ -45,4 +45,8 @@ Location: https://api.recurly.com/v2/accounts/binfomock/billing_info
   <currency>USD</currency>
   <gateway_token>gatewaytoken123</gateway_token>
   <gateway_code>gatewaycode123</gateway_code>
+  <fraud>
+    <score type="integer">87</score>
+    <decision>DECLINED</decision>
+  </fraud>
 </billing_info>
