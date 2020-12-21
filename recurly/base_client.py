@@ -28,6 +28,7 @@ class BaseClient:
     def __init__(self, api_key):
         self.__api_key = api_key
         self.__conn = http.client.HTTPSConnection(HOST, PORT)
+        test = http.client.HTTPSConnection(HOST, PORT)
 
     def _make_request(self, method, path, body, params):
         try:
