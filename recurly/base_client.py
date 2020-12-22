@@ -6,7 +6,7 @@ from . import resources
 from .resource import Resource, Empty
 from .request import Request
 from .response import Response
-from recurly import USER_AGENT, ApiError, NetworkError
+from recurly import USER_AGENT, DEFAULT_REQUEST_TIMEOUT, ApiError, NetworkError
 from pydoc import locate
 import urllib.parse
 from datetime import datetime
@@ -25,9 +25,10 @@ def request_converter(value):
 
 
 class BaseClient:
-    def __init__(self, api_key):
+    def __init__(self, api_key, timeout=None):
         self.__api_key = api_key
-        self.__conn = http.client.HTTPSConnection(HOST, PORT)
+        actual_timeout = timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
+        self.__conn = http.client.HTTPSConnection(HOST, PORT, timeout=actual_timeout)
 
     def _make_request(self, method, path, body, params):
         try:
