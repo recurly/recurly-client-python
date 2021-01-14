@@ -609,7 +609,7 @@ class Client(BaseClient):
         return self._make_request("GET", path, None, None)
 
     def create_coupon_redemption(self, account_id, body):
-        """Generate an active coupon redemption on an account
+        """Generate an active coupon redemption on an account or subscription
 
         Parameters
         ----------
