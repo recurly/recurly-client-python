@@ -593,6 +593,8 @@ class CouponRedemption(Resource):
         The date and time the redemption was removed from the account (un-redeemed).
     state : str
         Coupon Redemption state
+    subscription_id : str
+        Subscription ID
     updated_at : datetime
         Last updated at
     """
@@ -607,6 +609,7 @@ class CouponRedemption(Resource):
         "object": str,
         "removed_at": datetime,
         "state": str,
+        "subscription_id": str,
         "updated_at": datetime,
     }
 
