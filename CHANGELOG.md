@@ -1,8 +1,22 @@
 # Changelog
 
-## [3.14.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [3.15.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.13.0...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.14.0...HEAD)
+
+**Implemented enhancements:**
+
+- Latest Changes for 2019-10-10 [\#472](https://github.com/recurly/recurly-client-python/pull/472) ([douglasmiller](https://github.com/douglasmiller))
+- Latest Changes for 2019-10-10 [\#465](https://github.com/recurly/recurly-client-python/pull/465) ([douglasmiller](https://github.com/douglasmiller))
+- Add ability to set timeouts [\#423](https://github.com/recurly/recurly-client-python/pull/423) ([benweatherman](https://github.com/benweatherman))
+
+**Merged pull requests:**
+
+- Release 3.15.0 [\#473](https://github.com/recurly/recurly-client-python/pull/473) ([douglasmiller](https://github.com/douglasmiller))
+
+## [3.14.0](https://github.com/recurly/recurly-client-python/tree/3.14.0) (2020-11-06)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.13.0...3.14.0)
 
 **Implemented enhancements:**
 
