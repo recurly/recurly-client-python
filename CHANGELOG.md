@@ -1,5 +1,8 @@
 ## Unreleased
 
+## Version 2.9.24 - February 22, 2021 ##
+- Expose fraud attribute in BillingInfo class [PR](https://github.com/recurly/recurly-client-python/pull/469)
+
 ## Version 2.9.23 - November 23, 2020 ##
 
 - Expose response fields and add field to test fixture [PR](https://github.com/recurly/recurly-client-python/pull/464)
