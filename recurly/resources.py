@@ -55,10 +55,6 @@ class Address(Resource):
         City
     country : str
         Country, 2-letter ISO code.
-    first_name : str
-        First name
-    last_name : str
-        Last name
     phone : str
         Phone number
     postal_code : str
@@ -74,8 +70,6 @@ class Address(Resource):
     schema = {
         "city": str,
         "country": str,
-        "first_name": str,
-        "last_name": str,
         "phone": str,
         "postal_code": str,
         "region": str,
@@ -285,6 +279,8 @@ class BillingInfo(Resource):
     object : str
         Object type
     payment_method : PaymentMethod
+    primary_payment_method : bool
+        The `primary_payment_method` indicator is used to designate the primary billing info on the account. The first billing info created on an account will always become primary. Adding additional billing infos provides the flexibility to mark another billing info as primary, or adding additional non-primary billing infos. This can be accomplished by passing the `primary_payment_method` indicator. When adding billing infos via the billing_info and /accounts endpoints, this value is not permitted, and will return an error if provided.
     updated_at : datetime
         When the billing information was last changed.
     updated_by : BillingInfoUpdatedBy
@@ -304,6 +300,7 @@ class BillingInfo(Resource):
         "last_name": str,
         "object": str,
         "payment_method": "PaymentMethod",
+        "primary_payment_method": bool,
         "updated_at": datetime,
         "updated_by": "BillingInfoUpdatedBy",
         "valid": bool,
@@ -590,6 +587,8 @@ class CouponRedemption(Resource):
         The date and time the redemption was removed from the account (un-redeemed).
     state : str
         Coupon Redemption state
+    subscription_id : str
+        Subscription ID
     updated_at : datetime
         Last updated at
     """
@@ -604,6 +603,7 @@ class CouponRedemption(Resource):
         "object": str,
         "removed_at": datetime,
         "state": str,
+        "subscription_id": str,
         "updated_at": datetime,
     }
 
@@ -612,8 +612,11 @@ class Coupon(Resource):
     """
     Attributes
     ----------
+    applies_to_all_items : bool
+        The coupon is valid for all items if true. If false then `items`
+        will list the applicable items.
     applies_to_all_plans : bool
-        The coupon is valid for all plans if true. If false then `plans` and `plans_names` will list the applicable plans.
+        The coupon is valid for all plans if true. If false then `plans` will list the applicable plans.
     applies_to_non_plan_charges : bool
         The coupon is valid for one-time, non-plan charges if true.
     code : str
@@ -640,6 +643,9 @@ class Coupon(Resource):
         Coupon ID
     invoice_description : str
         Description of the coupon on the invoice.
+    items : :obj:`list` of :obj:`ItemMini`
+        A list of items for which this coupon applies. This will be
+        `null` if `applies_to_all_items=true`.
     max_redemptions : int
         A maximum number of redemptions for the coupon. The coupon will expire when it hits its maximum redemptions.
     max_redemptions_per_account : int
@@ -650,12 +656,8 @@ class Coupon(Resource):
         Object type
     plans : :obj:`list` of :obj:`PlanMini`
         A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
-    plans_names : :obj:`list` of :obj:`str`
-        TODO
     redeem_by : datetime
         The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
-    redeemed_at : datetime
-        The date and time the unique coupon code was redeemed. This is only present for bulk coupons.
     redemption_resource : str
         Whether the discount is for all eligible charges on the account, or only a specific subscription.
     state : str
@@ -666,6 +668,8 @@ class Coupon(Resource):
         If `duration` is "temporal" than `temporal_unit` is multiplied by `temporal_amount` to define the duration that the coupon will be applied to invoices for.
     unique_code_template : str
         On a bulk coupon, the template from which unique coupon codes are generated.
+    unique_coupon_code : dict
+        Will be populated when the Coupon being returned is a `UniqueCouponCode`.
     unique_coupon_codes_count : int
         When this number reaches `max_redemptions` the coupon will no longer be redeemable.
     updated_at : datetime
@@ -673,6 +677,7 @@ class Coupon(Resource):
     """
 
     schema = {
+        "applies_to_all_items": bool,
         "applies_to_all_plans": bool,
         "applies_to_non_plan_charges": bool,
         "code": str,
@@ -686,19 +691,19 @@ class Coupon(Resource):
         "hosted_page_description": str,
         "id": str,
         "invoice_description": str,
+        "items": ["ItemMini"],
         "max_redemptions": int,
         "max_redemptions_per_account": int,
         "name": str,
         "object": str,
         "plans": ["PlanMini"],
-        "plans_names": list,
         "redeem_by": datetime,
-        "redeemed_at": datetime,
         "redemption_resource": str,
         "state": str,
         "temporal_amount": int,
         "temporal_unit": str,
         "unique_code_template": str,
+        "unique_coupon_code": dict,
         "unique_coupon_codes_count": int,
         "updated_at": datetime,
     }
@@ -719,6 +724,34 @@ class PlanMini(Resource):
     """
 
     schema = {"code": str, "id": str, "name": str, "object": str}
+
+
+class ItemMini(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Unique code to identify the item.
+    description : str
+        Optional, description.
+    id : str
+        Item ID
+    name : str
+        This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    object : str
+        Object type
+    state : str
+        The current state of the item.
+    """
+
+    schema = {
+        "code": str,
+        "description": str,
+        "id": str,
+        "name": str,
+        "object": str,
+        "state": str,
+    }
 
 
 class CouponDiscount(Resource):
@@ -848,7 +881,7 @@ class Transaction(Resource):
         Total transaction amount sent to the payment gateway.
     avs_check : str
         When processed, result from checking the overall AVS on the transaction.
-    billing_address : Address
+    billing_address : AddressWithName
     collected_at : datetime
         Collected at, or if not collected yet, the time the transaction was created.
     collection_method : str
@@ -927,7 +960,7 @@ class Transaction(Resource):
         "account": "AccountMini",
         "amount": float,
         "avs_check": str,
-        "billing_address": "Address",
+        "billing_address": "AddressWithName",
         "collected_at": datetime,
         "collection_method": str,
         "created_at": datetime,
@@ -964,6 +997,43 @@ class Transaction(Resource):
     }
 
 
+class AddressWithName(Resource):
+    """
+    Attributes
+    ----------
+    city : str
+        City
+    country : str
+        Country, 2-letter ISO code.
+    first_name : str
+        First name
+    last_name : str
+        Last name
+    phone : str
+        Phone number
+    postal_code : str
+        Zip or postal code.
+    region : str
+        State or province.
+    street1 : str
+        Street 1
+    street2 : str
+        Street 2
+    """
+
+    schema = {
+        "city": str,
+        "country": str,
+        "first_name": str,
+        "last_name": str,
+        "phone": str,
+        "postal_code": str,
+        "region": str,
+        "street1": str,
+        "street2": str,
+    }
+
+
 class TransactionPaymentGateway(Resource):
     """
     Attributes
@@ -987,6 +1057,8 @@ class Invoice(Resource):
     address : InvoiceAddress
     balance : float
         The outstanding balance remaining on this invoice.
+    billing_info_id : str
+        The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info.
     closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
@@ -1003,9 +1075,12 @@ class Invoice(Resource):
         Total discounts applied to this invoice.
     due_at : datetime
         Date invoice is due. This is the date the net terms are reached.
+    has_more_line_items : bool
+        Identifies if the invoice has more line items than are returned in `line_items`. If `has_more_line_items` is `true`, then a request needs to be made to the `list_invoice_line_items` endpoint.
     id : str
         Invoice ID
-    line_items : LineItemList
+    line_items : :obj:`list` of :obj:`LineItem`
+        Line Items
     net_terms : int
         Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     number : str
@@ -1053,6 +1128,7 @@ class Invoice(Resource):
         "account": "AccountMini",
         "address": "InvoiceAddress",
         "balance": float,
+        "billing_info_id": str,
         "closed_at": datetime,
         "collection_method": str,
         "created_at": datetime,
@@ -1061,8 +1137,9 @@ class Invoice(Resource):
         "customer_notes": str,
         "discount": float,
         "due_at": datetime,
+        "has_more_line_items": bool,
         "id": str,
-        "line_items": "LineItemList",
+        "line_items": ["LineItem"],
         "net_terms": int,
         "number": str,
         "object": str,
@@ -1145,22 +1222,6 @@ class TaxInfo(Resource):
     schema = {"rate": float, "region": str, "type": str}
 
 
-class LineItemList(Resource):
-    """
-    Attributes
-    ----------
-    data : :obj:`list` of :obj:`LineItem`
-    has_more : bool
-        Indicates there are more results on subsequent pages.
-    next : str
-        Path to subsequent page of results.
-    object : str
-        Will always be List.
-    """
-
-    schema = {"data": ["LineItem"], "has_more": bool, "next": str, "object": str}
-
-
 class LineItem(Resource):
     """
     Attributes
@@ -1175,6 +1236,10 @@ class LineItem(Resource):
         If the line item is a charge or credit for an add-on this is its ID.
     amount : float
         `(quantity * unit_amount) - (discount + tax)`
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     created_at : datetime
         When the line item was created.
     credit_applied : float
@@ -1254,6 +1319,8 @@ class LineItem(Resource):
         Charges are positive line items that debit the account. Credits are negative line items that credit the account.
     unit_amount : float
         Positive amount for a charge, negative amount for a credit.
+    unit_amount_decimal : str
+        Positive amount for a charge, negative amount for a credit.
     updated_at : datetime
         When the line item was last changed.
     uuid : str
@@ -1266,6 +1333,8 @@ class LineItem(Resource):
         "add_on_code": str,
         "add_on_id": str,
         "amount": float,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "created_at": datetime,
         "credit_applied": float,
         "credit_reason_code": str,
@@ -1304,6 +1373,7 @@ class LineItem(Resource):
         "taxable": bool,
         "type": str,
         "unit_amount": float,
+        "unit_amount_decimal": str,
         "updated_at": datetime,
         "uuid": str,
     }
@@ -1393,12 +1463,14 @@ class Subscription(Resource):
         Whether the subscription renews at the end of its term.
     bank_account_authorized_at : datetime
         Recurring subscriptions paid with ACH will have this attribute set. This timestamp is used for alerting customers to reauthorize in 3 years in accordance with NACHA rules. If a subscription becomes inactive or the billing info is no longer a bank account, this timestamp is cleared.
+    billing_info_id : str
+        Billing Info ID.
     canceled_at : datetime
         Canceled at
     collection_method : str
         Collection method
     coupon_redemptions : :obj:`list` of :obj:`CouponRedemptionMini`
-        Coupon redemptions
+        Returns subscription level coupon redemptions that are tied to this subscription.
     created_at : datetime
         Created at
     currency : str
@@ -1472,6 +1544,7 @@ class Subscription(Resource):
         "add_ons_total": float,
         "auto_renew": bool,
         "bank_account_authorized_at": datetime,
+        "billing_info_id": str,
         "canceled_at": datetime,
         "collection_method": str,
         "coupon_redemptions": ["CouponRedemptionMini"],
@@ -1621,10 +1694,14 @@ class SubscriptionChange(Resource):
         These add-ons will be used when the subscription renews.
     created_at : datetime
         Created at
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     id : str
         The ID of the Subscription Change.
+    invoice_collection : InvoiceCollection
+        Invoice Collection
     object : str
         Object type
     plan : PlanMini
@@ -1648,8 +1725,10 @@ class SubscriptionChange(Resource):
         "activated": bool,
         "add_ons": ["SubscriptionAddOn"],
         "created_at": datetime,
+        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "id": str,
+        "invoice_collection": "InvoiceCollection",
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
@@ -1688,12 +1767,16 @@ class SubscriptionAddOn(Resource):
         Subscription ID
     tier_type : str
         The pricing model for the add-on.  For more information,
-        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
+        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
+        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
         removed and replaced by the tiers in the request.
     unit_amount : float
-        This is priced in the subscription's currency.
+        Supports up to 2 decimal places.
+    unit_amount_decimal : str
+        Supports up to 9 decimal places.
     updated_at : datetime
         Updated at
     usage_percentage : float
@@ -1713,6 +1796,7 @@ class SubscriptionAddOn(Resource):
         "tier_type": str,
         "tiers": ["SubscriptionAddOnTier"],
         "unit_amount": float,
+        "unit_amount_decimal": str,
         "updated_at": datetime,
         "usage_percentage": float,
     }
@@ -1768,16 +1852,40 @@ class SubscriptionAddOnTier(Resource):
     ending_quantity : int
         Ending quantity
     unit_amount : float
-        Unit amount
+        Allows up to 2 decimal places. Optionally, override the tiers' default unit amount.
+    unit_amount_decimal : str
+        Allows up to 9 decimal places.  Optionally, override tiers' default unit amount.
+        If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
-    schema = {"ending_quantity": int, "unit_amount": float}
+    schema = {"ending_quantity": int, "unit_amount": float, "unit_amount_decimal": str}
+
+
+class UniqueCouponCodeParams(Resource):
+    """
+    Attributes
+    ----------
+    begin_time : datetime
+        The date-time to be included when listing UniqueCouponCodes
+    limit : int
+        The number of UniqueCouponCodes that will be generated
+    order : str
+        Sort order to list newly generated UniqueCouponCodes (should always be `asc`)
+    sort : str
+        Sort field to list newly generated UniqueCouponCodes (should always be `created_at`)
+    """
+
+    schema = {"begin_time": datetime, "limit": int, "order": str, "sort": str}
 
 
 class UniqueCouponCode(Resource):
     """
     Attributes
     ----------
+    bulk_coupon_code : str
+        The Coupon code of the parent Bulk Coupon
+    bulk_coupon_id : str
+        The Coupon ID of the parent Bulk Coupon
     code : str
         The code the customer enters to redeem the coupon.
     created_at : datetime
@@ -1797,6 +1905,8 @@ class UniqueCouponCode(Resource):
     """
 
     schema = {
+        "bulk_coupon_code": str,
+        "bulk_coupon_id": str,
         "code": str,
         "created_at": datetime,
         "expired_at": datetime,
@@ -1858,6 +1968,10 @@ class Item(Resource):
     ----------
     accounting_code : str
         Accounting code for invoice line items.
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     code : str
         Unique code to identify the item.
     created_at : datetime
@@ -1892,6 +2006,8 @@ class Item(Resource):
 
     schema = {
         "accounting_code": str,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "code": str,
         "created_at": datetime,
         "currencies": ["Pricing"],
@@ -1982,6 +2098,10 @@ class Plan(Resource):
         If `false`, only plan add-ons can be used.
     auto_renew : bool
         Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     code : str
         Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
     created_at : datetime
@@ -2032,6 +2152,8 @@ class Plan(Resource):
         "accounting_code": str,
         "allow_any_item_on_subscriptions": bool,
         "auto_renew": bool,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "code": str,
         "created_at": datetime,
         "currencies": ["PlanPricing"],
@@ -2102,11 +2224,15 @@ class AddOn(Resource):
         Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
     add_on_type : str
         Whether the add-on type is fixed, or usage-based.
+    avalara_service_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    avalara_transaction_type : int
+        Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     code : str
         The unique identifier for the add-on within its plan.
     created_at : datetime
         Created at
-    currencies : :obj:`list` of :obj:`Pricing`
+    currencies : :obj:`list` of :obj:`AddOnPricing`
         Add-on pricing
     default_quantity : int
         Default quantity for the hosted pages.
@@ -2138,7 +2264,9 @@ class AddOn(Resource):
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tier_type : str
         The pricing model for the add-on.  For more information,
-        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
+        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
+        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`Tier`
         Tiers
     updated_at : datetime
@@ -2152,9 +2280,11 @@ class AddOn(Resource):
     schema = {
         "accounting_code": str,
         "add_on_type": str,
+        "avalara_service_type": int,
+        "avalara_transaction_type": int,
         "code": str,
         "created_at": datetime,
-        "currencies": ["Pricing"],
+        "currencies": ["AddOnPricing"],
         "default_quantity": int,
         "deleted_at": datetime,
         "display_quantity": bool,
@@ -2177,45 +2307,49 @@ class AddOn(Resource):
     }
 
 
-class ItemMini(Resource):
+class AddOnPricing(Resource):
     """
     Attributes
     ----------
-    code : str
-        Unique code to identify the item.
-    description : str
-        Optional, description.
-    id : str
-        Item ID
-    name : str
-        This name describes your item and will appear on the invoice when it's purchased on a one time basis.
-    object : str
-        Object type
-    state : str
-        The current state of the item.
+    currency : str
+        3-letter ISO 4217 currency code.
+    unit_amount : float
+        Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
+    unit_amount_decimal : str
+        Allows up to 9 decimal places. Only supported when `add_on_type` = `usage`.
+        If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
-    schema = {
-        "code": str,
-        "description": str,
-        "id": str,
-        "name": str,
-        "object": str,
-        "state": str,
-    }
+    schema = {"currency": str, "unit_amount": float, "unit_amount_decimal": str}
 
 
 class Tier(Resource):
     """
     Attributes
     ----------
-    currencies : :obj:`list` of :obj:`Pricing`
+    currencies : :obj:`list` of :obj:`TierPricing`
         Tier pricing
     ending_quantity : int
         Ending quantity
     """
 
-    schema = {"currencies": ["Pricing"], "ending_quantity": int}
+    schema = {"currencies": ["TierPricing"], "ending_quantity": int}
+
+
+class TierPricing(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    unit_amount : float
+        Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
+    unit_amount_decimal : str
+        Allows up to 9 decimal places. Only supported when `add_on_type` = `usage`.
+        If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
+    """
+
+    schema = {"currency": str, "unit_amount": float, "unit_amount_decimal": str}
 
 
 class ShippingMethod(Resource):
@@ -2286,11 +2420,19 @@ class Usage(Resource):
         When the usage was recorded in your system.
     tier_type : str
         The pricing model for the add-on.  For more information,
-        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based).
+        [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
+        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = null
+    unit_amount : float
+        Unit price
+    unit_amount_decimal : str
+        Unit price that can optionally support a sub-cent value.
     updated_at : datetime
         When the usage record was billed on an invoice.
+    usage_percentage : float
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
     usage_timestamp : datetime
         When the usage actually happened. This will define the line item dates this usage is billed under and is important for revenue recognition.
     usage_type : str
@@ -2308,7 +2450,50 @@ class Usage(Resource):
         "recording_timestamp": datetime,
         "tier_type": str,
         "tiers": ["SubscriptionAddOnTier"],
+        "unit_amount": float,
+        "unit_amount_decimal": str,
         "updated_at": datetime,
+        "usage_percentage": float,
         "usage_timestamp": datetime,
         "usage_type": str,
     }
+
+
+class ExportDates(Resource):
+    """
+    Attributes
+    ----------
+    dates : :obj:`list` of :obj:`str`
+        An array of dates that have available exports.
+    object : str
+        Object type
+    """
+
+    schema = {"dates": list, "object": str}
+
+
+class ExportFiles(Resource):
+    """
+    Attributes
+    ----------
+    files : :obj:`list` of :obj:`ExportFile`
+    object : str
+        Object type
+    """
+
+    schema = {"files": ["ExportFile"], "object": str}
+
+
+class ExportFile(Resource):
+    """
+    Attributes
+    ----------
+    href : str
+        A presigned link to download the export file.
+    md5sum : str
+        MD5 hash of the export file.
+    name : str
+        Name of the export file.
+    """
+
+    schema = {"href": str, "md5sum": str, "name": str}

@@ -9,7 +9,7 @@ from .pager import Pager
 
 class Client(BaseClient):
     def api_version(self):
-        return "v2020-01-01"
+        return "v2021-02-25"
 
     def list_sites(self, **options):
         """List sites
@@ -179,7 +179,7 @@ class Client(BaseClient):
         return self._make_request("GET", path, None, **options)
 
     def update_account(self, account_id, body, **options):
-        """Modify an account
+        """Update an account
 
         Parameters
         ----------
@@ -261,7 +261,7 @@ class Client(BaseClient):
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         body : dict
-            The request body. It should follow the schema of AccountAcquisitionUpdatable.
+            The request body. It should follow the schema of AccountAcquisitionUpdate.
 
         Keyword Arguments
         -----------------
@@ -424,8 +424,8 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, **options)
 
-    def list_account_coupon_redemptions(self, account_id, **options):
-        """Show the coupon redemptions for an account
+    def list_billing_infos(self, account_id, **options):
+        """Get the list of billing information associated with an account
 
         Parameters
         ----------
@@ -467,13 +467,175 @@ class Client(BaseClient):
         -------
 
         Pager
+            A list of the the billing information for an account's
+        """
+        path = self._interpolate_path("/accounts/%s/billing_infos", account_id)
+        return Pager(self, path, **options)
+
+    def create_billing_info(self, account_id, body, **options):
+        """Set an account's billing information when the wallet feature is enabled
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of BillingInfoCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        BillingInfo
+            Updated billing information.
+        """
+        path = self._interpolate_path("/accounts/%s/billing_infos", account_id)
+        return self._make_request("POST", path, body, **options)
+
+    def get_a_billing_info(self, account_id, billing_info_id, **options):
+        """Fetch a billing info
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        BillingInfo
+            A billing info.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s", account_id, billing_info_id
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def update_a_billing_info(self, account_id, billing_info_id, body, **options):
+        """Update an account's billing information
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID.
+        body : dict
+            The request body. It should follow the schema of BillingInfoCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        BillingInfo
+            Updated billing information.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s", account_id, billing_info_id
+        )
+        return self._make_request("PUT", path, body, **options)
+
+    def remove_a_billing_info(self, account_id, billing_info_id, **options):
+        """Remove an account's billing information
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Empty
+            Billing information deleted
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s", account_id, billing_info_id
+        )
+        return self._make_request("DELETE", path, None, **options)
+
+    def list_account_coupon_redemptions(self, account_id, **options):
+        """Show the coupon redemptions for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.begin_time : datetime
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.end_time : datetime
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.state : str
+            Filter by state.
+
+        Returns
+        -------
+
+        Pager
             A list of the the coupon redemptions on an account.
         """
         path = self._interpolate_path("/accounts/%s/coupon_redemptions", account_id)
         return Pager(self, path, **options)
 
-    def get_active_coupon_redemption(self, account_id, **options):
-        """Show the coupon redemption that is active on an account
+    def list_active_coupon_redemptions(self, account_id, **options):
+        """Show the coupon redemptions that are active on an account
 
         Parameters
         ----------
@@ -490,16 +652,16 @@ class Client(BaseClient):
         Returns
         -------
 
-        CouponRedemption
-            An active coupon redemption on an account.
+        Pager
+            Active coupon redemptions on an account.
         """
         path = self._interpolate_path(
             "/accounts/%s/coupon_redemptions/active", account_id
         )
-        return self._make_request("GET", path, None, **options)
+        return Pager(self, path, **options)
 
     def create_coupon_redemption(self, account_id, body, **options):
-        """Generate an active coupon redemption on an account
+        """Generate an active coupon redemption on an account or subscription
 
         Parameters
         ----------
@@ -1379,6 +1541,59 @@ class Client(BaseClient):
         path = self._interpolate_path("/coupons/%s", coupon_id)
         return self._make_request("DELETE", path, None, **options)
 
+    def generate_unique_coupon_codes(self, coupon_id, body, **options):
+        """Generate unique coupon codes
+
+        Parameters
+        ----------
+
+        coupon_id : str
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
+        body : dict
+            The request body. It should follow the schema of CouponBulkCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        UniqueCouponCodeParams
+            A set of parameters that can be passed to the `list_unique_coupon_codes`
+            endpoint to obtain only the newly generated `UniqueCouponCodes`.
+        """
+        path = self._interpolate_path("/coupons/%s/generate", coupon_id)
+        return self._make_request("POST", path, body, **options)
+
+    def restore_coupon(self, coupon_id, body, **options):
+        """Restore an inactive coupon
+
+        Parameters
+        ----------
+
+        coupon_id : str
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
+        body : dict
+            The request body. It should follow the schema of CouponUpdate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Coupon
+            The restored coupon.
+        """
+        path = self._interpolate_path("/coupons/%s/restore", coupon_id)
+        return self._make_request("PUT", path, body, **options)
+
     def list_unique_coupon_codes(self, coupon_id, **options):
         """List unique coupon codes associated with a bulk coupon
 
@@ -1955,7 +2170,7 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s", invoice_id)
         return self._make_request("GET", path, None, **options)
 
-    def put_invoice(self, invoice_id, body, **options):
+    def update_invoice(self, invoice_id, body, **options):
         """Update an invoice
 
         Parameters
@@ -1964,7 +2179,7 @@ class Client(BaseClient):
         invoice_id : str
             Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
         body : dict
-            The request body. It should follow the schema of InvoiceUpdatable.
+            The request body. It should follow the schema of InvoiceUpdate.
 
         Keyword Arguments
         -----------------
@@ -2034,7 +2249,7 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s/collect", invoice_id)
         return self._make_request("PUT", path, body, **options)
 
-    def fail_invoice(self, invoice_id, **options):
+    def mark_invoice_failed(self, invoice_id, **options):
         """Mark an open invoice as failed
 
         Parameters
@@ -3034,8 +3249,8 @@ class Client(BaseClient):
         path = self._interpolate_path("/subscriptions/%s", subscription_id)
         return self._make_request("GET", path, None, **options)
 
-    def modify_subscription(self, subscription_id, body, **options):
-        """Modify a subscription
+    def update_subscription(self, subscription_id, body, **options):
+        """Update a subscription
 
         Parameters
         ----------
@@ -3086,6 +3301,8 @@ class Client(BaseClient):
             In the event that the most recent invoice is a $0 invoice paid entirely by credit, Recurly will apply the credit back to the customer’s account.
 
             You may also terminate a subscription with no refund and then manually refund specific invoices.
+        params.charge : bool
+            Applicable only if the subscription has usage based add-ons and unbilled usage logged for the current billing cycle. If true, current billing cycle unbilled usage is billed on the final invoice. If false, Recurly will create a negative usage record for current billing cycle usage that will zero out the final invoice line items.
 
         Returns
         -------
@@ -3850,3 +4067,39 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/purchases/preview")
         return self._make_request("POST", path, body, **options)
+
+    def get_export_dates(self, **options):
+        """List the dates that have an available export to download.
+
+        Returns
+        -------
+
+        ExportDates
+            Returns a list of dates.
+        """
+        path = self._interpolate_path("/export_dates")
+        return self._make_request("GET", path, None, **options)
+
+    def get_export_files(self, export_date, **options):
+        """List of the export files that are available to download.
+
+        Parameters
+        ----------
+
+        export_date : str
+            Date for which to get a list of available automated export files. Date must be in YYYY-MM-DD format.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExportFiles
+            Returns a list of export files to download.
+        """
+        path = self._interpolate_path("/export_dates/%s/export_files", export_date)
+        return self._make_request("GET", path, None, **options)
