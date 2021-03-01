@@ -1,8 +1,62 @@
 # Changelog
 
-## [3.9.0](https://github.com/recurly/recurly-client-python/tree/HEAD)
+## [4.0.0](https://github.com/recurly/recurly-client-python/tree/4.0.0) (2021-03-01)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.8.0...HEAD)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.15.0...4.0.0)
+
+# Major Version Release
+
+The 4.x major version of the client pairs with the `v2021-02-25` API version. This version of the client and the API contain breaking changes that should be considered before upgrading your integration.
+
+## Breaking Changes in the API
+All changes to the core API are documented in the [Developer Portal changelog](https://developers.recurly.com/api/changelog.html#v2021-02-25---current-ga-version)
+
+## Breaking Changes in Client
+
+- Add `**options`` kwargs to every operation [[#420](https://github.com/recurly/recurly-client-python/pull/420)]
+- Require query params be passed in as a dict to the `params` kwarg [[#420](https://github.com/recurly/recurly-client-python/pull/420)]
+- Add support for `headers` kwarg [[#420](https://github.com/recurly/recurly-client-python/pull/420)]
+- Add validation to ensure only allowed options are passed to operations [[#430](https://github.com/recurly/recurly-client-python/pull/430)]
+- Preserve internal headers that should not be overridden by optional headers [[#430](https://github.com/recurly/recurly-client-python/pull/430)]
+
+**Merged pull requests:**
+
+- Release 4.0.0 [\#477](https://github.com/recurly/recurly-client-python/pull/477) ([douglasmiller](https://github.com/douglasmiller))
+- Updating changelog script and changelog generator config for 4.x release [\#475](https://github.com/recurly/recurly-client-python/pull/475) ([douglasmiller](https://github.com/douglasmiller))
+- Adding options validation and preserving internal headers [\#430](https://github.com/recurly/recurly-client-python/pull/430) ([douglasmiller](https://github.com/douglasmiller))
+- Add \*\*options kwargs to operations [\#420](https://github.com/recurly/recurly-client-python/pull/420) ([bhelx](https://github.com/bhelx))
+
+## [3.15.0](https://github.com/recurly/recurly-client-python/tree/3.15.0) (2021-01-22)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.14.0...3.15.0)
+
+## [3.14.0](https://github.com/recurly/recurly-client-python/tree/3.14.0) (2020-11-06)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.13.0...3.14.0)
+
+**Fixed bugs:**
+
+- Get coupon by strange code API error [\#456](https://github.com/recurly/recurly-client-python/issues/456)
+
+## [3.13.0](https://github.com/recurly/recurly-client-python/tree/3.13.0) (2020-10-20)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.12.0...3.13.0)
+
+## [3.12.0](https://github.com/recurly/recurly-client-python/tree/3.12.0) (2020-09-22)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.11.0...3.12.0)
+
+## [3.11.0](https://github.com/recurly/recurly-client-python/tree/3.11.0) (2020-08-31)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.10.0...3.11.0)
+
+## [3.10.0](https://github.com/recurly/recurly-client-python/tree/3.10.0) (2020-08-21)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.9.0...3.10.0)
+
+## [3.9.0](https://github.com/recurly/recurly-client-python/tree/3.9.0) (2020-07-31)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.8.0...3.9.0)
 
 **Implemented enhancements:**
 
@@ -98,7 +152,11 @@
 
 ## [3.4.2](https://github.com/recurly/recurly-client-python/tree/3.4.2) (2020-03-20)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.16...3.4.2)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.4.1...3.4.2)
+
+**Fixed bugs:**
+
+- Error trying to cast error response [\#369](https://github.com/recurly/recurly-client-python/issues/369)
 
 **Merged pull requests:**
 
