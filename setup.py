@@ -14,9 +14,9 @@ setuptools.setup(
     name="recurly",
     # version managed in recurly/__init__.py
     version=VERSION,
-    author="Benjamin Eckel",
-    author_email="ben@recurly.com",
-    description="Recurly v3",
+    author="Developer Experience",
+    author_email="dx@recurly.com",
+    description="Recurly v4",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/recurly/recurly-client-python",
