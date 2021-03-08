@@ -264,3 +264,8 @@ class TestBaseClient(unittest.TestCase):
 
                 request.assert_called_with("GET", url, None, headers=expected_headers)
                 self.assertEqual(type(resource), MyResource)
+
+    def test_client_can_set_timeout(self):
+        timeout = 3
+        client = MockClient("apikey", timeout=timeout)
+        self.assertEqual(client.__dict__["_BaseClient__conn"].timeout, timeout)

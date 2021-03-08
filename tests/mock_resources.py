@@ -19,8 +19,13 @@ class MySubResource(Resource):
     schema = {"object": str, "my_string": str}
 
 
-class Error(Resource):
-    schema = {"object": str, "message": str, "params": list, "type": str}
+class ErrorMayHaveTransaction(Resource):
+    schema = {
+        "message": str,
+        "params": list,
+        "transaction_error": "TransactionError",
+        "type": str,
+    }
 
 
 class Empty(Resource):
