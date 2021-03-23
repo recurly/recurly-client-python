@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.0.1](https://github.com/recurly/recurly-client-python/tree/4.0.1) (2021-03-23)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.0.0...4.0.1)
+
+**Merged pull requests:**
+
+- Release 4.0.1 [\#484](https://github.com/recurly/recurly-client-python/pull/484) ([douglasmiller](https://github.com/douglasmiller))
+- Generated Latest Changes for v2021-02-25 [\#483](https://github.com/recurly/recurly-client-python/pull/483) ([recurly-integrations](https://github.com/recurly-integrations))
+- Sync updates not ported from 3.x client [\#479](https://github.com/recurly/recurly-client-python/pull/479) ([douglasmiller](https://github.com/douglasmiller))
+
 ## [4.0.0](https://github.com/recurly/recurly-client-python/tree/4.0.0) (2021-03-01)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.15.0...4.0.0)
@@ -30,29 +40,85 @@ All changes to the core API are documented in the [Developer Portal changelog](h
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.14.0...3.15.0)
 
+**Implemented enhancements:**
+
+- Latest Changes for 2019-10-10 [\#472](https://github.com/recurly/recurly-client-python/pull/472) ([douglasmiller](https://github.com/douglasmiller))
+- Latest Changes for 2019-10-10 [\#465](https://github.com/recurly/recurly-client-python/pull/465) ([douglasmiller](https://github.com/douglasmiller))
+- Add ability to set timeouts [\#423](https://github.com/recurly/recurly-client-python/pull/423) ([benweatherman](https://github.com/benweatherman))
+
+**Merged pull requests:**
+
+- Release 3.15.0 [\#473](https://github.com/recurly/recurly-client-python/pull/473) ([douglasmiller](https://github.com/douglasmiller))
+
 ## [3.14.0](https://github.com/recurly/recurly-client-python/tree/3.14.0) (2020-11-06)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.13.0...3.14.0)
+
+**Implemented enhancements:**
+
+- Latest Changes for 2019-10-10 \(Wallet, Item Coupons\) [\#461](https://github.com/recurly/recurly-client-python/pull/461) ([douglasmiller](https://github.com/douglasmiller))
 
 **Fixed bugs:**
 
 - Get coupon by strange code API error [\#456](https://github.com/recurly/recurly-client-python/issues/456)
 
+**Merged pull requests:**
+
+- Release 3.14.0 [\#463](https://github.com/recurly/recurly-client-python/pull/463) ([douglasmiller](https://github.com/douglasmiller))
+
 ## [3.13.0](https://github.com/recurly/recurly-client-python/tree/3.13.0) (2020-10-20)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.12.0...3.13.0)
+
+**Implemented enhancements:**
+
+- Mon Oct 19 20:41:06 UTC 2020 Upgrade API version v2019-10-10 [\#457](https://github.com/recurly/recurly-client-python/pull/457) ([douglasmiller](https://github.com/douglasmiller))
+
+**Fixed bugs:**
+
+- Use ErrorMayHaveTransaction instead of Error [\#439](https://github.com/recurly/recurly-client-python/pull/439) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.13.0 [\#458](https://github.com/recurly/recurly-client-python/pull/458) ([douglasmiller](https://github.com/douglasmiller))
 
 ## [3.12.0](https://github.com/recurly/recurly-client-python/tree/3.12.0) (2020-09-22)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.11.0...3.12.0)
 
+**Implemented enhancements:**
+
+- Latest Changes for 2019-10-10 \(Automated Exports, additional resource data attributes\) [\#436](https://github.com/recurly/recurly-client-python/pull/436) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.12.0 [\#437](https://github.com/recurly/recurly-client-python/pull/437) ([douglasmiller](https://github.com/douglasmiller))
+- Skipping object attribute for Errors [\#433](https://github.com/recurly/recurly-client-python/pull/433) ([douglasmiller](https://github.com/douglasmiller))
+
 ## [3.11.0](https://github.com/recurly/recurly-client-python/tree/3.11.0) (2020-08-31)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.10.0...3.11.0)
 
+**Implemented enhancements:**
+
+- Mon Aug 31 19:49:18 UTC 2020 Upgrade API version v2019-10-10 [\#428](https://github.com/recurly/recurly-client-python/pull/428) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.11.0 [\#429](https://github.com/recurly/recurly-client-python/pull/429) ([douglasmiller](https://github.com/douglasmiller))
+- Code of Conduct [\#427](https://github.com/recurly/recurly-client-python/pull/427) ([bhelx](https://github.com/bhelx))
+
 ## [3.10.0](https://github.com/recurly/recurly-client-python/tree/3.10.0) (2020-08-21)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.9.0...3.10.0)
+
+**Implemented enhancements:**
+
+- Fri Aug 21 16:24:38 UTC 2020 Upgrade API version v2019-10-10 [\#425](https://github.com/recurly/recurly-client-python/pull/425) ([douglasmiller](https://github.com/douglasmiller))
+
+**Merged pull requests:**
+
+- Release 3.10.0 [\#426](https://github.com/recurly/recurly-client-python/pull/426) ([douglasmiller](https://github.com/douglasmiller))
 
 ## [3.9.0](https://github.com/recurly/recurly-client-python/tree/3.9.0) (2020-07-31)
 
