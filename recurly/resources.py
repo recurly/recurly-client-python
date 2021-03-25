@@ -2330,10 +2330,16 @@ class Tier(Resource):
     currencies : :obj:`list` of :obj:`TierPricing`
         Tier pricing
     ending_quantity : int
-        Ending quantity
+        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons, but for percentage type usage add ons, represents the site default currency in its minimum divisible unit.
+    usage_percentage : str
+        Decimal usage percentage.
     """
 
-    schema = {"currencies": ["TierPricing"], "ending_quantity": int}
+    schema = {
+        "currencies": ["TierPricing"],
+        "ending_quantity": int,
+        "usage_percentage": str,
+    }
 
 
 class TierPricing(Resource):
