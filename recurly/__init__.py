@@ -365,7 +365,11 @@ class Account(Resource):
 
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
-        url = urljoin(self._url, '/billing_info')
+        key = "_url"
+        if key in billing_info.__dict__:
+          url = urljoin(self._url, '/billing_infos/{}'.format(billing_info.uuid))
+        else:
+          url = urljoin(self._url, '/billing_info')
         response = billing_info.http_request(url, 'PUT', billing_info,
             {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
@@ -394,23 +398,6 @@ class Account(Resource):
       url = urljoin(self._url, '/billing_infos/{}'.format(billing_info_uuid))
       resp, elem = BillingInfo.element_for_url(url)
       return BillingInfo.from_element(elem)
-
-    def update_wallet_billing_info(self, billing_info):
-        """Changes a billing info in the account's wallet"""
-        """Change this account's billing information to the given `BillingInfo`."""
-        url = urljoin(self._url, '/billing_infos/{}'.format(billing_info.uuid))
-        response = billing_info.http_request(url, 'PUT', billing_info,
-            {'content-type': 'application/xml; charset=utf-8'})
-        if response.status == 200:
-            pass
-        elif response.status == 201:
-            billing_info._url = response.getheader('location')
-        else:
-            billing_info.raise_http_error(response)
-
-        response_xml = response.read()
-        logging.getLogger('recurly.http.response').debug(response_xml)
-        billing_info.update_from_element(ElementTree.fromstring(response_xml))
 
     def create_shipping_address(self, shipping_address):
         """Creates a shipping address on an existing account. If you are
