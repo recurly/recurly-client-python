@@ -1,0 +1,55 @@
+POST https://api.recurly.com/v2/accounts/subscribemock/subscriptions HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<subscription>
+	<plan_code>basicplan</plan_code>
+	<unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+	<currency>USD</currency>
+  <account>
+    <account_code>subscribemock</account_code>
+  </account>
+	<bulk type="boolean">true</bulk>
+	<terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
+	<customer_notes>Some Customer Notes</customer_notes>
+	<imported_trial type="boolean">true</imported_trial>
+	<billing_info_uuid>iiznlrvdt8py</billing_info_uuid>
+</subscription>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab
+
+<?xml version="1.0" encoding="UTF-8"?>
+<subscription 
+    href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab">
+  <uuid>123456789012345678901234567890ab</uuid>
+  <account href="https://api.recurly.com/v2/accounts/subscribemock"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/subscribemock/billing_infos/iiznlrvdt8py"/>
+  <plan href="https://api.recurly.com/v2/plans/basicplan">
+    <plan_code>basicplan</plan_code>
+    <name>Basic Plan</name>
+  </plan>
+  <state>active</state>
+  <quantity type="integer">1</quantity>
+  <currency>EUR</currency>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+  <activated_at type="datetime">2011-05-27T07:00:00Z</activated_at>
+  <canceled_at nil="nil"></canceled_at>
+  <expires_at nil="nil"></expires_at>
+  <current_period_started_at type="datetime">2011-06-27T07:00:00Z</current_period_started_at>
+  <current_period_ends_at type="datetime">2010-07-27T07:00:00Z</current_period_ends_at>
+  <trial_started_at nil="nil"></trial_started_at>
+  <trial_ends_at nil="nil"></trial_ends_at>
+  <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
+  <customer_notes>Some Customer Notes</customer_notes>
+  <imported_trial type="boolean">true</imported_trial>
+  <subscription_add_ons type="array">
+  </subscription_add_ons>
+  <a name="cancel" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/cancel" method="put"/>
+  <a name="terminate" href="https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/terminate" method="put"/>
+</subscription>

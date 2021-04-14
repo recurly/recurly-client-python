@@ -134,6 +134,36 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
 
+    def test_purchase(self):
+        account_code = 'test%s' % self.test_id
+        purchase = Purchase(
+            currency = 'USD',
+            gateway_code = 'aBcD1234',
+            collection_method = 'manual',
+            shipping_address = ShippingAddress(
+                first_name = 'Verena',
+                last_name = 'Example',
+                address1 = '456 Pillow Fort Drive',
+                city = 'New Orleans',
+                state = 'LA',
+                zip = '70114',
+                country = 'US',
+                nickname = 'Work'
+            ),
+            account = Account(
+                account_code = account_code,
+            ),
+            billing_info_uuid = "uniqueUuid",
+            subscriptions = [
+                recurly.Subscription(plan_code = 'gold')
+            ],
+        )
+        with self.mock_request('purchase/invoiced-billing-info-uuid.xml'):
+            collection = purchase.invoice()
+        self.assertIsInstance(collection, InvoiceCollection)
+        self.assertIsInstance(collection.charge_invoice, Invoice)
+        self.assertEqual(purchase.billing_info_uuid, 'uniqueUuid')
+
     def test_account(self):
         account_code = 'test%s' % self.test_id
         with self.mock_request('account/does-not-exist.xml'):
@@ -288,6 +318,42 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('shipping_addresses/created-on-existing-account.xml'):
             shipping_address = account.create_shipping_address(shipping_address)
+
+    def test_account_billing_infos(self):
+        account = Account(account_code='binfo%s' % self.test_id)
+        with self.mock_request('billing-info/account-created.xml'):
+            account.save()
+
+        self.assertRaises(AttributeError, getattr, account, 'billing_info')
+
+        billing_info1 = BillingInfo(
+            first_name = 'Humberto',
+            last_name = 'DuMonde',
+            number = '4111111111111111',
+            verification_value = '123',
+            month = 10,
+            year = 2049,
+            address1 = '12345 Main St',
+            city = 'New Orleans',
+            state = 'LA',
+            zip = '70114',
+            country = 'US',
+            primary_payment_method = True,
+            backup_payment_method = False
+        )
+
+        with self.mock_request('billing-info/created-billing-infos.xml'):
+            account.create_billing_info(billing_info1)
+        # self.assertEqual(len(account.get_billing_infos()), 1)
+        # self.assertEqual(account.get_billing_info("op9snjf3yjn8").first_name, "Humberto")
+        self.assertTrue(billing_info1.primary_payment_method)
+        self.assertFalse(billing_info1.backup_payment_method)
+
+        with self.mock_request('billing-info/account-exists.xml'):
+            same_account = Account.get('binfo%s' % self.test_id)
+        with self.mock_request('billing-info/exists-billing-infos.xml'):
+            binfo = same_account.get_billing_info('op9snjf3yjn8')
+        self.assertEquals(binfo.first_name, "Humberto")
 
     def test_account_custom_fields(self):
         account_code = 'test%s' % self.test_id
@@ -1402,6 +1468,20 @@ class TestResources(RecurlyTest):
 
                 self.assertTrue(sub._url)
                 self.assertEquals(sub.imported_trial, True)
+
+                sub_bi = Subscription(
+                    plan_code='basicplan',
+                    account=account,
+                    billing_info_uuid='iiznlrvdt8py',
+                    currency='USD',
+                    unit_amount_in_cents=1000,
+                    bulk=True,
+                    terms_and_conditions='Some Terms and Conditions',
+                    customer_notes='Some Customer Notes',
+                    imported_trial=True
+                )
+                with self.mock_request('subscription/subscribed-billing-info-uuid.xml'):
+                    account.subscribe(sub_bi)
 
                 manualsub = Subscription(
                     plan_code='basicplan',
