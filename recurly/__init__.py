@@ -365,7 +365,12 @@ class Account(Resource):
 
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
-        url = urljoin(self._url, '/billing_info')
+        # billing_info._url is only present when the site is using the wallet feature
+        key = "_url"
+        if key in billing_info.__dict__:
+          url = urljoin(self._url, '/billing_infos/{}'.format(billing_info.uuid))
+        else:
+          url = urljoin(self._url, '/billing_info')
         response = billing_info.http_request(url, 'PUT', billing_info,
             {'content-type': 'application/xml; charset=utf-8'})
         if response.status == 200:
@@ -378,6 +383,22 @@ class Account(Resource):
         response_xml = response.read()
         logging.getLogger('recurly.http.response').debug(response_xml)
         billing_info.update_from_element(ElementTree.fromstring(response_xml))
+
+    def create_billing_info(self, billing_info):
+      """Create billing info to include in account's wallet."""
+      url = urljoin(self._url, '/billing_infos')
+      return billing_info.post(url)
+
+    def get_billing_infos(self):
+      """Fetch all billing infos in an account's wallet."""
+      url = urljoin(self._url, '/billing_infos')
+      return BillingInfo.paginated(url)
+
+    def get_billing_info(self, billing_info_uuid):
+      """Fetch a billing info from account's wallet."""
+      url = urljoin(self._url, '/billing_infos/{}'.format(billing_info_uuid))
+      resp, elem = BillingInfo.element_for_url(url)
+      return BillingInfo.from_element(elem)
 
     def create_shipping_address(self, shipping_address):
         """Creates a shipping address on an existing account. If you are
@@ -445,7 +466,9 @@ class BillingInfo(Resource):
         'bsb_code',
         'tax_identifier',
         'tax_identifier_type',
-        'fraud'
+        'fraud',
+        'primary_payment_method',
+        'backup_payment_method'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
@@ -831,6 +854,7 @@ class Invoice(Resource):
         'credit_customer_notes',
         'gateway_code',
         'billing_info',
+        'billing_info_uuid'
     )
 
     blacklist_attributes = (
@@ -1057,6 +1081,7 @@ class Purchase(Resource):
         'gateway_code',
         'collection_method',
         'transaction_type',
+        'billing_info_uuid'
     )
 
     def invoice(self):
@@ -1249,6 +1274,7 @@ class Subscription(Resource):
         'gateway_code',
         'transaction_type',
         'billing_info',
+        'billing_info_uuid'
     )
     sensitive_attributes = ('number', 'verification_value', 'bulk')
 

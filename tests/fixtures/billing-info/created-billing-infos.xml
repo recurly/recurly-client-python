@@ -1,0 +1,55 @@
+POST https://api.recurly.com/v2/accounts/binfomock/billing_infos HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<billing_info>
+	<first_name>Humberto</first_name>
+	<last_name>DuMonde</last_name>
+	<number>4111111111111111</number>
+	<verification_value>123</verification_value>
+	<year type="integer">2049</year>
+	<month type="integer">10</month>
+	<address1>12345 Main St</address1>
+	<city>New Orleans</city>
+	<state>LA</state>
+	<zip>70114</zip>
+	<country>US</country>
+	<currency>USD</currency>
+	<primary_payment_method type="boolean">true</primary_payment_method>
+	<backup_payment_method type="boolean">false</backup_payment_method>
+</billing_info>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/binfomock/billing_infos/op9snjf3yjn8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<billing_info url="https://api.recurly.com/v2/accounts/binfomock/billing_infos/op9snjf3yjn8" type="credit_card">
+  <account href="https://api.recurly.com/v2/accounts/binfomock"/>
+  <uuid>op9snjf3yjn8</uuid>
+  <first_name>Humberto</first_name>
+  <last_name>DuMonde</last_name>
+  <mandate_reference>ref-126</mandate_reference>
+  <address1>12345 Main St</address1>
+	<city>New Orleans</city>
+	<state>LA</state>
+	<zip>70114</zip>
+	<country>US</country>
+  <currency>USD</currency>
+  <phone nil="nil"></phone>
+  <vat_number nil="nil"></vat_number>
+  <ip_address nil="nil"></ip_address>
+  <ip_address_country nil="nil"></ip_address_country>
+  <primary_payment_method type="boolean">true</primary_payment_method>
+  <backup_payment_method type="boolean">false</backup_payment_method>
+  <card_type>Visa</card_type>
+  <year type="integer">2049</year>
+  <month type="integer">10</month>>
+  <first_six>411111</first_six>
+  <last_four>1111</last_four>
+  <updated_at type="datetime">2021-04-14T15:02:08Z</updated_at>
+</billing_info>
