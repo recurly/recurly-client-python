@@ -344,8 +344,6 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('billing-info/created-billing-infos.xml'):
             account.create_billing_info(billing_info1)
-        # self.assertEqual(len(account.get_billing_infos()), 1)
-        # self.assertEqual(account.get_billing_info("op9snjf3yjn8").first_name, "Humberto")
         self.assertTrue(billing_info1.primary_payment_method)
         self.assertFalse(billing_info1.backup_payment_method)
 
@@ -353,7 +351,7 @@ class TestResources(RecurlyTest):
             same_account = Account.get('binfo%s' % self.test_id)
         with self.mock_request('billing-info/exists-billing-infos.xml'):
             binfo = same_account.get_billing_info('op9snjf3yjn8')
-        self.assertEquals(binfo.first_name, "Humberto")
+        self.assertEquals(binfo.first_name, 'Humberto')
 
     def test_account_custom_fields(self):
         account_code = 'test%s' % self.test_id

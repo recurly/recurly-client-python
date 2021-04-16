@@ -365,6 +365,9 @@ class Account(Resource):
 
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
+        # billing_info._url is used as basis for conditional
+        # if present, the specified billing_info of multiple billing_infos will be updated
+        # when absent, the only billing_info associated with the account will be updated
         key = "_url"
         if key in billing_info.__dict__:
           url = urljoin(self._url, '/billing_infos/{}'.format(billing_info.uuid))
