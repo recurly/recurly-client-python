@@ -1858,13 +1858,21 @@ class SubscriptionAddOnTier(Resource):
     ending_quantity : int
         Ending quantity
     unit_amount : float
-        Allows up to 2 decimal places. Optionally, override the tiers' default unit amount.
+        Allows up to 2 decimal places. Optionally, override the tiers' default unit amount. If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
     unit_amount_decimal : str
         Allows up to 9 decimal places.  Optionally, override tiers' default unit amount.
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
+        If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
+    usage_percentage : str
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places represented as a string. A value between 0.0 and 100.0. Optionally, override tiers' default usage percentage. Required if add-on's `add_on_type` is `usage` and `usage_type` is `percentage`. Must be omitted otherwise.
     """
 
-    schema = {"ending_quantity": int, "unit_amount": float, "unit_amount_decimal": str}
+    schema = {
+        "ending_quantity": int,
+        "unit_amount": float,
+        "unit_amount_decimal": str,
+        "usage_percentage": str,
+    }
 
 
 class UniqueCouponCodeParams(Resource):
