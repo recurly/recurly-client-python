@@ -274,6 +274,8 @@ class BillingInfo(Resource):
     ----------
     account_id : str
     address : Address
+    backup_payment_method : bool
+        The `backup_payment_method` indicator is used to designate a billing info as a backup on the account that will be tried if the billing info marked `primary_payment_method` fails.
     company : str
     created_at : datetime
         When the billing information was created.
@@ -298,6 +300,7 @@ class BillingInfo(Resource):
     schema = {
         "account_id": str,
         "address": "Address",
+        "backup_payment_method": bool,
         "company": str,
         "created_at": datetime,
         "first_name": str,
@@ -896,6 +899,8 @@ class Transaction(Resource):
         Total transaction amount sent to the payment gateway.
     avs_check : str
         When processed, result from checking the overall AVS on the transaction.
+    backup_payment_method_used : bool
+        Indicates if the transaction was completed using a backup payment
     billing_address : Address
     collected_at : datetime
         Collected at, or if not collected yet, the time the transaction was created.
@@ -975,6 +980,7 @@ class Transaction(Resource):
         "account": "AccountMini",
         "amount": float,
         "avs_check": str,
+        "backup_payment_method_used": bool,
         "billing_address": "Address",
         "collected_at": datetime,
         "collection_method": str,
