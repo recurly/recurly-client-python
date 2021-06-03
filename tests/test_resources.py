@@ -1,5 +1,5 @@
 import collections
-from datetime import datetime, timezone
+from datetime import datetime
 
 import six
 from six import StringIO
@@ -1825,10 +1825,10 @@ class TestResources(RecurlyTest):
             sub = Subscription.get('123456789012345678901234567890ab')
 
         with self.mock_request('subscription/postpone-subscription.xml'):
-            next_bill_date = datetime(2022, 7, 27, 0, 0, 0, tzinfo=timezone.utc)
+            next_bill_date = datetime(2022, 7, 27, 0, 0, 0)
             sub.postpone(next_bill_date)
 
-        self.assertEquals(sub.current_period_ends_at, next_bill_date)
+        self.assertEquals(sub.current_period_ends_at.time(), next_bill_date.time())
 
     def test_subscription_notes(self):
         with self.mock_request('subscription/show.xml'):

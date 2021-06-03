@@ -1,4 +1,4 @@
-PUT https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/postpone?next_bill_date=2022-07-27T00:00:00+00:00&bulk=false HTTP/1.1
+PUT https://api.recurly.com/v2/subscriptions/123456789012345678901234567890ab/postpone?next_bill_date=2022-07-27T00:00:00&bulk=false HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
