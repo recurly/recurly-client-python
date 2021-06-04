@@ -424,6 +424,35 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/billing_info", account_id)
         return self._make_request("DELETE", path, None, **options)
 
+    def verify_billing_info(self, account_id, **options):
+        """Verify an account's credit card billing information
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.body : BillingInfoVerify
+            The body of the request.
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        body = options.pop("body", None)
+        path = self._interpolate_path("/accounts/%s/billing_info/verify", account_id)
+        return self._make_request("POST", path, body, **options)
+
     def list_billing_infos(self, account_id, **options):
         """Get the list of billing information associated with an account
 
@@ -473,7 +502,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def create_billing_info(self, account_id, body, **options):
-        """Set an account's billing information when the wallet feature is enabled
+        """Add new billing information on an account
 
         Parameters
         ----------
