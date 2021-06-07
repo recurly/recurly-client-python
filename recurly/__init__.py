@@ -1301,6 +1301,11 @@ class Subscription(Resource):
         url = urljoin(self._url, '/notes')
         self.put(url)
 
+    def postpone(self, next_bill_date, bulk=False):
+        """Postpone a subscription"""
+        url = urljoin(self._url, '/postpone?next_bill_date=' + next_bill_date.isoformat() + '&bulk=' + str(bulk).lower())
+        self.put(url)
+
     def pause(self, remaining_pause_cycles):
         """Pause a subscription"""
         url = urljoin(self._url, '/pause')

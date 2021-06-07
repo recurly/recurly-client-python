@@ -1820,6 +1820,16 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscribe-add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_postpone_subscription(self):
+        with self.mock_request('subscription/show.xml'):
+            sub = Subscription.get('123456789012345678901234567890ab')
+
+        with self.mock_request('subscription/postpone-subscription.xml'):
+            next_bill_date = datetime(2022, 7, 27, 0, 0, 0)
+            sub.postpone(next_bill_date)
+
+        self.assertEquals(sub.current_period_ends_at.time(), next_bill_date.time())
+
     def test_subscription_notes(self):
         with self.mock_request('subscription/show.xml'):
             sub = Subscription.get('123456789012345678901234567890ab')
