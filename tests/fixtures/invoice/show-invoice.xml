@@ -27,6 +27,14 @@ Location: https://api.recurly.com/v2/invoices/6019
   <invoice_number type="integer">6019</invoice_number>
   <vat_number nil="nil"></vat_number>
   <tax_in_cents type="integer">0</tax_in_cents>
+  <tax_details type="array">
+    <tax_detail>
+      <tax_type>GST</tax_type>
+      <tax_region>CA</tax_region>
+      <tax_rate type="float">0.05</tax_rate>
+      <tax_in_cents type="integer">20</tax_in_cents>
+    </tax_detail>
+  </tax_details>
   <total_in_cents type="integer">5000</total_in_cents>
   <currency>USD</currency>
   <created_at type="datetime">2018-07-13T17:13:57Z</created_at>

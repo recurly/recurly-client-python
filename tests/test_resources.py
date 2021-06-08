@@ -529,7 +529,7 @@ class TestResources(RecurlyTest):
                     recurly.Tier(
                         unit_amount_in_cents = recurly.Money(USD=800)
                     )
-                ]  
+                ]
             )
             with self.mock_request('add-on/created-tiered.xml'):
                 plan.create_add_on(add_on)
@@ -629,7 +629,7 @@ class TestResources(RecurlyTest):
             # See if we redacted our sensitive fields properly.
             self.assertTrue('4111' not in log_content)
             self.assertTrue('7777' not in log_content)
-              
+
             with self.mock_request('billing-info/account-exists.xml'):
                 same_account = Account.get('binfo%s' % self.test_id)
             with self.mock_request('billing-info/exists.xml'):
@@ -1134,11 +1134,22 @@ class TestResources(RecurlyTest):
 
     def test_invoice_collect(self):
         with self.mock_request('invoice/show-invoice.xml'):
-            invoice = Invoice.get("6019")      
+            invoice = Invoice.get("6019")
 
         with self.mock_request('invoice/collect-invoice.xml'):
             collection = invoice.force_collect()
             self.assertIsInstance(collection, InvoiceCollection)
+
+    def test_invoice_tax_details(self):
+        with self.mock_request('invoice/show-invoice.xml'):
+            invoice = Invoice.get("6019")
+
+        self.assertEqual(len(invoice.tax_details), 1)
+        tax_detail = invoice.tax_details[0]
+        self.assertEqual(tax_detail.tax_type, 'GST')
+        self.assertEqual(tax_detail.tax_region, 'CA')
+        self.assertEqual(tax_detail.tax_rate, 0.05)
+        self.assertEqual(tax_detail.tax_in_cents, 20)
 
     def test_invoice_with_optionals(self):
         account = Account(account_code='invoice%s' % self.test_id)
@@ -1648,18 +1659,18 @@ class TestResources(RecurlyTest):
     def test_subscription_convert_trial(self):
         with self.mock_request('subscription/show-trial.xml'):
             sub = Subscription.get('123456789012345678901234567890ab')
-        
+
         with self.mock_request('subscription/convert-trial.xml'):
             sub.convert_trial()
-        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)   
+        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)
 
         with self.mock_request('subscription/convert-trial-3ds.xml'):
             sub.convert_trial("token")
-        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)   
+        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)
 
         with self.mock_request('subscription/convert-trial-moto.xml'):
             sub.convert_trial_moto()
-        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)            
+        self.assertEqual(sub.trial_ends_at, sub.current_period_started_at)
 
     def test_usage(self):
         usage = Usage()
@@ -1743,7 +1754,7 @@ class TestResources(RecurlyTest):
                 recurly.Tier(
                   unit_amount_in_cents = recurly.Money(USD=800)
                 )
-              ]  
+              ]
             )
 
             with self.mock_request('subscribe-add-on/tiered-add-on-created.xml'):
