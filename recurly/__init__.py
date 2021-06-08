@@ -727,7 +727,7 @@ class TaxDetail(Resource):
 
     """A charge's tax breakdown"""
 
-    nodename = 'taxdetail'
+    nodename = 'tax_detail'
     inherits_currency = True
 
     attributes = (
@@ -735,12 +735,14 @@ class TaxDetail(Resource):
         'type',
         'tax_rate',
         'tax_in_cents',
+        'tax_type',
+        'tax_region'
     )
 
 class Item(Resource):
 
     """An item for a customer to apply to their account."""
-    
+
     member_path = 'items/%s'
     collection_path = 'items'
     nodename = 'item'
@@ -1335,7 +1337,7 @@ class Subscription(Resource):
         transaction_type = ElementTreeBuilder.SubElement(request, 'transaction_type')
         transaction_type.text = "moto"
         body = ElementTree.tostring(request, encoding='UTF-8')
-        
+
         response = self.http_request(url, 'PUT', body, { 'content-type':
             'application/xml; charset=utf-8' })
 
