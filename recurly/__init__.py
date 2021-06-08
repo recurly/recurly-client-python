@@ -831,6 +831,7 @@ class Invoice(Resource):
         'tax_in_cents',
         'tax_type',
         'tax_rate',
+        'tax_details',
         'total_in_cents',
         'currency',
         'created_at',
