@@ -733,6 +733,8 @@ class TaxDetail(Resource):
     attributes = (
         'name',
         'type',
+        'level',
+        'billable',
         'tax_rate',
         'tax_in_cents',
         'tax_type',
