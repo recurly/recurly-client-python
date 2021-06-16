@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.26](https://github.com/recurly/recurly-client-python/tree/2.9.26) (2021-06-16)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.25...2.9.26)
+
+
+**Merged Pull Requests**
+
+- Add tax_type and tax_region to TaxDetail [#499](https://github.com/recurly/recurly-client-python/pull/499) ([naspthorp](https://github.com/naspthorp))
+
+
+
 ## [2.9.25](https://github.com/recurly/recurly-client-python/tree/2.9.25) (2021-04-22)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.24...2.9.25)
