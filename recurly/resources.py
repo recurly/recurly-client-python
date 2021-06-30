@@ -54,7 +54,7 @@ class Address(Resource):
     city : str
         City
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
     last_name : str
@@ -223,7 +223,7 @@ class ShippingAddress(Resource):
     city : str
     company : str
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     created_at : datetime
         Created at
     email : str
@@ -275,7 +275,7 @@ class BillingInfo(Resource):
     account_id : str
     address : Address
     backup_payment_method : bool
-        The `backup_payment_method` indicator is used to designate a billing info as a backup on the account that will be tried if the billing info marked `primary_payment_method` fails.
+        The `backup_payment_method` field is used to indicate a billing info as a backup on the account that will be tried if the initial billing info used for an invoice is declined.
     company : str
     created_at : datetime
         When the billing information was created.
@@ -288,7 +288,7 @@ class BillingInfo(Resource):
         Object type
     payment_method : PaymentMethod
     primary_payment_method : bool
-        The `primary_payment_method` indicator is used to designate the primary billing info on the account. The first billing info created on an account will always become primary. Adding additional billing infos provides the flexibility to mark another billing info as primary, or adding additional non-primary billing infos. This can be accomplished by passing the `primary_payment_method` indicator. When adding billing infos via the billing_info and /accounts endpoints, this value is not permitted, and will return an error if provided.
+        The `primary_payment_method` field is used to indicate the primary billing info on the account. The first billing info created on an account will always become primary. This payment method will be used
     updated_at : datetime
         When the billing information was last changed.
     updated_by : BillingInfoUpdatedBy
@@ -327,6 +327,8 @@ class PaymentMethod(Resource):
         Billing Agreement identifier. Only present for Amazon or Paypal payment methods.
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
+    cc_bin_country : str
+        The 2-letter ISO 3166-1 alpha-2 country code associated with the credit card BIN, if known by Recurly. Available on the BillingInfo object only. Available when the BIN country lookup feature is enabled.
     exp_month : int
         Expiration month.
     exp_year : int
@@ -354,6 +356,7 @@ class PaymentMethod(Resource):
         "account_type": str,
         "billing_agreement_id": str,
         "card_type": str,
+        "cc_bin_country": str,
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
@@ -388,7 +391,7 @@ class BillingInfoUpdatedBy(Resource):
     Attributes
     ----------
     country : str
-        Country of IP address, if known by Recurly.
+        Country, 2-letter ISO 3166-1 alpha-2 code matching the origin IP address, if known by Recurly.
     ip : str
         Customer's IP address when updating their billing information.
     """
@@ -573,6 +576,168 @@ class AccountBalanceAmount(Resource):
     """
 
     schema = {"amount": float, "currency": str}
+
+
+class Transaction(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    amount : float
+        Total transaction amount sent to the payment gateway.
+    avs_check : str
+        When processed, result from checking the overall AVS on the transaction.
+    backup_payment_method_used : bool
+        Indicates if the transaction was completed using a backup payment
+    billing_address : Address
+    collected_at : datetime
+        Collected at, or if not collected yet, the time the transaction was created.
+    collection_method : str
+        The method by which the payment was collected.
+    created_at : datetime
+        Created at
+    currency : str
+        3-letter ISO 4217 currency code.
+    customer_message : str
+        For declined (`success=false`) transactions, the message displayed to the customer.
+    customer_message_locale : str
+        Language code for the message
+    cvv_check : str
+        When processed, result from checking the CVV/CVC value on the transaction.
+    gateway_approval_code : str
+        Transaction approval code from the payment gateway.
+    gateway_message : str
+        Transaction message from the payment gateway.
+    gateway_reference : str
+        Transaction reference number from the payment gateway.
+    gateway_response_code : str
+        For declined transactions (`success=false`), this field lists the gateway error code.
+    gateway_response_time : float
+        Time, in seconds, for gateway to process the transaction.
+    gateway_response_values : dict
+        The values in this field will vary from gateway to gateway.
+    id : str
+        Transaction ID
+    invoice : InvoiceMini
+        Invoice mini details
+    ip_address_country : str
+        Origin IP address country, 2-letter ISO 3166-1 alpha-2 code, if known by Recurly.
+    ip_address_v4 : str
+        IP address provided when the billing information was collected:
+
+        - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
+        - When the merchant enters billing information using the API, the merchant may provide an IP address.
+        - When the merchant enters billing information using the UI, no IP address is recorded.
+    object : str
+        Object type
+    origin : str
+        Describes how the transaction was triggered.
+    original_transaction_id : str
+        If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
+    payment_gateway : TransactionPaymentGateway
+    payment_method : PaymentMethod
+    refunded : bool
+        Indicates if part or all of this transaction was refunded.
+    status : str
+        The current transaction status. Note that the status may change, e.g. a `pending` transaction may become `declined` or `success` may later become `void`.
+    status_code : str
+        Status code
+    status_message : str
+        For declined (`success=false`) transactions, the message displayed to the merchant.
+    subscription_ids : :obj:`list` of :obj:`str`
+        If the transaction is charging or refunding for one or more subscriptions, these are their IDs.
+    success : bool
+        Did this transaction complete successfully?
+    type : str
+        - `authorization` – verifies billing information and places a hold on money in the customer's account.
+        - `capture` – captures funds held by an authorization and completes a purchase.
+        - `purchase` – combines the authorization and capture in one transaction.
+        - `refund` – returns all or a portion of the money collected in a previous transaction to the customer.
+        - `verify` – a $0 or $1 transaction used to verify billing information which is immediately voided.
+    updated_at : datetime
+        Updated at
+    uuid : str
+        The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    voided_at : datetime
+        Voided at
+    voided_by_invoice : InvoiceMini
+        Invoice mini details
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "amount": float,
+        "avs_check": str,
+        "backup_payment_method_used": bool,
+        "billing_address": "Address",
+        "collected_at": datetime,
+        "collection_method": str,
+        "created_at": datetime,
+        "currency": str,
+        "customer_message": str,
+        "customer_message_locale": str,
+        "cvv_check": str,
+        "gateway_approval_code": str,
+        "gateway_message": str,
+        "gateway_reference": str,
+        "gateway_response_code": str,
+        "gateway_response_time": float,
+        "gateway_response_values": dict,
+        "id": str,
+        "invoice": "InvoiceMini",
+        "ip_address_country": str,
+        "ip_address_v4": str,
+        "object": str,
+        "origin": str,
+        "original_transaction_id": str,
+        "payment_gateway": "TransactionPaymentGateway",
+        "payment_method": "PaymentMethod",
+        "refunded": bool,
+        "status": str,
+        "status_code": str,
+        "status_message": str,
+        "subscription_ids": list,
+        "success": bool,
+        "type": str,
+        "updated_at": datetime,
+        "uuid": str,
+        "voided_at": datetime,
+        "voided_by_invoice": "InvoiceMini",
+    }
+
+
+class InvoiceMini(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+        Invoice ID
+    number : str
+        Invoice number
+    object : str
+        Object type
+    state : str
+        Invoice state
+    type : str
+        Invoice type
+    """
+
+    schema = {"id": str, "number": str, "object": str, "state": str, "type": str}
+
+
+class TransactionPaymentGateway(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+    name : str
+    object : str
+        Object type
+    type : str
+    """
+
+    schema = {"id": str, "name": str, "object": str, "type": str}
 
 
 class CouponRedemption(Resource):
@@ -870,168 +1035,6 @@ class CreditPayment(Resource):
     }
 
 
-class InvoiceMini(Resource):
-    """
-    Attributes
-    ----------
-    id : str
-        Invoice ID
-    number : str
-        Invoice number
-    object : str
-        Object type
-    state : str
-        Invoice state
-    type : str
-        Invoice type
-    """
-
-    schema = {"id": str, "number": str, "object": str, "state": str, "type": str}
-
-
-class Transaction(Resource):
-    """
-    Attributes
-    ----------
-    account : AccountMini
-        Account mini details
-    amount : float
-        Total transaction amount sent to the payment gateway.
-    avs_check : str
-        When processed, result from checking the overall AVS on the transaction.
-    backup_payment_method_used : bool
-        Indicates if the transaction was completed using a backup payment
-    billing_address : Address
-    collected_at : datetime
-        Collected at, or if not collected yet, the time the transaction was created.
-    collection_method : str
-        The method by which the payment was collected.
-    created_at : datetime
-        Created at
-    currency : str
-        3-letter ISO 4217 currency code.
-    customer_message : str
-        For declined (`success=false`) transactions, the message displayed to the customer.
-    customer_message_locale : str
-        Language code for the message
-    cvv_check : str
-        When processed, result from checking the CVV/CVC value on the transaction.
-    gateway_approval_code : str
-        Transaction approval code from the payment gateway.
-    gateway_message : str
-        Transaction message from the payment gateway.
-    gateway_reference : str
-        Transaction reference number from the payment gateway.
-    gateway_response_code : str
-        For declined transactions (`success=false`), this field lists the gateway error code.
-    gateway_response_time : float
-        Time, in seconds, for gateway to process the transaction.
-    gateway_response_values : dict
-        The values in this field will vary from gateway to gateway.
-    id : str
-        Transaction ID
-    invoice : InvoiceMini
-        Invoice mini details
-    ip_address_country : str
-        IP address's country
-    ip_address_v4 : str
-        IP address provided when the billing information was collected:
-
-        - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
-        - When the merchant enters billing information using the API, the merchant may provide an IP address.
-        - When the merchant enters billing information using the UI, no IP address is recorded.
-    object : str
-        Object type
-    origin : str
-        Describes how the transaction was triggered.
-    original_transaction_id : str
-        If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
-    payment_gateway : TransactionPaymentGateway
-    payment_method : PaymentMethod
-    refunded : bool
-        Indicates if part or all of this transaction was refunded.
-    status : str
-        The current transaction status. Note that the status may change, e.g. a `pending` transaction may become `declined` or `success` may later become `void`.
-    status_code : str
-        Status code
-    status_message : str
-        For declined (`success=false`) transactions, the message displayed to the merchant.
-    subscription_ids : :obj:`list` of :obj:`str`
-        If the transaction is charging or refunding for one or more subscriptions, these are their IDs.
-    success : bool
-        Did this transaction complete successfully?
-    type : str
-        - `authorization` – verifies billing information and places a hold on money in the customer's account.
-        - `capture` – captures funds held by an authorization and completes a purchase.
-        - `purchase` – combines the authorization and capture in one transaction.
-        - `refund` – returns all or a portion of the money collected in a previous transaction to the customer.
-        - `verify` – a $0 or $1 transaction used to verify billing information which is immediately voided.
-    updated_at : datetime
-        Updated at
-    uuid : str
-        The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
-    voided_at : datetime
-        Voided at
-    voided_by_invoice : InvoiceMini
-        Invoice mini details
-    """
-
-    schema = {
-        "account": "AccountMini",
-        "amount": float,
-        "avs_check": str,
-        "backup_payment_method_used": bool,
-        "billing_address": "Address",
-        "collected_at": datetime,
-        "collection_method": str,
-        "created_at": datetime,
-        "currency": str,
-        "customer_message": str,
-        "customer_message_locale": str,
-        "cvv_check": str,
-        "gateway_approval_code": str,
-        "gateway_message": str,
-        "gateway_reference": str,
-        "gateway_response_code": str,
-        "gateway_response_time": float,
-        "gateway_response_values": dict,
-        "id": str,
-        "invoice": "InvoiceMini",
-        "ip_address_country": str,
-        "ip_address_v4": str,
-        "object": str,
-        "origin": str,
-        "original_transaction_id": str,
-        "payment_gateway": "TransactionPaymentGateway",
-        "payment_method": "PaymentMethod",
-        "refunded": bool,
-        "status": str,
-        "status_code": str,
-        "status_message": str,
-        "subscription_ids": list,
-        "success": bool,
-        "type": str,
-        "updated_at": datetime,
-        "uuid": str,
-        "voided_at": datetime,
-        "voided_by_invoice": "InvoiceMini",
-    }
-
-
-class TransactionPaymentGateway(Resource):
-    """
-    Attributes
-    ----------
-    id : str
-    name : str
-    object : str
-        Object type
-    type : str
-    """
-
-    schema = {"id": str, "name": str, "object": str, "type": str}
-
-
 class Invoice(Resource):
     """
     Attributes
@@ -1084,7 +1087,7 @@ class Invoice(Resource):
     subscription_ids : :obj:`list` of :obj:`str`
         If the invoice is charging or refunding for one or more subscriptions, these are their IDs.
     subtotal : float
-        The summation of charges, discounts, and credits, before tax.
+        The summation of charges and credits, before discounts and taxes.
     tax : float
         The total tax on this invoice.
     tax_info : TaxInfo
@@ -1153,7 +1156,7 @@ class InvoiceAddress(Resource):
     company : str
         Company
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
     last_name : str
@@ -1195,11 +1198,30 @@ class TaxInfo(Resource):
         Rate
     region : str
         Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST.
+    tax_details : :obj:`list` of :obj:`TaxDetail`
+        Provides additional tax details for Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItem.
     type : str
         Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries.
     """
 
-    schema = {"rate": float, "region": str, "type": str}
+    schema = {"rate": float, "region": str, "tax_details": ["TaxDetail"], "type": str}
+
+
+class TaxDetail(Resource):
+    """
+    Attributes
+    ----------
+    rate : float
+        Provides the tax rate for the region.
+    region : str
+        Provides the tax region applied on an invoice. For Canadian Sales Tax, this will be either the 2 letter province code or country code.
+    tax : float
+        The total tax applied for this tax type.
+    type : str
+        Provides the tax type for the region. For Canadian Sales Tax, this will be GST, HST, QST or PST.
+    """
+
+    schema = {"rate": float, "region": str, "tax": float, "type": str}
 
 
 class LineItemList(Resource):
@@ -1685,6 +1707,8 @@ class SubscriptionChange(Resource):
         Returns `true` if the subscription change is activated.
     add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         These add-ons will be used when the subscription renews.
+    billing_info : SubscriptionChangeBillingInfo
+        Accept nested attributes for three_d_secure_action_result_token_id
     created_at : datetime
         Created at
     custom_fields : :obj:`list` of :obj:`CustomField`
@@ -1719,6 +1743,7 @@ class SubscriptionChange(Resource):
         "activate_at": datetime,
         "activated": bool,
         "add_ons": ["SubscriptionAddOn"],
+        "billing_info": "SubscriptionChangeBillingInfo",
         "created_at": datetime,
         "custom_fields": ["CustomField"],
         "deleted_at": datetime,
@@ -1846,6 +1871,17 @@ class SubscriptionAddOnTier(Resource):
     """
 
     schema = {"ending_quantity": int, "unit_amount": float}
+
+
+class SubscriptionChangeBillingInfo(Resource):
+    """
+    Attributes
+    ----------
+    three_d_secure_action_result_token_id : str
+        A token generated by Recurly.js after completing a 3-D Secure device fingerprinting or authentication challenge.
+    """
+
+    schema = {"three_d_secure_action_result_token_id": str}
 
 
 class UniqueCouponCode(Resource):
@@ -2357,6 +2393,8 @@ class SubscriptionChangePreview(Resource):
         Returns `true` if the subscription change is activated.
     add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         These add-ons will be used when the subscription renews.
+    billing_info : SubscriptionChangeBillingInfo
+        Accept nested attributes for three_d_secure_action_result_token_id
     created_at : datetime
         Created at
     custom_fields : :obj:`list` of :obj:`CustomField`
@@ -2391,6 +2429,7 @@ class SubscriptionChangePreview(Resource):
         "activate_at": datetime,
         "activated": bool,
         "add_ons": ["SubscriptionAddOn"],
+        "billing_info": "SubscriptionChangeBillingInfo",
         "created_at": datetime,
         "custom_fields": ["CustomField"],
         "deleted_at": datetime,
