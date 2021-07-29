@@ -54,7 +54,7 @@ class Address(Resource):
     city : str
         City
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     phone : str
         Phone number
     postal_code : str
@@ -217,7 +217,7 @@ class ShippingAddress(Resource):
     city : str
     company : str
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     created_at : datetime
         Created at
     email : str
@@ -321,6 +321,8 @@ class PaymentMethod(Resource):
         Billing Agreement identifier. Only present for Amazon or Paypal payment methods.
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
+    cc_bin_country : str
+        The 2-letter ISO 3166-1 alpha-2 country code associated with the credit card BIN, if known by Recurly. Available on the BillingInfo object only. Available when the BIN country lookup feature is enabled.
     exp_month : int
         Expiration month.
     exp_year : int
@@ -348,6 +350,7 @@ class PaymentMethod(Resource):
         "account_type": str,
         "billing_agreement_id": str,
         "card_type": str,
+        "cc_bin_country": str,
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
@@ -382,7 +385,7 @@ class BillingInfoUpdatedBy(Resource):
     Attributes
     ----------
     country : str
-        Country of IP address, if known by Recurly.
+        Country, 2-letter ISO 3166-1 alpha-2 code matching the origin IP address, if known by Recurly.
     ip : str
         Customer's IP address when updating their billing information.
     """
@@ -613,7 +616,7 @@ class Transaction(Resource):
     invoice : InvoiceMini
         Invoice mini details
     ip_address_country : str
-        IP address's country
+        Origin IP address country, 2-letter ISO 3166-1 alpha-2 code, if known by Recurly.
     ip_address_v4 : str
         IP address provided when the billing information was collected:
 
@@ -724,7 +727,7 @@ class AddressWithName(Resource):
     city : str
         City
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
     last_name : str
@@ -1179,7 +1182,7 @@ class InvoiceAddress(Resource):
     company : str
         Company
     country : str
-        Country, 2-letter ISO code.
+        Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
     last_name : str
@@ -1222,6 +1225,7 @@ class TaxInfo(Resource):
     region : str
         Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST.
     tax_details : :obj:`list` of :obj:`TaxDetail`
+        Provides additional tax details for Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItem.
     type : str
         Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries.
     """
