@@ -3471,6 +3471,32 @@ class Client(BaseClient):
         )
         return self._make_request("PUT", path, None, **options)
 
+    def get_preview_renewal(self, subscription_id, **options):
+        """Fetch a preview of a subscription's renewal invoice(s)
+
+        Parameters
+        ----------
+
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        InvoiceCollection
+            A preview of the subscription's renewal invoice(s).
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/preview_renewal", subscription_id
+        )
+        return self._make_request("GET", path, None, **options)
+
     def get_subscription_change(self, subscription_id, **options):
         """Fetch a subscription's pending change
 
