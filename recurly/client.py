@@ -3799,3 +3799,67 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/export_dates/%s/export_files", export_date)
         return self._make_request("GET", path, None, None)
+
+    def list_dunning_campaigns(self, **options):
+        """Show the dunning campaigns for a site
+
+        Keyword Arguments
+        -----------------
+
+        sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the dunning_campaigns on an account.
+        """
+        path = self._interpolate_path("/dunning_campaigns")
+        return Pager(self, path, options)
+
+    def get_dunning_campaign(self, dunning_campaign_id):
+        """Show the settings for a dunning campaign
+
+        Parameters
+        ----------
+
+        dunning_campaign_id : str
+            Dunning Campaign ID, e.g. `e28zov4fw0v2`.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        DunningCampaign
+            Settings for a dunning campaign.
+        """
+        path = self._interpolate_path("/dunning_campaigns/%s", dunning_campaign_id)
+        return self._make_request("GET", path, None, None)
+
+    def put_dunning_campaign_bulk_update(self, body):
+        """Assign a dunning campaign to multiple plans
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of DunningCampaignsBulkUpdate.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        DunningCampaignsBulkUpdateResponse
+            A list of updated plans.
+        """
+        path = self._interpolate_path("/dunning_campaigns/%s/bulk_update")
+        return self._make_request("PUT", path, body, None)
