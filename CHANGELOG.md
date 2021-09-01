@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.8.0](https://github.com/recurly/recurly-client-python/tree/4.8.0) (2021-09-01)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.7.0...4.8.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Dunning Campaigns feature) [#510](https://github.com/recurly/recurly-client-python/pull/510) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.7.0](https://github.com/recurly/recurly-client-python/tree/4.7.0) (2021-08-19)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.6.0...4.7.0)
