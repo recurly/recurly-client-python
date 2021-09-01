@@ -139,6 +139,8 @@ class Account(Resource):
         The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         If present, when the account was last marked inactive.
+    dunning_campaign_id : str
+        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     email : str
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     exemption_certificate : str
@@ -190,6 +192,7 @@ class Account(Resource):
         "created_at": datetime,
         "custom_fields": ["CustomField"],
         "deleted_at": datetime,
+        "dunning_campaign_id": str,
         "email": str,
         "exemption_certificate": str,
         "first_name": str,
@@ -522,6 +525,8 @@ class AccountMini(Resource):
     code : str
         The unique identifier of the account.
     company : str
+    dunning_campaign_id : str
+        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     email : str
         The email address used for communicating with this customer.
     first_name : str
@@ -536,6 +541,7 @@ class AccountMini(Resource):
         "bill_to": str,
         "code": str,
         "company": str,
+        "dunning_campaign_id": str,
         "email": str,
         "first_name": str,
         "id": str,
@@ -1062,6 +1068,8 @@ class Invoice(Resource):
         Total discounts applied to this invoice.
     due_at : datetime
         Date invoice is due. This is the date the net terms are reached.
+    dunning_campaign_id : str
+        Unique ID to identify the dunning campaign used when dunning the invoice. Available when the Dunning Campaigns feature is enabled. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
     id : str
         Invoice ID
     line_items : LineItemList
@@ -1121,6 +1129,7 @@ class Invoice(Resource):
         "customer_notes": str,
         "discount": float,
         "due_at": datetime,
+        "dunning_campaign_id": str,
         "id": str,
         "line_items": "LineItemList",
         "net_terms": int,
@@ -2118,6 +2127,8 @@ class Plan(Resource):
         Deleted at
     description : str
         Optional description, not displayed.
+    dunning_campaign_id : str
+        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this plan. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     hosted_pages : PlanHostedPages
         Hosted pages settings
     id : str
@@ -2165,6 +2176,7 @@ class Plan(Resource):
         "currencies": ["PlanPricing"],
         "deleted_at": datetime,
         "description": str,
+        "dunning_campaign_id": str,
         "hosted_pages": "PlanHostedPages",
         "id": str,
         "interval_length": int,
@@ -2540,3 +2552,114 @@ class ExportFile(Resource):
     """
 
     schema = {"href": str, "md5sum": str, "name": str}
+
+
+class DunningCampaign(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Campaign code.
+    created_at : datetime
+        When the current campaign was created in Recurly.
+    default_campaign : bool
+        Whether or not this is the default campaign for accounts or plans without an assigned dunning campaign.
+    deleted_at : datetime
+        When the current campaign was deleted in Recurly.
+    description : str
+        Campaign description.
+    dunning_cycles : :obj:`list` of :obj:`DunningCycle`
+        Dunning Cycle settings.
+    id : str
+    name : str
+        Campaign name.
+    object : str
+        Object type
+    updated_at : datetime
+        When the current campaign was updated in Recurly.
+    """
+
+    schema = {
+        "code": str,
+        "created_at": datetime,
+        "default_campaign": bool,
+        "deleted_at": datetime,
+        "description": str,
+        "dunning_cycles": ["DunningCycle"],
+        "id": str,
+        "name": str,
+        "object": str,
+        "updated_at": datetime,
+    }
+
+
+class DunningCycle(Resource):
+    """
+    Attributes
+    ----------
+    applies_to_manual_trial : bool
+        Whether the dunning settings will be applied to manual trials. Only applies to trial cycles.
+    created_at : datetime
+        When the current settings were created in Recurly.
+    expire_subscription : bool
+        Whether the subscription(s) should be cancelled at the end of the dunning cycle.
+    fail_invoice : bool
+        Whether the invoice should be failed at the end of the dunning cycle.
+    first_communication_interval : int
+        The number of days after a transaction failure before the first dunning email is sent.
+    intervals : :obj:`list` of :obj:`DunningInterval`
+        Dunning intervals.
+    send_immediately_on_hard_decline : bool
+        Whether or not to send an extra email immediately to customers whose initial payment attempt fails with either a hard decline or invalid billing info.
+    total_dunning_days : int
+        The number of days between the first dunning email being sent and the end of the dunning cycle.
+    total_recycling_days : int
+        The number of days between a transaction failure and the end of the dunning cycle.
+    type : str
+        The type of invoice this cycle applies to.
+    updated_at : datetime
+        When the current settings were updated in Recurly.
+    version : int
+        Current campaign version.
+    """
+
+    schema = {
+        "applies_to_manual_trial": bool,
+        "created_at": datetime,
+        "expire_subscription": bool,
+        "fail_invoice": bool,
+        "first_communication_interval": int,
+        "intervals": ["DunningInterval"],
+        "send_immediately_on_hard_decline": bool,
+        "total_dunning_days": int,
+        "total_recycling_days": int,
+        "type": str,
+        "updated_at": datetime,
+        "version": int,
+    }
+
+
+class DunningInterval(Resource):
+    """
+    Attributes
+    ----------
+    days : int
+        Number of days before sending the next email.
+    email_template : str
+        Email template being used.
+    """
+
+    schema = {"days": int, "email_template": str}
+
+
+class DunningCampaignsBulkUpdateResponse(Resource):
+    """
+    Attributes
+    ----------
+    object : str
+        Object type
+    plans : :obj:`list` of :obj:`Plan`
+        An array containing all of the `Plan` resources that have been updated.
+    """
+
+    schema = {"object": str, "plans": ["Plan"]}
