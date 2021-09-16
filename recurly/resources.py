@@ -1528,6 +1528,8 @@ class Subscription(Resource):
         Expiration reason
     expires_at : datetime
         Expires at
+    gateway_code : str
+        If present, this subscription's transactions will use the payment gateway with this code.
     id : str
         Subscription ID
     net_terms : int
@@ -1558,8 +1560,14 @@ class Subscription(Resource):
         State
     subtotal : float
         Estimated total, before tax.
+    tax : float
+        Estimated tax
+    tax_info : TaxInfo
+        Tax info
     terms_and_conditions : str
         Terms and conditions
+    total : float
+        Estimated total
     total_billing_cycles : int
         The number of cycles/billing periods in a term. When `remaining_billing_cycles=0`, if `auto_renew=true` the subscription will renew and a new term will begin, otherwise the subscription will expire.
     trial_ends_at : datetime
@@ -1595,6 +1603,7 @@ class Subscription(Resource):
         "customer_notes": str,
         "expiration_reason": str,
         "expires_at": datetime,
+        "gateway_code": str,
         "id": str,
         "net_terms": int,
         "object": str,
@@ -1610,7 +1619,10 @@ class Subscription(Resource):
         "shipping": "SubscriptionShipping",
         "state": str,
         "subtotal": float,
+        "tax": float,
+        "tax_info": "TaxInfo",
         "terms_and_conditions": str,
+        "total": float,
         "total_billing_cycles": int,
         "trial_ends_at": datetime,
         "trial_started_at": datetime,
