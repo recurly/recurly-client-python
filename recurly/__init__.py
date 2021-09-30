@@ -191,6 +191,7 @@ class Account(Resource):
         'preferred_locale',
         'custom_fields',
         'transaction_type',
+        'dunning_campaign_id',
     )
 
     _classes_for_nodename = { 'address': Address, 'custom_field': CustomField }
@@ -519,6 +520,80 @@ class Delivery(Resource):
         'last_name',
         'method',
         'personal_message',
+    )
+
+class DunningInterval(Resource):
+
+    """Dunning interval"""
+
+    nodename = 'interval'
+    attributes = (
+        'days',
+        'email_template',
+    )
+
+class DunningCampaign(Resource):
+
+    """A dunning campaign available on the site"""
+
+    member_path = 'dunning_campaigns/%s'
+    collection_path = 'dunning_campaigns'
+
+    nodename = 'dunning_campaign'
+
+    attributes = (
+      'id',
+      'code',
+      'name',
+      'description',
+      'default_campaign',
+      'dunning_cycles',
+      'created_at',
+      'updated_at',
+      'deleted_at',
+    )
+
+    _classes_for_nodename = {
+        'interval': DunningInterval,
+    }
+
+    def bulk_update(self, id, plan_codes):
+
+        """Update each plan's `dunning_campaign_id`."""
+
+        url = urljoin(base_uri(), self.member_path % (id) + '/bulk_update')
+
+        elem = ElementTreeBuilder.Element(self.nodename)
+        plan_codes_elem = ElementTreeBuilder.Element('plan_codes')
+        elem.append(plan_codes_elem)
+
+        for plan_code in plan_codes:
+            plan_codes_elem.append(Resource.element_for_value('plan_code', plan_code))
+
+        body = ElementTree.tostring(elem, encoding='UTF-8')
+
+        self.http_request(url, 'PUT', body, { 'content-type':
+            'application/xml; charset=utf-8' })
+
+class DunningCycle(Resource):
+
+    """A dunning cycle associated to a dunning campaign."""
+
+    nodename = 'dunning_cycle'
+
+    attributes = (
+        'type',
+        'applies_to_manual_trial',
+        'first_communication_interval',
+        'send_immediately_on_hard_decline',
+        'intervals',
+        'expire_subscription',
+        'fail_invoice',
+        'total_dunning_days',
+        'total_recycling_days',
+        'version',
+        'created_at',
+        'updated_at',
     )
 
 # This is used internally for proper XML generation
@@ -857,7 +932,8 @@ class Invoice(Resource):
         'credit_customer_notes',
         'gateway_code',
         'billing_info',
-        'billing_info_uuid'
+        'billing_info_uuid',
+        'dunning_campaign_id',
     )
 
     blacklist_attributes = (
@@ -1588,6 +1664,7 @@ class Plan(Resource):
         'trial_requires_billing_info',
         'auto_renew',
         'allow_any_item_on_subscriptions',
+        'dunning_campaign_id',
     )
 
     def get_add_on(self, add_on_code):
