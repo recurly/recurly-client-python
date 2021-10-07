@@ -12,6 +12,7 @@ X-Records: 1
 <?xml version="1.0" encoding="UTF-8"?>
 <adjustment href="http://api.recurly.com/v2/adjustments/2c06b94abe047189b225d94dd0adb71f" type="charge">
   <account href="https://api.recurly.com/v2/accounts/chargemock"/>
+  <bill_for_account href="https://api.recurly.com/v2/accounts/testmock"/>
   <invoice href="https://api.recurly.com/v2/invoices/1075"/>
   <uuid>2c06b94abe047189b225d94dd0adb71f</uuid>
   <state>invoiced</state>
