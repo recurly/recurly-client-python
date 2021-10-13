@@ -867,6 +867,14 @@ class TestResources(RecurlyTest):
 
             self.assertEqual(original_charge.total_in_cents, -charge.total_in_cents)
 
+        """Test bill_for_account"""
+        with self.mock_request('adjustment/original-adjustment.xml'):
+            charge = Adjustment.get('2c06b94abe047189b225d94dd0adb71f')
+
+            with self.mock_request('account/exists.xml'):
+                account = charge.bill_for_account()
+                self.assertEqual(account.account_code, 'testmock')
+
     def test_coupon(self):
         # Check that a coupon may not exist.
         coupon_code = 'coupon%s' % self.test_id
