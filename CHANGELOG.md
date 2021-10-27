@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.9.27](https://github.com/recurly/recurly-client-python/tree/2.9.27) (2021-10-27)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.26...2.9.27)
+
+
+**Merged Pull Requests**
+
+- Add bill_for_account to Adjustment class [#518](https://github.com/recurly/recurly-client-python/pull/518) ([naspthorp](https://github.com/naspthorp))
+- Client library update for V2 Dunning Campaign API enhancements [#515](https://github.com/recurly/recurly-client-python/pull/515) ([amandamfielding](https://github.com/amandamfielding))
+
+
+
 ## [2.9.26](https://github.com/recurly/recurly-client-python/tree/2.9.26) (2021-06-16)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.25...2.9.26)
