@@ -8,7 +8,8 @@ from six.moves.urllib.parse import urljoin
 import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
-    Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile
+    Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
+    DunningCycle
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -1058,6 +1059,14 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('coupon/deleted.xml'):
                 coupon.delete()
+
+    def test_dunning_campaign(self):
+        with self.mock_request('dunning-campaigns/show.xml'):
+            campaign = DunningCampaign.get('testmock')
+
+        with self.mock_request('dunning-campaigns/updated.xml'):
+            update = campaign.bulk_update('testmock', ['pc-967-343'])
+        self.assertIsNone(update)
 
     def test_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
