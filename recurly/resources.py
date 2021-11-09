@@ -1267,6 +1267,8 @@ class LineItem(Resource):
         Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     avalara_transaction_type : int
         Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
+    bill_for_account_id : str
+        The UUID of the account responsible for originating the line item.
     created_at : datetime
         When the line item was created.
     credit_applied : float
@@ -1360,6 +1362,7 @@ class LineItem(Resource):
         "amount": float,
         "avalara_service_type": int,
         "avalara_transaction_type": int,
+        "bill_for_account_id": str,
         "created_at": datetime,
         "credit_applied": float,
         "credit_reason_code": str,
