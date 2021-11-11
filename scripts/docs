@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+# Build docs
+cd docs/
+sphinx-apidoc -f -o source/ ../recurly
+make html
+

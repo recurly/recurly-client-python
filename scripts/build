@@ -5,7 +5,3 @@ set -e
 pip3 install -r requirements-test.txt
 pip3 install -r requirements-optional.txt || true
 
-# Build docs
-cd docs/
-sphinx-apidoc -f -o source/ ../recurly
-make html
