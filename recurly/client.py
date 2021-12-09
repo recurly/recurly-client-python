@@ -536,7 +536,7 @@ class Client(BaseClient):
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         billing_info_id : str
-            Billing Info ID.
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
 
         Keyword Arguments
         -----------------
@@ -564,7 +564,7 @@ class Client(BaseClient):
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         billing_info_id : str
-            Billing Info ID.
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
         body : dict
             The request body. It should follow the schema of BillingInfoCreate.
 
@@ -594,7 +594,7 @@ class Client(BaseClient):
         account_id : str
             Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
         billing_info_id : str
-            Billing Info ID.
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
 
         Keyword Arguments
         -----------------
