@@ -1073,7 +1073,7 @@ class Invoice(Resource):
     balance : float
         The outstanding balance remaining on this invoice.
     billing_info_id : str
-        The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info.
+        The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info. `billing_info_id` can ONLY be used for sites utilizing the Wallet feature.
     closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
@@ -1768,6 +1768,8 @@ class SubscriptionChange(Resource):
         Subscription shipping details
     subscription_id : str
         The ID of the subscription that is going to be changed.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Unit amount
     updated_at : datetime
@@ -1790,6 +1792,7 @@ class SubscriptionChange(Resource):
         "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "subscription_id": str,
+        "tax_inclusive": bool,
         "unit_amount": float,
         "updated_at": datetime,
     }
@@ -2106,11 +2109,13 @@ class Pricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Unit price
     """
 
-    schema = {"currency": str, "unit_amount": float}
+    schema = {"currency": str, "tax_inclusive": bool, "unit_amount": float}
 
 
 class MeasuredUnit(Resource):
@@ -2264,11 +2269,18 @@ class PlanPricing(Resource):
         3-letter ISO 4217 currency code.
     setup_fee : float
         Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Unit price
     """
 
-    schema = {"currency": str, "setup_fee": float, "unit_amount": float}
+    schema = {
+        "currency": str,
+        "setup_fee": float,
+        "tax_inclusive": bool,
+        "unit_amount": float,
+    }
 
 
 class PlanHostedPages(Resource):
@@ -2390,6 +2402,8 @@ class AddOnPricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
     unit_amount_decimal : str
@@ -2397,7 +2411,12 @@ class AddOnPricing(Resource):
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
-    schema = {"currency": str, "unit_amount": float, "unit_amount_decimal": str}
+    schema = {
+        "currency": str,
+        "tax_inclusive": bool,
+        "unit_amount": float,
+        "unit_amount_decimal": str,
+    }
 
 
 class Tier(Resource):
