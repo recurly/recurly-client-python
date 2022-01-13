@@ -155,6 +155,8 @@ class Account(Resource):
     hosted_login_token : str
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
+    invoice_template : AccountInvoiceTemplate
+        Invoice template associated to the account. Available when invoice customization flag is enabled.
     last_name : str
     object : str
         Object type
@@ -198,6 +200,7 @@ class Account(Resource):
         "has_paused_subscription": bool,
         "hosted_login_token": str,
         "id": str,
+        "invoice_template": "AccountInvoiceTemplate",
         "last_name": str,
         "object": str,
         "parent_account_id": str,
@@ -407,6 +410,19 @@ class CustomField(Resource):
     """
 
     schema = {"name": str, "value": str}
+
+
+class AccountInvoiceTemplate(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+        Unique ID to identify the invoice template.
+    name : str
+        Template name
+    """
+
+    schema = {"id": str, "name": str}
 
 
 class ErrorMayHaveTransaction(Resource):
@@ -1294,7 +1310,7 @@ class LineItem(Resource):
     end_date : datetime
         If this date is provided, it indicates the end of a time range.
     external_sku : str
-        Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+        Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices feature is enabled.
     id : str
         Line item ID
     invoice_id : str
@@ -1302,9 +1318,9 @@ class LineItem(Resource):
     invoice_number : str
         Once the line item has been invoiced this will be the invoice's number. If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     item_code : str
-        Unique code to identify an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+        Unique code to identify an item. Available when the Credit Invoices feature is enabled.
     item_id : str
-        System-generated unique identifier for an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+        System-generated unique identifier for an item. Available when the Credit Invoices feature is enabled.
     legacy_category : str
         Category to describe the role of a line item on a legacy invoice:
         - "charges" refers to charges being billed for on this invoice.
