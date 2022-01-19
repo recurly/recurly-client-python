@@ -45,6 +45,13 @@ api_key = '83749879bbde395b5fe0cc1a5abf8e5'
 client = recurly.Client(api_key)
 ```
 
+To access Recurly servers in Europe you have to initialize the client with the argument region with the value "eu".
+
+```python
+api_key = '83749879bbde395b5fe0cc1a5abf8e5'
+client = recurly.Client(api_key, region="eu")
+```
+
 ### Operations
 
 The Client contains every `operation` you can perform on the site as a list of methods.

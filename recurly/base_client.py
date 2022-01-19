@@ -10,11 +10,12 @@ from recurly import USER_AGENT, DEFAULT_REQUEST_TIMEOUT, ApiError, NetworkError
 from pydoc import locate
 import urllib.parse
 from datetime import datetime
+from enum import Enum
 
 PORT = 443
-HOST = "v3.recurly.com"
 BINARY_TYPES = ["application/pdf"]
 ALLOWED_OPTIONS = ["body", "params", "headers"]
+API_HOSTS = {"us": "v3.recurly.com", "eu": "v3.eu.recurly.com"}
 
 
 def request_converter(value):
@@ -26,10 +27,23 @@ def request_converter(value):
 
 
 class BaseClient:
-    def __init__(self, api_key, timeout=None):
+    def __init__(self, api_key, timeout=None, **options):
         self.__api_key = api_key
         actual_timeout = timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
-        self.__conn = http.client.HTTPSConnection(HOST, PORT, timeout=actual_timeout)
+        api_host = API_HOSTS["us"]
+
+        if "region" in options:
+            if options["region"] not in API_HOSTS:
+                raise TypeError(
+                    "Invalid region type. Expected one of: %s"
+                    % (", ".join(API_HOSTS.keys()))
+                )
+
+            api_host = API_HOSTS[options["region"]]
+
+        self.__conn = http.client.HTTPSConnection(
+            api_host, PORT, timeout=actual_timeout
+        )
 
     def _make_request(self, method, path, body, **options):
         try:
