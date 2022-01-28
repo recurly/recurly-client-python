@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.12.0](https://github.com/recurly/recurly-client-python/tree/4.12.0) (2022-01-28)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.11.0...4.12.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Invoice Customization) [#530](https://github.com/recurly/recurly-client-python/pull/530) ([recurly-integrations](https://github.com/recurly-integrations))
+- Generated Latest Changes for v2021-02-25 [#528](https://github.com/recurly/recurly-client-python/pull/528) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.11.0](https://github.com/recurly/recurly-client-python/tree/4.11.0) (2021-12-29)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.10.0...4.11.0)
