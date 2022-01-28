@@ -1807,6 +1807,67 @@ class Client(BaseClient):
         )
         return self._make_request("GET", path, None, **options)
 
+    def list_invoice_template_accounts(self, invoice_template_id, **options):
+        """List an invoice template's associated accounts
+
+        Parameters
+        ----------
+
+        invoice_template_id : str
+            Invoice template ID.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.begin_time : datetime
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.end_time : datetime
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.email : str
+            Filter for accounts with this exact email address. A blank value will return accounts with both `null` and `""` email addresses. Note that multiple accounts can share one email address.
+        params.subscriber : bool
+            Filter for accounts with or without a subscription in the `active`,
+            `canceled`, or `future` state.
+        params.past_due : str
+            Filter for accounts with an invoice in the `past_due` state.
+
+        Returns
+        -------
+
+        Pager
+            A list of an invoice template's associated accounts.
+        """
+        path = self._interpolate_path(
+            "/invoice_templates/%s/accounts", invoice_template_id
+        )
+        return Pager(self, path, **options)
+
     def list_items(self, **options):
         """List a site's items
 
