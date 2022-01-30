@@ -45,7 +45,7 @@ api_key = '83749879bbde395b5fe0cc1a5abf8e5'
 client = recurly.Client(api_key)
 ```
 
-To access Recurly servers in Europe you have to initialize the client with the argument region with the value "eu".
+To access Recurly API in Europe, you will need to specify the EU Region in the argument region.
 
 ```python
 api_key = '83749879bbde395b5fe0cc1a5abf8e5'

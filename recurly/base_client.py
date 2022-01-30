@@ -16,6 +16,7 @@ PORT = 443
 BINARY_TYPES = ["application/pdf"]
 ALLOWED_OPTIONS = ["body", "params", "headers"]
 API_HOSTS = {"us": "v3.recurly.com", "eu": "v3.eu.recurly.com"}
+HOST = API_HOSTS["us"]
 
 
 def request_converter(value):
@@ -30,7 +31,7 @@ class BaseClient:
     def __init__(self, api_key, timeout=None, **options):
         self.__api_key = api_key
         actual_timeout = timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
-        api_host = API_HOSTS["us"]
+        api_host = HOST
 
         if "region" in options:
             if options["region"] not in API_HOSTS:
