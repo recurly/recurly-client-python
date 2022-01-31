@@ -39,6 +39,10 @@ class ServiceNotAvailableError(InternalServerError):
     pass
 
 
+class TaxServiceError(InternalServerError):
+    pass
+
+
 class BadGatewayError(ServerError):
     pass
 
