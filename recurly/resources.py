@@ -1284,7 +1284,7 @@ class LineItem(Resource):
     end_date : datetime
         If this date is provided, it indicates the end of a time range.
     external_sku : str
-        Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+        Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices feature is enabled.
     id : str
         Line item ID
     invoice_id : str
@@ -1292,9 +1292,9 @@ class LineItem(Resource):
     invoice_number : str
         Once the line item has been invoiced this will be the invoice's number. If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     item_code : str
-        Unique code to identify an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+        Unique code to identify an item. Available when the Credit Invoices feature is enabled.
     item_id : str
-        System-generated unique identifier for an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+        System-generated unique identifier for an item. Available when the Credit Invoices feature is enabled.
     legacy_category : str
         Category to describe the role of a line item on a legacy invoice:
         - "charges" refers to charges being billed for on this invoice.
