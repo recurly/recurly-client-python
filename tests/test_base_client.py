@@ -9,6 +9,7 @@ import unittest.mock as mock
 from unittest.mock import Mock, MagicMock
 from datetime import datetime
 from collections import OrderedDict
+from recurly.base_client import API_HOSTS
 import sys
 
 
@@ -269,3 +270,18 @@ class TestBaseClient(unittest.TestCase):
         timeout = 3
         client = MockClient("apikey", timeout=timeout)
         self.assertEqual(client.__dict__["_BaseClient__conn"].timeout, timeout)
+
+    def test_client_default_region(self):
+        client = MockClient("apikey")
+        self.assertEqual(client.__dict__["_BaseClient__conn"].host, API_HOSTS["us"])
+
+    def test_client_set_region_eu(self):
+        client = MockClient("apikey", region="eu")
+        self.assertEqual(client.__dict__["_BaseClient__conn"].host, API_HOSTS["eu"])
+
+    def test_client_set_invalid_region(self):
+        with self.assertRaises(TypeError) as e:
+            client = MockClient("apikey", region="none")
+
+        err = e.exception
+        self.assertEqual(str(err), "Invalid region type. Expected one of: us, eu")
