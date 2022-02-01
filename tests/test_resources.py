@@ -9,7 +9,7 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle
+    DunningCycle, InvoiceTemplate
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -1067,6 +1067,30 @@ class TestResources(RecurlyTest):
         with self.mock_request('dunning-campaigns/updated.xml'):
             update = campaign.bulk_update('testmock', ['pc-967-343'])
         self.assertIsNone(update)
+
+    def test_invoice_templates(self):
+        with self.mock_request('invoice_templates/list.xml'):
+            template = InvoiceTemplate.all()[0]
+
+        self.assertEqual(template.name, 'Alternate Invoice Template')
+        self.assertEqual(template.code, 'code1')
+        self.assertEqual(template.description, 'Some Description')
+
+    def test_invoice_template(self):
+        with self.mock_request('invoice_templates/show.xml'):
+            template = InvoiceTemplate.get('q0tzf7o7fpbl')
+
+        self.assertEqual(template.name, 'Alternate Invoice Template')
+        self.assertEqual(template.code, 'code1')
+        self.assertEqual(template.description, 'Some Description')
+
+    def test_invoice_template_accounts(self):
+        with self.mock_request('invoice_templates/show.xml'):
+            template = InvoiceTemplate.get('q0tzf7o7fpbl')
+        with self.mock_request('invoice_templates/accounts/list.xml'):
+            account = template.accounts()[0]
+
+        self.assertEqual(account.account_code, 'testmock')
 
     def test_invoice(self):
         account = Account(account_code='invoice%s' % self.test_id)
