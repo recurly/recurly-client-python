@@ -62,48 +62,50 @@ class TestResources(RecurlyTest):
 
     def test_purchase(self):
         account_code = 'test%s' % self.test_id
-        purchase = Purchase(
-            currency = 'USD',
-            gateway_code = 'aBcD1234',
-            collection_method = 'manual',
-            shipping_address = ShippingAddress(
-                first_name = 'Verena',
-                last_name = 'Example',
-                address1 = '456 Pillow Fort Drive',
-                city = 'New Orleans',
-                state = 'LA',
-                zip = '70114',
-                country = 'US',
-                nickname = 'Work'
-            ),
-            account = Account(
-                account_code = account_code,
-                billing_info = BillingInfo(
+        def create_purchase():
+            return Purchase(
+                currency = 'USD',
+                gateway_code = 'aBcD1234',
+                collection_method = 'manual',
+                shipping_address = ShippingAddress(
                     first_name = 'Verena',
                     last_name = 'Example',
-                    number = '4111-1111-1111-1111',
-                    verification_value = '123',
-                    month = 11,
-                    year = 2020,
-                    address1 = '123 Main St',
+                    address1 = '456 Pillow Fort Drive',
                     city = 'New Orleans',
                     state = 'LA',
                     zip = '70114',
                     country = 'US',
-                )
-            ),
-            subscriptions = [
-                recurly.Subscription(plan_code = 'gold')
-            ],
-            adjustments = [
-                recurly.Adjustment(unit_amount_in_cents=1000, description='Item 1',
-                                   quantity=1),
-                recurly.Adjustment(unit_amount_in_cents=2000, description='Item 2',
-                                   quantity=2),
-            ]
-        )
+                    nickname = 'Work'
+                ),
+                account = Account(
+                    account_code = account_code,
+                    billing_info = BillingInfo(
+                        first_name = 'Verena',
+                        last_name = 'Example',
+                        number = '4111-1111-1111-1111',
+                        verification_value = '123',
+                        month = 11,
+                        year = 2020,
+                        address1 = '123 Main St',
+                        city = 'New Orleans',
+                        state = 'LA',
+                        zip = '70114',
+                        country = 'US',
+                    )
+                ),
+                subscriptions = [
+                    recurly.Subscription(plan_code = 'gold')
+                ],
+                adjustments = [
+                    recurly.Adjustment(unit_amount_in_cents=1000, description='Item 1',
+                                    quantity=1),
+                    recurly.Adjustment(unit_amount_in_cents=2000, description='Item 2',
+                                    quantity=2),
+                ]
+            )
+        
         with self.mock_request('purchase/invoiced.xml'):
-            collection = purchase.invoice()
+            collection = create_purchase().invoice()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
             self.assertIsInstance(collection.credit_invoices, list)
@@ -111,59 +113,47 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection.charge_invoice.line_items[0].shipping_address,
                                   ShippingAddress)
         with self.mock_request('purchase/previewed.xml'):
-            collection = purchase.preview()
+            collection = create_purchase().preview()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
         with self.mock_request('purchase/authorized.xml'):
+            purchase = create_purchase()
             purchase.account.email = 'benjamin.dumonde@example.com'
             purchase.account.billing_info.external_hpp_type = 'adyen'
             collection = purchase.authorize()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
         with self.mock_request('purchase/captured.xml'):
-            captured_collection = purchase.capture('40625fdb0d71f87624a285476ba7d73d')
+            captured_collection = create_purchase().capture('40625fdb0d71f87624a285476ba7d73d')
             self.assertIsInstance(captured_collection, InvoiceCollection)
             self.assertEquals(captured_collection.charge_invoice.state, 'paid')
         with self.mock_request('purchase/cancelled.xml'):
-            cancelled_collection = purchase.cancel('40625fdb0d71f87624a285476ba7d73d')
+            cancelled_collection = create_purchase().cancel('40625fdb0d71f87624a285476ba7d73d')
             self.assertIsInstance(cancelled_collection, InvoiceCollection)
             self.assertEquals(cancelled_collection.charge_invoice.state, 'failed')
         with self.mock_request('purchase/pending.xml'):
+            purchase = create_purchase()
             purchase.account.email = 'benjamin.dumonde@example.com'
             purchase.account.billing_info.external_hpp_type = 'adyen'
             collection = purchase.pending()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
-
-    def test_purchase(self):
-        account_code = 'test%s' % self.test_id
-        purchase = Purchase(
-            currency = 'USD',
-            gateway_code = 'aBcD1234',
-            collection_method = 'manual',
-            shipping_address = ShippingAddress(
-                first_name = 'Verena',
-                last_name = 'Example',
-                address1 = '456 Pillow Fort Drive',
-                city = 'New Orleans',
-                state = 'LA',
-                zip = '70114',
-                country = 'US',
-                nickname = 'Work'
-            ),
-            account = Account(
-                account_code = account_code,
-            ),
-            billing_info_uuid = "uniqueUuid",
-            subscriptions = [
-                recurly.Subscription(plan_code = 'gold')
-            ],
-        )
+        with self.mock_request('purchase/pending-ideal.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            purchase.account.billing_info.online_banking_payment_type = 'ideal'
+            collection = purchase.pending()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
         with self.mock_request('purchase/invoiced-billing-info-uuid.xml'):
+            purchase = create_purchase()
+            purchase.account = Account(account_code = account_code)
+            purchase.billing_info_uuid = "uniqueUuid"
+            del purchase.adjustments
             collection = purchase.invoice()
-        self.assertIsInstance(collection, InvoiceCollection)
-        self.assertIsInstance(collection.charge_invoice, Invoice)
-        self.assertEqual(purchase.billing_info_uuid, 'uniqueUuid')
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(purchase.billing_info_uuid, 'uniqueUuid')
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
