@@ -469,7 +469,8 @@ class BillingInfo(Resource):
         'tax_identifier_type',
         'fraud',
         'primary_payment_method',
-        'backup_payment_method'
+        'backup_payment_method',
+        'online_banking_payment_type'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
