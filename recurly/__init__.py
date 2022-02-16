@@ -192,6 +192,8 @@ class Account(Resource):
         'custom_fields',
         'transaction_type',
         'dunning_campaign_id',
+        'invoice_template',
+        'invoice_template_uuid',
     )
 
     _classes_for_nodename = { 'address': Address, 'custom_field': CustomField }
@@ -595,6 +597,25 @@ class DunningCycle(Resource):
         'version',
         'created_at',
         'updated_at',
+    )
+
+class InvoiceTemplate(Resource):
+
+    """An invoice template available on the site"""
+
+    member_path = 'invoice_templates/%s'
+    collection_path = 'invoice_templates'
+
+    nodename = 'invoice_template'
+
+    attributes = (
+      'uuid',
+      'code',
+      'name',
+      'description',
+      'created_at',
+      'updated_at',
+      'accounts',
     )
 
 # This is used internally for proper XML generation
