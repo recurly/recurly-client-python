@@ -140,7 +140,7 @@ class Account(Resource):
     deleted_at : datetime
         If present, when the account was last marked inactive.
     dunning_campaign_id : str
-        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+        Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     email : str
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     exemption_certificate : str
@@ -526,7 +526,7 @@ class AccountMini(Resource):
         The unique identifier of the account.
     company : str
     dunning_campaign_id : str
-        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+        Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     email : str
         The email address used for communicating with this customer.
     first_name : str
@@ -1069,7 +1069,7 @@ class Invoice(Resource):
     due_at : datetime
         Date invoice is due. This is the date the net terms are reached.
     dunning_campaign_id : str
-        Unique ID to identify the dunning campaign used when dunning the invoice. Available when the Dunning Campaigns feature is enabled. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
+        Unique ID to identify the dunning campaign used when dunning the invoice. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
     id : str
         Invoice ID
     line_items : LineItemList
@@ -2136,7 +2136,7 @@ class Plan(Resource):
     description : str
         Optional description, not displayed.
     dunning_campaign_id : str
-        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this plan. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+        Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this plan. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     hosted_pages : PlanHostedPages
         Hosted pages settings
     id : str
