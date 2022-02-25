@@ -134,7 +134,7 @@ class Account(Resource):
     deleted_at : datetime
         If present, when the account was last marked inactive.
     dunning_campaign_id : str
-        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+        Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     email : str
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     exemption_certificate : str
@@ -155,8 +155,8 @@ class Account(Resource):
     hosted_login_token : str
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
-    invoice_template : AccountInvoiceTemplate
-        Invoice template associated to the account. Available when invoice customization flag is enabled.
+    invoice_template_id : str
+        Unique ID to identify an invoice template. Available when the Invoice Customization feature is enabled. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
     last_name : str
     object : str
         Object type
@@ -200,7 +200,7 @@ class Account(Resource):
         "has_paused_subscription": bool,
         "hosted_login_token": str,
         "id": str,
-        "invoice_template": "AccountInvoiceTemplate",
+        "invoice_template_id": str,
         "last_name": str,
         "object": str,
         "parent_account_id": str,
@@ -412,19 +412,6 @@ class CustomField(Resource):
     schema = {"name": str, "value": str}
 
 
-class AccountInvoiceTemplate(Resource):
-    """
-    Attributes
-    ----------
-    id : str
-        Unique ID to identify the invoice template.
-    name : str
-        Template name
-    """
-
-    schema = {"id": str, "name": str}
-
-
 class ErrorMayHaveTransaction(Resource):
     """
     Attributes
@@ -536,7 +523,7 @@ class AccountMini(Resource):
         The unique identifier of the account.
     company : str
     dunning_campaign_id : str
-        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+        Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this account. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     email : str
         The email address used for communicating with this customer.
     first_name : str
@@ -1107,7 +1094,7 @@ class Invoice(Resource):
     due_at : datetime
         Date invoice is due. This is the date the net terms are reached.
     dunning_campaign_id : str
-        Unique ID to identify the dunning campaign used when dunning the invoice. Available when the Dunning Campaigns feature is enabled. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
+        Unique ID to identify the dunning campaign used when dunning the invoice. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
     has_more_line_items : bool
         Identifies if the invoice has more line items than are returned in `line_items`. If `has_more_line_items` is `true`, then a request needs to be made to the `list_invoice_line_items` endpoint.
     id : str
@@ -1151,6 +1138,8 @@ class Invoice(Resource):
         Invoices are either charge, credit, or legacy invoices.
     updated_at : datetime
         Last updated at
+    uuid : str
+        Invoice UUID
     vat_number : str
         VAT registration number for the customer on this invoice. This will come from the VAT Number field in the Billing Info or the Account Info depending on your tax settings and the invoice collection method.
     vat_reverse_charge_notes : str
@@ -1193,6 +1182,7 @@ class Invoice(Resource):
         "transactions": ["Transaction"],
         "type": str,
         "updated_at": datetime,
+        "uuid": str,
         "vat_number": str,
         "vat_reverse_charge_notes": str,
     }
@@ -1833,6 +1823,9 @@ class SubscriptionAddOn(Resource):
         Subscription Add-on ID
     object : str
         Object type
+    percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
+        If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
+        removed and replaced by the percentage tiers in the request.
     quantity : int
         Add-on quantity
     revenue_schedule_type : str
@@ -1864,6 +1857,7 @@ class SubscriptionAddOn(Resource):
         "expired_at": datetime,
         "id": str,
         "object": str,
+        "percentage_tiers": ["SubscriptionAddOnPercentageTier"],
         "quantity": int,
         "revenue_schedule_type": str,
         "subscription_id": str,
@@ -1932,7 +1926,7 @@ class SubscriptionAddOnTier(Resource):
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
         If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
     usage_percentage : str
-        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places represented as a string. A value between 0.0 and 100.0. Optionally, override tiers' default usage percentage. Required if add-on's `add_on_type` is `usage` and `usage_type` is `percentage`. Must be omitted otherwise.
+        This field is deprecated. Do not used it anymore for percentage tiers subscription add ons. Use the percentage_tiers object instead.
     """
 
     schema = {
@@ -1941,6 +1935,21 @@ class SubscriptionAddOnTier(Resource):
         "unit_amount_decimal": str,
         "usage_percentage": str,
     }
+
+
+class SubscriptionAddOnPercentageTier(Resource):
+    """
+    Attributes
+    ----------
+    ending_amount : float
+        Ending amount
+    usage_percentage : str
+        The percentage taken of the monetary amount of usage tracked.
+        This can be up to 4 decimal places represented as a string. A value between
+        0.0 and 100.0.
+    """
+
+    schema = {"ending_amount": float, "usage_percentage": str}
 
 
 class SubscriptionChangeBillingInfo(Resource):
@@ -2208,7 +2217,7 @@ class Plan(Resource):
     description : str
         Optional description, not displayed.
     dunning_campaign_id : str
-        Unique ID to identify a dunning campaign. Available when the Dunning Campaigns feature is enabled. Used to specify if a non-default dunning campaign should be assigned to this plan. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+        Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this plan. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
     hosted_pages : PlanHostedPages
         Hosted pages settings
     id : str
@@ -2359,6 +2368,8 @@ class AddOn(Resource):
         Object type
     optional : bool
         Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
+    percentage_tiers : :obj:`list` of :obj:`PercentageTiersByCurrency`
+        Percentage Tiers
     plan_id : str
         Plan ID
     revenue_schedule_type : str
@@ -2400,6 +2411,7 @@ class AddOn(Resource):
         "name": str,
         "object": str,
         "optional": bool,
+        "percentage_tiers": ["PercentageTiersByCurrency"],
         "plan_id": str,
         "revenue_schedule_type": str,
         "state": str,
@@ -2444,7 +2456,7 @@ class Tier(Resource):
     ending_quantity : int
         Ending quantity for the tier.  This represents a unit amount for unit-priced add ons, but for percentage type usage add ons, represents the site default currency in its minimum divisible unit.
     usage_percentage : str
-        Decimal usage percentage.
+        This field is deprecated. Do not used it anymore for percentage tiers add ons. Use the percentage_tiers object instead.
     """
 
     schema = {
@@ -2468,6 +2480,32 @@ class TierPricing(Resource):
     """
 
     schema = {"currency": str, "unit_amount": float, "unit_amount_decimal": str}
+
+
+class PercentageTiersByCurrency(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    tiers : :obj:`list` of :obj:`PercentageTier`
+        Tiers
+    """
+
+    schema = {"currency": str, "tiers": ["PercentageTier"]}
+
+
+class PercentageTier(Resource):
+    """
+    Attributes
+    ----------
+    ending_amount : float
+        Ending amount for the tier. Allows up to 2 decimal places. The last tier ending_amount is null.
+    usage_percentage : str
+        Decimal usage percentage.
+    """
+
+    schema = {"ending_amount": float, "usage_percentage": str}
 
 
 class ShippingMethod(Resource):
@@ -2726,3 +2764,30 @@ class DunningCampaignsBulkUpdateResponse(Resource):
     """
 
     schema = {"object": str, "plans": ["Plan"]}
+
+
+class InvoiceTemplate(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Invoice template code.
+    created_at : datetime
+        When the invoice template was created in Recurly.
+    description : str
+        Invoice template description.
+    id : str
+    name : str
+        Invoice template name.
+    updated_at : datetime
+        When the invoice template was updated in Recurly.
+    """
+
+    schema = {
+        "code": str,
+        "created_at": datetime,
+        "description": str,
+        "id": str,
+        "name": str,
+        "updated_at": datetime,
+    }
