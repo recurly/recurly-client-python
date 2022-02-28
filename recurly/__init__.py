@@ -883,6 +883,7 @@ class Adjustment(Resource):
         'total_in_cents',
         'currency',
         'tax_exempt',
+        'tax_inclusive'
         'tax_code',
         'tax_details',
         'start_date',
