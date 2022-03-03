@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.28](https://github.com/recurly/recurly-client-python/tree/2.9.28) (2022-03-03)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.27...2.9.28)
+
+
+**Merged Pull Requests**
+
+- Add online_banking_payment_type to billing_info [#535](https://github.com/recurly/recurly-client-python/pull/535) ([cyberxander90](https://github.com/cyberxander90))
+
+
+
 ## [2.9.27](https://github.com/recurly/recurly-client-python/tree/2.9.27) (2021-10-27)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.26...2.9.27)
