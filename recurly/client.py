@@ -1814,7 +1814,7 @@ class Client(BaseClient):
         ----------
 
         invoice_template_id : str
-            Invoice template ID.
+            Invoice template ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
 
         Keyword Arguments
         -----------------
@@ -4184,6 +4184,30 @@ class Client(BaseClient):
         path = self._interpolate_path("/purchases/preview")
         return self._make_request("POST", path, body, **options)
 
+    def create_pending_purchase(self, body, **options):
+        """Create a pending purchase
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of PurchaseCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        InvoiceCollection
+            Returns the pending invoice
+        """
+        path = self._interpolate_path("/purchases/pending")
+        return self._make_request("POST", path, body, **options)
+
     def get_export_dates(self, **options):
         """List the dates that have an available export to download.
 
@@ -4291,3 +4315,51 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/dunning_campaigns/%s/bulk_update")
         return self._make_request("PUT", path, body, **options)
+
+    def list_invoice_templates(self, **options):
+        """Show the invoice templates for a site
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the invoice templates on a site.
+        """
+        path = self._interpolate_path("/invoice_templates")
+        return Pager(self, path, **options)
+
+    def get_invoice_template(self, invoice_template_id, **options):
+        """Show the settings for an invoice template
+
+        Parameters
+        ----------
+
+        invoice_template_id : str
+            Invoice template ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        InvoiceTemplate
+            Settings for an invoice template.
+        """
+        path = self._interpolate_path("/invoice_templates/%s", invoice_template_id)
+        return self._make_request("GET", path, None, **options)
