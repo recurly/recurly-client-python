@@ -1336,6 +1336,7 @@ class Subscription(Resource):
         'tax_in_cents',
         'tax_type',
         'tax_rate',
+        'tax_inclusive',
         'total_billing_cycles',
         'remaining_billing_cycles',
         'timeframe',
