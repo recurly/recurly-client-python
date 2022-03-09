@@ -1825,7 +1825,8 @@ class SubscriptionAddOn(Resource):
         Object type
     percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
         If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
-        removed and replaced by the percentage tiers in the request.
+        removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
+        add_on.usage_type is percentage
     quantity : int
         Add-on quantity
     revenue_schedule_type : str
@@ -1839,7 +1840,8 @@ class SubscriptionAddOn(Resource):
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
-        removed and replaced by the tiers in the request.
+        removed and replaced by the tiers in the request. If add_on.tier_type is tiered or volume and
+        add_on.usage_type is percentage use percentage_tiers instead.
     unit_amount : float
         Supports up to 2 decimal places.
     unit_amount_decimal : str
@@ -1926,7 +1928,7 @@ class SubscriptionAddOnTier(Resource):
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
         If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
     usage_percentage : str
-        This field is deprecated. Do not used it anymore for percentage tiers subscription add ons. Use the percentage_tiers object instead.
+        (deprecated) -- Use the percentage_tiers object instead.
     """
 
     schema = {
@@ -2454,9 +2456,9 @@ class Tier(Resource):
     currencies : :obj:`list` of :obj:`TierPricing`
         Tier pricing
     ending_quantity : int
-        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons, but for percentage type usage add ons, represents the site default currency in its minimum divisible unit.
+        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons.
     usage_percentage : str
-        This field is deprecated. Do not used it anymore for percentage tiers add ons. Use the percentage_tiers object instead.
+        (deprecated) -- Use the percentage_tiers object instead.
     """
 
     schema = {
@@ -2572,6 +2574,8 @@ class Usage(Resource):
         Custom field for recording the id in your own system associated with the usage, so you can provide auditable usage displays to your customers using a GET on this endpoint.
     object : str
         Object type
+    percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
+        The percentage tiers of the subscription based on the usage_timestamp. If tier_type = flat, percentage_tiers = []
     recording_timestamp : datetime
         When the usage was recorded in your system.
     tier_type : str
@@ -2580,7 +2584,7 @@ class Usage(Resource):
         [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
-        The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = null
+        The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = []
     unit_amount : float
         Unit price
     unit_amount_decimal : str
@@ -2603,6 +2607,7 @@ class Usage(Resource):
         "measured_unit_id": str,
         "merchant_tag": str,
         "object": str,
+        "percentage_tiers": ["SubscriptionAddOnPercentageTier"],
         "recording_timestamp": datetime,
         "tier_type": str,
         "tiers": ["SubscriptionAddOnTier"],
