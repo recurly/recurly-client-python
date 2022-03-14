@@ -9,7 +9,7 @@ from .pager import Pager
 
 class Client(BaseClient):
     def api_version(self):
-        return "v2021-02-25"
+        return "v2022-01-01"
 
     def list_sites(self, **options):
         """List sites

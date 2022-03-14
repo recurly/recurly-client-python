@@ -1768,6 +1768,8 @@ class SubscriptionChange(Resource):
         Just the important parts.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        Ramp Intervals
     revenue_schedule_type : str
         Revenue schedule type
     shipping : SubscriptionShipping
@@ -1795,6 +1797,7 @@ class SubscriptionChange(Resource):
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "subscription_id": str,
@@ -1825,7 +1828,8 @@ class SubscriptionAddOn(Resource):
         Object type
     percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
         If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
-        removed and replaced by the percentage tiers in the request.
+        removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
+        add_on.usage_type is percentage.
     quantity : int
         Add-on quantity
     revenue_schedule_type : str
@@ -1839,7 +1843,8 @@ class SubscriptionAddOn(Resource):
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
-        removed and replaced by the tiers in the request.
+        removed and replaced by the tiers in the request. If add_on.tier_type is tiered or volume and
+        add_on.usage_type is percentage use percentage_tiers instead.
     unit_amount : float
         Supports up to 2 decimal places.
     unit_amount_decimal : str
@@ -1892,8 +1897,8 @@ class AddOnMini(Resource):
         Describes your add-on and will appear in subscribers' invoices.
     object : str
         Object type
-    usage_percentage : float
-        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
+    usage_percentage : str
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0, represented as a string.
     usage_type : str
         Type of usage, returns usage type if `add_on_type` is `usage`.
     """
@@ -1908,7 +1913,7 @@ class AddOnMini(Resource):
         "measured_unit_id": str,
         "name": str,
         "object": str,
-        "usage_percentage": float,
+        "usage_percentage": str,
         "usage_type": str,
     }
 
@@ -1920,21 +1925,13 @@ class SubscriptionAddOnTier(Resource):
     ending_quantity : int
         Ending quantity
     unit_amount : float
-        Allows up to 2 decimal places. Optionally, override the tiers' default unit amount. If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
+        Allows up to 2 decimal places. Optionally, override the tiers' default unit amount.
     unit_amount_decimal : str
         Allows up to 9 decimal places.  Optionally, override tiers' default unit amount.
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
-        If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
-    usage_percentage : str
-        This field is deprecated. Do not used it anymore for percentage tiers subscription add ons. Use the percentage_tiers object instead.
     """
 
-    schema = {
-        "ending_quantity": int,
-        "unit_amount": float,
-        "unit_amount_decimal": str,
-        "usage_percentage": str,
-    }
+    schema = {"ending_quantity": int, "unit_amount": float, "unit_amount_decimal": str}
 
 
 class SubscriptionAddOnPercentageTier(Resource):
@@ -1961,6 +1958,25 @@ class SubscriptionChangeBillingInfo(Resource):
     """
 
     schema = {"three_d_secure_action_result_token_id": str}
+
+
+class SubscriptionRampIntervalResponse(Resource):
+    """
+    Attributes
+    ----------
+    remaining_billing_cycles : int
+        Represents how many billing cycles are left in a ramp interval.
+    starting_billing_cycle : int
+        Represents how many billing cycles are included in a ramp interval.
+    unit_amount : int
+        Represents the price for the ramp interval.
+    """
+
+    schema = {
+        "remaining_billing_cycles": int,
+        "starting_billing_cycle": int,
+        "unit_amount": int,
+    }
 
 
 class UniqueCouponCodeParams(Resource):
@@ -2387,8 +2403,8 @@ class AddOn(Resource):
         Tiers
     updated_at : datetime
         Last updated at
-    usage_percentage : float
-        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
+    usage_percentage : str
+        The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0, represented as a string.
     usage_type : str
         Type of usage, returns usage type if `add_on_type` is `usage`.
     """
@@ -2419,7 +2435,7 @@ class AddOn(Resource):
         "tier_type": str,
         "tiers": ["Tier"],
         "updated_at": datetime,
-        "usage_percentage": float,
+        "usage_percentage": str,
         "usage_type": str,
     }
 
@@ -2454,16 +2470,10 @@ class Tier(Resource):
     currencies : :obj:`list` of :obj:`TierPricing`
         Tier pricing
     ending_quantity : int
-        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons, but for percentage type usage add ons, represents the site default currency in its minimum divisible unit.
-    usage_percentage : str
-        This field is deprecated. Do not used it anymore for percentage tiers add ons. Use the percentage_tiers object instead.
+        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons.
     """
 
-    schema = {
-        "currencies": ["TierPricing"],
-        "ending_quantity": int,
-        "usage_percentage": str,
-    }
+    schema = {"currencies": ["TierPricing"], "ending_quantity": int}
 
 
 class TierPricing(Resource):
@@ -2572,6 +2582,8 @@ class Usage(Resource):
         Custom field for recording the id in your own system associated with the usage, so you can provide auditable usage displays to your customers using a GET on this endpoint.
     object : str
         Object type
+    percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
+        The percentage tiers of the subscription based on the usage_timestamp. If tier_type = flat, percentage_tiers = []
     recording_timestamp : datetime
         When the usage was recorded in your system.
     tier_type : str
@@ -2580,7 +2592,7 @@ class Usage(Resource):
         [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
-        The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = null
+        The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = []
     unit_amount : float
         Unit price
     unit_amount_decimal : str
@@ -2603,6 +2615,7 @@ class Usage(Resource):
         "measured_unit_id": str,
         "merchant_tag": str,
         "object": str,
+        "percentage_tiers": ["SubscriptionAddOnPercentageTier"],
         "recording_timestamp": datetime,
         "tier_type": str,
         "tiers": ["SubscriptionAddOnTier"],
