@@ -24,6 +24,9 @@ Content-Type: application/xml; charset=utf-8
     <subscription_add_on>
       <add_on_code>tiered_add_on</add_on_code>
     </subscription_add_on>
+    <subscription_add_on>
+      <add_on_code>percentage_tiered_add_on</add_on_code>
+    </subscription_add_on>
   </subscription_add_ons>
   <account>
     <account_code>sad-on-mock</account_code>

@@ -1,0 +1,44 @@
+GET https://api.recurly.com/v2/plans/planmock/add_ons/addonmock HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on href="https://api.recurly.com/v2/plans/planmock/add_ons/addonmock">
+  <plan href="https://api.recurly.com/v2/plans/planmock"/>
+  <measured_unit href="https://api.recurly.com/v2/measured_units/3473591245469944008"/>
+  <add_on_code>addonmock</add_on_code>
+  <name>Mock Add-On</name>
+  <default_quantity nil="nil"></default_quantity>
+  <display_quantity_on_hosted_page type="boolean">true</display_quantity_on_hosted_page>
+  <percentage_tiers type="array">
+    <percentage_tier>
+      <currency>USD</currency>
+      <tiers type="array">
+        <tier>
+          <ending_amount_in_cents type="integer">20000</ending_amount_in_cents>
+          <usage_percentage>20.0</usage_percentage>
+        </tier>
+        <tier>
+          <ending_amount_in_cents type="integer">40000</ending_amount_in_cents>
+          <usage_percentage>25.0</usage_percentage>
+        </tier>
+        <tier>
+          <ending_amount_in_cents nil="nil"></ending_amount_in_cents>
+          <usage_percentage>30.0</usage_percentage>
+        </tier>
+      </tiers>
+    </percentage_tier>
+  </percentage_tiers>
+  <accounting_code nil="nil"></accounting_code>
+  <add_on_type>usage</add_on_type>
+  <optional type="boolean">true</optional>
+  <usage_timeframe>billing_period</usage_timeframe>
+  <tier_type>tiered</tier_type>
+  <created_at type="datetime">2011-06-28T12:34:56Z</created_at>
+</add_on>

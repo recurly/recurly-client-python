@@ -1738,6 +1738,35 @@ class MeasuredUnit(Resource):
         'updated_at',
     )
 
+class PercentageTier(Resource):
+
+    """Percentage tier associated to a set of tiers per currency 
+    in an add-on."""
+
+    nodename = 'tier'
+    inherits_currency = True
+
+    attributes = (
+        'ending_amount_in_cents',
+        'usage_percentage',
+    )
+
+class PercentageTierByCurrency(Resource):
+
+    """Set of percetange tiers per currency in an add-on passed when
+    usage type is percentage and tier type is tiered or volume."""
+
+    nodename = 'percentage_tier'
+
+    attributes = (
+        'currency',
+        'tiers',
+    )
+
+    _classes_for_nodename = {
+        'tier': PercentageTier,
+    }
+
 class AddOn(Resource):
 
     """An additional benefit a customer subscribed to a particular plan
@@ -1758,6 +1787,7 @@ class AddOn(Resource):
         'unit_amount_in_cents',
         'measured_unit_id',
         'usage_type',
+        'usage_timeframe',
         'usage_percentage',
         'add_on_type',
         'tax_code',
@@ -1767,6 +1797,33 @@ class AddOn(Resource):
         'updated_at',
         'tier_type',
         'tiers',
+        'percentage_tiers'
+    )
+
+    _classes_for_nodename = {
+        'percentage_tier': PercentageTierByCurrency,
+    }
+
+class SubAddOnPercentageTier(Resource):
+
+    """Percentage tiers associated to a subscription add-on."""
+
+    nodename = 'percentage_tier'
+    inherits_currency = True
+
+    attributes = (
+        'ending_amount_in_cents',
+        'usage_percentage',
+    )
+
+class Tier(Resource):
+    """Pricing tier for plans, subscriptions and invoices"""
+
+    nodename = 'tier'
+
+    attributes = (
+        'ending_quantity',
+        'unit_amount_in_cents',
     )
 
 class SubscriptionAddOn(Resource):
@@ -1785,20 +1842,17 @@ class SubscriptionAddOn(Resource):
         'add_on_code',
         'quantity',
         'unit_amount_in_cents',
+        'usage_timeframe',
         'address',
         'add_on_source',
-        'tiers'
+        'tiers',
+        'percentage_tiers'
     )
 
-class Tier(Resource):
-    """Pricing tier for plans, subscriptions and invoices"""
-
-    nodename = 'tier'
-
-    attributes = (
-        'ending_quantity',
-        'unit_amount_in_cents',
-    )
+    _classes_for_nodename = {
+        'percentage_tier': SubAddOnPercentageTier,
+        'tier': Tier
+    }
 
 class Note(Resource):
 

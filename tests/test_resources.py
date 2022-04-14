@@ -539,6 +539,66 @@ class TestResources(RecurlyTest):
             with self.mock_request('add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_add_on_with_percentage_tiered_pricing(self):
+        plan_code = 'plan%s' % self.test_id
+        add_on_code = 'addon%s' % self.test_id
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('add-on/plan-created.xml'):
+            plan.save()
+
+        try:
+            add_on = AddOn(
+                add_on_code = add_on_code,
+                name = 'Mock Add-On',
+                tier_type = "tiered",
+                add_on_type = "usage",
+                usage_type = "percentage",
+                measured_unit_id = "3473591245469944008",
+                display_quantity_on_hosted_page = True,
+                percentage_tiers = [
+                    recurly.PercentageTierByCurrency(
+                        currency = 'USD',
+                        tiers = [
+                            recurly.PercentageTier(
+                                ending_amount_in_cents = 20000,
+                                usage_percentage = '20'
+                            ),
+                            recurly.PercentageTier(
+                                ending_amount_in_cents = 40000,
+                                usage_percentage = '25'
+                            ),
+                            recurly.PercentageTier(
+                                usage_percentage = '30'
+                            )
+                        ]
+                    )
+                ],
+            )
+            with self.mock_request('add-on/created-percentage-tiered.xml'):
+                plan.create_add_on(add_on)
+            self.assertEqual(add_on.add_on_code, add_on_code)
+
+            try:
+                with self.mock_request('add-on/exists-percentage-tiered.xml'):
+                    tiered_add_on = plan.get_add_on(add_on_code)
+                self.assertEqual(tiered_add_on.add_on_code, add_on_code)
+                self.assertEqual(tiered_add_on.tier_type, "tiered")
+                self.assertEqual(tiered_add_on.percentage_tiers[0].currency, "USD")
+                self.assertEqual(len(tiered_add_on.percentage_tiers[0].tiers), 3)
+
+            finally:
+                with self.mock_request('add-on/deleted.xml'):
+                    add_on.delete()
+        finally:
+            with self.mock_request('add-on/plan-deleted.xml'):
+                plan.delete()
+
     def test_item_backed_add_on(self):
         plan_code = 'plan%s' % self.test_id
         item_code = 'item%s' % self.test_id
@@ -1791,6 +1851,38 @@ class TestResources(RecurlyTest):
             with self.mock_request('subscribe-add-on/tiered-add-on-created.xml'):
               plan.create_add_on(tiered_add_on)
 
+            # create percentage tiered add-on
+            percentage_tiered_add_on = AddOn(
+                add_on_code = 'percentage_tiered_add_on',
+                name = 'Percentage Quantity-Based Pricing Add-On',
+                tier_type = "tiered",
+                add_on_type = "usage",
+                usage_type = "percentage",
+                measured_unit_id = "3473591245469944008",
+                display_quantity_on_hosted_page = True,
+                percentage_tiers = [
+                    recurly.PercentageTierByCurrency(
+                        currency = 'USD',
+                        tiers = [
+                            recurly.PercentageTier(
+                                ending_amount_in_cents = 20000,
+                                usage_percentage = '20'
+                            ),
+                            recurly.PercentageTier(
+                                ending_amount_in_cents = 40000,
+                                usage_percentage = '25'
+                            ),
+                            recurly.PercentageTier(
+                                usage_percentage = '30'
+                            )
+                        ]
+                    )
+                ],
+            )
+
+            with self.mock_request('subscribe-add-on/percentage-tiered-add-on-created.xml'):
+              plan.create_add_on(percentage_tiered_add_on)
+
             account_code='sad-on-%s' % self.test_id
             sub = Subscription(
                 plan_code='basicplan',
@@ -1810,6 +1902,10 @@ class TestResources(RecurlyTest):
                     # create sub add-on with tiers
                     SubscriptionAddOn(
                       add_on_code='tiered_add_on',
+                    ),
+                    # create sub add-on with percentage tiers
+                    SubscriptionAddOn(
+                      add_on_code='percentage_tiered_add_on',
                     )
                 ],
                 currency='USD',
