@@ -1482,6 +1482,8 @@ class Subscription(Resource):
         Account mini details
     activated_at : datetime
         Activated at
+    active_invoice_id : str
+        The invoice ID of the latest invoice created for an active subscription.
     add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         Add-ons
     add_ons_total : float
@@ -1567,6 +1569,7 @@ class Subscription(Resource):
     schema = {
         "account": "AccountMini",
         "activated_at": datetime,
+        "active_invoice_id": str,
         "add_ons": ["SubscriptionAddOn"],
         "add_ons_total": float,
         "auto_renew": bool,
