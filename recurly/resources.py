@@ -1501,6 +1501,8 @@ class Subscription(Resource):
         Account mini details
     activated_at : datetime
         Activated at
+    active_invoice_id : str
+        The invoice ID of the latest invoice created for an active subscription.
     add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         Add-ons
     add_ons_total : float
@@ -1594,6 +1596,7 @@ class Subscription(Resource):
     schema = {
         "account": "AccountMini",
         "activated_at": datetime,
+        "active_invoice_id": str,
         "add_ons": ["SubscriptionAddOn"],
         "add_ons_total": float,
         "auto_renew": bool,
@@ -1852,6 +1855,8 @@ class SubscriptionAddOn(Resource):
         Updated at
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
+    usage_timeframe : str
+        The time at which usage totals are reset for billing purposes.
     """
 
     schema = {
@@ -1871,6 +1876,7 @@ class SubscriptionAddOn(Resource):
         "unit_amount_decimal": str,
         "updated_at": datetime,
         "usage_percentage": float,
+        "usage_timeframe": str,
     }
 
 
@@ -2392,6 +2398,8 @@ class AddOn(Resource):
         Last updated at
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
+    usage_timeframe : str
+        The time at which usage totals are reset for billing purposes.
     usage_type : str
         Type of usage, returns usage type if `add_on_type` is `usage`.
     """
@@ -2423,6 +2431,7 @@ class AddOn(Resource):
         "tiers": ["Tier"],
         "updated_at": datetime,
         "usage_percentage": float,
+        "usage_timeframe": str,
         "usage_type": str,
     }
 
