@@ -8,6 +8,7 @@ matrix:
       dist: xenial
       sudo: true
 install:
+  - pip install setuptools==60.8.2
   - ./scripts/build
 script:
   - ./scripts/test
