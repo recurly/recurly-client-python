@@ -1,0 +1,4 @@
+mock
+six
+unittest2
+defusedxml

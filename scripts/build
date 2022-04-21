@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-python3 setup.py install
+pip install -r requirements-test.txt
+python setup.py install
