@@ -98,8 +98,7 @@ class Pager:
             return None
 
     def count(self):
-        """Makes a HEAD request to the API to determine how many total records exist.
-        """
+        """Makes a HEAD request to the API to determine how many total records exist."""
         resource = self.__client._make_request(
             "HEAD", self.__path, None, **self.__options
         )
