@@ -1,4 +1,5 @@
 coverage==4.5.3
 Sphinx==2.0.1
 sphinxcontrib-napoleon==0.7
+mistune==0.8.4
 m2r==0.2.1
