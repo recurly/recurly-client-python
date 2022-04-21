@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
- RECURLY_INSECURE_DEBUG=true python3 -m unittest discover -s tests
+RECURLY_INSECURE_DEBUG=true python -m unittest discover -s tests
