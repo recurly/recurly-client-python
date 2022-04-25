@@ -1751,7 +1751,7 @@ class PercentageTier(Resource):
         'usage_percentage',
     )
 
-class PercentageTierByCurrency(Resource):
+class CurrencyPercentageTier(Resource):
 
     """Set of percetange tiers per currency in an add-on passed when
     usage type is percentage and tier type is tiered or volume."""
@@ -1801,7 +1801,7 @@ class AddOn(Resource):
     )
 
     _classes_for_nodename = {
-        'percentage_tier': PercentageTierByCurrency,
+        'percentage_tier': CurrencyPercentageTier,
     }
 
 class SubAddOnPercentageTier(Resource):

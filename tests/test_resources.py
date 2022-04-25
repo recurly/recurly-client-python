@@ -562,7 +562,7 @@ class TestResources(RecurlyTest):
                 measured_unit_id = "3473591245469944008",
                 display_quantity_on_hosted_page = True,
                 percentage_tiers = [
-                    recurly.PercentageTierByCurrency(
+                    recurly.CurrencyPercentageTier(
                         currency = 'USD',
                         tiers = [
                             recurly.PercentageTier(
@@ -1861,7 +1861,7 @@ class TestResources(RecurlyTest):
                 measured_unit_id = "3473591245469944008",
                 display_quantity_on_hosted_page = True,
                 percentage_tiers = [
-                    recurly.PercentageTierByCurrency(
+                    recurly.CurrencyPercentageTier(
                         currency = 'USD',
                         tiers = [
                             recurly.PercentageTier(
