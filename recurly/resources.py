@@ -156,7 +156,7 @@ class Account(Resource):
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
     invoice_template_id : str
-        Unique ID to identify an invoice template. Available when the Invoice Customization feature is enabled. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
+        Unique ID to identify an invoice template. Available when the site is on a Pro or Enterprise plan. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
     last_name : str
     object : str
         Object type
@@ -1501,6 +1501,8 @@ class Subscription(Resource):
         Account mini details
     activated_at : datetime
         Activated at
+    active_invoice_id : str
+        The invoice ID of the latest invoice created for an active subscription.
     add_ons : :obj:`list` of :obj:`SubscriptionAddOn`
         Add-ons
     add_ons_total : float
@@ -1594,6 +1596,7 @@ class Subscription(Resource):
     schema = {
         "account": "AccountMini",
         "activated_at": datetime,
+        "active_invoice_id": str,
         "add_ons": ["SubscriptionAddOn"],
         "add_ons_total": float,
         "auto_renew": bool,
@@ -1776,8 +1779,6 @@ class SubscriptionChange(Resource):
         Subscription shipping details
     subscription_id : str
         The ID of the subscription that is going to be changed.
-    tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Unit amount
     updated_at : datetime
@@ -1801,7 +1802,6 @@ class SubscriptionChange(Resource):
         "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "subscription_id": str,
-        "tax_inclusive": bool,
         "unit_amount": float,
         "updated_at": datetime,
     }
@@ -1830,6 +1830,7 @@ class SubscriptionAddOn(Resource):
         If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
         removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
         add_on.usage_type is percentage.
+        There must be one tier without an `ending_amount` value which represents the final tier.
     quantity : int
         Add-on quantity
     revenue_schedule_type : str
@@ -1845,6 +1846,7 @@ class SubscriptionAddOn(Resource):
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
         removed and replaced by the tiers in the request. If add_on.tier_type is tiered or volume and
         add_on.usage_type is percentage use percentage_tiers instead.
+        There must be one tier without an `ending_quantity` value which represents the final tier.
     unit_amount : float
         Supports up to 2 decimal places.
     unit_amount_decimal : str
@@ -1853,6 +1855,8 @@ class SubscriptionAddOn(Resource):
         Updated at
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
+    usage_timeframe : str
+        The time at which usage totals are reset for billing purposes.
     """
 
     schema = {
@@ -1872,6 +1876,7 @@ class SubscriptionAddOn(Resource):
         "unit_amount_decimal": str,
         "updated_at": datetime,
         "usage_percentage": float,
+        "usage_timeframe": str,
     }
 
 
@@ -1923,7 +1928,7 @@ class SubscriptionAddOnTier(Resource):
     Attributes
     ----------
     ending_quantity : int
-        Ending quantity
+        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons. Must be left empty if it is the final tier.
     unit_amount : float
         Allows up to 2 decimal places. Optionally, override the tiers' default unit amount.
     unit_amount_decimal : str
@@ -1939,11 +1944,10 @@ class SubscriptionAddOnPercentageTier(Resource):
     Attributes
     ----------
     ending_amount : float
-        Ending amount
+        Ending amount for the tier. Allows up to 2 decimal places. Must be left empty if it is the final tier.
     usage_percentage : str
         The percentage taken of the monetary amount of usage tracked.
-        This can be up to 4 decimal places represented as a string. A value between
-        0.0 and 100.0.
+        This can be up to 4 decimal places represented as a string.
     """
 
     schema = {"ending_amount": float, "usage_percentage": str}
@@ -2150,13 +2154,11 @@ class Pricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
-    tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Unit price
     """
 
-    schema = {"currency": str, "tax_inclusive": bool, "unit_amount": float}
+    schema = {"currency": str, "unit_amount": float}
 
 
 class MeasuredUnit(Resource):
@@ -2246,6 +2248,12 @@ class Plan(Resource):
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
     object : str
         Object type
+    pricing_model : str
+        A fixed pricing model has the same price for each billing period.
+        A ramp pricing model defines a set of Ramp Intervals, where a subscription changes price on
+        a specified cadence of billing periods. The price change could be an increase or decrease.
+    ramp_intervals : :obj:`list` of :obj:`PlanRampInterval`
+        Ramp Intervals
     revenue_schedule_type : str
         Revenue schedule type
     setup_fee_accounting_code : str
@@ -2288,6 +2296,8 @@ class Plan(Resource):
         "interval_unit": str,
         "name": str,
         "object": str,
+        "pricing_model": str,
+        "ramp_intervals": ["PlanRampInterval"],
         "revenue_schedule_type": str,
         "setup_fee_accounting_code": str,
         "setup_fee_revenue_schedule_type": str,
@@ -2302,6 +2312,32 @@ class Plan(Resource):
     }
 
 
+class PlanRampInterval(Resource):
+    """
+    Attributes
+    ----------
+    currencies : :obj:`list` of :obj:`PlanRampPricing`
+        Represents the price for the ramp interval.
+    starting_billing_cycle : int
+        Represents the first billing cycle of a ramp.
+    """
+
+    schema = {"currencies": ["PlanRampPricing"], "starting_billing_cycle": int}
+
+
+class PlanRampPricing(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    unit_amount : float
+        Represents the price for the Ramp Interval.
+    """
+
+    schema = {"currency": str, "unit_amount": float}
+
+
 class PlanPricing(Resource):
     """
     Attributes
@@ -2310,18 +2346,11 @@ class PlanPricing(Resource):
         3-letter ISO 4217 currency code.
     setup_fee : float
         Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
-    tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
-        Unit price
+        This field should not be sent when the pricing model is 'ramp'.
     """
 
-    schema = {
-        "currency": str,
-        "setup_fee": float,
-        "tax_inclusive": bool,
-        "unit_amount": float,
-    }
+    schema = {"currency": str, "setup_fee": float, "unit_amount": float}
 
 
 class PlanHostedPages(Resource):
@@ -2405,6 +2434,8 @@ class AddOn(Resource):
         Last updated at
     usage_percentage : str
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0, represented as a string.
+    usage_timeframe : str
+        The time at which usage totals are reset for billing purposes.
     usage_type : str
         Type of usage, returns usage type if `add_on_type` is `usage`.
     """
@@ -2436,6 +2467,7 @@ class AddOn(Resource):
         "tiers": ["Tier"],
         "updated_at": datetime,
         "usage_percentage": str,
+        "usage_timeframe": str,
         "usage_type": str,
     }
 
@@ -2446,8 +2478,6 @@ class AddOnPricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
-    tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
     unit_amount : float
         Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
     unit_amount_decimal : str
@@ -2455,12 +2485,7 @@ class AddOnPricing(Resource):
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
-    schema = {
-        "currency": str,
-        "tax_inclusive": bool,
-        "unit_amount": float,
-        "unit_amount_decimal": str,
-    }
+    schema = {"currency": str, "unit_amount": float, "unit_amount_decimal": str}
 
 
 class Tier(Resource):
@@ -2470,7 +2495,7 @@ class Tier(Resource):
     currencies : :obj:`list` of :obj:`TierPricing`
         Tier pricing
     ending_quantity : int
-        Ending quantity for the tier.  This represents a unit amount for unit-priced add ons.
+        Ending quantity for the tier. This represents a unit amount for unit-priced add ons. Must be left empty if it is the final tier.
     """
 
     schema = {"currencies": ["TierPricing"], "ending_quantity": int}
@@ -2510,9 +2535,10 @@ class PercentageTier(Resource):
     Attributes
     ----------
     ending_amount : float
-        Ending amount for the tier. Allows up to 2 decimal places. The last tier ending_amount is null.
+        Ending amount for the tier. Allows up to 2 decimal places. Must be left empty if it is the final tier.
     usage_percentage : str
-        Decimal usage percentage.
+        The percentage taken of the monetary amount of usage tracked.
+        This can be up to 4 decimal places represented as a string.
     """
 
     schema = {"ending_amount": float, "usage_percentage": str}
