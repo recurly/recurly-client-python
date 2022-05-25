@@ -1,6 +1,6 @@
 import unittest
 import recurly
-import platform
+import sys
 import json
 from datetime import datetime
 from datetime import timezone
@@ -8,8 +8,6 @@ from recurly import Resource, Response, Request
 from pydoc import locate
 from .mock_resources import MyResource, MySubResource
 from unittest.mock import Mock, MagicMock
-
-major, minor, patch = platform.python_version_tuple()
 
 
 def cast(obj, class_name=None, resp=None):
@@ -121,7 +119,7 @@ class TestResource(unittest.TestCase):
         self.assertEqual(obj.my_int, 123)
         self.assertEqual(obj.my_float, 1.123)
         self.assertEqual(obj.my_bool, False)
-        if major >= "3" and minor >= "7":
+        if sys.version_info.major >= 3 and sys.version_info.minor >= 7:
             self.assertEqual(
                 obj.my_datetime, datetime(2022, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
             )
