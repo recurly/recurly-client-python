@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.16.1](https://github.com/recurly/recurly-client-python/tree/3.16.1) (2022-05-25)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.16.0...3.16.1)
+
+
+**Merged Pull Requests**
+
+- Fix version check for python 3.10+ [#563](https://github.com/recurly/recurly-client-python/pull/563) ([douglasmiller](https://github.com/douglasmiller))
+
+
+
 ## [3.16.0](https://github.com/recurly/recurly-client-python/tree/3.16.0) (2022-04-21)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.15.0...3.16.0)
