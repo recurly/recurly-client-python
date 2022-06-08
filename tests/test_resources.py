@@ -193,6 +193,9 @@ class TestResources(RecurlyTest):
         balance = account_balance.balance_in_cents
         self.assertTrue(balance['USD'] == 2910)
         self.assertTrue(balance['EUR'] == -520)
+        processing_prepayment_balance = account_balance.processing_prepayment_balance_in_cents
+        self.assertTrue(processing_prepayment_balance['USD'] == -3000)
+        self.assertTrue(processing_prepayment_balance['EUR'] == 0)
 
         account.username = 'shmohawk58'
         account.email = 'larry.david'
