@@ -46,7 +46,9 @@ class Client(BaseClient):
         Pager
             A list of sites.
         """
-        path = self._interpolate_path("/sites")
+        path = self._interpolate_path(
+            "/sites",
+        )
         return Pager(self, path, options)
 
     def get_site(self, site_id):
@@ -117,7 +119,9 @@ class Client(BaseClient):
         Pager
             A list of the site's accounts.
         """
-        path = self._interpolate_path("/accounts")
+        path = self._interpolate_path(
+            "/accounts",
+        )
         return Pager(self, path, options)
 
     def create_account(self, body):
@@ -139,7 +143,9 @@ class Client(BaseClient):
         Account
             An account.
         """
-        path = self._interpolate_path("/accounts")
+        path = self._interpolate_path(
+            "/accounts",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_account(self, account_id):
@@ -1311,7 +1317,9 @@ class Client(BaseClient):
         Pager
             A list of the site's account acquisition data.
         """
-        path = self._interpolate_path("/acquisitions")
+        path = self._interpolate_path(
+            "/acquisitions",
+        )
         return Pager(self, path, options)
 
     def list_coupons(self, **options):
@@ -1353,7 +1361,9 @@ class Client(BaseClient):
         Pager
             A list of the site's coupons.
         """
-        path = self._interpolate_path("/coupons")
+        path = self._interpolate_path(
+            "/coupons",
+        )
         return Pager(self, path, options)
 
     def create_coupon(self, body):
@@ -1375,7 +1385,9 @@ class Client(BaseClient):
         Coupon
             A new coupon.
         """
-        path = self._interpolate_path("/coupons")
+        path = self._interpolate_path(
+            "/coupons",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_coupon(self, coupon_id):
@@ -1545,7 +1557,9 @@ class Client(BaseClient):
         Pager
             A list of the site's credit payments.
         """
-        path = self._interpolate_path("/credit_payments")
+        path = self._interpolate_path(
+            "/credit_payments",
+        )
         return Pager(self, path, options)
 
     def get_credit_payment(self, credit_payment_id):
@@ -1611,7 +1625,9 @@ class Client(BaseClient):
         Pager
             A list of the site's custom field definitions.
         """
-        path = self._interpolate_path("/custom_field_definitions")
+        path = self._interpolate_path(
+            "/custom_field_definitions",
+        )
         return Pager(self, path, options)
 
     def get_custom_field_definition(self, custom_field_definition_id):
@@ -1679,7 +1695,9 @@ class Client(BaseClient):
         Pager
             A list of the site's items.
         """
-        path = self._interpolate_path("/items")
+        path = self._interpolate_path(
+            "/items",
+        )
         return Pager(self, path, options)
 
     def create_item(self, body):
@@ -1701,7 +1719,9 @@ class Client(BaseClient):
         Item
             A new item.
         """
-        path = self._interpolate_path("/items")
+        path = self._interpolate_path(
+            "/items",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_item(self, item_id):
@@ -1835,7 +1855,9 @@ class Client(BaseClient):
         Pager
             A list of the site's measured units.
         """
-        path = self._interpolate_path("/measured_units")
+        path = self._interpolate_path(
+            "/measured_units",
+        )
         return Pager(self, path, options)
 
     def create_measured_unit(self, body):
@@ -1857,7 +1879,9 @@ class Client(BaseClient):
         MeasuredUnit
             A new measured unit.
         """
-        path = self._interpolate_path("/measured_units")
+        path = self._interpolate_path(
+            "/measured_units",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_measured_unit(self, measured_unit_id):
@@ -1973,7 +1997,9 @@ class Client(BaseClient):
         Pager
             A list of the site's invoices.
         """
-        path = self._interpolate_path("/invoices")
+        path = self._interpolate_path(
+            "/invoices",
+        )
         return Pager(self, path, options)
 
     def get_invoice(self, invoice_id):
@@ -2370,7 +2396,9 @@ class Client(BaseClient):
         Pager
             A list of the site's line items.
         """
-        path = self._interpolate_path("/line_items")
+        path = self._interpolate_path(
+            "/line_items",
+        )
         return Pager(self, path, options)
 
     def get_line_item(self, line_item_id):
@@ -2458,7 +2486,9 @@ class Client(BaseClient):
         Pager
             A list of plans.
         """
-        path = self._interpolate_path("/plans")
+        path = self._interpolate_path(
+            "/plans",
+        )
         return Pager(self, path, options)
 
     def create_plan(self, body):
@@ -2480,7 +2510,9 @@ class Client(BaseClient):
         Plan
             A plan.
         """
-        path = self._interpolate_path("/plans")
+        path = self._interpolate_path(
+            "/plans",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_plan(self, plan_id):
@@ -2740,7 +2772,9 @@ class Client(BaseClient):
         Pager
             A list of add-ons.
         """
-        path = self._interpolate_path("/add_ons")
+        path = self._interpolate_path(
+            "/add_ons",
+        )
         return Pager(self, path, options)
 
     def get_add_on(self, add_on_id):
@@ -2804,7 +2838,9 @@ class Client(BaseClient):
         Pager
             A list of the site's shipping methods.
         """
-        path = self._interpolate_path("/shipping_methods")
+        path = self._interpolate_path(
+            "/shipping_methods",
+        )
         return Pager(self, path, options)
 
     def create_shipping_method(self, body):
@@ -2826,7 +2862,9 @@ class Client(BaseClient):
         ShippingMethod
             A new shipping method.
         """
-        path = self._interpolate_path("/shipping_methods")
+        path = self._interpolate_path(
+            "/shipping_methods",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_shipping_method(self, id):
@@ -2942,7 +2980,9 @@ class Client(BaseClient):
         Pager
             A list of the site's subscriptions.
         """
-        path = self._interpolate_path("/subscriptions")
+        path = self._interpolate_path(
+            "/subscriptions",
+        )
         return Pager(self, path, options)
 
     def create_subscription(self, body):
@@ -2964,7 +3004,9 @@ class Client(BaseClient):
         Subscription
             A subscription.
         """
-        path = self._interpolate_path("/subscriptions")
+        path = self._interpolate_path(
+            "/subscriptions",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_subscription(self, subscription_id):
@@ -3629,7 +3671,9 @@ class Client(BaseClient):
         Pager
             A list of the site's transactions.
         """
-        path = self._interpolate_path("/transactions")
+        path = self._interpolate_path(
+            "/transactions",
+        )
         return Pager(self, path, options)
 
     def get_transaction(self, transaction_id):
@@ -3741,7 +3785,9 @@ class Client(BaseClient):
         InvoiceCollection
             Returns the new invoices
         """
-        path = self._interpolate_path("/purchases")
+        path = self._interpolate_path(
+            "/purchases",
+        )
         return self._make_request("POST", path, body, None)
 
     def preview_purchase(self, body):
@@ -3763,7 +3809,9 @@ class Client(BaseClient):
         InvoiceCollection
             Returns preview of the new invoices
         """
-        path = self._interpolate_path("/purchases/preview")
+        path = self._interpolate_path(
+            "/purchases/preview",
+        )
         return self._make_request("POST", path, body, None)
 
     def get_export_dates(self):
@@ -3775,7 +3823,9 @@ class Client(BaseClient):
         ExportDates
             Returns a list of dates.
         """
-        path = self._interpolate_path("/export_dates")
+        path = self._interpolate_path(
+            "/export_dates",
+        )
         return self._make_request("GET", path, None, None)
 
     def get_export_files(self, export_date):
@@ -3817,7 +3867,9 @@ class Client(BaseClient):
         Pager
             A list of the the dunning_campaigns on an account.
         """
-        path = self._interpolate_path("/dunning_campaigns")
+        path = self._interpolate_path(
+            "/dunning_campaigns",
+        )
         return Pager(self, path, options)
 
     def get_dunning_campaign(self, dunning_campaign_id):
@@ -3861,5 +3913,7 @@ class Client(BaseClient):
         DunningCampaignsBulkUpdateResponse
             A list of updated plans.
         """
-        path = self._interpolate_path("/dunning_campaigns/%s/bulk_update")
+        path = self._interpolate_path(
+            "/dunning_campaigns/%s/bulk_update",
+        )
         return self._make_request("PUT", path, body, None)
