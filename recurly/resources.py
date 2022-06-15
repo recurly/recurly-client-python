@@ -111,7 +111,11 @@ class Error(Resource):
         Type
     """
 
-    schema = {"message": str, "params": list, "type": str}
+    schema = {
+        "message": str,
+        "params": list,
+        "type": str,
+    }
 
 
 class Account(Resource):
@@ -156,7 +160,7 @@ class Account(Resource):
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
     invoice_template_id : str
-        Unique ID to identify an invoice template. Available when the Invoice Customization feature is enabled. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
+        Unique ID to identify an invoice template. Available when the site is on a Pro or Enterprise plan. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
     last_name : str
     object : str
         Object type
@@ -383,7 +387,11 @@ class FraudInfo(Resource):
         Kount score
     """
 
-    schema = {"decision": str, "risk_rules_triggered": dict, "score": int}
+    schema = {
+        "decision": str,
+        "risk_rules_triggered": dict,
+        "score": int,
+    }
 
 
 class BillingInfoUpdatedBy(Resource):
@@ -396,7 +404,10 @@ class BillingInfoUpdatedBy(Resource):
         Customer's IP address when updating their billing information.
     """
 
-    schema = {"country": str, "ip": str}
+    schema = {
+        "country": str,
+        "ip": str,
+    }
 
 
 class CustomField(Resource):
@@ -409,7 +420,10 @@ class CustomField(Resource):
         Any values that resemble a credit card number or security code (CVV/CVC) will be rejected.
     """
 
-    schema = {"name": str, "value": str}
+    schema = {
+        "name": str,
+        "value": str,
+    }
 
 
 class ErrorMayHaveTransaction(Resource):
@@ -511,7 +525,10 @@ class AccountAcquisitionCost(Resource):
         3-letter ISO 4217 currency code.
     """
 
-    schema = {"amount": float, "currency": str}
+    schema = {
+        "amount": float,
+        "currency": str,
+    }
 
 
 class AccountMini(Resource):
@@ -576,9 +593,15 @@ class AccountBalanceAmount(Resource):
         Total amount the account is past due.
     currency : str
         3-letter ISO 4217 currency code.
+    processing_prepayment_amount : float
+        Total amount for the prepayment credit invoices in a `processing` state on the account.
     """
 
-    schema = {"amount": float, "currency": str}
+    schema = {
+        "amount": float,
+        "currency": str,
+        "processing_prepayment_amount": float,
+    }
 
 
 class Transaction(Resource):
@@ -726,7 +749,13 @@ class InvoiceMini(Resource):
         Invoice type
     """
 
-    schema = {"id": str, "number": str, "object": str, "state": str, "type": str}
+    schema = {
+        "id": str,
+        "number": str,
+        "object": str,
+        "state": str,
+        "type": str,
+    }
 
 
 class AddressWithName(Resource):
@@ -777,7 +806,12 @@ class TransactionPaymentGateway(Resource):
     type : str
     """
 
-    schema = {"id": str, "name": str, "object": str, "type": str}
+    schema = {
+        "id": str,
+        "name": str,
+        "object": str,
+        "type": str,
+    }
 
 
 class CouponRedemption(Resource):
@@ -937,7 +971,12 @@ class PlanMini(Resource):
         Object type
     """
 
-    schema = {"code": str, "id": str, "name": str, "object": str}
+    schema = {
+        "code": str,
+        "id": str,
+        "name": str,
+        "object": str,
+    }
 
 
 class ItemMini(Resource):
@@ -999,7 +1038,10 @@ class CouponDiscountPricing(Resource):
         3-letter ISO 4217 currency code.
     """
 
-    schema = {"amount": float, "currency": str}
+    schema = {
+        "amount": float,
+        "currency": str,
+    }
 
 
 class CouponDiscountTrial(Resource):
@@ -1012,7 +1054,10 @@ class CouponDiscountTrial(Resource):
         Temporal unit of the free trial
     """
 
-    schema = {"length": int, "unit": str}
+    schema = {
+        "length": int,
+        "unit": str,
+    }
 
 
 class CreditPayment(Resource):
@@ -1245,7 +1290,12 @@ class TaxInfo(Resource):
         Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries.
     """
 
-    schema = {"rate": float, "region": str, "tax_details": ["TaxDetail"], "type": str}
+    schema = {
+        "rate": float,
+        "region": str,
+        "tax_details": ["TaxDetail"],
+        "type": str,
+    }
 
 
 class TaxDetail(Resource):
@@ -1262,7 +1312,12 @@ class TaxDetail(Resource):
         Provides the tax type for the region. For Canadian Sales Tax, this will be GST, HST, QST or PST.
     """
 
-    schema = {"rate": float, "region": str, "tax": float, "type": str}
+    schema = {
+        "rate": float,
+        "region": str,
+        "tax": float,
+        "type": str,
+    }
 
 
 class LineItem(Resource):
@@ -1678,7 +1733,12 @@ class ShippingMethodMini(Resource):
         Object type
     """
 
-    schema = {"code": str, "id": str, "name": str, "object": str}
+    schema = {
+        "code": str,
+        "id": str,
+        "name": str,
+        "object": str,
+    }
 
 
 class CouponRedemptionMini(Resource):
@@ -1778,7 +1838,7 @@ class SubscriptionChange(Resource):
     subscription_id : str
         The ID of the subscription that is going to be changed.
     tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
+        This field is deprecated. Please do not use it.
     unit_amount : float
         Unit amount
     updated_at : datetime
@@ -1958,7 +2018,10 @@ class SubscriptionAddOnPercentageTier(Resource):
         This can be up to 4 decimal places represented as a string.
     """
 
-    schema = {"ending_amount": float, "usage_percentage": str}
+    schema = {
+        "ending_amount": float,
+        "usage_percentage": str,
+    }
 
 
 class SubscriptionChangeBillingInfo(Resource):
@@ -1969,7 +2032,9 @@ class SubscriptionChangeBillingInfo(Resource):
         A token generated by Recurly.js after completing a 3-D Secure device fingerprinting or authentication challenge.
     """
 
-    schema = {"three_d_secure_action_result_token_id": str}
+    schema = {
+        "three_d_secure_action_result_token_id": str,
+    }
 
 
 class UniqueCouponCodeParams(Resource):
@@ -1986,7 +2051,12 @@ class UniqueCouponCodeParams(Resource):
         Sort field to list newly generated UniqueCouponCodes (should always be `created_at`)
     """
 
-    schema = {"begin_time": datetime, "limit": int, "order": str, "sort": str}
+    schema = {
+        "begin_time": datetime,
+        "limit": int,
+        "order": str,
+        "sort": str,
+    }
 
 
 class UniqueCouponCode(Resource):
@@ -2144,12 +2214,16 @@ class Pricing(Resource):
     currency : str
         3-letter ISO 4217 currency code.
     tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
+        This field is deprecated. Please do not use it.
     unit_amount : float
         Unit price
     """
 
-    schema = {"currency": str, "tax_inclusive": bool, "unit_amount": float}
+    schema = {
+        "currency": str,
+        "tax_inclusive": bool,
+        "unit_amount": float,
+    }
 
 
 class MeasuredUnit(Resource):
@@ -2196,7 +2270,9 @@ class BinaryFile(Resource):
     data : str
     """
 
-    schema = {"data": str}
+    schema = {
+        "data": str,
+    }
 
 
 class Plan(Resource):
@@ -2304,7 +2380,7 @@ class PlanPricing(Resource):
     setup_fee : float
         Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
     tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
+        This field is deprecated. Please do not use it.
     unit_amount : float
         Unit price
     """
@@ -2443,7 +2519,7 @@ class AddOnPricing(Resource):
     currency : str
         3-letter ISO 4217 currency code.
     tax_inclusive : bool
-        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to use this flag.
+        This field is deprecated. Please do not use it.
     unit_amount : float
         Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
     unit_amount_decimal : str
@@ -2491,7 +2567,11 @@ class TierPricing(Resource):
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
-    schema = {"currency": str, "unit_amount": float, "unit_amount_decimal": str}
+    schema = {
+        "currency": str,
+        "unit_amount": float,
+        "unit_amount_decimal": str,
+    }
 
 
 class PercentageTiersByCurrency(Resource):
@@ -2504,7 +2584,10 @@ class PercentageTiersByCurrency(Resource):
         Tiers
     """
 
-    schema = {"currency": str, "tiers": ["PercentageTier"]}
+    schema = {
+        "currency": str,
+        "tiers": ["PercentageTier"],
+    }
 
 
 class PercentageTier(Resource):
@@ -2518,7 +2601,10 @@ class PercentageTier(Resource):
         This can be up to 4 decimal places represented as a string.
     """
 
-    schema = {"ending_amount": float, "usage_percentage": str}
+    schema = {
+        "ending_amount": float,
+        "usage_percentage": str,
+    }
 
 
 class ShippingMethod(Resource):
@@ -2641,7 +2727,10 @@ class ExportDates(Resource):
         Object type
     """
 
-    schema = {"dates": list, "object": str}
+    schema = {
+        "dates": list,
+        "object": str,
+    }
 
 
 class ExportFiles(Resource):
@@ -2653,7 +2742,10 @@ class ExportFiles(Resource):
         Object type
     """
 
-    schema = {"files": ["ExportFile"], "object": str}
+    schema = {
+        "files": ["ExportFile"],
+        "object": str,
+    }
 
 
 class ExportFile(Resource):
@@ -2668,7 +2760,11 @@ class ExportFile(Resource):
         Name of the export file.
     """
 
-    schema = {"href": str, "md5sum": str, "name": str}
+    schema = {
+        "href": str,
+        "md5sum": str,
+        "name": str,
+    }
 
 
 class DunningCampaign(Resource):
@@ -2766,7 +2862,10 @@ class DunningInterval(Resource):
         Email template being used.
     """
 
-    schema = {"days": int, "email_template": str}
+    schema = {
+        "days": int,
+        "email_template": str,
+    }
 
 
 class DunningCampaignsBulkUpdateResponse(Resource):
@@ -2779,7 +2878,10 @@ class DunningCampaignsBulkUpdateResponse(Resource):
         An array containing all of the `Plan` resources that have been updated.
     """
 
-    schema = {"object": str, "plans": ["Plan"]}
+    schema = {
+        "object": str,
+        "plans": ["Plan"],
+    }
 
 
 class InvoiceTemplate(Resource):
