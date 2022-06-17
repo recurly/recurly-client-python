@@ -114,6 +114,7 @@ class AccountBalance(Resource):
 
     attributes = (
         'balance_in_cents',
+        'processing_prepayment_balance_in_cents',
         'past_due',
     )
 
