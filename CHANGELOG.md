@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.29](https://github.com/recurly/recurly-client-python/tree/2.9.29) (2022-06-17)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.28...2.9.29)
+
+
+**Merged Pull Requests**
+
+- Add support for percentage tiered add-ons [#554](https://github.com/recurly/recurly-client-python/pull/554) ([camilopineda100](https://github.com/camilopineda100))
+
+
+
 ## [2.9.28](https://github.com/recurly/recurly-client-python/tree/2.9.28) (2022-03-03)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.27...2.9.28)
@@ -72,7 +83,7 @@
 
 ## [2.9.22](https://github.com/recurly/recurly-client-python/tree/2.9.22) (2020-11-05)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.5.3...2.9.22)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.8.9...2.9.22)
 
 
 **Merged Pull Requests**
@@ -119,38 +130,58 @@
 - PSD2 billing info changes [#314](https://github.com/recurly/recurly-client-python/pull/314) ([bhelx](https://github.com/bhelx))
 - Release version 2.9.9 / API version 2.22 [#309](https://github.com/recurly/recurly-client-python/pull/309) ([bhelx](https://github.com/bhelx))
 - MOTO transactions [#307](https://github.com/recurly/recurly-client-python/pull/307) ([bhelx](https://github.com/bhelx))
-- Release version 2.9.8 [#300](https://github.com/recurly/recurly-client-python/pull/300) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add 3DS tokens to transaction error and billing info [#296](https://github.com/recurly/recurly-client-python/pull/296) ([aaron-suarez](https://github.com/aaron-suarez))
-- Release version 2.9.7 [#290](https://github.com/recurly/recurly-client-python/pull/290) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.8 [#300](https://github.com/recurly/recurly-client-python/pull/300) ([aaron-junot](https://github.com/aaron-junot))
+- Add 3DS tokens to transaction error and billing info [#296](https://github.com/recurly/recurly-client-python/pull/296) ([aaron-junot](https://github.com/aaron-junot))
+- Release version 2.9.7 [#290](https://github.com/recurly/recurly-client-python/pull/290) ([aaron-junot](https://github.com/aaron-junot))
 - Add "Automated Exports" API calls [#288](https://github.com/recurly/recurly-client-python/pull/288) ([mohamagdy](https://github.com/mohamagdy))
-- Bump to version 2.9.6 [#287](https://github.com/recurly/recurly-client-python/pull/287) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.9.6 [#287](https://github.com/recurly/recurly-client-python/pull/287) ([aaron-junot](https://github.com/aaron-junot))
 - Add product_code to Adjustment attributes [#286](https://github.com/recurly/recurly-client-python/pull/286) ([sarendsen](https://github.com/sarendsen))
 - Update issue templates [#285](https://github.com/recurly/recurly-client-python/pull/285) ([bhelx](https://github.com/bhelx))
-- Release version 2.9.5 / API version 2.19 [#284](https://github.com/recurly/recurly-client-python/pull/284) ([aaron-suarez](https://github.com/aaron-suarez))
-- Release version 2.9.4 / API version 2.18 [#283](https://github.com/recurly/recurly-client-python/pull/283) ([aaron-suarez](https://github.com/aaron-suarez))
-- Bump to version 2.9.3 [#281](https://github.com/recurly/recurly-client-python/pull/281) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add amazon_region to Billing Info [#280](https://github.com/recurly/recurly-client-python/pull/280) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add UnexpectedClientError and UnexpectedServerError classes [#277](https://github.com/recurly/recurly-client-python/pull/277) ([aaron-suarez](https://github.com/aaron-suarez))
-- Release version 2.9.2 / API version 2.17 [#275](https://github.com/recurly/recurly-client-python/pull/275) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add SSL version to USER_AGENT [#274](https://github.com/recurly/recurly-client-python/pull/274) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add exemption certificate attribute to Account [#272](https://github.com/recurly/recurly-client-python/pull/272) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add gateway_code to subscription and invoice objects [#271](https://github.com/recurly/recurly-client-python/pull/271) ([aaron-suarez](https://github.com/aaron-suarez))
-- Bump to version 2.9.1 / API version 2.16 [#270](https://github.com/recurly/recurly-client-python/pull/270) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.5 / API version 2.19 [#284](https://github.com/recurly/recurly-client-python/pull/284) ([aaron-junot](https://github.com/aaron-junot))
+- Release version 2.9.4 / API version 2.18 [#283](https://github.com/recurly/recurly-client-python/pull/283) ([aaron-junot](https://github.com/aaron-junot))
+- Bump to version 2.9.3 [#281](https://github.com/recurly/recurly-client-python/pull/281) ([aaron-junot](https://github.com/aaron-junot))
+- Add amazon_region to Billing Info [#280](https://github.com/recurly/recurly-client-python/pull/280) ([aaron-junot](https://github.com/aaron-junot))
+- Add UnexpectedClientError and UnexpectedServerError classes [#277](https://github.com/recurly/recurly-client-python/pull/277) ([aaron-junot](https://github.com/aaron-junot))
+- Release version 2.9.2 / API version 2.17 [#275](https://github.com/recurly/recurly-client-python/pull/275) ([aaron-junot](https://github.com/aaron-junot))
+- Add SSL version to USER_AGENT [#274](https://github.com/recurly/recurly-client-python/pull/274) ([aaron-junot](https://github.com/aaron-junot))
+- Add exemption certificate attribute to Account [#272](https://github.com/recurly/recurly-client-python/pull/272) ([aaron-junot](https://github.com/aaron-junot))
+- Add gateway_code to subscription and invoice objects [#271](https://github.com/recurly/recurly-client-python/pull/271) ([aaron-junot](https://github.com/aaron-junot))
+- Bump to version 2.9.1 / API version 2.16 [#270](https://github.com/recurly/recurly-client-python/pull/270) ([aaron-junot](https://github.com/aaron-junot))
 - Update refund methods for credit invoices [#269](https://github.com/recurly/recurly-client-python/pull/269) ([bhelx](https://github.com/bhelx))
 - add error class for 504s [#267](https://github.com/recurly/recurly-client-python/pull/267) ([polishmatt](https://github.com/polishmatt))
 - Use latest official python 3.7 release [#266](https://github.com/recurly/recurly-client-python/pull/266) ([bhelx](https://github.com/bhelx))
-- Bump to version 2.9.0 / API version 2.15 [#265](https://github.com/recurly/recurly-client-python/pull/265) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.9.0 / API version 2.15 [#265](https://github.com/recurly/recurly-client-python/pull/265) ([aaron-junot](https://github.com/aaron-junot))
 - break iteration with return instead of using unintended behavior of S… [#264](https://github.com/recurly/recurly-client-python/pull/264) ([polishmatt](https://github.com/polishmatt))
-- Remove deprecated JS module [#262](https://github.com/recurly/recurly-client-python/pull/262) ([aaron-suarez](https://github.com/aaron-suarez))
-- Bump to version 2.8.8 [#260](https://github.com/recurly/recurly-client-python/pull/260) ([aaron-suarez](https://github.com/aaron-suarez))
+- Remove deprecated JS module [#262](https://github.com/recurly/recurly-client-python/pull/262) ([aaron-junot](https://github.com/aaron-junot))
+
+**Closed Issues**
+
+- Add exception class to differentiate server errors that raise UnexpectedStatusError from other status codes [#276](https://github.com/recurly/recurly-client-python/issues/276)
+- transaction.subscriptions() raises Exception [#273](https://github.com/recurly/recurly-client-python/issues/273)
+- Missing Invoice mark_successful method [#268](https://github.com/recurly/recurly-client-python/issues/268)
+- Avoid using StopIteration inside of generator [#263](https://github.com/recurly/recurly-client-python/issues/263)
+- Subscription.plan_name not synchronized [#226](https://github.com/recurly/recurly-client-python/issues/226)
+- Wrong constructor for Resource autogenerates "currency" attribute [#221](https://github.com/recurly/recurly-client-python/issues/221)
+
+
+## [2.8.9](https://github.com/recurly/recurly-client-python/tree/2.8.9) (2020-10-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.7.2...2.8.9)
+
+
+**Merged Pull Requests**
+
+- Bump to version 2.8.9 [#451](https://github.com/recurly/recurly-client-python/pull/451) ([joannasese](https://github.com/joannasese))
+- Updating client to be compliant with RFC 2616: case-insensitive headers [#441](https://github.com/recurly/recurly-client-python/pull/441) ([joannasese](https://github.com/joannasese))
+- Bump to version 2.8.8 [#260](https://github.com/recurly/recurly-client-python/pull/260) ([aaron-junot](https://github.com/aaron-junot))
 - Added `scripts` folder [#259](https://github.com/recurly/recurly-client-python/pull/259) ([bhelx](https://github.com/bhelx))
 - Adding Coupon.deleted_at [#258](https://github.com/recurly/recurly-client-python/pull/258) ([vincenttheeten](https://github.com/vincenttheeten))
-- Bump to 2.8.7 / API version 2.14 [#257](https://github.com/recurly/recurly-client-python/pull/257) ([aaron-suarez](https://github.com/aaron-suarez))
-- 2.14 Update custom fields through update_notes [#256](https://github.com/recurly/recurly-client-python/pull/256) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add test for updating an invoice [#255](https://github.com/recurly/recurly-client-python/pull/255) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to 2.8.7 / API version 2.14 [#257](https://github.com/recurly/recurly-client-python/pull/257) ([aaron-junot](https://github.com/aaron-junot))
+- 2.14 Update custom fields through update_notes [#256](https://github.com/recurly/recurly-client-python/pull/256) ([aaron-junot](https://github.com/aaron-junot))
+- Add test for updating an invoice [#255](https://github.com/recurly/recurly-client-python/pull/255) ([aaron-junot](https://github.com/aaron-junot))
 - Bump to 2.8.6 [#254](https://github.com/recurly/recurly-client-python/pull/254) ([bhelx](https://github.com/bhelx))
-- Add gateway_token and gateway_code fields to BillingInfo class [#253](https://github.com/recurly/recurly-client-python/pull/253) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add RECURLY_INSECURE_DEBUG=true callout for running tests [#252](https://github.com/recurly/recurly-client-python/pull/252) ([aaron-suarez](https://github.com/aaron-suarez))
+- Add gateway_token and gateway_code fields to BillingInfo class [#253](https://github.com/recurly/recurly-client-python/pull/253) ([aaron-junot](https://github.com/aaron-junot))
+- Add RECURLY_INSECURE_DEBUG=true callout for running tests [#252](https://github.com/recurly/recurly-client-python/pull/252) ([aaron-junot](https://github.com/aaron-junot))
 - Add more pythons to CI [#251](https://github.com/recurly/recurly-client-python/pull/251) ([bhelx](https://github.com/bhelx))
 - Update url in setup.py [#250](https://github.com/recurly/recurly-client-python/pull/250) ([bhelx](https://github.com/bhelx))
 - Support offline payments [#249](https://github.com/recurly/recurly-client-python/pull/249) ([bhelx](https://github.com/bhelx))
@@ -168,10 +199,85 @@
 - Bump 2.8.0 [#232](https://github.com/recurly/recurly-client-python/pull/232) ([bhelx](https://github.com/bhelx))
 - API v2.10 Changes [#231](https://github.com/recurly/recurly-client-python/pull/231) ([bhelx](https://github.com/bhelx))
 - Fix HTTP header splitting [#230](https://github.com/recurly/recurly-client-python/pull/230) ([ajb](https://github.com/ajb))
+- Adds __str__ to Suberror [#218](https://github.com/recurly/recurly-client-python/pull/218) ([bhelx](https://github.com/bhelx))
+
+**Closed Issues**
+
+- Add exception class to differentiate server errors that raise UnexpectedStatusError from other status codes [#276](https://github.com/recurly/recurly-client-python/issues/276)
+- transaction.subscriptions() raises Exception [#273](https://github.com/recurly/recurly-client-python/issues/273)
+- Missing Invoice mark_successful method [#268](https://github.com/recurly/recurly-client-python/issues/268)
+- Avoid using StopIteration inside of generator [#263](https://github.com/recurly/recurly-client-python/issues/263)
+- Make "recurly" not a global singleton [#239](https://github.com/recurly/recurly-client-python/issues/239)
+- Deprecation warning on Coupon [#237](https://github.com/recurly/recurly-client-python/issues/237)
+- Test 2 [#236](https://github.com/recurly/recurly-client-python/issues/236)
+- Test [#235](https://github.com/recurly/recurly-client-python/issues/235)
+- getting coupons used on a subscription [#229](https://github.com/recurly/recurly-client-python/issues/229)
+- New webhook attribute addition breaking Python webhook parsing [#228](https://github.com/recurly/recurly-client-python/issues/228)
+- Subscription.plan_name not synchronized [#226](https://github.com/recurly/recurly-client-python/issues/226)
+- Gift card purchase fails with abnormal "no other attributes are allowed" [#222](https://github.com/recurly/recurly-client-python/issues/222)
+- Wrong constructor for Resource autogenerates "currency" attribute [#221](https://github.com/recurly/recurly-client-python/issues/221)
+- ValidationError.Suberror doesn't have proper python3 stringification [#217](https://github.com/recurly/recurly-client-python/issues/217)
+- Improper refreshing of Resource objects after an action [#216](https://github.com/recurly/recurly-client-python/issues/216)
+- BadRequestError is not being used as documentation promises it [#209](https://github.com/recurly/recurly-client-python/issues/209)
+- Previewing, changing and then saving a Subscription throws a ConnectionRefusedError [#207](https://github.com/recurly/recurly-client-python/issues/207)
+- ValidationError override multiple errors on the same field [#197](https://github.com/recurly/recurly-client-python/issues/197)
+- Fix integration tests [#131](https://github.com/recurly/recurly-client-python/issues/131)
+- better error handling [#76](https://github.com/recurly/recurly-client-python/issues/76)
+- Improve error messaging [#75](https://github.com/recurly/recurly-client-python/issues/75)
+- Handling Embedded objects [#50](https://github.com/recurly/recurly-client-python/issues/50)
+
+
+## [2.7.2](https://github.com/recurly/recurly-client-python/tree/2.7.2) (2020-10-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.6.4...2.7.2)
+
+
+**Merged Pull Requests**
+
+- Bump to version 2.7.2 [#452](https://github.com/recurly/recurly-client-python/pull/452) ([joannasese](https://github.com/joannasese))
+- Updating client to be compliant with RFC 2616: case-insensitive headers [#442](https://github.com/recurly/recurly-client-python/pull/442) ([joannasese](https://github.com/joannasese))
 - Bump 2.7.0 [#227](https://github.com/recurly/recurly-client-python/pull/227) ([bhelx](https://github.com/bhelx))
 - API version 2.9 [#225](https://github.com/recurly/recurly-client-python/pull/225) ([bhelx](https://github.com/bhelx))
 - Fixes #219: Add Delivery class in nodename of Gift card [#224](https://github.com/recurly/recurly-client-python/pull/224) ([Anto59290](https://github.com/Anto59290))
-- Adds __str__ to Suberror [#218](https://github.com/recurly/recurly-client-python/pull/218) ([bhelx](https://github.com/bhelx))
+
+**Closed Issues**
+
+- Add exception class to differentiate server errors that raise UnexpectedStatusError from other status codes [#276](https://github.com/recurly/recurly-client-python/issues/276)
+- transaction.subscriptions() raises Exception [#273](https://github.com/recurly/recurly-client-python/issues/273)
+- Missing Invoice mark_successful method [#268](https://github.com/recurly/recurly-client-python/issues/268)
+- Avoid using StopIteration inside of generator [#263](https://github.com/recurly/recurly-client-python/issues/263)
+- Make "recurly" not a global singleton [#239](https://github.com/recurly/recurly-client-python/issues/239)
+- Deprecation warning on Coupon [#237](https://github.com/recurly/recurly-client-python/issues/237)
+- Test 2 [#236](https://github.com/recurly/recurly-client-python/issues/236)
+- Test [#235](https://github.com/recurly/recurly-client-python/issues/235)
+- getting coupons used on a subscription [#229](https://github.com/recurly/recurly-client-python/issues/229)
+- New webhook attribute addition breaking Python webhook parsing [#228](https://github.com/recurly/recurly-client-python/issues/228)
+- Subscription.plan_name not synchronized [#226](https://github.com/recurly/recurly-client-python/issues/226)
+- Recurly Transaction call sporadically hangs [#223](https://github.com/recurly/recurly-client-python/issues/223)
+- Gift card purchase fails with abnormal "no other attributes are allowed" [#222](https://github.com/recurly/recurly-client-python/issues/222)
+- Wrong constructor for Resource autogenerates "currency" attribute [#221](https://github.com/recurly/recurly-client-python/issues/221)
+- Please create GitHub release for 2.6.2 [#220](https://github.com/recurly/recurly-client-python/issues/220)
+- GiftCard resource definition is incomplete [#219](https://github.com/recurly/recurly-client-python/issues/219)
+- ValidationError.Suberror doesn't have proper python3 stringification [#217](https://github.com/recurly/recurly-client-python/issues/217)
+- Improper refreshing of Resource objects after an action [#216](https://github.com/recurly/recurly-client-python/issues/216)
+- BadRequestError is not being used as documentation promises it [#209](https://github.com/recurly/recurly-client-python/issues/209)
+- Previewing, changing and then saving a Subscription throws a ConnectionRefusedError [#207](https://github.com/recurly/recurly-client-python/issues/207)
+- ValidationError override multiple errors on the same field [#197](https://github.com/recurly/recurly-client-python/issues/197)
+- Fix integration tests [#131](https://github.com/recurly/recurly-client-python/issues/131)
+- better error handling [#76](https://github.com/recurly/recurly-client-python/issues/76)
+- Improve error messaging [#75](https://github.com/recurly/recurly-client-python/issues/75)
+- Handling Embedded objects [#50](https://github.com/recurly/recurly-client-python/issues/50)
+
+
+## [2.6.4](https://github.com/recurly/recurly-client-python/tree/2.6.4) (2020-10-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.5.3...2.6.4)
+
+
+**Merged Pull Requests**
+
+- Bump to version 2.6.4 [#453](https://github.com/recurly/recurly-client-python/pull/453) ([joannasese](https://github.com/joannasese))
+- Updating client to be compliant with RFC 2616: case-insensitive headers [#443](https://github.com/recurly/recurly-client-python/pull/443) ([joannasese](https://github.com/joannasese))
 - Bump 2.6.1 [#215](https://github.com/recurly/recurly-client-python/pull/215) ([bhelx](https://github.com/bhelx))
 - Missing Delivery Attributes [#214](https://github.com/recurly/recurly-client-python/pull/214) ([bhelx](https://github.com/bhelx))
 - Bump version 2.6.0 [#212](https://github.com/recurly/recurly-client-python/pull/212) ([bhelx](https://github.com/bhelx))
@@ -215,7 +321,7 @@
 
 ## [2.5.3](https://github.com/recurly/recurly-client-python/tree/2.5.3) (2020-10-13)
 
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.6.4...2.5.3)
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.21...2.5.3)
 
 
 **Merged Pull Requests**
@@ -250,80 +356,6 @@
 - better error handling [#76](https://github.com/recurly/recurly-client-python/issues/76)
 - Improve error messaging [#75](https://github.com/recurly/recurly-client-python/issues/75)
 - Handling Embedded objects [#50](https://github.com/recurly/recurly-client-python/issues/50)
-
-
-## [2.6.4](https://github.com/recurly/recurly-client-python/tree/2.6.4) (2020-10-13)
-
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.7.2...2.6.4)
-
-
-**Merged Pull Requests**
-
-- Bump to version 2.6.4 [#453](https://github.com/recurly/recurly-client-python/pull/453) ([joannasese](https://github.com/joannasese))
-- Updating client to be compliant with RFC 2616: case-insensitive headers [#443](https://github.com/recurly/recurly-client-python/pull/443) ([joannasese](https://github.com/joannasese))
-
-**Closed Issues**
-
-- Add exception class to differentiate server errors that raise UnexpectedStatusError from other status codes [#276](https://github.com/recurly/recurly-client-python/issues/276)
-- transaction.subscriptions() raises Exception [#273](https://github.com/recurly/recurly-client-python/issues/273)
-- Missing Invoice mark_successful method [#268](https://github.com/recurly/recurly-client-python/issues/268)
-- Avoid using StopIteration inside of generator [#263](https://github.com/recurly/recurly-client-python/issues/263)
-- Make "recurly" not a global singleton [#239](https://github.com/recurly/recurly-client-python/issues/239)
-- Test 2 [#236](https://github.com/recurly/recurly-client-python/issues/236)
-- Test [#235](https://github.com/recurly/recurly-client-python/issues/235)
-- Subscription.plan_name not synchronized [#226](https://github.com/recurly/recurly-client-python/issues/226)
-- Wrong constructor for Resource autogenerates "currency" attribute [#221](https://github.com/recurly/recurly-client-python/issues/221)
-- Improper refreshing of Resource objects after an action [#216](https://github.com/recurly/recurly-client-python/issues/216)
-- BadRequestError is not being used as documentation promises it [#209](https://github.com/recurly/recurly-client-python/issues/209)
-- Previewing, changing and then saving a Subscription throws a ConnectionRefusedError [#207](https://github.com/recurly/recurly-client-python/issues/207)
-- ValidationError override multiple errors on the same field [#197](https://github.com/recurly/recurly-client-python/issues/197)
-- Fix integration tests [#131](https://github.com/recurly/recurly-client-python/issues/131)
-- better error handling [#76](https://github.com/recurly/recurly-client-python/issues/76)
-- Improve error messaging [#75](https://github.com/recurly/recurly-client-python/issues/75)
-- Handling Embedded objects [#50](https://github.com/recurly/recurly-client-python/issues/50)
-
-
-## [2.7.2](https://github.com/recurly/recurly-client-python/tree/2.7.2) (2020-10-13)
-
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.8.9...2.7.2)
-
-
-**Merged Pull Requests**
-
-- Bump to version 2.7.2 [#452](https://github.com/recurly/recurly-client-python/pull/452) ([joannasese](https://github.com/joannasese))
-- Updating client to be compliant with RFC 2616: case-insensitive headers [#442](https://github.com/recurly/recurly-client-python/pull/442) ([joannasese](https://github.com/joannasese))
-
-**Closed Issues**
-
-- Add exception class to differentiate server errors that raise UnexpectedStatusError from other status codes [#276](https://github.com/recurly/recurly-client-python/issues/276)
-- transaction.subscriptions() raises Exception [#273](https://github.com/recurly/recurly-client-python/issues/273)
-- Missing Invoice mark_successful method [#268](https://github.com/recurly/recurly-client-python/issues/268)
-- Avoid using StopIteration inside of generator [#263](https://github.com/recurly/recurly-client-python/issues/263)
-- Make "recurly" not a global singleton [#239](https://github.com/recurly/recurly-client-python/issues/239)
-- Test 2 [#236](https://github.com/recurly/recurly-client-python/issues/236)
-- Test [#235](https://github.com/recurly/recurly-client-python/issues/235)
-- Subscription.plan_name not synchronized [#226](https://github.com/recurly/recurly-client-python/issues/226)
-- Wrong constructor for Resource autogenerates "currency" attribute [#221](https://github.com/recurly/recurly-client-python/issues/221)
-- Improper refreshing of Resource objects after an action [#216](https://github.com/recurly/recurly-client-python/issues/216)
-- BadRequestError is not being used as documentation promises it [#209](https://github.com/recurly/recurly-client-python/issues/209)
-- Previewing, changing and then saving a Subscription throws a ConnectionRefusedError [#207](https://github.com/recurly/recurly-client-python/issues/207)
-- ValidationError override multiple errors on the same field [#197](https://github.com/recurly/recurly-client-python/issues/197)
-- Fix integration tests [#131](https://github.com/recurly/recurly-client-python/issues/131)
-- better error handling [#76](https://github.com/recurly/recurly-client-python/issues/76)
-- Improve error messaging [#75](https://github.com/recurly/recurly-client-python/issues/75)
-- Handling Embedded objects [#50](https://github.com/recurly/recurly-client-python/issues/50)
-
-
-## [2.8.9](https://github.com/recurly/recurly-client-python/tree/2.8.9) (2020-10-13)
-
-[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.21...2.8.9)
-
-
-**Merged Pull Requests**
-
-- Bump to version 2.8.9 [#451](https://github.com/recurly/recurly-client-python/pull/451) ([joannasese](https://github.com/joannasese))
-- Updating client to be compliant with RFC 2616: case-insensitive headers [#441](https://github.com/recurly/recurly-client-python/pull/441) ([joannasese](https://github.com/joannasese))
-
 
 
 ## [2.9.21](https://github.com/recurly/recurly-client-python/tree/2.9.21) (2020-10-07)
@@ -503,8 +535,8 @@
 
 **Merged Pull Requests**
 
-- Release version 2.9.8 [#300](https://github.com/recurly/recurly-client-python/pull/300) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add 3DS tokens to transaction error and billing info [#296](https://github.com/recurly/recurly-client-python/pull/296) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.8 [#300](https://github.com/recurly/recurly-client-python/pull/300) ([aaron-junot](https://github.com/aaron-junot))
+- Add 3DS tokens to transaction error and billing info [#296](https://github.com/recurly/recurly-client-python/pull/296) ([aaron-junot](https://github.com/aaron-junot))
 
 
 
@@ -515,7 +547,7 @@
 
 **Merged Pull Requests**
 
-- Release version 2.9.7 [#290](https://github.com/recurly/recurly-client-python/pull/290) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.7 [#290](https://github.com/recurly/recurly-client-python/pull/290) ([aaron-junot](https://github.com/aaron-junot))
 - Add "Automated Exports" API calls [#288](https://github.com/recurly/recurly-client-python/pull/288) ([mohamagdy](https://github.com/mohamagdy))
 
 
@@ -527,7 +559,7 @@
 
 **Merged Pull Requests**
 
-- Bump to version 2.9.6 [#287](https://github.com/recurly/recurly-client-python/pull/287) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.9.6 [#287](https://github.com/recurly/recurly-client-python/pull/287) ([aaron-junot](https://github.com/aaron-junot))
 - Add product_code to Adjustment attributes [#286](https://github.com/recurly/recurly-client-python/pull/286) ([sarendsen](https://github.com/sarendsen))
 - Update issue templates [#285](https://github.com/recurly/recurly-client-python/pull/285) ([bhelx](https://github.com/bhelx))
 
@@ -540,7 +572,7 @@
 
 **Merged Pull Requests**
 
-- Release version 2.9.5 / API version 2.19 [#284](https://github.com/recurly/recurly-client-python/pull/284) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.5 / API version 2.19 [#284](https://github.com/recurly/recurly-client-python/pull/284) ([aaron-junot](https://github.com/aaron-junot))
 
 
 
@@ -551,8 +583,8 @@
 
 **Merged Pull Requests**
 
-- Release version 2.9.4 / API version 2.18 [#283](https://github.com/recurly/recurly-client-python/pull/283) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add amazon_region to Billing Info [#280](https://github.com/recurly/recurly-client-python/pull/280) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.4 / API version 2.18 [#283](https://github.com/recurly/recurly-client-python/pull/283) ([aaron-junot](https://github.com/aaron-junot))
+- Add amazon_region to Billing Info [#280](https://github.com/recurly/recurly-client-python/pull/280) ([aaron-junot](https://github.com/aaron-junot))
 - Update refund methods for credit invoices [#269](https://github.com/recurly/recurly-client-python/pull/269) ([bhelx](https://github.com/bhelx))
 
 
@@ -564,8 +596,8 @@
 
 **Merged Pull Requests**
 
-- Bump to version 2.9.3 [#281](https://github.com/recurly/recurly-client-python/pull/281) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add UnexpectedClientError and UnexpectedServerError classes [#277](https://github.com/recurly/recurly-client-python/pull/277) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.9.3 [#281](https://github.com/recurly/recurly-client-python/pull/281) ([aaron-junot](https://github.com/aaron-junot))
+- Add UnexpectedClientError and UnexpectedServerError classes [#277](https://github.com/recurly/recurly-client-python/pull/277) ([aaron-junot](https://github.com/aaron-junot))
 
 **Closed Issues**
 
@@ -580,10 +612,10 @@
 
 **Merged Pull Requests**
 
-- Release version 2.9.2 / API version 2.17 [#275](https://github.com/recurly/recurly-client-python/pull/275) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add SSL version to USER_AGENT [#274](https://github.com/recurly/recurly-client-python/pull/274) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add exemption certificate attribute to Account [#272](https://github.com/recurly/recurly-client-python/pull/272) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add gateway_code to subscription and invoice objects [#271](https://github.com/recurly/recurly-client-python/pull/271) ([aaron-suarez](https://github.com/aaron-suarez))
+- Release version 2.9.2 / API version 2.17 [#275](https://github.com/recurly/recurly-client-python/pull/275) ([aaron-junot](https://github.com/aaron-junot))
+- Add SSL version to USER_AGENT [#274](https://github.com/recurly/recurly-client-python/pull/274) ([aaron-junot](https://github.com/aaron-junot))
+- Add exemption certificate attribute to Account [#272](https://github.com/recurly/recurly-client-python/pull/272) ([aaron-junot](https://github.com/aaron-junot))
+- Add gateway_code to subscription and invoice objects [#271](https://github.com/recurly/recurly-client-python/pull/271) ([aaron-junot](https://github.com/aaron-junot))
 
 
 
@@ -594,7 +626,7 @@
 
 **Merged Pull Requests**
 
-- Bump to version 2.9.1 / API version 2.16 [#270](https://github.com/recurly/recurly-client-python/pull/270) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.9.1 / API version 2.16 [#270](https://github.com/recurly/recurly-client-python/pull/270) ([aaron-junot](https://github.com/aaron-junot))
 - add error class for 504s [#267](https://github.com/recurly/recurly-client-python/pull/267) ([polishmatt](https://github.com/polishmatt))
 
 **Closed Issues**
@@ -611,9 +643,9 @@
 **Merged Pull Requests**
 
 - Use latest official python 3.7 release [#266](https://github.com/recurly/recurly-client-python/pull/266) ([bhelx](https://github.com/bhelx))
-- Bump to version 2.9.0 / API version 2.15 [#265](https://github.com/recurly/recurly-client-python/pull/265) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.9.0 / API version 2.15 [#265](https://github.com/recurly/recurly-client-python/pull/265) ([aaron-junot](https://github.com/aaron-junot))
 - break iteration with return instead of using unintended behavior of S… [#264](https://github.com/recurly/recurly-client-python/pull/264) ([polishmatt](https://github.com/polishmatt))
-- Remove deprecated JS module [#262](https://github.com/recurly/recurly-client-python/pull/262) ([aaron-suarez](https://github.com/aaron-suarez))
+- Remove deprecated JS module [#262](https://github.com/recurly/recurly-client-python/pull/262) ([aaron-junot](https://github.com/aaron-junot))
 
 **Closed Issues**
 
@@ -627,7 +659,7 @@
 
 **Merged Pull Requests**
 
-- Bump to version 2.8.8 [#260](https://github.com/recurly/recurly-client-python/pull/260) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to version 2.8.8 [#260](https://github.com/recurly/recurly-client-python/pull/260) ([aaron-junot](https://github.com/aaron-junot))
 - Added `scripts` folder [#259](https://github.com/recurly/recurly-client-python/pull/259) ([bhelx](https://github.com/bhelx))
 - Adding Coupon.deleted_at [#258](https://github.com/recurly/recurly-client-python/pull/258) ([vincenttheeten](https://github.com/vincenttheeten))
 
@@ -640,9 +672,9 @@
 
 **Merged Pull Requests**
 
-- Bump to 2.8.7 / API version 2.14 [#257](https://github.com/recurly/recurly-client-python/pull/257) ([aaron-suarez](https://github.com/aaron-suarez))
-- 2.14 Update custom fields through update_notes [#256](https://github.com/recurly/recurly-client-python/pull/256) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add test for updating an invoice [#255](https://github.com/recurly/recurly-client-python/pull/255) ([aaron-suarez](https://github.com/aaron-suarez))
+- Bump to 2.8.7 / API version 2.14 [#257](https://github.com/recurly/recurly-client-python/pull/257) ([aaron-junot](https://github.com/aaron-junot))
+- 2.14 Update custom fields through update_notes [#256](https://github.com/recurly/recurly-client-python/pull/256) ([aaron-junot](https://github.com/aaron-junot))
+- Add test for updating an invoice [#255](https://github.com/recurly/recurly-client-python/pull/255) ([aaron-junot](https://github.com/aaron-junot))
 
 **Closed Issues**
 
@@ -657,8 +689,8 @@
 **Merged Pull Requests**
 
 - Bump to 2.8.6 [#254](https://github.com/recurly/recurly-client-python/pull/254) ([bhelx](https://github.com/bhelx))
-- Add gateway_token and gateway_code fields to BillingInfo class [#253](https://github.com/recurly/recurly-client-python/pull/253) ([aaron-suarez](https://github.com/aaron-suarez))
-- Add RECURLY_INSECURE_DEBUG=true callout for running tests [#252](https://github.com/recurly/recurly-client-python/pull/252) ([aaron-suarez](https://github.com/aaron-suarez))
+- Add gateway_token and gateway_code fields to BillingInfo class [#253](https://github.com/recurly/recurly-client-python/pull/253) ([aaron-junot](https://github.com/aaron-junot))
+- Add RECURLY_INSECURE_DEBUG=true callout for running tests [#252](https://github.com/recurly/recurly-client-python/pull/252) ([aaron-junot](https://github.com/aaron-junot))
 - Add more pythons to CI [#251](https://github.com/recurly/recurly-client-python/pull/251) ([bhelx](https://github.com/bhelx))
 - Update url in setup.py [#250](https://github.com/recurly/recurly-client-python/pull/250) ([bhelx](https://github.com/bhelx))
 - Support offline payments [#249](https://github.com/recurly/recurly-client-python/pull/249) ([bhelx](https://github.com/bhelx))
