@@ -1400,6 +1400,8 @@ class LineItem(Resource):
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
         Tax info
     taxable : bool
@@ -1457,6 +1459,7 @@ class LineItem(Resource):
         "tax": float,
         "tax_code": str,
         "tax_exempt": bool,
+        "tax_inclusive": bool,
         "tax_info": "TaxInfo",
         "taxable": bool,
         "type": str,
@@ -1610,6 +1613,8 @@ class Subscription(Resource):
         State
     subtotal : float
         Estimated total, before tax.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     terms_and_conditions : str
         Terms and conditions
     total_billing_cycles : int
@@ -1663,6 +1668,7 @@ class Subscription(Resource):
         "shipping": "SubscriptionShipping",
         "state": str,
         "subtotal": float,
+        "tax_inclusive": bool,
         "terms_and_conditions": str,
         "total_billing_cycles": int,
         "trial_ends_at": datetime,
