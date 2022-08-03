@@ -445,10 +445,33 @@ class Resource(object):
                 return value_class.from_element(elem)
 
         # Untyped complex elements should still be resource instances. Guess from the nodename.
-        if len(elem):  # has children
+        if len(elem) == 1:
             value_class = cls._subclass_for_nodename(elem.tag)
             log.debug("Converting %r tag into a %s", elem.tag, value_class.__name__)
             return value_class.from_element(elem)
+
+        # Tries to deserialize arrays of elements without type 'array' definition or resource
+        if len(elem) > 1:
+            first_tag = elem[0].tag
+            last_tag = elem[-1].tag
+            # Check if the element have and array of items 
+            # <items>
+            #   <item>...</item>
+            #   <item>...</item>
+            #   <item>...</item>
+            # </items>
+            if(first_tag == last_tag):
+                return [cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem) for sub_elem in elem]
+            # De-serialize one resource
+            # <resource>
+            #   <name>name</name>
+            #   <description>description</name>
+            #   <other_attribute>other text</other_description>
+            # </resource>
+            else:
+                value_class = cls._subclass_for_nodename(elem.tag)
+                log.debug("Converting %r tag into a %s", elem.tag, value_class.__name__)
+                return value_class.from_element(elem)
 
         value = elem.text or ''
         return value.strip()
@@ -606,7 +629,7 @@ class Resource(object):
             url = elem.attrib['href']
 
             # has no url or has children
-            if url is '' or len(elem) > 0:
+            if url == '' or len(elem) > 0:
                 return self.value_for_element(elem)
             else:
                 return make_relatitator(url)

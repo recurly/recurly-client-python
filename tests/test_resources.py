@@ -9,7 +9,7 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate
+    DunningCycle, InvoiceTemplate, PlanRampInterval
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -1470,6 +1470,57 @@ class TestResources(RecurlyTest):
         with self.mock_request('plan/show-taxed.xml'):
             plan = Plan.get(plan_code)
             self.assertTrue(plan.tax_exempt)
+
+    def test_plan_with_ramps(self):
+        plan_code = 'plan%s' % self.test_id
+        with self.mock_request('plan/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Plan.get, plan_code)
+        
+        ramp_interval_1 = PlanRampInterval(
+            unit_amount_in_cents=Money(USD=2000),
+            starting_billing_cycle=1,
+        )
+        ramp_interval_2 = PlanRampInterval(
+            unit_amount_in_cents=Money(USD=3000),
+            starting_billing_cycle=2,
+        )
+        ramp_intervals = [ramp_interval_1, ramp_interval_2]
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(200),
+            pricing_model='ramp',
+            ramp_intervals=ramp_intervals,
+            total_billing_cycles=10
+        )
+        with self.mock_request('plan/created_with_ramps.xml'):
+            plan.save()
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(len(plan.ramp_intervals), len(ramp_intervals))
+        self.assertEqual(plan.pricing_model, 'ramp')
+
+        self.assertEqual(plan.plan_code, plan_code)
+
+        with self.mock_request('plan/exists_with_ramps.xml'):
+            same_plan = Plan.get(plan_code)
+        self.assertEqual(same_plan.plan_code, plan_code)
+        self.assertEqual(len(plan.ramp_intervals), len(ramp_intervals))
+        self.assertEqual(plan.pricing_model, 'ramp')
+
+        plan.ramp_intervals = [
+            PlanRampInterval(
+                starting_billing_cycle=1,
+                unit_amount_in_cents=Money(USD=3000)
+            ),
+            PlanRampInterval(
+                starting_billing_cycle=2,
+                unit_amount_in_cents=Money(USD=4000)
+            ),
+        ]
+        with self.mock_request('plan/updated_with_ramps.xml'):
+            plan.save()
 
     def test_preview_subscription_change(self):
         with self.mock_request('subscription/show.xml'):
