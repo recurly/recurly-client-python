@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.18.0](https://github.com/recurly/recurly-client-python/tree/3.18.0) (2022-08-03)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.17.0...3.18.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2019-10-10 [#572](https://github.com/recurly/recurly-client-python/pull/572) ([recurly-integrations](https://github.com/recurly-integrations))
+- Generated Latest Changes for v2019-10-10 [#570](https://github.com/recurly/recurly-client-python/pull/570) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [3.17.0](https://github.com/recurly/recurly-client-python/tree/3.17.0) (2022-06-16)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.16.1...3.17.0)
