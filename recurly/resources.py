@@ -1599,6 +1599,8 @@ class Subscription(Resource):
         For manual invoicing, this identifies the PO number associated with the subscription.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        The ramp intervals representing the pricing schedule for the subscription.
     remaining_billing_cycles : int
         The remaining billing cycles in the current term.
     remaining_pause_cycles : int
@@ -1661,6 +1663,7 @@ class Subscription(Resource):
         "plan": "PlanMini",
         "po_number": str,
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
@@ -1811,6 +1814,8 @@ class SubscriptionChange(Resource):
         Just the important parts.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        The ramp intervals representing the pricing schedule for the subscription.
     revenue_schedule_type : str
         Revenue schedule type
     setup_fee_revenue_schedule_type : str
@@ -1840,6 +1845,7 @@ class SubscriptionChange(Resource):
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "revenue_schedule_type": str,
         "setup_fee_revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
@@ -1975,6 +1981,25 @@ class SubscriptionChangeBillingInfo(Resource):
 
     schema = {
         "three_d_secure_action_result_token_id": str,
+    }
+
+
+class SubscriptionRampIntervalResponse(Resource):
+    """
+    Attributes
+    ----------
+    remaining_billing_cycles : int
+        Represents how many billing cycles are left in a ramp interval.
+    starting_billing_cycle : int
+        Represents how many billing cycles are included in a ramp interval.
+    unit_amount : int
+        Represents the price for the ramp interval.
+    """
+
+    schema = {
+        "remaining_billing_cycles": int,
+        "starting_billing_cycle": int,
+        "unit_amount": int,
     }
 
 
@@ -2234,6 +2259,12 @@ class Plan(Resource):
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
     object : str
         Object type
+    pricing_model : str
+        A fixed pricing model has the same price for each billing period.
+        A ramp pricing model defines a set of Ramp Intervals, where a subscription changes price on
+        a specified cadence of billing periods. The price change could be an increase or decrease.
+    ramp_intervals : :obj:`list` of :obj:`PlanRampInterval`
+        Ramp Intervals
     revenue_schedule_type : str
         Revenue schedule type
     setup_fee_accounting_code : str
@@ -2276,6 +2307,8 @@ class Plan(Resource):
         "interval_unit": str,
         "name": str,
         "object": str,
+        "pricing_model": str,
+        "ramp_intervals": ["PlanRampInterval"],
         "revenue_schedule_type": str,
         "setup_fee_accounting_code": str,
         "setup_fee_revenue_schedule_type": str,
@@ -2290,6 +2323,38 @@ class Plan(Resource):
     }
 
 
+class PlanRampInterval(Resource):
+    """
+    Attributes
+    ----------
+    currencies : :obj:`list` of :obj:`PlanRampPricing`
+        Represents the price for the ramp interval.
+    starting_billing_cycle : int
+        Represents the first billing cycle of a ramp.
+    """
+
+    schema = {
+        "currencies": ["PlanRampPricing"],
+        "starting_billing_cycle": int,
+    }
+
+
+class PlanRampPricing(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    unit_amount : float
+        Represents the price for the Ramp Interval.
+    """
+
+    schema = {
+        "currency": str,
+        "unit_amount": float,
+    }
+
+
 class PlanPricing(Resource):
     """
     Attributes
@@ -2301,7 +2366,7 @@ class PlanPricing(Resource):
     tax_inclusive : bool
         This field is deprecated. Please do not use it.
     unit_amount : float
-        Unit price
+        This field should not be sent when the pricing model is 'ramp'.
     """
 
     schema = {
@@ -2532,6 +2597,8 @@ class SubscriptionChangePreview(Resource):
         Just the important parts.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        The ramp intervals representing the pricing schedule for the subscription.
     revenue_schedule_type : str
         Revenue schedule type
     setup_fee_revenue_schedule_type : str
@@ -2561,6 +2628,7 @@ class SubscriptionChangePreview(Resource):
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "revenue_schedule_type": str,
         "setup_fee_revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
