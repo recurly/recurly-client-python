@@ -838,6 +838,28 @@ class TestResources(RecurlyTest):
         self.assertTrue('<type' in log_content)
         self.assertTrue('<bsb_code' in log_content)
 
+        # VENMO
+        log_content = StringIO()
+        log_handler = logging.StreamHandler(log_content)
+        logger.addHandler(log_handler)
+
+        account = Account(account_code='binfo-%s-7' % self.test_id)
+        account.billing_info = BillingInfo(
+            first_name='John',
+            last_name='Rambo',
+            username='johnrambo'
+        )
+        with self.mock_request('billing-info/account-venmo-created.xml'):
+            account.save()
+
+        self.assertEqual(account.billing_info.username, 'johnrambo')
+
+        logger.removeHandler(log_handler)
+        log_content = log_content.getvalue()
+        self.assertTrue('<billing_info' in log_content)
+        self.assertTrue('<first_name' in log_content)
+        self.assertTrue('<last_name' in log_content)
+
     def test_charge(self):
         account = Account(account_code='charge%s' % self.test_id)
         with self.mock_request('adjustment/account-created.xml'):
