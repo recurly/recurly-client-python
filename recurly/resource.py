@@ -216,6 +216,36 @@ class Resource(object):
             if key not in ('collection_path', 'member_path', 'node_name', 'attributes'):
                 setattr(self, key, value)
 
+    def _beauty_print(self):
+        title = self.__class__.__name__
+
+        attrs_output = ''
+        for idx, attribute in enumerate(self.attributes):
+            is_not_last = idx != len(self.attributes) - 1
+            try:
+                attr_value = getattr(self, attribute)
+                if isinstance(attr_value, Resource):
+                    attrs_output += '{}={}'.format(attribute, attr_value._beauty_print())
+                elif type(attr_value) is list and len(attr_value) > 0:
+                    attrs_output += '{}=['.format(attribute)
+                    for val in attr_value: 
+                        attrs_output += val._beauty_print()
+                    attrs_output += ']'
+                else:
+                    attrs_output += '{}={}'.format(attribute, attr_value)
+            except:
+                attrs_output += '{}=None'.format(attribute)
+
+            if is_not_last:
+                attrs_output += ', '
+
+        output = '<\033[1m{}\033[0m({})>'.format(title, attrs_output)
+
+        return output
+
+    def __str__(self):
+        return self._beauty_print()
+
     @classmethod
     def http_request(cls, url, method='GET', body=None, headers=None):
         """Make an HTTP request with the given method to the given URL,
@@ -713,9 +743,9 @@ class Resource(object):
             except KeyError:
                 continue
             # With one exception, type is an element xml attribute, e.g. <billing info type="credit_card"> or <adjustment type="charge">
-            # For billing_info, type property takes precedence over xml attribute when type = bacs or becs, e.g. <billing info><type>bacs</type></billing_info>. 
+            # For billing_info, type property takes precedence over xml attribute when type = bacs or becs, e.g. <billing info><type>bacs</type></billing_info>.
             if attrname in self.xml_attribute_attributes and (
-              (root_name != 'billing_info' and attrname == 'type') 
+              (root_name != 'billing_info' and attrname == 'type')
               or (root_name == 'billing_info' and value not in ('bacs', 'becs'))
             ):
               elem.attrib[attrname] = six.text_type(value)

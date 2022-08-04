@@ -1,0 +1,163 @@
+POST https://api.recurly.com/v2/purchases/pending HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<purchase>
+  <account>
+    <account_code>testmock</account_code>
+    <email>benjamin.dumonde@example.com</email>
+    <billing_info>
+      <address1>123 Main St</address1>
+      <city>New Orleans</city>
+      <country>US</country>
+      <currency>USD</currency>
+      <first_name>Verena</first_name>
+      <last_name>Example</last_name>
+      <month type="integer">11</month>
+      <number>4111-1111-1111-1111</number>
+      <state>LA</state>
+      <verification_value>123</verification_value>
+      <year type="integer">2020</year>
+      <zip>70114</zip>
+    </billing_info>
+  </account>
+  <collection_method>automatic</collection_method>
+  <currency>USD</currency>
+  <gateway_code>aBcD1234</gateway_code>
+  <shipping_address>
+    <address1>456 Pillow Fort Drive</address1>
+    <city>New Orleans</city>
+    <country>US</country>
+    <first_name>Verena</first_name>
+    <last_name>Example</last_name>
+    <nickname>Work</nickname>
+    <state>LA</state>
+    <zip>70114</zip>
+  </shipping_address>
+  <subscriptions>
+    <subscription>
+      <plan_code>ramp-plan</plan_code>
+      <ramp_intervals>
+        <ramp_interval>
+          <starting_billing_cycle type="integer">1</starting_billing_cycle>
+          <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
+        </ramp_interval>
+        <ramp_interval>
+          <starting_billing_cycle type="integer">3</starting_billing_cycle>
+          <unit_amount_in_cents type="integer">3000</unit_amount_in_cents>
+        </ramp_interval>
+      </ramp_intervals>
+    </subscription>
+  </subscriptions>
+</purchase>
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/invoices/1021
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice_collection>
+    <charge_invoice href="">
+      <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683"/>
+      <address>
+        <address1>123 Main St</address1>
+        <address2 nil="nil"></address2>
+        <city>New Orleans</city>
+        <state>LA</state>
+        <zip>70114</zip>
+        <country>US</country>
+        <phone nil="nil"></phone>
+      </address>
+      <uuid>40625fd700c1c2d90060744092b4a1b1</uuid>
+      <state>pending</state>
+      <invoice_number_prefix></invoice_number_prefix>
+      <invoice_number nil="nil"></invoice_number>
+      <po_number nil="nil"></po_number>
+      <vat_number nil="nil"></vat_number>
+      <subtotal_in_cents type="integer">6000</subtotal_in_cents>
+      <tax_in_cents type="integer">0</tax_in_cents>
+      <total_in_cents type="integer">6000</total_in_cents>
+      <subtotal_after_discount_in_cents type="integer">6000</subtotal_after_discount_in_cents>
+      <currency>USD</currency>
+      <created_at nil="nil"></created_at>
+      <updated_at nil="nil"></updated_at>
+      <attempt_next_collection_at type="datetime">2017-10-06T21:25:55Z</attempt_next_collection_at>
+      <closed_at nil="nil"></closed_at>
+      <terms_and_conditions nil="nil"></terms_and_conditions>
+      <customer_notes nil="nil"></customer_notes>
+      <recovery_reason nil="nil"></recovery_reason>
+      <net_terms type="integer">0</net_terms>
+      <collection_method>automatic</collection_method>
+      <line_items type="array">
+        <adjustment href="" type="charge">
+          <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683"/>
+          <uuid>40625fd6fc46181e2f15044db38c1c82</uuid>
+          <state>pending</state>
+          <description>gold</description>
+          <accounting_code nil="nil"></accounting_code>
+          <product_code>gold</product_code>
+          <origin>plan</origin>
+          <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+          <quantity type="integer">1</quantity>
+          <discount_in_cents type="integer">0</discount_in_cents>
+          <tax_in_cents type="integer">0</tax_in_cents>
+          <total_in_cents type="integer">1000</total_in_cents>
+          <currency>USD</currency>
+          <taxable type="boolean">false</taxable>
+          <start_date type="datetime">2017-10-06T21:25:55Z</start_date>
+          <end_date type="datetime">2017-11-06T21:25:55Z</end_date>
+          <created_at nil="nil"></created_at>
+          <updated_at nil="nil"></updated_at>
+          <revenue_schedule_type>evenly</revenue_schedule_type>
+        </adjustment>
+        <adjustment href="" type="charge">
+          <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683"/>
+          <uuid>40625fd6e6a5817b59a2174b72a92fea</uuid>
+          <state>pending</state>
+          <description>Item 1</description>
+          <accounting_code nil="nil"></accounting_code>
+          <product_code nil="nil"></product_code>
+          <origin>debit</origin>
+          <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+          <quantity type="integer">1</quantity>
+          <discount_in_cents type="integer">0</discount_in_cents>
+          <tax_in_cents type="integer">0</tax_in_cents>
+          <total_in_cents type="integer">1000</total_in_cents>
+          <currency>USD</currency>
+          <taxable type="boolean">false</taxable>
+          <start_date type="datetime">2017-10-06T21:25:55Z</start_date>
+          <end_date nil="nil"></end_date>
+          <created_at nil="nil"></created_at>
+          <updated_at nil="nil"></updated_at>
+          <revenue_schedule_type></revenue_schedule_type>
+        </adjustment>
+        <adjustment href="" type="charge">
+          <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683"/>
+          <uuid>40625fd6e9096c9922b52646e29f6d5e</uuid>
+          <state>pending</state>
+          <description>Item 2</description>
+          <accounting_code nil="nil"></accounting_code>
+          <product_code nil="nil"></product_code>
+          <origin>debit</origin>
+          <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
+          <quantity type="integer">2</quantity>
+          <discount_in_cents type="integer">0</discount_in_cents>
+          <tax_in_cents type="integer">0</tax_in_cents>
+          <total_in_cents type="integer">4000</total_in_cents>
+          <currency>USD</currency>
+          <taxable type="boolean">false</taxable>
+          <start_date type="datetime">2017-10-06T21:25:55Z</start_date>
+          <end_date nil="nil"></end_date>
+          <created_at nil="nil"></created_at>
+          <updated_at nil="nil"></updated_at>
+          <revenue_schedule_type></revenue_schedule_type>
+        </adjustment>
+      </line_items>
+      <transactions type="array">
+      </transactions>
+    </charge_invoice>
+</invoice_collection>
