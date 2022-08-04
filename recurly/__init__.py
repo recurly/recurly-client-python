@@ -1649,6 +1649,20 @@ class Transaction(Resource):
 Transaction._classes_for_nodename['transaction'] = Transaction
 
 
+class PlanRampInterval(Resource):
+    """A plan ramp
+       representing a price point and the billing_cycle to begin that price point
+    """
+
+    nodename = 'ramp_interval'
+    collection_path = 'ramp_intervals'
+
+    attributes = {
+        'starting_billing_cycle',
+        'unit_amount_in_cents'
+    }
+
+
 class Plan(Resource):
 
     """A service level for your service to which a customer account
@@ -1690,8 +1704,12 @@ class Plan(Resource):
         'auto_renew',
         'allow_any_item_on_subscriptions',
         'dunning_campaign_id',
+        'pricing_model',
+        'ramp_intervals',
     )
 
+    _classes_for_nodename = {'ramp_interval': PlanRampInterval }
+#
     def get_add_on(self, add_on_code):
         """Return the `AddOn` for this plan with the given add-on code."""
         url = urljoin(self._url, '/add_ons/%s' % (add_on_code,))
