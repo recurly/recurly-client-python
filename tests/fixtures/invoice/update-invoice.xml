@@ -7,27 +7,26 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <invoice>
-   <po_number>1234</po_number>
-   <terms_and_conditions>School staff is not responsible for items left at Hogwarts School of Witchcraft and Wizardry.</terms_and_conditions>
-   <customer_notes>It's levi-O-sa, not levio-SA!</customer_notes>
-   <vat_reverse_charge_notes>can't be changed when invoice was not a reverse charge</vat_reverse_charge_notes>
-   <address>
-     <first_name>Harry</first_name>
-     <last_name>Potter</last_name>
-     <name_on_account>Albus Dumbledore</name_on_account>
-     <company>Hogwarts</company>
-     <address1>4 Privet Drive</address1>
-     <address2>Little Whinging</address2>
-     <city>Surrey</city>
-     <state>England</state>
-     <zip>YO8 9FX</zip>
-     <country>Great Britain</country>
-     <phone>781-452-4077</phone>
-   </address>
-   <net_terms type="integer">1</net_terms>
-   <gateway_code>A new gateway code</gateway_code>
+  <po_number>1234</po_number>
+  <terms_and_conditions>School staff is not responsible for items left at Hogwarts School of Witchcraft and Wizardry.</terms_and_conditions>
+  <customer_notes>Its levi-O-sa, not levio-SA!</customer_notes>
+  <vat_reverse_charge_notes>cant be changed when invoice was not a reverse charge</vat_reverse_charge_notes>
+  <address>
+    <address1>4 Privet Drive</address1>
+    <address2>Little Whinging</address2>
+    <city>Surrey</city>
+    <company>Hogwarts</company>
+    <country>Great Britain</country>
+    <first_name>Harry</first_name>
+    <last_name>Potter</last_name>
+    <name_on_account>Albus Dumbledore</name_on_account>
+    <phone>781-452-4077</phone>
+    <state>England</state>
+    <zip>YO8 9FX</zip>
+  </address>
+  <net_terms type="integer">1</net_terms>
+  <gateway_code>A new gateway code</gateway_code>
 </invoice>
-
 
 HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8

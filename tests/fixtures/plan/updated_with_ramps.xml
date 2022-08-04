@@ -9,16 +9,16 @@ Content-Type: application/xml; charset=utf-8
 <plan>
   <ramp_intervals>
     <ramp_interval>
+      <starting_billing_cycle type="integer">1</starting_billing_cycle>
       <unit_amount_in_cents>
         <USD type="integer">3000</USD>
       </unit_amount_in_cents>
-      <starting_billing_cycle type="integer">1</starting_billing_cycle>
     </ramp_interval>
     <ramp_interval>
+      <starting_billing_cycle type="integer">2</starting_billing_cycle>
       <unit_amount_in_cents>
         <USD type="integer">4000</USD>
       </unit_amount_in_cents>
-      <starting_billing_cycle type="integer">2</starting_billing_cycle>
     </ramp_interval>
   </ramp_intervals>
 </plan>
@@ -49,7 +49,7 @@ Content-Type: application/xml; charset=utf-8
   <setup_fee_in_cents>
     <USD type="integer">200</USD>
   </setup_fee_in_cents>
-  <ramp_intervals>
+  <ramp_intervals type="array">
     <ramp_interval>
       <starting_billing_cycle type="integer">1</starting_billing_cycle>
       <unit_amount_in_cents>

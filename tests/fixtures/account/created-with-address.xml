@@ -11,10 +11,10 @@ Content-Type: application/xml; charset=utf-8
   <address>
     <address1>123 Main St</address1>
     <city>San Francisco</city>
-    <state>CA</state>
-    <zip>94105</zip>
     <country>US</country>
     <phone>8015559876</phone>
+    <state>CA</state>
+    <zip>94105</zip>
   </address>
 </account>
 

@@ -10,18 +10,18 @@ Content-Type: application/xml; charset=utf-8
   <account>
     <account_code>testmock</account_code>
     <billing_info>
-      <first_name>Verena</first_name>
-      <last_name>Example</last_name>
-      <number>4111-1111-1111-1111</number>
-      <verification_value>123</verification_value>
-      <year type="integer">2020</year>
-      <month type="integer">11</month>
       <address1>123 Main St</address1>
       <city>New Orleans</city>
-      <state>LA</state>
-      <zip>70114</zip>
       <country>US</country>
       <currency>USD</currency>
+      <first_name>Verena</first_name>
+      <last_name>Example</last_name>
+      <month type="integer">11</month>
+      <number>4111-1111-1111-1111</number>
+      <state>LA</state>
+      <verification_value>123</verification_value>
+      <year type="integer">2020</year>
+      <zip>70114</zip>
     </billing_info>
   </account>
   <adjustments>
@@ -36,12 +36,9 @@ Content-Type: application/xml; charset=utf-8
       <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
     </adjustment>
   </adjustments>
+  <collection_method>manual</collection_method>
   <currency>USD</currency>
-  <subscriptions>
-    <subscription>
-      <plan_code>gold</plan_code>
-    </subscription>
-  </subscriptions>
+  <gateway_code>aBcD1234</gateway_code>
   <shipping_address>
     <address1>456 Pillow Fort Drive</address1>
     <city>New Orleans</city>
@@ -52,8 +49,11 @@ Content-Type: application/xml; charset=utf-8
     <state>LA</state>
     <zip>70114</zip>
   </shipping_address>
-  <gateway_code>aBcD1234</gateway_code>
-  <collection_method>manual</collection_method>
+  <subscriptions>
+    <subscription>
+      <plan_code>gold</plan_code>
+    </subscription>
+  </subscriptions>
 </purchase>
 
 HTTP/1.1 200 OK

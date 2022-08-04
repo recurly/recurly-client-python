@@ -7,20 +7,20 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <billing_info>
-	<first_name>Humberto</first_name>
-	<last_name>DuMonde</last_name>
-	<number>4111111111111111</number>
-	<verification_value>123</verification_value>
-	<year type="integer">2049</year>
-	<month type="integer">10</month>
-	<address1>12345 Main St</address1>
-	<city>New Orleans</city>
-	<state>LA</state>
-	<zip>70114</zip>
-	<country>US</country>
-	<currency>USD</currency>
-	<primary_payment_method type="boolean">true</primary_payment_method>
-	<backup_payment_method type="boolean">false</backup_payment_method>
+  <address1>12345 Main St</address1>
+  <backup_payment_method type="boolean">false</backup_payment_method>
+  <city>New Orleans</city>
+  <country>US</country>
+  <currency>USD</currency>
+  <first_name>Humberto</first_name>
+  <last_name>DuMonde</last_name>
+  <month type="integer">10</month>
+  <number>4111111111111111</number>
+  <primary_payment_method type="boolean">true</primary_payment_method>
+  <state>LA</state>
+  <verification_value>123</verification_value>
+  <year type="integer">2049</year>
+  <zip>70114</zip>
 </billing_info>
 
 HTTP/1.1 201 Created

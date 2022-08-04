@@ -7,9 +7,9 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <coupon>
-  <name>New Name Restore</name>
-  <invoice_description>New Description Restore</invoice_description>
   <hosted_description>New Description Restore</hosted_description>
+  <invoice_description>New Description Restore</invoice_description>
+  <name>New Name Restore</name>
 </coupon>
 
 HTTP/1.1 200 OK

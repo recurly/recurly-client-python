@@ -9,7 +9,7 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate, PlanRampInterval
+    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -199,7 +199,7 @@ class TestResources(RecurlyTest):
 
         account.username = 'shmohawk58'
         account.email = 'larry.david'
-        account.first_name = six.u('L\xe4rry')
+        account.first_name = six.u('Larry')
         account.last_name = 'David'
         account.company_name = 'Home Box Office'
         account.accept_language = 'en-US'
@@ -657,7 +657,7 @@ class TestResources(RecurlyTest):
                 first_name='Verena',
                 last_name='Example',
                 address1='123 Main St',
-                city=six.u('San Jos\xe9'),
+                city=six.u('San Jose'),
                 state='CA',
                 zip='94105',
                 country='US',
@@ -706,7 +706,7 @@ class TestResources(RecurlyTest):
             first_name='Verena',
             last_name='Example',
             address1='123 Main St',
-            city=six.u('San Jos\xe9'),
+            city=six.u('San Jose'),
             state='CA',
             zip='94105',
             country='US',
@@ -1304,8 +1304,8 @@ class TestResources(RecurlyTest):
             )
             invoice.po_number = '1234'
             invoice.terms_and_conditions = 'School staff is not responsible for items left at Hogwarts School of Witchcraft and Wizardry.'
-            invoice.customer_notes = "It's levi-O-sa, not levio-SA!"
-            invoice.vat_reverse_charge_notes = "can't be changed when invoice was not a reverse charge"
+            invoice.customer_notes = "Its levi-O-sa, not levio-SA!"
+            invoice.vat_reverse_charge_notes = "cant be changed when invoice was not a reverse charge"
             invoice.net_terms = 1
             invoice.gateway_code = 'A new gateway code'
             invoice.save()
@@ -1494,7 +1494,7 @@ class TestResources(RecurlyTest):
             ramp_intervals=ramp_intervals,
             total_billing_cycles=10
         )
-        with self.mock_request('plan/created_with_ramps.xml'):
+        with self.mock_request('plan/created-with-ramps.xml'):
             plan.save()
 
         self.assertEqual(plan.plan_code, plan_code)
@@ -1560,6 +1560,168 @@ class TestResources(RecurlyTest):
         except e:
             self.fail("Failed subscription did not raise a Validation error")
 
+    def test_subscription_with_plan_ramp(self):
+        plan_code = 'plan%s' % self.test_id
+        logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
+        logger = logging.getLogger('recurly.http.request')
+        logger.setLevel(logging.DEBUG)
+
+        ramp_interval_1 = PlanRampInterval(
+            unit_amount_in_cents=Money(USD=2000),
+            starting_billing_cycle=1,
+        )
+        ramp_interval_2 = PlanRampInterval(
+            unit_amount_in_cents=Money(USD=3000),
+            starting_billing_cycle=2,
+        )
+        ramp_intervals = [ramp_interval_1, ramp_interval_2]
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(200),
+            pricing_model='ramp',
+            ramp_intervals=ramp_intervals,
+            total_billing_cycles=10
+        )
+        with self.mock_request('plan/created-with-ramps.xml'):
+            plan.save()
+
+        account = Account(account_code='subscribe%s' % self.test_id)
+        with self.mock_request('subscription/account-created.xml'):
+            account.save()
+
+        sub = Subscription(
+            plan_code=plan_code,
+            currency='USD',
+            bulk=True,
+            terms_and_conditions='Some Terms and Conditions',
+            customer_notes='Some Customer Notes',
+            imported_trial=True,
+        )
+
+        with self.mock_request('subscription/subscribed-with-ramps.xml'):
+            account.subscribe(sub)
+
+        self.assertEqual(len(sub.ramp_intervals), len(plan.ramp_intervals))
+        self.assertEqual(plan.plan_code, plan_code)
+
+        with self.mock_request('subscription/exist-with-ramps.xml'):
+            new_sub = Subscription.get(sub.uuid)
+
+        self.assertEqual(new_sub.plan_code, plan_code)
+        self.assertEqual(new_sub.plan_code, plan_code)
+        self.assertEqual(len(plan.ramp_intervals), len(ramp_intervals))
+        self.assertEqual(plan.pricing_model, 'ramp')
+
+        new_sub.ramp_intervals = [
+            SubRampInterval(
+                starting_billing_cycle=1,
+                unit_amount_in_cents=3000
+            ),
+            SubRampInterval(
+                starting_billing_cycle=2,
+                unit_amount_in_cents=4000
+            ),
+        ]
+
+        with self.mock_request('subscription/updated-with-ramps.xml'):
+            new_sub.save()
+
+        self.assertEqual(len(new_sub.ramp_intervals), 2)
+        self.assertEqual(new_sub.ramp_intervals[0].starting_billing_cycle, 1)
+        self.assertEqual(new_sub.ramp_intervals[0].unit_amount_in_cents, '3000')
+
+        self.assertEqual(new_sub.ramp_intervals[1].starting_billing_cycle, 2)
+        self.assertEqual(new_sub.ramp_intervals[1].unit_amount_in_cents, '4000')
+
+    def test_subscription_with_plan_custom_ramp(self):
+        plan_code = 'plan%s' % self.test_id
+        logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
+        logger = logging.getLogger('recurly.http.request')
+        logger.setLevel(logging.DEBUG)
+
+        ramp_interval_1 = PlanRampInterval(
+            unit_amount_in_cents=Money(USD=2000),
+            starting_billing_cycle=1,
+        )
+        ramp_interval_2 = PlanRampInterval(
+            unit_amount_in_cents=Money(USD=3000),
+            starting_billing_cycle=2,
+        )
+        ramp_intervals = [ramp_interval_1, ramp_interval_2]
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(200),
+            pricing_model='ramp',
+            ramp_intervals=ramp_intervals,
+            total_billing_cycles=10
+        )
+        with self.mock_request('plan/created-with-ramps.xml'):
+            plan.save()
+
+        account = Account(account_code='subscribe%s' % self.test_id)
+        with self.mock_request('subscription/account-created.xml'):
+            account.save()
+
+        ramp_intervals = [
+            SubRampInterval(
+                starting_billing_cycle=1,
+                unit_amount_in_cents=2000
+            ),
+            SubRampInterval(
+                starting_billing_cycle=2,
+                unit_amount_in_cents=3000
+            ),
+        ]
+
+        sub = Subscription(
+            plan_code=plan_code,
+            currency='USD',
+            bulk=True,
+            terms_and_conditions='Some Terms and Conditions',
+            customer_notes='Some Customer Notes',
+            imported_trial=True,
+            ramp_intervals=ramp_intervals,
+        )
+
+        with self.mock_request('subscription/subscribed-with-custom-ramps.xml'):
+            account.subscribe(sub)
+
+        self.assertEqual(len(sub.ramp_intervals), len(plan.ramp_intervals))
+        self.assertEqual(plan.plan_code, plan_code)
+
+        with self.mock_request('subscription/exist-with-ramps.xml'):
+            new_sub = Subscription.get(sub.uuid)
+
+        self.assertEqual(new_sub.plan_code, plan_code)
+        self.assertEqual(new_sub.plan_code, plan_code)
+        self.assertEqual(len(plan.ramp_intervals), len(ramp_intervals))
+        self.assertEqual(plan.pricing_model, 'ramp')
+
+        new_sub.ramp_intervals = [
+            SubRampInterval(
+                starting_billing_cycle=1,
+                unit_amount_in_cents=3000
+            ),
+            SubRampInterval(
+                starting_billing_cycle=2,
+                unit_amount_in_cents=4000
+            ),
+        ]
+
+        with self.mock_request('subscription/updated-with-ramps.xml'):
+            new_sub.save()
+
+        self.assertEqual(len(new_sub.ramp_intervals), 2)
+        self.assertEqual(new_sub.ramp_intervals[0].starting_billing_cycle, 1)
+        self.assertEqual(new_sub.ramp_intervals[0].unit_amount_in_cents, '3000')
+
+        self.assertEqual(new_sub.ramp_intervals[1].starting_billing_cycle, 2)
+        self.assertEqual(new_sub.ramp_intervals[1].unit_amount_in_cents, '4000')
+
     def test_subscribe(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')
@@ -1604,7 +1766,7 @@ class TestResources(RecurlyTest):
                     first_name='Verena',
                     last_name='Example',
                     address1='123 Main St',
-                    city=six.u('San Jos\xe9'),
+                    city=six.u('San Jose'),
                     state='CA',
                     zip='94105',
                     country='US',
@@ -1709,7 +1871,7 @@ class TestResources(RecurlyTest):
                             first_name='Verena',
                             last_name='Example',
                             address1='123 Main St',
-                            city=six.u('San Jos\xe9'),
+                            city=six.u('San Jose'),
                             state='CA',
                             zip='94105',
                             country='US',
@@ -1746,7 +1908,7 @@ class TestResources(RecurlyTest):
                         first_name='Verena',
                         last_name='Example',
                         address1='123 Main St',
-                        city=six.u('San Jos\xe9'),
+                        city=six.u('San Jose'),
                         state='CA',
                         zip='94105',
                         country='US',
@@ -2046,7 +2208,7 @@ class TestResources(RecurlyTest):
                     first_name='Verena',
                     last_name='Example',
                     address1='123 Main St',
-                    city=six.u('San Jos\xe9'),
+                    city=six.u('San Jose'),
                     state='CA',
                     zip='94105',
                     country='US',
@@ -2257,7 +2419,7 @@ class TestResources(RecurlyTest):
                 first_name='Verena',
                 last_name='Example',
                 address1='123 Main St',
-                city=six.u('San Jos\xe9'),
+                city=six.u('San Jose'),
                 state='CA',
                 zip='94105',
                 country='US',

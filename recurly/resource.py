@@ -197,13 +197,11 @@ class Resource(object):
         """ Attributes to be serialized in a ``POST`` or ``PUT`` request.
         Returns all attributes unless a blacklist is specified
         """
-
         if hasattr(self, 'blacklist_attributes'):
             return [attr for attr in self.attributes if attr not in
                     self.blacklist_attributes]
         else:
-            return self.attributes
-
+            return sorted(self.attributes)
 
     def __init__(self, **kwargs):
         try:
@@ -445,33 +443,10 @@ class Resource(object):
                 return value_class.from_element(elem)
 
         # Untyped complex elements should still be resource instances. Guess from the nodename.
-        if len(elem) == 1:
+        if len(elem):
             value_class = cls._subclass_for_nodename(elem.tag)
             log.debug("Converting %r tag into a %s", elem.tag, value_class.__name__)
             return value_class.from_element(elem)
-
-        # Tries to deserialize arrays of elements without type 'array' definition or resource
-        if len(elem) > 1:
-            first_tag = elem[0].tag
-            last_tag = elem[-1].tag
-            # Check if the element have and array of items 
-            # <items>
-            #   <item>...</item>
-            #   <item>...</item>
-            #   <item>...</item>
-            # </items>
-            if(first_tag == last_tag):
-                return [cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem) for sub_elem in elem]
-            # De-serialize one resource
-            # <resource>
-            #   <name>name</name>
-            #   <description>description</name>
-            #   <other_attribute>other text</other_description>
-            # </resource>
-            else:
-                value_class = cls._subclass_for_nodename(elem.tag)
-                log.debug("Converting %r tag into a %s", elem.tag, value_class.__name__)
-                return value_class.from_element(elem)
 
         value = elem.text or ''
         return value.strip()

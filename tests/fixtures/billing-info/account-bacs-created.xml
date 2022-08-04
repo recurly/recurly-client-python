@@ -9,14 +9,14 @@ Content-Type: application/xml; charset=utf-8
 <account>
   <account_code>binfo-mock-5</account_code>
   <billing_info>
-    <type>bacs</type>
-    <name_on_account>Account Name</name_on_account>
-    <city>London</city>
-    <zip>W1K 6AH</zip>
-    <country>GB</country>
     <account_number>12345678</account_number>
+    <city>London</city>
+    <country>GB</country>
     <currency>USD</currency>
+    <name_on_account>Account Name</name_on_account>
     <sort_code>200000</sort_code>
+    <type>bacs</type>
+    <zip>W1K 6AH</zip>
   </billing_info>
 </account>
 

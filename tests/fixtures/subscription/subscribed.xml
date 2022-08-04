@@ -7,13 +7,13 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <subscription>
-  <plan_code>basicplan</plan_code>
-  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
-  <currency>USD</currency>
   <bulk type="boolean">true</bulk>
-  <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
+  <currency>USD</currency>
   <customer_notes>Some Customer Notes</customer_notes>
   <imported_trial type="boolean">true</imported_trial>
+  <plan_code>basicplan</plan_code>
+  <terms_and_conditions>Some Terms and Conditions</terms_and_conditions>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
 </subscription>
 
 HTTP/1.1 201 Created

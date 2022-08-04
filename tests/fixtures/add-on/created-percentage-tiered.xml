@@ -8,12 +8,10 @@ Content-Type: application/xml; charset=utf-8
 <?xml version="1.0" encoding="UTF-8"?>
 <add_on>
   <add_on_code>addonmock</add_on_code>
-  <name>Mock Add-On</name>
+  <add_on_type>usage</add_on_type>
   <display_quantity_on_hosted_page type="boolean">true</display_quantity_on_hosted_page>
   <measured_unit_id>3473591245469944008</measured_unit_id>
-  <usage_type>percentage</usage_type>
-  <add_on_type>usage</add_on_type>
-  <tier_type>tiered</tier_type>
+  <name>Mock Add-On</name>
   <percentage_tiers>
     <percentage_tier>
       <currency>USD</currency>
@@ -32,6 +30,8 @@ Content-Type: application/xml; charset=utf-8
       </tiers>
     </percentage_tier>
   </percentage_tiers>
+  <tier_type>tiered</tier_type>
+  <usage_type>percentage</usage_type>
 </add_on>
 
 HTTP/1.1 201 Created

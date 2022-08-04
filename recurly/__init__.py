@@ -1308,6 +1308,150 @@ class ShippingMethod(Resource):
       'updated_at',
     )
 
+class PlanRampInterval(Resource):
+    """A plan ramp
+       representing a price point and the billing_cycle to begin that price point
+    """
+
+    nodename = 'ramp_interval'
+    collection_path = 'ramp_intervals'
+
+    attributes = {
+        'unit_amount_in_cents',
+        'starting_billing_cycle'
+    }
+    
+    def __str__(self):
+        return 'PlanRampInterval(starting_billing_cycle={},unit_amount_in_cents={})'.format(self.starting_billing_cycle, self.unit_amount_in_cents.currencies)
+
+
+class Plan(Resource):
+
+    """A service level for your service to which a customer account
+    can subscribe."""
+
+    member_path = 'plans/%s'
+    collection_path = 'plans'
+
+    nodename = 'plan'
+
+    attributes = (
+        'plan_code',
+        'name',
+        'description',
+        'success_url',
+        'cancel_url',
+        'display_donation_amounts',
+        'display_quantity',
+        'display_phone_number',
+        'bypass_hosted_confirmation',
+        'unit_name',
+        'payment_page_tos_link',
+        'plan_interval_length',
+        'plan_interval_unit',
+        'trial_interval_length',
+        'trial_interval_unit',
+        'accounting_code',
+        'setup_fee_accounting_code',
+        'created_at',
+        'updated_at',
+        'tax_exempt',
+        'tax_code',
+        'unit_amount_in_cents',
+        'setup_fee_in_cents',
+        'total_billing_cycles',
+        'revenue_schedule_type',
+        'setup_fee_revenue_schedule_type',
+        'trial_requires_billing_info',
+        'auto_renew',
+        'allow_any_item_on_subscriptions',
+        'dunning_campaign_id',
+        'pricing_model',
+        'ramp_intervals',
+    )
+
+    _classes_for_nodename = {'ramp_interval': PlanRampInterval }
+
+    def get_add_on(self, add_on_code):
+        """Return the `AddOn` for this plan with the given add-on code."""
+        url = urljoin(self._url, '/add_ons/%s' % (add_on_code,))
+        resp, elem = AddOn.element_for_url(url)
+        return AddOn.from_element(elem)
+
+    def create_add_on(self, add_on):
+        """Make the given `AddOn` available to subscribers on this plan."""
+        url = urljoin(self._url, '/add_ons')
+        return add_on.post(url)
+
+
+class SubRampInterval(Resource):
+    """A sub ramp
+       representing a price point and the billing_cycle to begin that price point
+    """
+
+    nodename = 'ramp_interval'
+    collection_path = 'ramp_intervals'
+    inherits_currency = True
+
+    attributes = {
+        'unit_amount_in_cents',
+        'starting_billing_cycle',
+        'remaining_billing_cycles'
+    }
+
+    def __str__(self):
+        return 'SubRampInterval(starting_billing_cycle={},unit_amount_in_cents={}),remaining_billing_cycles={}' .format(self.starting_billing_cycle, self.unit_amount_in_cents, self.remaining_billing_cycles)
+
+class SubAddOnPercentageTier(Resource):
+
+    """Percentage tiers associated to a subscription add-on."""
+
+    nodename = 'percentage_tier'
+    inherits_currency = True
+
+    attributes = (
+        'ending_amount_in_cents',
+        'usage_percentage',
+    )
+
+class Tier(Resource):
+    """Pricing tier for plans, subscriptions and invoices"""
+
+    nodename = 'tier'
+
+    attributes = (
+        'ending_quantity',
+        'unit_amount_in_cents',
+    )
+
+class SubscriptionAddOn(Resource):
+
+    """A plan add-on as added to a customer's subscription.
+
+    Use these instead of `AddOn` instances when specifying a
+    `Subscription` instance's `subscription_add_ons` attribute.
+
+    """
+
+    nodename = 'subscription_add_on'
+    inherits_currency = True
+
+    attributes = (
+        'add_on_code',
+        'quantity',
+        'unit_amount_in_cents',
+        'usage_timeframe',
+        'address',
+        'add_on_source',
+        'tiers',
+        'percentage_tiers'
+    )
+
+    _classes_for_nodename = {
+        'percentage_tier': SubAddOnPercentageTier,
+        'tier': Tier
+    }
+
 class Subscription(Resource):
 
     """A customer account's subscription to your service."""
@@ -1378,9 +1522,18 @@ class Subscription(Resource):
         'gateway_code',
         'transaction_type',
         'billing_info',
-        'billing_info_uuid'
+        'billing_info_uuid',
+        'ramp_intervals',
     )
+
     sensitive_attributes = ('number', 'verification_value', 'bulk')
+    _classes_for_nodename = {
+        'custom_field': CustomField,
+        'invoice_collection': InvoiceCollection,
+        'plan': Plan,
+        'ramp_interval': SubRampInterval, 
+        'subscription_add_on': SubscriptionAddOn,
+    }
 
     def preview(self):
         if hasattr(self, '_url'):
@@ -1485,6 +1638,8 @@ class Subscription(Resource):
         usage object with returned xml"""
         url = urljoin(self._url, '/add_ons/%s/usage' % (sub_add_on.add_on_code,))
         return usage.post(url)
+
+Subscription._classes_for_nodename['subscription'] = Subscription
 
 class TransactionBillingInfo(recurly.Resource):
     node_name = 'billing_info'
@@ -1649,78 +1804,6 @@ class Transaction(Resource):
 Transaction._classes_for_nodename['transaction'] = Transaction
 
 
-class PlanRampInterval(Resource):
-    """A plan ramp
-       representing a price point and the billing_cycle to begin that price point
-    """
-
-    nodename = 'ramp_interval'
-    collection_path = 'ramp_intervals'
-
-    attributes = {
-        'starting_billing_cycle',
-        'unit_amount_in_cents'
-    }
-
-
-class Plan(Resource):
-
-    """A service level for your service to which a customer account
-    can subscribe."""
-
-    member_path = 'plans/%s'
-    collection_path = 'plans'
-
-    nodename = 'plan'
-
-    attributes = (
-        'plan_code',
-        'name',
-        'description',
-        'success_url',
-        'cancel_url',
-        'display_donation_amounts',
-        'display_quantity',
-        'display_phone_number',
-        'bypass_hosted_confirmation',
-        'unit_name',
-        'payment_page_tos_link',
-        'plan_interval_length',
-        'plan_interval_unit',
-        'trial_interval_length',
-        'trial_interval_unit',
-        'accounting_code',
-        'setup_fee_accounting_code',
-        'created_at',
-        'updated_at',
-        'tax_exempt',
-        'tax_code',
-        'unit_amount_in_cents',
-        'setup_fee_in_cents',
-        'total_billing_cycles',
-        'revenue_schedule_type',
-        'setup_fee_revenue_schedule_type',
-        'trial_requires_billing_info',
-        'auto_renew',
-        'allow_any_item_on_subscriptions',
-        'dunning_campaign_id',
-        'pricing_model',
-        'ramp_intervals',
-    )
-
-    _classes_for_nodename = {'ramp_interval': PlanRampInterval }
-#
-    def get_add_on(self, add_on_code):
-        """Return the `AddOn` for this plan with the given add-on code."""
-        url = urljoin(self._url, '/add_ons/%s' % (add_on_code,))
-        resp, elem = AddOn.element_for_url(url)
-        return AddOn.from_element(elem)
-
-    def create_add_on(self, add_on):
-        """Make the given `AddOn` available to subscribers on this plan."""
-        url = urljoin(self._url, '/add_ons')
-        return add_on.post(url)
-
 class Usage(Resource):
 
     """A recording of usage agains a measured unit"""
@@ -1823,56 +1906,6 @@ class AddOn(Resource):
 
     _classes_for_nodename = {
         'percentage_tier': CurrencyPercentageTier,
-    }
-
-class SubAddOnPercentageTier(Resource):
-
-    """Percentage tiers associated to a subscription add-on."""
-
-    nodename = 'percentage_tier'
-    inherits_currency = True
-
-    attributes = (
-        'ending_amount_in_cents',
-        'usage_percentage',
-    )
-
-class Tier(Resource):
-    """Pricing tier for plans, subscriptions and invoices"""
-
-    nodename = 'tier'
-
-    attributes = (
-        'ending_quantity',
-        'unit_amount_in_cents',
-    )
-
-class SubscriptionAddOn(Resource):
-
-    """A plan add-on as added to a customer's subscription.
-
-    Use these instead of `AddOn` instances when specifying a
-    `Subscription` instance's `subscription_add_ons` attribute.
-
-    """
-
-    nodename = 'subscription_add_on'
-    inherits_currency = True
-
-    attributes = (
-        'add_on_code',
-        'quantity',
-        'unit_amount_in_cents',
-        'usage_timeframe',
-        'address',
-        'add_on_source',
-        'tiers',
-        'percentage_tiers'
-    )
-
-    _classes_for_nodename = {
-        'percentage_tier': SubAddOnPercentageTier,
-        'tier': Tier
     }
 
 class Note(Resource):

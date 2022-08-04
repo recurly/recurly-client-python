@@ -8,13 +8,13 @@ Content-Type: application/xml; charset=utf-8
 <?xml version="1.0" encoding="UTF-8"?>
 <add_on>
   <add_on_code>addonmock</add_on_code>
+  <add_on_type>usage</add_on_type>
+  <measured_unit_id type="integer">123456</measured_unit_id>
   <name>Mock Add-On</name>
   <unit_amount_in_cents>
     <USD type="integer">40</USD>
   </unit_amount_in_cents>
-  <measured_unit_id type="integer">123456</measured_unit_id>
   <usage_type>price</usage_type>
-  <add_on_type>usage</add_on_type>
 </add_on>
 
 HTTP/1.1 201 Created

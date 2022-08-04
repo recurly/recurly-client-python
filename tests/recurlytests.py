@@ -106,8 +106,8 @@ class MockRequestManager(object):
     def assert_request(self):
         headers = dict(self.headers)
         if 'user-agent' in headers:
-            import recurly
             headers['user-agent'] = headers['user-agent'].replace('{user-agent}', recurly.USER_AGENT)
+
         headers['x-api-version'] = headers['x-api-version'].replace('{api-version}', recurly.API_VERSION)
         self.request_mock.assert_called_once_with(self.method, self.uri, self.body, headers)
 

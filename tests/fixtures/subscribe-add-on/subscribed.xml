@@ -7,8 +7,25 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <subscription>
-  <plan_code>basicplan</plan_code>
+  <account>
+    <account_code>sad-on-mock</account_code>
+    <billing_info>
+      <address1>123 Main St</address1>
+      <city>San Francisco</city>
+      <country>US</country>
+      <currency>USD</currency>
+      <first_name>Verena</first_name>
+      <last_name>Example</last_name>
+      <month>12</month>
+      <number>4111 1111 1111 1111</number>
+      <state>CA</state>
+      <verification_value>7777</verification_value>
+      <year>2015</year>
+      <zip>94105</zip>
+    </billing_info>
+  </account>
   <currency>USD</currency>
+  <plan_code>basicplan</plan_code>
   <subscription_add_ons>
     <subscription_add_on>
       <add_on_code>mock_add_on</add_on_code>
@@ -18,8 +35,8 @@ Content-Type: application/xml; charset=utf-8
     </subscription_add_on>
     <subscription_add_on>
       <add_on_code>itemmock</add_on_code>
-      <unit_amount_in_cents type="integer">200</unit_amount_in_cents>
       <add_on_source>item</add_on_source>
+      <unit_amount_in_cents type="integer">200</unit_amount_in_cents>
     </subscription_add_on>
     <subscription_add_on>
       <add_on_code>tiered_add_on</add_on_code>
@@ -28,23 +45,6 @@ Content-Type: application/xml; charset=utf-8
       <add_on_code>percentage_tiered_add_on</add_on_code>
     </subscription_add_on>
   </subscription_add_ons>
-  <account>
-    <account_code>sad-on-mock</account_code>
-    <billing_info>
-      <first_name>Verena</first_name>
-      <last_name>Example</last_name>
-      <number>4111 1111 1111 1111</number>
-      <verification_value>7777</verification_value>
-      <year>2015</year>
-      <month>12</month>
-      <address1>123 Main St</address1>
-      <city>San Francisco</city>
-      <state>CA</state>
-      <zip>94105</zip>
-      <country>US</country>
-      <currency>USD</currency>
-    </billing_info>
-  </account>
 </subscription>
 
 HTTP/1.1 201 Created

@@ -7,19 +7,19 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <coupon>
-    <coupon_code>plancouponmock</coupon_code>
-    <name>Plan Coupon</name>
-    <discount_in_cents>
-        <USD type="integer">1000</USD>
-    </discount_in_cents>
-    <invoice_description>Invoice description</invoice_description>
-    <applies_to_all_plans type="boolean">false</applies_to_all_plans>
-    <applies_to_non_plan_charges type="boolean">true</applies_to_non_plan_charges>
-    <redemption_resource>subscription</redemption_resource>
-    <plan_codes type="array">
-      <plan_code>basicplan</plan_code>
-    </plan_codes>
-    <max_redemptions_per_account type="integer">1</max_redemptions_per_account>
+  <applies_to_all_plans type="boolean">false</applies_to_all_plans>
+  <applies_to_non_plan_charges type="boolean">true</applies_to_non_plan_charges>
+  <coupon_code>plancouponmock</coupon_code>
+  <discount_in_cents>
+    <USD type="integer">1000</USD>
+  </discount_in_cents>
+  <invoice_description>Invoice description</invoice_description>
+  <max_redemptions_per_account type="integer">1</max_redemptions_per_account>
+  <name>Plan Coupon</name>
+  <plan_codes type="array">
+    <plan_code>basicplan</plan_code>
+  </plan_codes>
+  <redemption_resource>subscription</redemption_resource>
 </coupon>
 
 HTTP/1.1 201 Created

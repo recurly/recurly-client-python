@@ -7,8 +7,8 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <subscription>
-  <unit_amount_in_cents type="integer">800</unit_amount_in_cents>
   <timeframe>renewal</timeframe>
+  <unit_amount_in_cents type="integer">800</unit_amount_in_cents>
 </subscription>
 
 HTTP/1.1 200 OK
