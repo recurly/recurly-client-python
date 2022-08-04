@@ -474,6 +474,7 @@ class BillingInfo(Resource):
         'primary_payment_method',
         'backup_payment_method',
         'online_banking_payment_type'
+        # 'username'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)
