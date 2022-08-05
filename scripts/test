@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+# First check formatting
+echo "Checking style..."
+if ./scripts/format --check; then
+  echo "Style check passed"
+else
+  echo "Code does not conform to style guide. To autoformat, run './scripts/format'."
+  exit 1
+fi
+
 set -e
 
 RECURLY_INSECURE_DEBUG=true python -m unittest discover -s tests

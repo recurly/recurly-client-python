@@ -34,43 +34,44 @@ import re
 
 TOKEN = r'(?:[^\(\)<>@,;:\\"/\[\]\?={} \t]+?)'
 QUOTED_STRING = r'(?:"(?:\\"|[^"])*")'
-PARAMETER = r'(?:%(TOKEN)s(?:=(?:%(TOKEN)s|%(QUOTED_STRING)s))?)' % locals()
-LINK = r'<[^>]*>\s*(?:;\s*%(PARAMETER)s?\s*)*' % locals()
-COMMA = r'(?:\s*(?:,\s*)+)'
-LINK_SPLIT = r'%s(?=%s|\s*$)' % (LINK, COMMA)
+PARAMETER = r"(?:%(TOKEN)s(?:=(?:%(TOKEN)s|%(QUOTED_STRING)s))?)" % locals()
+LINK = r"<[^>]*>\s*(?:;\s*%(PARAMETER)s?\s*)*" % locals()
+COMMA = r"(?:\s*(?:,\s*)+)"
+LINK_SPLIT = r"%s(?=%s|\s*$)" % (LINK, COMMA)
 
 
 def _unquotestring(instr):
     if instr[0] == instr[-1] == '"':
         instr = instr[1:-1]
-        instr = re.sub(r'\\(.)', r'\1', instr)
+        instr = re.sub(r"\\(.)", r"\1", instr)
     return instr
 
 
 def _splitstring(instr, item, split):
     if not instr:
         return []
-    return [h.strip() for h in re.findall(r'%s(?=%s|\s*$)' % (item, split), instr)]
+    return [h.strip() for h in re.findall(r"%s(?=%s|\s*$)" % (item, split), instr)]
+
 
 link_splitter = re.compile(LINK_SPLIT)
 
 
 def parse_link_value(instr):
     """
-    Given a link-value (i.e., after separating the header-value on commas), 
+    Given a link-value (i.e., after separating the header-value on commas),
     return a dictionary whose keys are link URLs and values are dictionaries
     of the parameters for their associated links.
-    
-    Note that internationalised parameters (e.g., title*) are 
+
+    Note that internationalised parameters (e.g., title*) are
     NOT percent-decoded.
-    
+
     Also, only the last instance of a given parameter will be included.
-    
-    For example, 
-    
+
+    For example,
+
     >>> parse_link_value('</foo>; rel="self"; title*=utf-8\'de\'letztes%20Kapitel')
     {'/foo': {'title*': "utf-8'de'letztes%20Kapitel", 'rel': 'self'}}
-    
+
     """
     out = {}
     if not instr:
@@ -89,7 +90,8 @@ def parse_link_value(instr):
     return out
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     if len(sys.argv) > 1:
         print(parse_link_value(sys.argv[1]))
