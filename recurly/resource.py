@@ -15,6 +15,7 @@ from recurly.link_header import parse_link_value
 from six.moves import http_client
 from six.moves.urllib.parse import urlencode, urlsplit, quote, urlparse
 
+
 def urlencode_params(args):
     # Need to make bools lowercase
     for k, v in six.iteritems(args):
@@ -22,19 +23,22 @@ def urlencode_params(args):
             args[k] = str(v).lower()
     return urlencode(args)
 
+
 class Money(object):
 
     """An amount of money in one or more currencies."""
 
     def __init__(self, *args, **kwargs):
         if args and kwargs:
-            raise ValueError("Money may be single currency or multi-currency but not both")
+            raise ValueError(
+                "Money may be single currency or multi-currency but not both"
+            )
         elif kwargs:
             self.currencies = dict(kwargs)
         elif args and len(args) > 1:
             raise ValueError("Multi-currency Money must be instantiated with codes")
         elif args:
-            self.currencies = { recurly.DEFAULT_CURRENCY: args[0] }
+            self.currencies = {recurly.DEFAULT_CURRENCY: args[0]}
         else:
             self.currencies = dict()
 
@@ -50,7 +54,7 @@ class Money(object):
     def add_to_element(self, elem):
         for currency, amount in self.currencies.items():
             currency_el = ElementTreeBuilder.Element(currency)
-            currency_el.attrib['type'] = 'integer'
+            currency_el.attrib["type"] = "integer"
             currency_el.text = six.text_type(amount)
             elem.append(currency_el)
 
@@ -75,6 +79,7 @@ class PageError(ValueError):
     a series, or the first page for the first page in a series.
 
     """
+
     pass
 
 
@@ -86,6 +91,7 @@ class Page(list):
     Use `Page` instances as `list` instances to access their contents.
 
     """
+
     def __iter__(self):
         if not self:
             return
@@ -144,7 +150,7 @@ class Page(list):
     def count_for_url(cls, url):
         """Return the count of server side resources given a url"""
         headers = Resource.headers_for_url(url)
-        return int(headers['x-records'])
+        return int(headers["x-records"])
 
     @classmethod
     def page_for_value(cls, resp, value):
@@ -157,11 +163,11 @@ class Page(list):
 
         """
         page = cls(value)
-        links = parse_link_value(resp.getheader('link'))
+        links = parse_link_value(resp.getheader("link"))
         for url, data in six.iteritems(links):
-            if data.get('rel') == 'start':
+            if data.get("rel") == "start":
                 page.start_url = url
-            if data.get('rel') == 'next':
+            if data.get("rel") == "next":
                 page.next_url = url
 
         return page
@@ -194,32 +200,34 @@ class Resource(object):
     its own."""
 
     def serializable_attributes(self):
-        """ Attributes to be serialized in a ``POST`` or ``PUT`` request.
+        """Attributes to be serialized in a ``POST`` or ``PUT`` request.
         Returns all attributes unless a blacklist is specified
         """
 
-        if hasattr(self, 'blacklist_attributes'):
-            return [attr for attr in self.attributes if attr not in
-                    self.blacklist_attributes]
+        if hasattr(self, "blacklist_attributes"):
+            return [
+                attr
+                for attr in self.attributes
+                if attr not in self.blacklist_attributes
+            ]
         else:
             return self.attributes
 
-
     def __init__(self, **kwargs):
         try:
-            self.attributes.index('currency') # Test for currency attribute,
-            self.currency                     # and test if it's set.
+            self.attributes.index("currency")  # Test for currency attribute,
+            self.currency  # and test if it's set.
         except ValueError:
             pass
         except AttributeError:
             self.currency = recurly.DEFAULT_CURRENCY
 
         for key, value in six.iteritems(kwargs):
-            if key not in ('collection_path', 'member_path', 'node_name', 'attributes'):
+            if key not in ("collection_path", "member_path", "node_name", "attributes"):
                 setattr(self, key, value)
 
     @classmethod
-    def http_request(cls, url, method='GET', body=None, headers=None):
+    def http_request(cls, url, method="GET", body=None, headers=None):
         """Make an HTTP request with the given method to the given URL,
         returning the resulting `http_client.HTTPResponse` instance.
 
@@ -235,71 +243,81 @@ class Resource(object):
         """
 
         if recurly.API_KEY is None:
-            raise recurly.UnauthorizedError('recurly.API_KEY not set')
+            raise recurly.UnauthorizedError("recurly.API_KEY not set")
 
         url_parts = urlparse(url)
         if not any(url_parts.netloc.endswith(d) for d in recurly.VALID_DOMAINS):
             # TODO Exception class used for clean backport, change to
             # ConfigurationError
-            raise Exception('Only a recurly domain may be called')
+            raise Exception("Only a recurly domain may be called")
 
         is_non_ascii = lambda s: any(ord(c) >= 128 for c in s)
 
         if is_non_ascii(recurly.API_KEY) or is_non_ascii(recurly.SUBDOMAIN):
-            raise recurly.ConfigurationError("""Setting API_KEY or SUBDOMAIN to
+            raise recurly.ConfigurationError(
+                """Setting API_KEY or SUBDOMAIN to
                     unicode strings may cause problems. Please use strings.
                     Issue described here:
-                    https://gist.github.com/maximehardy/d3a0a6427d2b6791b3dc""")
+                    https://gist.github.com/maximehardy/d3a0a6427d2b6791b3dc"""
+            )
 
         urlparts = urlsplit(url)
         connection_options = {}
         if recurly.SOCKET_TIMEOUT_SECONDS:
-            connection_options['timeout'] = recurly.SOCKET_TIMEOUT_SECONDS
-        if urlparts.scheme != 'https':
-            connection = http_client.HTTPConnection(urlparts.netloc, **connection_options)
+            connection_options["timeout"] = recurly.SOCKET_TIMEOUT_SECONDS
+        if urlparts.scheme != "https":
+            connection = http_client.HTTPConnection(
+                urlparts.netloc, **connection_options
+            )
         elif recurly.CA_CERTS_FILE is None:
-            connection = http_client.HTTPSConnection(urlparts.netloc, **connection_options)
+            connection = http_client.HTTPSConnection(
+                urlparts.netloc, **connection_options
+            )
         else:
-            connection_options['context'] = ssl.create_default_context(cafile=recurly.CA_CERTS_FILE)
-            connection = http_client.HTTPSConnection(urlparts.netloc, **connection_options)
+            connection_options["context"] = ssl.create_default_context(
+                cafile=recurly.CA_CERTS_FILE
+            )
+            connection = http_client.HTTPSConnection(
+                urlparts.netloc, **connection_options
+            )
 
         headers = {} if headers is None else dict(headers)
-        headers.setdefault('accept', 'application/xml')
-        headers.update({
-            'user-agent': recurly.USER_AGENT
-        })
-        headers['x-api-version'] = recurly.api_version()
-        headers['authorization'] = 'Basic %s' % base64.b64encode(six.b('%s:' % recurly.API_KEY)).decode()
+        headers.setdefault("accept", "application/xml")
+        headers.update({"user-agent": recurly.USER_AGENT})
+        headers["x-api-version"] = recurly.api_version()
+        headers["authorization"] = (
+            "Basic %s" % base64.b64encode(six.b("%s:" % recurly.API_KEY)).decode()
+        )
 
-        log = logging.getLogger('recurly.http.request')
+        log = logging.getLogger("recurly.http.request")
         if log.isEnabledFor(logging.DEBUG):
             log.debug("%s %s HTTP/1.1", method, url)
             for header, value in six.iteritems(headers):
-                if header == 'authorization':
-                    value = '<redacted>'
+                if header == "authorization":
+                    value = "<redacted>"
                 log.debug("%s: %s", header, value)
-            log.debug('')
-            if method in ('POST', 'PUT') and body is not None:
+            log.debug("")
+            if method in ("POST", "PUT") and body is not None:
                 if isinstance(body, Resource):
                     log.debug(body.as_log_output())
                 else:
                     log.debug(body)
 
         if isinstance(body, Resource):
-            body = ElementTreeBuilder.tostring(body.to_element(), encoding='UTF-8')
-            headers['content-type'] = 'application/xml; charset=utf-8'
-        if method in ('POST', 'PUT') and body is None:
-            headers['content-length'] = '0'
+            body = ElementTreeBuilder.tostring(body.to_element(), encoding="UTF-8")
+            headers["content-type"] = "application/xml; charset=utf-8"
+        if method in ("POST", "PUT") and body is None:
+            headers["content-length"] = "0"
         connection.request(method, url, body, headers)
         resp = connection.getresponse()
 
         resp_headers = cls.headers_as_dict(resp)
 
-        log = logging.getLogger('recurly.http.response')
+        log = logging.getLogger("recurly.http.response")
         if log.isEnabledFor(logging.DEBUG):
             log.debug("HTTP/1.1 %d %s", resp.status, resp.reason)
             log.debug(resp_headers)
-            log.debug('')
+            log.debug("")
 
         recurly.cache_rate_limit_headers(resp_headers)
 
@@ -309,7 +327,7 @@ class Resource(object):
     def headers_as_dict(cls, resp):
         """Turns an array of response headers into a dictionary"""
         if six.PY2:
-            pairs = [header.split(':', 1) for header in resp.msg.headers]
+            pairs = [header.split(":", 1) for header in resp.msg.headers]
             return dict([(k.lower(), v.strip()) for k, v in pairs])
         else:
             return dict([(k.lower(), v.strip()) for k, v in resp.msg._headers])
@@ -325,8 +343,8 @@ class Resource(object):
         elem = self.to_element()
         for attrname in self.sensitive_attributes:
             for sensitive_el in elem.iter(attrname):
-                sensitive_el.text = 'XXXXXXXXXXXXXXXX'
-        return ElementTreeBuilder.tostring(elem, encoding='UTF-8')
+                sensitive_el.text = "XXXXXXXXXXXXXXXX"
+        return ElementTreeBuilder.tostring(elem, encoding="UTF-8")
 
     @classmethod
     def _learn_nodenames(cls, classes):
@@ -337,7 +355,7 @@ class Resource(object):
                 continue
             if not rc_is_subclass:
                 continue
-            nodename = getattr(resource_class, 'nodename', None)
+            nodename = getattr(resource_class, "nodename", None)
             if nodename is None:
                 continue
 
@@ -362,7 +380,7 @@ class Resource(object):
     @classmethod
     def headers_for_url(cls, url):
         """Return the headers only for the given URL as a dict"""
-        response = cls.http_request(url, method='HEAD')
+        response = cls.http_request(url, method="HEAD")
         if response.status != 200:
             cls.raise_http_error(response)
 
@@ -377,10 +395,10 @@ class Resource(object):
         if response.status != 200:
             cls.raise_http_error(response)
 
-        assert response.getheader('content-type').startswith('application/xml')
+        assert response.getheader("content-type").startswith("application/xml")
 
         response_xml = response.read()
-        logging.getLogger('recurly.http.response').debug(response_xml)
+        logging.getLogger("recurly.http.response").debug(response_xml)
         response_doc = ElementTree.fromstring(response_xml)
 
         return response, response_doc
@@ -390,8 +408,10 @@ class Resource(object):
         try:
             return cls._classes_for_nodename[nodename]
         except KeyError:
-            raise ValueError("Could not determine resource class for array member with tag %r"
-                % nodename)
+            raise ValueError(
+                "Could not determine resource class for array member with tag %r"
+                % nodename
+            )
 
     @classmethod
     def value_for_element(cls, elem):
@@ -407,40 +427,55 @@ class Resource(object):
         * ``None``
 
         """
-        log = logging.getLogger('recurly.resource')
+        log = logging.getLogger("recurly.resource")
         if elem is None:
             log.debug("Converting %r element into None value", elem)
             return
 
-        if elem.attrib.get('nil') is not None:
-            log.debug("Converting %r element with nil attribute into None value", elem.tag)
+        if elem.attrib.get("nil") is not None:
+            log.debug(
+                "Converting %r element with nil attribute into None value", elem.tag
+            )
             return
 
-        if elem.tag.endswith('_in_cents') and 'currency' not in cls.attributes and not cls.inherits_currency:
-            log.debug("Converting %r element in class with no matching 'currency' into a Money value", elem.tag)
+        if (
+            elem.tag.endswith("_in_cents")
+            and "currency" not in cls.attributes
+            and not cls.inherits_currency
+        ):
+            log.debug(
+                "Converting %r element in class with no matching 'currency' into a Money value",
+                elem.tag,
+            )
             return Money.from_element(elem)
 
-        attr_type = elem.attrib.get('type')
+        attr_type = elem.attrib.get("type")
         log.debug("Converting %r element with type %r", elem.tag, attr_type)
 
-        if attr_type == 'integer':
+        if attr_type == "integer":
             return int(elem.text.strip())
-        if attr_type == 'float':
+        if attr_type == "float":
             return float(elem.text.strip())
-        if attr_type == 'boolean':
-            return elem.text.strip() == 'true'
-        if attr_type == 'datetime':
+        if attr_type == "boolean":
+            return elem.text.strip() == "true"
+        if attr_type == "datetime":
             return iso8601.parse_date(elem.text.strip())
-        if attr_type == 'array':
-            return [cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem) for sub_elem in elem]
+        if attr_type == "array":
+            return [
+                cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem)
+                for sub_elem in elem
+            ]
 
         # Unknown types may be the names of resource classes.
         if attr_type is not None:
             try:
                 value_class = cls._subclass_for_nodename(attr_type)
             except ValueError:
-                log.debug("Not converting %r element with type %r to a resource as that matches no known nodename",
-                    elem.tag, attr_type)
+                log.debug(
+                    "Not converting %r element with type %r to a resource as that matches no known nodename",
+                    elem.tag,
+                    attr_type,
+                )
             else:
                 return value_class.from_element(elem)
 
@@ -454,14 +489,17 @@ class Resource(object):
         if len(elem) > 1:
             first_tag = elem[0].tag
             last_tag = elem[-1].tag
-            # Check if the element have and array of items 
+            # Check if the element have and array of items
             # <items>
             #   <item>...</item>
             #   <item>...</item>
             #   <item>...</item>
             # </items>
-            if(first_tag == last_tag):
-                return [cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem) for sub_elem in elem]
+            if first_tag == last_tag:
+                return [
+                    cls._subclass_for_nodename(sub_elem.tag).from_element(sub_elem)
+                    for sub_elem in elem
+                ]
             # De-serialize one resource
             # <resource>
             #   <name>name</name>
@@ -473,7 +511,7 @@ class Resource(object):
                 log.debug("Converting %r tag into a %s", elem.tag, value_class.__name__)
                 return value_class.from_element(elem)
 
-        value = elem.text or ''
+        value = elem.text or ""
         return value.strip()
 
     @classmethod
@@ -500,22 +538,24 @@ class Resource(object):
         el = ElementTreeBuilder.Element(attrname)
 
         if value is None:
-            el.attrib['nil'] = 'nil'
+            el.attrib["nil"] = "nil"
         elif isinstance(value, bool):
-            el.attrib['type'] = 'boolean'
-            el.text = 'true' if value else 'false'
+            el.attrib["type"] = "boolean"
+            el.text = "true" if value else "false"
         elif isinstance(value, int):
-            el.attrib['type'] = 'integer'
+            el.attrib["type"] = "integer"
             el.text = str(value)
         elif isinstance(value, datetime):
-            el.attrib['type'] = 'datetime'
-            el.text = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            el.attrib["type"] = "datetime"
+            el.text = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, list) or isinstance(value, tuple):
             for sub_resource in value:
-                if hasattr(sub_resource, 'to_element'):
-                  el.append(sub_resource.to_element())
+                if hasattr(sub_resource, "to_element"):
+                    el.append(sub_resource.to_element())
                 else:
-                  el.append(cls.element_for_value(re.sub(r"s$", "", attrname), sub_resource))
+                    el.append(
+                        cls.element_for_value(re.sub(r"s$", "", attrname), sub_resource)
+                    )
         elif isinstance(value, Money):
             value.add_to_element(el)
         else:
@@ -525,7 +565,7 @@ class Resource(object):
 
     @classmethod
     def paginated(self, url):
-        """ Exposes Page.page_for_url in Resource """
+        """Exposes Page.page_for_url in Resource"""
         return Page.page_for_url(url)
 
     @classmethod
@@ -545,7 +585,7 @@ class Resource(object):
             except AttributeError:
                 pass
 
-        document_url = elem.attrib.get('href')
+        document_url = elem.attrib.get("href")
         if document_url is not None:
             self._url = document_url
 
@@ -554,7 +594,7 @@ class Resource(object):
     def _make_actionator(self, url, method, extra_handler=None):
         def actionator(*args, **kwargs):
             if kwargs:
-                full_url = '%s?%s' % (url, urlencode_params(kwargs))
+                full_url = "%s?%s" % (url, urlencode_params(kwargs))
             else:
                 full_url = url
 
@@ -563,11 +603,11 @@ class Resource(object):
 
             if response.status == 200:
                 response_xml = response.read()
-                logging.getLogger('recurly.http.response').debug(response_xml)
+                logging.getLogger("recurly.http.response").debug(response_xml)
                 return self.update_from_element(ElementTree.fromstring(response_xml))
             elif response.status == 201:
                 response_xml = response.read()
-                logging.getLogger('recurly.http.response').debug(response_xml)
+                logging.getLogger("recurly.http.response").debug(response_xml)
                 elem = ElementTree.fromstring(response_xml)
                 return self.value_for_element(elem)
             elif response.status == 204:
@@ -576,14 +616,15 @@ class Resource(object):
                 return extra_handler(response)
             else:
                 self.raise_http_error(response)
+
         return actionator
 
-    #usually the path is the same as the element name
+    # usually the path is the same as the element name
     def __getpath__(self, name):
         return name
 
     def __getattr__(self, name):
-        if name.startswith('_'):
+        if name.startswith("_"):
             raise AttributeError(name)
 
         try:
@@ -601,20 +642,21 @@ class Resource(object):
 
         if elem is None:
             # It might be an <a name> link.
-            for anchor_elem in selfnode.findall('a'):
-                if anchor_elem.attrib.get('name') == name:
-                    url = anchor_elem.attrib['href']
-                    method = anchor_elem.attrib['method'].upper()
+            for anchor_elem in selfnode.findall("a"):
+                if anchor_elem.attrib.get("name") == name:
+                    url = anchor_elem.attrib["href"]
+                    method = anchor_elem.attrib["method"].upper()
                     return self._make_actionator(url, method)
 
             raise AttributeError(name)
 
         # Follow links.
-        if 'href' in elem.attrib:
+        if "href" in elem.attrib:
+
             def make_relatitator(url):
                 def relatitator(**kwargs):
                     if kwargs:
-                        full_url = '%s?%s' % (url, urlencode_params(kwargs))
+                        full_url = "%s?%s" % (url, urlencode_params(kwargs))
                     else:
                         full_url = url
 
@@ -624,12 +666,13 @@ class Resource(object):
                     if isinstance(value, list):
                         return Page.page_for_value(resp, value)
                     return value
+
                 return relatitator
 
-            url = elem.attrib['href']
+            url = elem.attrib["href"]
 
             # has no url or has children
-            if url == '' or len(elem) > 0:
+            if url == "" or len(elem) > 0:
                 return self.value_for_element(elem)
             else:
                 return make_relatitator(url)
@@ -649,7 +692,7 @@ class Resource(object):
         """
         url = recurly.base_uri() + cls.collection_path
         if kwargs:
-            url = '%s?%s' % (url, urlencode_params(kwargs))
+            url = "%s?%s" % (url, urlencode_params(kwargs))
         return Page.page_for_url(url)
 
     @classmethod
@@ -659,7 +702,7 @@ class Resource(object):
         """
         url = recurly.base_uri() + cls.collection_path
         if kwargs:
-            url = '%s?%s' % (url, urlencode_params(kwargs))
+            url = "%s?%s" % (url, urlencode_params(kwargs))
         return Page.count_for_url(url)
 
     def save(self):
@@ -671,7 +714,7 @@ class Resource(object):
         to its own URL.
 
         """
-        if hasattr(self, '_url'):
+        if hasattr(self, "_url"):
             return self._update()
         return self._create()
 
@@ -685,32 +728,39 @@ class Resource(object):
     def put(self, url):
         """Sends this `Resource` instance to the service with a
         ``PUT`` request to the given URL."""
-        response = self.http_request(url, 'PUT', self, {'content-type': 'application/xml; charset=utf-8'})
+        response = self.http_request(
+            url, "PUT", self, {"content-type": "application/xml; charset=utf-8"}
+        )
         if response.status != 200:
             self.raise_http_error(response)
 
         response_xml = response.read()
-        logging.getLogger('recurly.http.response').debug(response_xml)
+        logging.getLogger("recurly.http.response").debug(response_xml)
         self.update_from_element(ElementTree.fromstring(response_xml))
 
     def post(self, url, body=None):
         """Sends this `Resource` instance to the service with a
         ``POST`` request to the given URL. Takes an optional body"""
-        response = self.http_request(url, 'POST', body or self, {'content-type': 'application/xml; charset=utf-8'})
+        response = self.http_request(
+            url,
+            "POST",
+            body or self,
+            {"content-type": "application/xml; charset=utf-8"},
+        )
         if response.status not in (200, 201, 204):
             self.raise_http_error(response)
 
-        self._url = response.getheader('location')
+        self._url = response.getheader("location")
 
         if response.status in (200, 201):
             response_xml = response.read()
-            logging.getLogger('recurly.http.response').debug(response_xml)
+            logging.getLogger("recurly.http.response").debug(response_xml)
             self.update_from_element(ElementTree.fromstring(response_xml))
 
     def delete(self):
         """Submits a deletion request for this `Resource` instance as
         a ``DELETE`` request to its URL."""
-        response = self.http_request(self._url, 'DELETE')
+        response = self.http_request(self._url, "DELETE")
         if response.status != 204:
             self.raise_http_error(response)
 
@@ -719,7 +769,7 @@ class Resource(object):
         """Raise a `ResponseError` of the appropriate subclass in
         reaction to the given `http_client.HTTPResponse`."""
         response_xml = response.read()
-        logging.getLogger('recurly.http.response').debug(response_xml)
+        logging.getLogger("recurly.http.response").debug(response_xml)
         exc_class = recurly.errors.error_class_for_http_status(response.status)
         raise exc_class(response_xml)
 
@@ -738,12 +788,12 @@ class Resource(object):
             except KeyError:
                 continue
             # With one exception, type is an element xml attribute, e.g. <billing info type="credit_card"> or <adjustment type="charge">
-            # For billing_info, type property takes precedence over xml attribute when type = bacs or becs, e.g. <billing info><type>bacs</type></billing_info>. 
+            # For billing_info, type property takes precedence over xml attribute when type = bacs or becs, e.g. <billing info><type>bacs</type></billing_info>.
             if attrname in self.xml_attribute_attributes and (
-              (root_name != 'billing_info' and attrname == 'type') 
-              or (root_name == 'billing_info' and value not in ('bacs', 'becs'))
+                (root_name != "billing_info" and attrname == "type")
+                or (root_name == "billing_info" and value not in ("bacs", "becs"))
             ):
-              elem.attrib[attrname] = six.text_type(value)
+                elem.attrib[attrname] = six.text_type(value)
             else:
                 sub_elem = self.element_for_value(attrname, value)
                 elem.append(sub_elem)

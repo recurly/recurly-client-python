@@ -19,23 +19,24 @@ def xml(text):
     doc = ElementTree.fromstring(text)
     for el in doc.iter():
         if el.text and el.text.isspace():
-            el.text = ''
+            el.text = ""
         if el.tail and el.tail.isspace():
-            el.tail = ''
-    return ElementTree.tostring(doc, encoding='UTF-8')
+            el.tail = ""
+    return ElementTree.tostring(doc, encoding="UTF-8")
 
 
 class MockRequestManager(object):
-
     def __init__(self, fixture):
         self.fixture = fixture
 
     def __enter__(self):
-        self.request_context = mock.patch.object(http_client.HTTPConnection, 'request')
+        self.request_context = mock.patch.object(http_client.HTTPConnection, "request")
         self.request_context.return_value = None
         self.request_mock = self.request_context.__enter__()
 
-        self.fixture_file = open(join(dirname(__file__), 'fixtures', self.fixture), 'rb')
+        self.fixture_file = open(
+            join(dirname(__file__), "fixtures", self.fixture), "rb"
+        )
 
         # Read through the request.
         preamble_line = self.fixture_file.readline().strip()
@@ -44,8 +45,10 @@ class MockRequestManager(object):
             self.method = self.method.decode()
             self.uri = self.uri.decode()
         except ValueError:
-            raise ValueError("Couldn't parse preamble line from fixture file %r; does it have a fixture in it?"
-                % self.fixture)
+            raise ValueError(
+                "Couldn't parse preamble line from fixture file %r; does it have a fixture in it?"
+                % self.fixture
+            )
 
         # Read request headers
         def read_headers(fp):
@@ -54,17 +57,22 @@ class MockRequestManager(object):
                     line = fp.readline()
                 except EOFError:
                     return
-                if not line or line == six.b('\n'):
+                if not line or line == six.b("\n"):
                     return
                 yield line
 
         if six.PY2:
             msg = http_client.HTTPMessage(self.fixture_file, 0)
-            self.headers = dict((k.lower(), v.strip()) for k, v in (header.split(':', 1) for header in msg.headers))
+            self.headers = dict(
+                (k.lower(), v.strip())
+                for k, v in (header.split(":", 1) for header in msg.headers)
+            )
         else:
             # http.client.HTTPMessage doesn't have importing headers from file
             msg = http_client.HTTPMessage()
-            headers = email.message_from_bytes(six.b('').join(read_headers(self.fixture_file)))
+            headers = email.message_from_bytes(
+                six.b("").join(read_headers(self.fixture_file))
+            )
             self.headers = dict((k.lower(), v.strip()) for k, v in headers._headers)
             # self.headers = {k: v for k, v in headers._headers}
         msg.fp = None
@@ -76,15 +84,17 @@ class MockRequestManager(object):
                     line = fp.readline()
                 except EOFError:
                     return
-                if not line or line.startswith(six.b('\x16')):
+                if not line or line.startswith(six.b("\x16")):
                     return
                 yield line
 
-        body = six.b('').join(nextline(self.fixture_file))  # exhaust the request either way
+        body = six.b("").join(
+            nextline(self.fixture_file)
+        )  # exhaust the request either way
         self.body = None
-        if self.method in ('PUT', 'POST'):
-            if 'content-type' in self.headers:
-                if 'application/xml' in self.headers['content-type']:
+        if self.method in ("PUT", "POST"):
+            if "content-type" in self.headers:
+                if "application/xml" in self.headers["content-type"]:
                     self.body = xml(body)
                 else:
                     self.body = body
@@ -95,8 +105,9 @@ class MockRequestManager(object):
         response = http_client.HTTPResponse(sock, method=self.method)
         response.begin()
 
-
-        self.response_context = mock.patch.object(http_client.HTTPConnection, 'getresponse', lambda self: response)
+        self.response_context = mock.patch.object(
+            http_client.HTTPConnection, "getresponse", lambda self: response
+        )
         self.response_mock = self.response_context.__enter__()
 
         recurly.cache_rate_limit_headers(self.headers)
@@ -105,11 +116,18 @@ class MockRequestManager(object):
 
     def assert_request(self):
         headers = dict(self.headers)
-        if 'user-agent' in headers:
+        if "user-agent" in headers:
             import recurly
-            headers['user-agent'] = headers['user-agent'].replace('{user-agent}', recurly.USER_AGENT)
-        headers['x-api-version'] = headers['x-api-version'].replace('{api-version}', recurly.API_VERSION)
-        self.request_mock.assert_called_once_with(self.method, self.uri, self.body, headers)
+
+            headers["user-agent"] = headers["user-agent"].replace(
+                "{user-agent}", recurly.USER_AGENT
+            )
+        headers["x-api-version"] = headers["x-api-version"].replace(
+            "{api-version}", recurly.API_VERSION
+        )
+        self.request_mock.assert_called_once_with(
+            self.method, self.uri, self.body, headers
+        )
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.fixture_file.close()
@@ -127,7 +145,6 @@ def noop_request_manager():
 
 
 class RecurlyTest(unittest.TestCase):
-
     def mock_request(self, *args, **kwargs):
         return MockRequestManager(*args, **kwargs)
 
@@ -145,25 +162,25 @@ class RecurlyTest(unittest.TestCase):
 
         # Mock everything out unless we have an API key.
         try:
-            api_key = os.environ['RECURLY_API_KEY']
+            api_key = os.environ["RECURLY_API_KEY"]
         except KeyError:
             # Mock everything out.
-            recurly.API_KEY = 'apikey'
-            self.test_id = 'mock'
+            recurly.API_KEY = "apikey"
+            self.test_id = "mock"
         else:
             recurly.API_KEY = api_key
-            recurly.CA_CERTS_FILE = os.environ.get('RECURLY_CA_CERTS_FILE')
+            recurly.CA_CERTS_FILE = os.environ.get("RECURLY_CA_CERTS_FILE")
             self.mock_request = self.noop_mock_request
             self.mock_sleep = self.noop_mock_sleep
-            self.test_id = datetime.now().strftime('%Y%m%d%H%M%S')
+            self.test_id = datetime.now().strftime("%Y%m%d%H%M%S")
 
         # Update our endpoint if we have a different test host.
         try:
-            recurly_host = os.environ['RECURLY_HOST']
+            recurly_host = os.environ["RECURLY_HOST"]
         except KeyError:
             pass
         else:
-            recurly.BASE_URI = 'https://%s/v2/' % recurly_host
+            recurly.BASE_URI = "https://%s/v2/" % recurly_host
 
         logging.basicConfig(level=logging.INFO)
-        logging.getLogger('recurly').setLevel(logging.DEBUG)
+        logging.getLogger("recurly").setLevel(logging.DEBUG)
