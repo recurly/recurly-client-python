@@ -10,12 +10,12 @@ Content-Type: application/xml; charset=utf-8
   <plan_interval_length type="integer">2</plan_interval_length>
   <plan_interval_unit>months</plan_interval_unit>
   <setup_fee_accounting_code>Setup Fee AC</setup_fee_accounting_code>
-  <unit_amount_in_cents>
-    <USD type="integer">2000</USD>
-  </unit_amount_in_cents>
   <setup_fee_in_cents>
     <USD type="integer">200</USD>
   </setup_fee_in_cents>
+  <unit_amount_in_cents>
+    <USD type="integer">2000</USD>
+  </unit_amount_in_cents>
 </plan>
 
 HTTP/1.1 200 OK

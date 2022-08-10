@@ -35,7 +35,7 @@ Content-Type: application/xml; charset=utf-8
   <setup_fee_in_cents>
     <USD type="integer">200</USD>
   </setup_fee_in_cents>
-  <ramp_intervals>
+  <ramp_intervals type="array">
     <ramp_interval>
       <starting_billing_cycle type="integer">1</starting_billing_cycle>
       <unit_amount_in_cents>

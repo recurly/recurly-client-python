@@ -10,16 +10,16 @@ Content-Type: application/xml; charset=utf-8
   <account_code>binfo-mock-6</account_code>
   <email>verena@example.com</email>
   <billing_info>
-    <type>becs</type>
-    <name_on_account>BECS Test</name_on_account>
-    <address1>125 Paper Street</address1>
-    <city>Adelaide</city>
-    <zip>123456</zip>
-    <country>AU</country>
-    <phone>213-555-5555</phone>
     <account_number>123456</account_number>
-    <currency>AUD</currency>
+    <address1>125 Paper Street</address1>
     <bsb_code>082-082</bsb_code>
+    <city>Adelaide</city>
+    <country>AU</country>
+    <currency>AUD</currency>
+    <name_on_account>BECS Test</name_on_account>
+    <phone>213-555-5555</phone>
+    <type>becs</type>
+    <zip>123456</zip>
   </billing_info>
 </account>
 

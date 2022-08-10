@@ -7,28 +7,28 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <purchase>
-	<account>
-		<account_code>testmock</account_code>
-	</account>
-	<currency>USD</currency>
-	<subscriptions>
-		<subscription>
-			<plan_code>gold</plan_code>
-		</subscription>
-	</subscriptions>
-	<shipping_address>
-		<address1>456 Pillow Fort Drive</address1>
-		<city>New Orleans</city>
-		<country>US</country>
-		<first_name>Verena</first_name>
-		<last_name>Example</last_name>
-		<nickname>Work</nickname>
-		<state>LA</state>
-		<zip>70114</zip>
-	</shipping_address>
-	<gateway_code>aBcD1234</gateway_code>
-	<collection_method>manual</collection_method>
-	<billing_info_uuid>uniqueUuid</billing_info_uuid>
+  <account>
+    <account_code>testmock</account_code>
+  </account>
+  <billing_info_uuid>uniqueUuid</billing_info_uuid>
+  <collection_method>manual</collection_method>
+  <currency>USD</currency>
+  <gateway_code>aBcD1234</gateway_code>
+  <shipping_address>
+    <address1>456 Pillow Fort Drive</address1>
+    <city>New Orleans</city>
+    <country>US</country>
+    <first_name>Verena</first_name>
+    <last_name>Example</last_name>
+    <nickname>Work</nickname>
+    <state>LA</state>
+    <zip>70114</zip>
+  </shipping_address>
+  <subscriptions>
+    <subscription>
+      <plan_code>gold</plan_code>
+    </subscription>
+  </subscriptions>
 </purchase>
 
 HTTP/1.1 201 Created

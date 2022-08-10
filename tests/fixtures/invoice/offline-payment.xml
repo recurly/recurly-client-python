@@ -7,8 +7,8 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <transaction>
-  <currency>USD</currency>
   <amount_in_cents type="integer">5000</amount_in_cents>
+  <currency>USD</currency>
   <description>Collected externally</description>
   <payment_method>paypal</payment_method>
 </transaction>

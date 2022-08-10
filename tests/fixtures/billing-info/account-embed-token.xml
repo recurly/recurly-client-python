@@ -9,8 +9,8 @@ Content-Type: application/xml; charset=utf-8
 <account>
   <account_code>binfo-mock-3</account_code>
   <billing_info>
-    <token_id>abc123</token_id>
     <currency>USD</currency>
+    <token_id>abc123</token_id>
   </billing_info>
 </account>
 

@@ -7,15 +7,15 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <coupon>
-    <coupon_code>itemcouponmock</coupon_code>
-    <name>Item Coupon</name>
-    <discount_type>dollars</discount_type>
-    <discount_in_cents>
-        <USD type="integer">2000</USD>
-    </discount_in_cents>
-    <item_codes type="array">
-        <item_code>newitem</item_code>
-    </item_codes>
+  <coupon_code>itemcouponmock</coupon_code>
+  <discount_in_cents>
+    <USD type="integer">2000</USD>
+  </discount_in_cents>
+  <discount_type>dollars</discount_type>
+  <item_codes type="array">
+    <item_code>newitem</item_code>
+  </item_codes>
+  <name>Item Coupon</name>
 </coupon>
 
 HTTP/1.1 201 Created

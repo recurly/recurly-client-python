@@ -7,32 +7,31 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <plan>
-  <plan_code>planmock</plan_code>
   <name>Mock Plan</name>
+  <plan_code>planmock</plan_code>
+  <pricing_model>ramp</pricing_model>
+  <ramp_intervals>
+    <ramp_interval>
+      <starting_billing_cycle type="integer">1</starting_billing_cycle>
+      <unit_amount_in_cents>
+        <USD type="integer">2000</USD>
+      </unit_amount_in_cents>
+    </ramp_interval>
+    <ramp_interval>
+      <starting_billing_cycle type="integer">2</starting_billing_cycle>
+      <unit_amount_in_cents>
+        <USD type="integer">3000</USD>
+      </unit_amount_in_cents>
+    </ramp_interval>
+  </ramp_intervals>
   <setup_fee_in_cents>
     <USD type="integer">200</USD>
   </setup_fee_in_cents>
   <total_billing_cycles type="integer">10</total_billing_cycles>
-  <pricing_model>ramp</pricing_model>
-  <ramp_intervals>
-    <ramp_interval>
-      <unit_amount_in_cents>
-        <USD type="integer">2000</USD>
-      </unit_amount_in_cents>
-      <starting_billing_cycle type="integer">1</starting_billing_cycle>
-    </ramp_interval>
-    <ramp_interval>
-      <unit_amount_in_cents>
-        <USD type="integer">3000</USD>
-      </unit_amount_in_cents>
-      <starting_billing_cycle type="integer">2</starting_billing_cycle>
-    </ramp_interval>
-  </ramp_intervals>
 </plan>
 
 HTTP/1.1 201 Created
 Content-Type: application/xml; charset=utf-8
-Location: https://api.recurly.com/v2/plans/planmock
 
 <?xml version="1.0" encoding="UTF-8"?>
 <plan href="https://api.recurly.com/v2/plans/planmock">
@@ -58,7 +57,7 @@ Location: https://api.recurly.com/v2/plans/planmock
   <setup_fee_in_cents>
     <USD type="integer">200</USD>
   </setup_fee_in_cents>
-  <ramp_intervals>
+  <ramp_intervals type="array">
     <ramp_interval>
       <starting_billing_cycle type="integer">1</starting_billing_cycle>
       <unit_amount_in_cents>

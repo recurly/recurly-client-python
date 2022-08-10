@@ -9,9 +9,9 @@ Content-Type: application/xml; charset=utf-8
 <account>
   <account_code>binfo-mock-4</account_code>
   <billing_info>
-    <name_on_account>Account Name</name_on_account>
     <currency>USD</currency>
     <iban>FR1420041010050500013M02606</iban>
+    <name_on_account>Account Name</name_on_account>
   </billing_info>
 </account>
 

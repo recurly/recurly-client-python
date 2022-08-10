@@ -7,14 +7,14 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <plan>
-  <plan_code>planmock</plan_code>
   <name>Mock Plan</name>
-  <unit_amount_in_cents>
-    <USD type="integer">1000</USD>
-  </unit_amount_in_cents>
+  <plan_code>planmock</plan_code>
   <setup_fee_in_cents>
     <USD type="integer">0</USD>
   </setup_fee_in_cents>
+  <unit_amount_in_cents>
+    <USD type="integer">1000</USD>
+  </unit_amount_in_cents>
 </plan>
 
 HTTP/1.1 201 Created

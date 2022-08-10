@@ -10,8 +10,8 @@ Content-Type: application/xml; charset=utf-8
   <account>
     <account_code>transactionmock</account_code>
   </account>
-  <currency>USD</currency>
   <amount_in_cents type="integer">1000</amount_in_cents>
+  <currency>USD</currency>
 </transaction>
 
 HTTP/1.1 530 Origin DNS Error
