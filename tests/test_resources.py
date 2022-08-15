@@ -155,6 +155,146 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection.charge_invoice, Invoice)
             self.assertEqual(purchase.billing_info_uuid, 'uniqueUuid')
 
+    def test_purchase_with_ramp_plan(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                currency = 'USD',
+                gateway_code = 'aBcD1234',
+                collection_method = 'automatic',
+                shipping_address = ShippingAddress(
+                    first_name = 'Verena',
+                    last_name = 'Example',
+                    address1 = '456 Pillow Fort Drive',
+                    city = 'New Orleans',
+                    state = 'LA',
+                    zip = '70114',
+                    country = 'US',
+                    nickname = 'Work'
+                ),
+                account = Account(
+                    account_code = account_code,
+                    billing_info = BillingInfo(
+                        first_name = 'Verena',
+                        last_name = 'Example',
+                        number = '4111-1111-1111-1111',
+                        verification_value = '123',
+                        month = 11,
+                        year = 2020,
+                        address1 = '123 Main St',
+                        city = 'New Orleans',
+                        state = 'LA',
+                        zip = '70114',
+                        country = 'US'
+                    )
+                ),
+                subscriptions = [
+                    recurly.Subscription(plan_code = 'ramp-plan')
+                ],
+            )
+        
+        with self.mock_request('purchase-with-ramp/invoiced.xml'):
+            collection = create_purchase().invoice()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(collection.charge_invoice.total_in_cents, 7000)
+            self.assertEqual(collection.charge_invoice.refundable_total_in_cents, 7000)
+
+        with self.mock_request('purchase-with-ramp/previewed.xml'):
+            collection = create_purchase().preview()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+
+        with self.mock_request('purchase-with-ramp/authorized.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            collection = purchase.authorize()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+        with self.mock_request('purchase-with-ramp/pending.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            collection = purchase.pending()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+
+    def test_purchase_with_ramp_intervals(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            
+            subscription = recurly.Subscription(
+                plan_code = 'ramp-plan',
+                ramp_intervals = [
+                    recurly.SubRampInterval(
+                        starting_billing_cycle=1,
+                        unit_amount_in_cents=2000
+                    ),
+                    recurly.SubRampInterval(
+                        starting_billing_cycle=3,
+                        unit_amount_in_cents=3000
+                    )
+                ]
+            )
+            return Purchase(
+                currency = 'USD',
+                gateway_code = 'aBcD1234',
+                collection_method = 'automatic',
+                shipping_address = ShippingAddress(
+                    first_name = 'Verena',
+                    last_name = 'Example',
+                    address1 = '456 Pillow Fort Drive',
+                    city = 'New Orleans',
+                    state = 'LA',
+                    zip = '70114',
+                    country = 'US',
+                    nickname = 'Work'
+                ),
+                account = Account(
+                    account_code = account_code,
+                    billing_info = BillingInfo(
+                        first_name = 'Verena',
+                        last_name = 'Example',
+                        number = '4111-1111-1111-1111',
+                        verification_value = '123',
+                        month = 11,
+                        year = 2020,
+                        address1 = '123 Main St',
+                        city = 'New Orleans',
+                        state = 'LA',
+                        zip = '70114',
+                        country = 'US',
+                    )
+                ),
+                subscriptions = [
+                    subscription
+                ],
+            )
+        
+        with self.mock_request('purchase-with-ramp-intervals/invoiced.xml'):
+            collection = create_purchase().invoice()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(collection.charge_invoice.total_in_cents, 7000)
+            self.assertEqual(collection.charge_invoice.refundable_total_in_cents, 7000)
+
+        with self.mock_request('purchase-with-ramp-intervals/previewed.xml'):
+            collection = create_purchase().preview()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+
+        with self.mock_request('purchase-with-ramp-intervals/authorized.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            collection = purchase.authorize()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+        with self.mock_request('purchase-with-ramp-intervals/pending.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'benjamin.dumonde@example.com'
+            collection = purchase.pending()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+
     def test_account(self):
         account_code = 'test%s' % self.test_id
         with self.mock_request('account/does-not-exist.xml'):

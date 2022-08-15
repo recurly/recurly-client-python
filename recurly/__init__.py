@@ -896,6 +896,7 @@ class Adjustment(Resource):
         'revenue_schedule_type',
         'shipping_address',
         'shipping_address_id',
+        'refundable_total_in_cents',
     )
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {'tax_detail': TaxDetail, 'shipping_address': ShippingAddress}
@@ -959,6 +960,7 @@ class Invoice(Resource):
         'billing_info',
         'billing_info_uuid',
         'dunning_campaign_id',
+        'refundable_in_cents'
     )
 
     blacklist_attributes = (
@@ -1185,7 +1187,8 @@ class Purchase(Resource):
         'gateway_code',
         'collection_method',
         'transaction_type',
-        'billing_info_uuid'
+        'billing_info_uuid',
+        'ramp_intervals',
     )
 
     def invoice(self):
@@ -1321,11 +1324,6 @@ class PlanRampInterval(Resource):
         'unit_amount_in_cents',
         'starting_billing_cycle'
     }
-    
-    def __str__(self):
-        return 'PlanRampInterval(starting_billing_cycle={},unit_amount_in_cents={})'.format(self.starting_billing_cycle, self.unit_amount_in_cents.currencies)
-
-
 class Plan(Resource):
 
     """A service level for your service to which a customer account
@@ -1399,9 +1397,6 @@ class SubRampInterval(Resource):
         'starting_billing_cycle',
         'remaining_billing_cycles'
     }
-
-    def __str__(self):
-        return 'SubRampInterval(starting_billing_cycle={},unit_amount_in_cents={}),remaining_billing_cycles={}' .format(self.starting_billing_cycle, self.unit_amount_in_cents, self.remaining_billing_cycles)
 
 class SubAddOnPercentageTier(Resource):
 
@@ -1532,7 +1527,7 @@ class Subscription(Resource):
         'custom_field': CustomField,
         'invoice_collection': InvoiceCollection,
         'plan': Plan,
-        'ramp_interval': SubRampInterval, 
+        'ramp_interval': SubRampInterval,
         'subscription_add_on': SubscriptionAddOn,
     }
 
@@ -1845,7 +1840,7 @@ class MeasuredUnit(Resource):
 
 class PercentageTier(Resource):
 
-    """Percentage tier associated to a set of tiers per currency 
+    """Percentage tier associated to a set of tiers per currency
     in an add-on."""
 
     nodename = 'tier'
