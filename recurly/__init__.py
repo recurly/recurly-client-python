@@ -374,9 +374,7 @@ class Account(Resource):
           elem.append(Resource.element_for_value('verification_value', verification_value))
           body = ElementTree.tostring(elem, encoding='UTF-8')
           response = self.http_request(url, 'POST', body, {'content-type':'application/xml; charset=utf-8'})
-          print("printing stuff")
       else:
-          print("printing more stuff")
           response = self.http_request(url, 'POST')
 
       if response.status != 200:
