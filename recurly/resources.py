@@ -817,6 +817,38 @@ class TransactionPaymentGateway(Resource):
     }
 
 
+class ErrorMayHaveCVV(Resource):
+    """
+    Attributes
+    ----------
+    message : str
+        The security code you entered does not match. Please update the CVV and try again.
+    type : str
+        Type
+    """
+
+    schema = {
+        "message": str,
+        "type": str,
+    }
+
+
+class ErrorOverLimit(Resource):
+    """
+    Attributes
+    ----------
+    message : str
+        This credit card has too many cvv check attempts.
+    type : str
+        Type
+    """
+
+    schema = {
+        "message": str,
+        "type": str,
+    }
+
+
 class CouponRedemption(Resource):
     """
     Attributes
