@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.9.30](https://github.com/recurly/recurly-client-python/tree/2.9.30) (2022-08-24)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.29...2.9.30)
+
+
+**Merged Pull Requests**
+
+- Added support for ramp-pricing purchases  [#584](https://github.com/recurly/recurly-client-python/pull/584) ([Mozart2234](https://github.com/Mozart2234))
+- Adds support for subscription with ramps [#577](https://github.com/recurly/recurly-client-python/pull/577) ([Mozart2234](https://github.com/Mozart2234))
+- Added support for ramp-pricing plans [#574](https://github.com/recurly/recurly-client-python/pull/574) ([Mozart2234](https://github.com/Mozart2234))
+
+
+
 ## [2.9.29](https://github.com/recurly/recurly-client-python/tree/2.9.29) (2022-06-17)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.28...2.9.29)
