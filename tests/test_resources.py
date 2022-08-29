@@ -86,6 +86,7 @@ class TestResources(RecurlyTest):
                         verification_value = '123',
                         month = 11,
                         year = 2020,
+                        card_type = 'visa',
                         address1 = '123 Main St',
                         city = 'New Orleans',
                         state = 'LA',
@@ -181,6 +182,7 @@ class TestResources(RecurlyTest):
                         verification_value = '123',
                         month = 11,
                         year = 2020,
+                        card_type = 'visa',
                         address1 = '123 Main St',
                         city = 'New Orleans',
                         state = 'LA',
@@ -258,6 +260,7 @@ class TestResources(RecurlyTest):
                         verification_value = '123',
                         month = 11,
                         year = 2020,
+                        card_type = 'visa',
                         address1 = '123 Main St',
                         city = 'New Orleans',
                         state = 'LA',
@@ -467,6 +470,7 @@ class TestResources(RecurlyTest):
             verification_value = '123',
             month = 10,
             year = 2049,
+            card_type = 'visa',
             address1 = '12345 Main St',
             city = 'New Orleans',
             state = 'LA',
@@ -806,6 +810,7 @@ class TestResources(RecurlyTest):
                 verification_value='7777',
                 year='2015',
                 month='12',
+                card_type = 'visa',
                 gateway_token='gatewaytoken123',
                 gateway_code='gatewaycode123',
             )
@@ -855,6 +860,7 @@ class TestResources(RecurlyTest):
             verification_value='7777',
             year='2015',
             month='12',
+            card_type='visa',
         )
         with self.mock_request('billing-info/account-embed-created.xml'):
             account.save()
@@ -1177,6 +1183,7 @@ class TestResources(RecurlyTest):
                             state='CA',
                             zip='94105',
                             country='US',
+                            card_type='visa',
                             verification_value='7777',
                             year='2015',
                             month='12',
@@ -1915,6 +1922,7 @@ class TestResources(RecurlyTest):
                     verification_value='7777',
                     year='2015',
                     month='12',
+                    card_type='visa',
                 )
                 with self.mock_request('subscription/update-billing-info.xml'):
                     account.update_billing_info(binfo)
@@ -2020,6 +2028,7 @@ class TestResources(RecurlyTest):
                             verification_value='7777',
                             year='2015',
                             month='12',
+                            card_type='visa',
                         ),
                     ),
                 )
@@ -2057,6 +2066,7 @@ class TestResources(RecurlyTest):
                         verification_value='7777',
                         year='2015',
                         month='12',
+                        card_type='visa',
                     ),
                 ),
             )
@@ -2279,6 +2289,7 @@ class TestResources(RecurlyTest):
                         verification_value='7777',
                         year='2015',
                         month='12',
+                        card_type='visa',
                     ),
                 ),
             )
@@ -2357,6 +2368,7 @@ class TestResources(RecurlyTest):
                     verification_value='7777',
                     year='2015',
                     month='12',
+                    card_type='visa',
                 ),
                 custom_fields=[CustomField(name='my_account_field', value='here is the account value you seek')],
             ),
@@ -2436,6 +2448,7 @@ class TestResources(RecurlyTest):
                     country='US',
                     month='7',
                     verification_value='7777',
+                    card_type='visa',
                 ),
             )
         )
@@ -2568,6 +2581,7 @@ class TestResources(RecurlyTest):
                 verification_value='7777',
                 year='2015',
                 month='12',
+                card_type='visa',
             )
             with self.mock_request('transaction-balance/set-billing-info.xml'):
                 account.update_billing_info(binfo)
@@ -2628,6 +2642,7 @@ class TestResources(RecurlyTest):
         billing_info.month = 11
         billing_info.year = 2019
         billing_info.country = 'US'
+        billing_info.card_type = 'visa'
 
         address = Address()
         address.address1 = '400 Alabama St'

@@ -16,6 +16,7 @@ Content-Type: application/xml; charset=utf-8
   <last_name>DuMonde</last_name>
   <month type="integer">10</month>
   <number>4111111111111111</number>
+  <card_type>visa</card_type>
   <primary_payment_method type="boolean">true</primary_payment_method>
   <state>LA</state>
   <verification_value>123</verification_value>
