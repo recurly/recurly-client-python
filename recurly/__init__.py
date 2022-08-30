@@ -367,6 +367,23 @@ class Account(Resource):
       elem = ElementTree.fromstring(response_xml)
       return Transaction.from_element(elem)
 
+    def verify_cvv(self, verification_value = None):
+      url = urljoin(self._url, '/billing_info/verify_cvv')
+      if verification_value:
+          elem = ElementTreeBuilder.Element('billing_info')
+          elem.append(Resource.element_for_value('verification_value', verification_value))
+          body = ElementTree.tostring(elem, encoding='UTF-8')
+          response = self.http_request(url, 'POST', body, {'content-type':'application/xml; charset=utf-8'})
+      else:
+          response = self.http_request(url, 'POST')
+
+      if response.status != 200:
+          self.raise_http_error(response)
+      response_xml = response.read()
+      logging.getLogger('recurly.http.response').debug(response_xml)
+      elem = ElementTree.fromstring(response_xml)
+      return BillingInfo.from_element(elem)
+
     def update_billing_info(self, billing_info):
         """Change this account's billing information to the given `BillingInfo`."""
         # billing_info._url is only present when the site is using the wallet feature
@@ -486,6 +503,9 @@ class BillingInfo(Resource):
     # References Account#verify
     def verify(self, account_code, gateway_code = None):
       recurly.Account.get(account_code).verify(gateway_code)
+
+    def verify_cvv(self, account_code, verification_value = None):
+      recurly.Account.get(account_code).verify_cvv(verification_value)
 
 class ShippingAddress(Resource):
 

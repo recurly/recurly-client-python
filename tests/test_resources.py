@@ -877,6 +877,10 @@ class TestResources(RecurlyTest):
                 verified = same_account.verify('gateway-code')
                 self.assertEqual(verified.origin, 'api_verify_card')
 
+            with self.mock_request('billing-info/verified-with-cvv-200.xml'):
+                verified = same_account.verify_cvv('908')
+                self.assertEqual(verified.last_name, 'CVV')
+
         finally:
             with self.mock_request('billing-info/account-embed-deleted.xml'):
                 account.delete()
