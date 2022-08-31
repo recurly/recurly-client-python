@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.31](https://github.com/recurly/recurly-client-python/tree/2.9.31) (2022-08-31)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.30...2.9.31)
+
+
+**Merged Pull Requests**
+
+- Cvv endpoint [#587](https://github.com/recurly/recurly-client-python/pull/587) ([ricardopaul0](https://github.com/ricardopaul0))
+
+
+
 ## [2.9.30](https://github.com/recurly/recurly-client-python/tree/2.9.30) (2022-08-24)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.29...2.9.30)
