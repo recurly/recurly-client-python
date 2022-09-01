@@ -2059,7 +2059,7 @@ class SubscriptionRampIntervalResponse(Resource):
     remaining_billing_cycles : int
         Represents how many billing cycles are left in a ramp interval.
     starting_billing_cycle : int
-        Represents how many billing cycles are included in a ramp interval.
+        Represents the billing cycle where a ramp interval starts.
     unit_amount : int
         Represents the price for the ramp interval.
     """
@@ -2420,7 +2420,7 @@ class PlanRampInterval(Resource):
     currencies : :obj:`list` of :obj:`PlanRampPricing`
         Represents the price for the ramp interval.
     starting_billing_cycle : int
-        Represents the first billing cycle of a ramp.
+        Represents the billing cycle where a ramp interval starts.
     """
 
     schema = {
