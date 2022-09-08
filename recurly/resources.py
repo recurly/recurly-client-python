@@ -2060,14 +2060,14 @@ class SubscriptionRampIntervalResponse(Resource):
         Represents how many billing cycles are left in a ramp interval.
     starting_billing_cycle : int
         Represents the billing cycle where a ramp interval starts.
-    unit_amount : int
+    unit_amount : float
         Represents the price for the ramp interval.
     """
 
     schema = {
         "remaining_billing_cycles": int,
         "starting_billing_cycle": int,
-        "unit_amount": int,
+        "unit_amount": float,
     }
 
 
