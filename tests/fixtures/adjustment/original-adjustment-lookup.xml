@@ -21,6 +21,7 @@ X-Records: 1
   <origin>add_on</origin>
   <unit_amount_in_cents type="integer">3387</unit_amount_in_cents>
   <quantity type="integer">1</quantity>
+  <quantity_decimal>1.2</quantity>
   <quantity_remaining type="integer">0</quantity_remaining>
   <discount_in_cents type="integer">0</discount_in_cents>
   <tax_in_cents type="integer">0</tax_in_cents>
