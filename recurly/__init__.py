@@ -896,6 +896,9 @@ class Adjustment(Resource):
         'item_code',
         'external_sku',
         'quantity',
+        'quantity_decimal',
+        'quantity_remaining',
+        'quantity_decimal_remaining',
         'unit_amount_in_cents',
         'discount_in_cents',
         'tax_in_cents',
@@ -1093,6 +1096,10 @@ class Invoice(Resource):
                 item['adjustment'].uuid))
             adj_elem.append(Resource.element_for_value('quantity',
             item['quantity']))
+
+            if 'quantity_decimal' in item:
+                adj_elem.append(Resource.element_for_value('quantity_decimal', item['quantity_decimal']))
+
             adj_elem.append(Resource.element_for_value('prorate', item['prorate']))
             line_items_elem.append(adj_elem)
 
@@ -1830,6 +1837,7 @@ class Usage(Resource):
     attributes = (
         'measured_unit',
         'amount',
+        'amount_decimal',
         'merchant_tag',
         'recording_timestamp',
         'usage_timestamp',

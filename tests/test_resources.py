@@ -103,7 +103,7 @@ class TestResources(RecurlyTest):
                                     quantity=2),
                 ]
             )
-        
+
         with self.mock_request('purchase/invoiced.xml'):
             collection = create_purchase().invoice()
             self.assertIsInstance(collection, InvoiceCollection)
@@ -192,7 +192,7 @@ class TestResources(RecurlyTest):
                     recurly.Subscription(plan_code = 'ramp-plan')
                 ],
             )
-        
+
         with self.mock_request('purchase-with-ramp/invoiced.xml'):
             collection = create_purchase().invoice()
             self.assertIsInstance(collection, InvoiceCollection)
@@ -221,7 +221,7 @@ class TestResources(RecurlyTest):
     def test_purchase_with_ramp_intervals(self):
         account_code = 'test%s' % self.test_id
         def create_purchase():
-            
+
             subscription = recurly.Subscription(
                 plan_code = 'ramp-plan',
                 ramp_intervals = [
@@ -269,7 +269,7 @@ class TestResources(RecurlyTest):
                     subscription
                 ],
             )
-        
+
         with self.mock_request('purchase-with-ramp-intervals/invoiced.xml'):
             collection = create_purchase().invoice()
             self.assertIsInstance(collection, InvoiceCollection)
@@ -1619,7 +1619,7 @@ class TestResources(RecurlyTest):
         plan_code = 'plan%s' % self.test_id
         with self.mock_request('plan/does-not-exist.xml'):
             self.assertRaises(NotFoundError, Plan.get, plan_code)
-        
+
         ramp_interval_1 = PlanRampInterval(
             unit_amount_in_cents=Money(USD=2000),
             starting_billing_cycle=1,
