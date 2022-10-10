@@ -1265,6 +1265,23 @@ class TestResources(RecurlyTest):
             update = campaign.bulk_update('testmock', ['pc-967-343'])
         self.assertIsNone(update)
 
+    def test_account_entitlements(self):
+        account = Account(account_code='entitlement%s' % self.test_id)
+        with self.mock_request('entitlements/account-created.xml'):
+            account.save()
+
+        with self.mock_request('entitlements/list.xml'):
+            entitlement = account.entitlements()[0]
+            customer_permission = entitlement.customer_permission
+            self.assertEqual(customer_permission.id, 'rlvkez1y6fip')
+            self.assertEqual(customer_permission.code, 'VIP-Meet-And-Greet')
+            self.assertEqual(customer_permission.name, 'Meet the team!')
+            self.assertEqual(customer_permission.description, 'All VIP members can meet the team.')
+            self.assertEqual(entitlement.granted_by, [
+                'https://api.recurly.com/v2/subscriptions/rhind9aehvrt',
+                'https://api.recurly.com/v2/external_subscriptions/rlhjggnogtc5'
+            ])
+            
     def test_invoice_templates(self):
         with self.mock_request('invoice_templates/list.xml'):
             template = InvoiceTemplate.all()[0]
