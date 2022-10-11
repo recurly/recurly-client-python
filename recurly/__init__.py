@@ -1682,7 +1682,10 @@ class Entitlements(Resource):
 
     nodename = 'entitlement'
 
-    attributes = ()
+    attributes = (
+        'created_at',
+        'updated_at'
+    )
     _classes_for_nodename = { 'customer_permission': CustomerPermission }
 
     # This is a 'bit' of a workaround in that we have an array of Entitlements, which include

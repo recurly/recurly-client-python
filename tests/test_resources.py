@@ -1277,6 +1277,8 @@ class TestResources(RecurlyTest):
             self.assertEqual(customer_permission.code, 'VIP-Meet-And-Greet')
             self.assertEqual(customer_permission.name, 'Meet the team!')
             self.assertEqual(customer_permission.description, 'All VIP members can meet the team.')
+            self.assertEqual(entitlement.created_at.strftime('%x'), '09/20/22')
+            self.assertEqual(entitlement.updated_at.strftime('%x'), '09/20/22')
             self.assertEqual(entitlement.granted_by, [
                 'https://api.recurly.com/v2/subscriptions/rhind9aehvrt',
                 'https://api.recurly.com/v2/external_subscriptions/rlhjggnogtc5'

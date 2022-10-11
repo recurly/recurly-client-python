@@ -22,5 +22,7 @@ Content-Type: application/xml; charset=utf-8
       <subscription href="https://api.recurly.com/v2/subscriptions/rhind9aehvrt"/>
       <external_subscription href="https://api.recurly.com/v2/external_subscriptions/rlhjggnogtc5"/>
     </granted_by>
+    <created_at type="datetime">2022-09-20T15:50:56Z</created_at>
+    <updated_at type="datetime">2022-09-20T15:50:56Z</updated_at>
   </entitlement>
 </entitlements>
