@@ -1,11 +1,10 @@
 #
-# This file is automatically created by Recurly's OpenAPI generation process
-# and thus any edits you make by hand will be lost. If you wish to make a
-# change to this file, please create a Github issue explaining the changes you
-# need and we will usher them to the appropriate places.
+ # This file is automatically created by Recurly's OpenAPI generation process
+ # and thus any edits you make by hand will be lost. If you wish to make a
+ # change to this file, please create a Github issue explaining the changes you
+ # need and we will usher them to the appropriate places.
 from .resource import Resource
 import datetime
-
 
 class Site(Resource):
     """
@@ -46,7 +45,6 @@ class Site(Resource):
         "updated_at": datetime,
     }
 
-
 class Address(Resource):
     """
     Attributes
@@ -77,7 +75,6 @@ class Address(Resource):
         "street2": str,
     }
 
-
 class Settings(Resource):
     """
     Attributes
@@ -98,7 +95,6 @@ class Settings(Resource):
         "default_currency": str,
     }
 
-
 class Error(Resource):
     """
     Attributes
@@ -116,7 +112,6 @@ class Error(Resource):
         "params": list,
         "type": str,
     }
-
 
 class Account(Resource):
     """
@@ -217,7 +212,6 @@ class Account(Resource):
         "vat_number": str,
     }
 
-
 class ShippingAddress(Resource):
     """
     Attributes
@@ -271,7 +265,6 @@ class ShippingAddress(Resource):
         "vat_number": str,
     }
 
-
 class BillingInfo(Resource):
     """
     Attributes
@@ -319,7 +312,6 @@ class BillingInfo(Resource):
         "valid": bool,
         "vat_number": str,
     }
-
 
 class PaymentMethod(Resource):
     """
@@ -377,7 +369,6 @@ class PaymentMethod(Resource):
         "username": str,
     }
 
-
 class FraudInfo(Resource):
     """
     Attributes
@@ -396,7 +387,6 @@ class FraudInfo(Resource):
         "score": int,
     }
 
-
 class BillingInfoUpdatedBy(Resource):
     """
     Attributes
@@ -412,7 +402,6 @@ class BillingInfoUpdatedBy(Resource):
         "ip": str,
     }
 
-
 class CustomField(Resource):
     """
     Attributes
@@ -427,7 +416,6 @@ class CustomField(Resource):
         "name": str,
         "value": str,
     }
-
 
 class ErrorMayHaveTransaction(Resource):
     """
@@ -449,7 +437,6 @@ class ErrorMayHaveTransaction(Resource):
         "transaction_error": "TransactionError",
         "type": str,
     }
-
 
 class TransactionError(Resource):
     """
@@ -480,7 +467,6 @@ class TransactionError(Resource):
         "three_d_secure_action_token_id": str,
         "transaction_id": str,
     }
-
 
 class AccountAcquisition(Resource):
     """
@@ -517,7 +503,6 @@ class AccountAcquisition(Resource):
         "updated_at": datetime,
     }
 
-
 class AccountAcquisitionCost(Resource):
     """
     Attributes
@@ -532,7 +517,6 @@ class AccountAcquisitionCost(Resource):
         "amount": float,
         "currency": str,
     }
-
 
 class AccountMini(Resource):
     """
@@ -567,7 +551,6 @@ class AccountMini(Resource):
         "parent_account_id": str,
     }
 
-
 class AccountBalance(Resource):
     """
     Attributes
@@ -587,7 +570,6 @@ class AccountBalance(Resource):
         "past_due": bool,
     }
 
-
 class AccountBalanceAmount(Resource):
     """
     Attributes
@@ -605,7 +587,6 @@ class AccountBalanceAmount(Resource):
         "currency": str,
         "processing_prepayment_amount": float,
     }
-
 
 class Transaction(Resource):
     """
@@ -735,7 +716,6 @@ class Transaction(Resource):
         "voided_by_invoice": "InvoiceMini",
     }
 
-
 class InvoiceMini(Resource):
     """
     Attributes
@@ -759,7 +739,6 @@ class InvoiceMini(Resource):
         "state": str,
         "type": str,
     }
-
 
 class AddressWithName(Resource):
     """
@@ -797,7 +776,6 @@ class AddressWithName(Resource):
         "street2": str,
     }
 
-
 class TransactionPaymentGateway(Resource):
     """
     Attributes
@@ -815,7 +793,6 @@ class TransactionPaymentGateway(Resource):
         "object": str,
         "type": str,
     }
-
 
 class CouponRedemption(Resource):
     """
@@ -857,7 +834,6 @@ class CouponRedemption(Resource):
         "subscription_id": str,
         "updated_at": datetime,
     }
-
 
 class Coupon(Resource):
     """
@@ -959,7 +935,6 @@ class Coupon(Resource):
         "updated_at": datetime,
     }
 
-
 class PlanMini(Resource):
     """
     Attributes
@@ -980,7 +955,6 @@ class PlanMini(Resource):
         "name": str,
         "object": str,
     }
-
 
 class ItemMini(Resource):
     """
@@ -1009,7 +983,6 @@ class ItemMini(Resource):
         "state": str,
     }
 
-
 class CouponDiscount(Resource):
     """
     Attributes
@@ -1030,7 +1003,6 @@ class CouponDiscount(Resource):
         "type": str,
     }
 
-
 class CouponDiscountPricing(Resource):
     """
     Attributes
@@ -1046,7 +1018,6 @@ class CouponDiscountPricing(Resource):
         "currency": str,
     }
 
-
 class CouponDiscountTrial(Resource):
     """
     Attributes
@@ -1061,7 +1032,6 @@ class CouponDiscountTrial(Resource):
         "length": int,
         "unit": str,
     }
-
 
 class CreditPayment(Resource):
     """
@@ -1113,7 +1083,6 @@ class CreditPayment(Resource):
         "voided_at": datetime,
     }
 
-
 class Invoice(Resource):
     """
     Attributes
@@ -1143,6 +1112,10 @@ class Invoice(Resource):
         Date invoice is due. This is the date the net terms are reached.
     dunning_campaign_id : str
         Unique ID to identify the dunning campaign used when dunning the invoice. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
+    dunning_events_sent : int
+        Number of times the event was sent.
+    final_dunning_event : bool
+        Last communication attempt.
     has_more_line_items : bool
         Identifies if the invoice has more line items than are returned in `line_items`. If `has_more_line_items` is `true`, then a request needs to be made to the `list_invoice_line_items` endpoint.
     id : str
@@ -1208,6 +1181,8 @@ class Invoice(Resource):
         "discount": float,
         "due_at": datetime,
         "dunning_campaign_id": str,
+        "dunning_events_sent": int,
+        "final_dunning_event": bool,
         "has_more_line_items": bool,
         "id": str,
         "line_items": ["LineItem"],
@@ -1234,7 +1209,6 @@ class Invoice(Resource):
         "vat_number": str,
         "vat_reverse_charge_notes": str,
     }
-
 
 class InvoiceAddress(Resource):
     """
@@ -1278,7 +1252,6 @@ class InvoiceAddress(Resource):
         "street2": str,
     }
 
-
 class TaxInfo(Resource):
     """
     Attributes
@@ -1300,7 +1273,6 @@ class TaxInfo(Resource):
         "type": str,
     }
 
-
 class TaxDetail(Resource):
     """
     Attributes
@@ -1321,7 +1293,6 @@ class TaxDetail(Resource):
         "tax": float,
         "type": str,
     }
-
 
 class LineItem(Resource):
     """
@@ -1485,7 +1456,6 @@ class LineItem(Resource):
         "uuid": str,
     }
 
-
 class InvoiceCollection(Resource):
     """
     Attributes
@@ -1502,7 +1472,6 @@ class InvoiceCollection(Resource):
         "credit_invoices": ["Invoice"],
         "object": str,
     }
-
 
 class AccountNote(Resource):
     """
@@ -1525,7 +1494,6 @@ class AccountNote(Resource):
         "object": str,
         "user": "User",
     }
-
 
 class User(Resource):
     """
@@ -1552,7 +1520,6 @@ class User(Resource):
         "object": str,
         "time_zone": str,
     }
-
 
 class Subscription(Resource):
     """
@@ -1710,7 +1677,6 @@ class Subscription(Resource):
         "uuid": str,
     }
 
-
 class SubscriptionShipping(Resource):
     """
     Attributes
@@ -1729,7 +1695,6 @@ class SubscriptionShipping(Resource):
         "method": "ShippingMethodMini",
         "object": str,
     }
-
 
 class ShippingMethodMini(Resource):
     """
@@ -1751,7 +1716,6 @@ class ShippingMethodMini(Resource):
         "name": str,
         "object": str,
     }
-
 
 class CouponRedemptionMini(Resource):
     """
@@ -1778,7 +1742,6 @@ class CouponRedemptionMini(Resource):
         "object": str,
         "state": str,
     }
-
 
 class CouponMini(Resource):
     """
@@ -1813,7 +1776,6 @@ class CouponMini(Resource):
         "object": str,
         "state": str,
     }
-
 
 class SubscriptionChange(Resource):
     """
@@ -1881,7 +1843,6 @@ class SubscriptionChange(Resource):
         "updated_at": datetime,
     }
 
-
 class SubscriptionAddOn(Resource):
     """
     Attributes
@@ -1920,7 +1881,7 @@ class SubscriptionAddOn(Resource):
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
         removed and replaced by the tiers in the request. If add_on.tier_type is tiered or volume and
-        add_on.usage_type is percentage use percentage_tiers instead.
+        add_on.usage_type is percentage use percentage_tiers instead. 
         There must be one tier without an `ending_quantity` value which represents the final tier.
     unit_amount : float
         Supports up to 2 decimal places.
@@ -1953,7 +1914,6 @@ class SubscriptionAddOn(Resource):
         "usage_percentage": float,
         "usage_timeframe": str,
     }
-
 
 class AddOnMini(Resource):
     """
@@ -1997,7 +1957,6 @@ class AddOnMini(Resource):
         "usage_type": str,
     }
 
-
 class SubscriptionAddOnTier(Resource):
     """
     Attributes
@@ -2021,7 +1980,6 @@ class SubscriptionAddOnTier(Resource):
         "usage_percentage": str,
     }
 
-
 class SubscriptionAddOnPercentageTier(Resource):
     """
     Attributes
@@ -2038,7 +1996,6 @@ class SubscriptionAddOnPercentageTier(Resource):
         "usage_percentage": str,
     }
 
-
 class SubscriptionChangeBillingInfo(Resource):
     """
     Attributes
@@ -2050,7 +2007,6 @@ class SubscriptionChangeBillingInfo(Resource):
     schema = {
         "three_d_secure_action_result_token_id": str,
     }
-
 
 class SubscriptionRampIntervalResponse(Resource):
     """
@@ -2069,7 +2025,6 @@ class SubscriptionRampIntervalResponse(Resource):
         "starting_billing_cycle": int,
         "unit_amount": float,
     }
-
 
 class UniqueCouponCodeParams(Resource):
     """
@@ -2091,7 +2046,6 @@ class UniqueCouponCodeParams(Resource):
         "order": str,
         "sort": str,
     }
-
 
 class UniqueCouponCode(Resource):
     """
@@ -2131,7 +2085,6 @@ class UniqueCouponCode(Resource):
         "state": str,
         "updated_at": datetime,
     }
-
 
 class CustomFieldDefinition(Resource):
     """
@@ -2175,7 +2128,6 @@ class CustomFieldDefinition(Resource):
         "updated_at": datetime,
         "user_access": str,
     }
-
 
 class Item(Resource):
     """
@@ -2240,7 +2192,6 @@ class Item(Resource):
         "updated_at": datetime,
     }
 
-
 class Pricing(Resource):
     """
     Attributes
@@ -2258,7 +2209,6 @@ class Pricing(Resource):
         "tax_inclusive": bool,
         "unit_amount": float,
     }
-
 
 class MeasuredUnit(Resource):
     """
@@ -2296,7 +2246,6 @@ class MeasuredUnit(Resource):
         "updated_at": datetime,
     }
 
-
 class BinaryFile(Resource):
     """
     Attributes
@@ -2307,7 +2256,6 @@ class BinaryFile(Resource):
     schema = {
         "data": str,
     }
-
 
 class Plan(Resource):
     """
@@ -2412,7 +2360,6 @@ class Plan(Resource):
         "updated_at": datetime,
     }
 
-
 class PlanRampInterval(Resource):
     """
     Attributes
@@ -2428,7 +2375,6 @@ class PlanRampInterval(Resource):
         "starting_billing_cycle": int,
     }
 
-
 class PlanRampPricing(Resource):
     """
     Attributes
@@ -2443,7 +2389,6 @@ class PlanRampPricing(Resource):
         "currency": str,
         "unit_amount": float,
     }
-
 
 class PlanPricing(Resource):
     """
@@ -2466,7 +2411,6 @@ class PlanPricing(Resource):
         "unit_amount": float,
     }
 
-
 class PlanHostedPages(Resource):
     """
     Attributes
@@ -2487,7 +2431,6 @@ class PlanHostedPages(Resource):
         "display_quantity": bool,
         "success_url": str,
     }
-
 
 class AddOn(Resource):
     """
@@ -2585,7 +2528,6 @@ class AddOn(Resource):
         "usage_type": str,
     }
 
-
 class AddOnPricing(Resource):
     """
     Attributes
@@ -2608,7 +2550,6 @@ class AddOnPricing(Resource):
         "unit_amount_decimal": str,
     }
 
-
 class Tier(Resource):
     """
     Attributes
@@ -2626,7 +2567,6 @@ class Tier(Resource):
         "ending_quantity": int,
         "usage_percentage": str,
     }
-
 
 class TierPricing(Resource):
     """
@@ -2647,7 +2587,6 @@ class TierPricing(Resource):
         "unit_amount_decimal": str,
     }
 
-
 class PercentageTiersByCurrency(Resource):
     """
     Attributes
@@ -2662,7 +2601,6 @@ class PercentageTiersByCurrency(Resource):
         "currency": str,
         "tiers": ["PercentageTier"],
     }
-
 
 class PercentageTier(Resource):
     """
@@ -2679,7 +2617,6 @@ class PercentageTier(Resource):
         "ending_amount": float,
         "usage_percentage": str,
     }
-
 
 class ShippingMethod(Resource):
     """
@@ -2726,7 +2663,6 @@ class ShippingMethod(Resource):
         "tax_code": str,
         "updated_at": datetime,
     }
-
 
 class Usage(Resource):
     """
@@ -2790,7 +2726,6 @@ class Usage(Resource):
         "usage_type": str,
     }
 
-
 class ExportDates(Resource):
     """
     Attributes
@@ -2806,7 +2741,6 @@ class ExportDates(Resource):
         "object": str,
     }
 
-
 class ExportFiles(Resource):
     """
     Attributes
@@ -2820,7 +2754,6 @@ class ExportFiles(Resource):
         "files": ["ExportFile"],
         "object": str,
     }
-
 
 class ExportFile(Resource):
     """
@@ -2839,7 +2772,6 @@ class ExportFile(Resource):
         "md5sum": str,
         "name": str,
     }
-
 
 class DunningCampaign(Resource):
     """
@@ -2878,7 +2810,6 @@ class DunningCampaign(Resource):
         "object": str,
         "updated_at": datetime,
     }
-
 
 class DunningCycle(Resource):
     """
@@ -2925,7 +2856,6 @@ class DunningCycle(Resource):
         "version": int,
     }
 
-
 class DunningInterval(Resource):
     """
     Attributes
@@ -2941,7 +2871,6 @@ class DunningInterval(Resource):
         "email_template": str,
     }
 
-
 class DunningCampaignsBulkUpdateResponse(Resource):
     """
     Attributes
@@ -2956,7 +2885,6 @@ class DunningCampaignsBulkUpdateResponse(Resource):
         "object": str,
         "plans": ["Plan"],
     }
-
 
 class InvoiceTemplate(Resource):
     """
