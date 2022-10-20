@@ -1143,6 +1143,10 @@ class Invoice(Resource):
         Date invoice is due. This is the date the net terms are reached.
     dunning_campaign_id : str
         Unique ID to identify the dunning campaign used when dunning the invoice. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
+    dunning_events_sent : int
+        Number of times the event was sent.
+    final_dunning_event : bool
+        Last communication attempt.
     has_more_line_items : bool
         Identifies if the invoice has more line items than are returned in `line_items`. If `has_more_line_items` is `true`, then a request needs to be made to the `list_invoice_line_items` endpoint.
     id : str
@@ -1208,6 +1212,8 @@ class Invoice(Resource):
         "discount": float,
         "due_at": datetime,
         "dunning_campaign_id": str,
+        "dunning_events_sent": int,
+        "final_dunning_event": bool,
         "has_more_line_items": bool,
         "id": str,
         "line_items": ["LineItem"],
