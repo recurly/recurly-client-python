@@ -354,6 +354,8 @@ class PaymentMethod(Resource):
         The bank account's routing number. Only present for ACH payment methods.
     routing_number_bank : str
         The bank name of this routing number.
+    username : str
+        Username of the associated payment method. Currently only associated with Venmo.
     """
 
     schema = {
@@ -372,6 +374,7 @@ class PaymentMethod(Resource):
         "object": str,
         "routing_number": str,
         "routing_number_bank": str,
+        "username": str,
     }
 
 
@@ -593,11 +596,14 @@ class AccountBalanceAmount(Resource):
         Total amount the account is past due.
     currency : str
         3-letter ISO 4217 currency code.
+    processing_prepayment_amount : float
+        Total amount for the prepayment credit invoices in a `processing` state on the account.
     """
 
     schema = {
         "amount": float,
         "currency": str,
+        "processing_prepayment_amount": float,
     }
 
 
@@ -1387,10 +1393,14 @@ class LineItem(Resource):
         When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
     quantity : int
         This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
+    quantity_decimal : str
+        A floating-point alternative to Quantity. If this value is present, it will be used in place of Quantity for calculations, and Quantity will be the rounded integer value of this number. This field supports up to 9 decimal places. The Decimal Quantity feature must be enabled to utilize this field.
     refund : bool
         Refund?
     refunded_quantity : int
         For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
+    refunded_quantity_decimal : str
+        A floating-point alternative to Refunded Quantity. For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds). The Decimal Quantity feature must be enabled to utilize this field.
     revenue_schedule_type : str
         Revenue schedule type
     shipping_address : ShippingAddress
@@ -1408,6 +1418,8 @@ class LineItem(Resource):
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
         Tax info
     taxable : bool
@@ -1456,8 +1468,10 @@ class LineItem(Resource):
         "product_code": str,
         "proration_rate": float,
         "quantity": int,
+        "quantity_decimal": str,
         "refund": bool,
         "refunded_quantity": int,
+        "refunded_quantity_decimal": str,
         "revenue_schedule_type": str,
         "shipping_address": "ShippingAddress",
         "start_date": datetime,
@@ -1467,6 +1481,7 @@ class LineItem(Resource):
         "tax": float,
         "tax_code": str,
         "tax_exempt": bool,
+        "tax_inclusive": bool,
         "tax_info": "TaxInfo",
         "taxable": bool,
         "type": str,
@@ -1609,6 +1624,8 @@ class Subscription(Resource):
         For manual invoicing, this identifies the PO number associated with the subscription.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        The ramp intervals representing the pricing schedule for the subscription.
     remaining_billing_cycles : int
         The remaining billing cycles in the current term.
     remaining_pause_cycles : int
@@ -1625,6 +1642,8 @@ class Subscription(Resource):
         Estimated total, before tax.
     tax : float
         Estimated tax
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
         Tax info
     terms_and_conditions : str
@@ -1676,6 +1695,7 @@ class Subscription(Resource):
         "plan": "PlanMini",
         "po_number": str,
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
@@ -1684,6 +1704,7 @@ class Subscription(Resource):
         "state": str,
         "subtotal": float,
         "tax": float,
+        "tax_inclusive": bool,
         "tax_info": "TaxInfo",
         "terms_and_conditions": str,
         "total": float,
@@ -1829,7 +1850,7 @@ class SubscriptionChange(Resource):
     quantity : int
         Subscription quantity
     ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
-        Ramp Intervals
+        The ramp intervals representing the pricing schedule for the subscription.
     revenue_schedule_type : str
         Revenue schedule type
     shipping : SubscriptionShipping
@@ -2037,7 +2058,7 @@ class SubscriptionRampIntervalResponse(Resource):
     remaining_billing_cycles : int
         Represents how many billing cycles are left in a ramp interval.
     starting_billing_cycle : int
-        Represents how many billing cycles are included in a ramp interval.
+        Represents the billing cycle where a ramp interval starts.
     unit_amount : int
         Represents the price for the ramp interval.
     """
@@ -2395,7 +2416,7 @@ class PlanRampInterval(Resource):
     currencies : :obj:`list` of :obj:`PlanRampPricing`
         Represents the price for the ramp interval.
     starting_billing_cycle : int
-        Represents the first billing cycle of a ramp.
+        Represents the billing cycle where a ramp interval starts.
     """
 
     schema = {
@@ -2699,7 +2720,7 @@ class Usage(Resource):
     Attributes
     ----------
     amount : float
-        The amount of usage. Can be positive, negative, or 0. No decimals allowed, we will strip them. If the usage-based add-on is billed with a percentage, your usage will be a monetary amount you will want to format in cents. (e.g., $5.00 is "500").
+        The amount of usage. Can be positive, negative, or 0. If the Decimal Quantity feature is enabled, this value will be rounded to nine decimal places.  Otherwise, all digits after the decimal will be stripped. If the usage-based add-on is billed with a percentage, your usage should be a monetary amount formatted in cents (e.g., $5.00 is "500").
     billed_at : datetime
         When the usage record was billed on an invoice.
     created_at : datetime
