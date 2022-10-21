@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.19.0](https://github.com/recurly/recurly-client-python/tree/3.19.0) (2022-10-21)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.18.0...3.19.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2019-10-10(Decimal Usage and Quantities) [#597](https://github.com/recurly/recurly-client-python/pull/597) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [3.18.0](https://github.com/recurly/recurly-client-python/tree/3.18.0) (2022-08-03)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.17.0...3.18.0)
