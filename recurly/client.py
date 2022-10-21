@@ -3894,12 +3894,14 @@ class Client(BaseClient):
         path = self._interpolate_path("/dunning_campaigns/%s", dunning_campaign_id)
         return self._make_request("GET", path, None, None)
 
-    def put_dunning_campaign_bulk_update(self, body):
+    def put_dunning_campaign_bulk_update(self, dunning_campaign_id, body):
         """Assign a dunning campaign to multiple plans
 
         Parameters
         ----------
 
+        dunning_campaign_id : str
+            Dunning Campaign ID, e.g. `e28zov4fw0v2`.
         body : dict
             The request body. It should follow the schema of DunningCampaignsBulkUpdate.
 
@@ -3914,6 +3916,6 @@ class Client(BaseClient):
             A list of updated plans.
         """
         path = self._interpolate_path(
-            "/dunning_campaigns/%s/bulk_update",
+            "/dunning_campaigns/%s/bulk_update", dunning_campaign_id
         )
         return self._make_request("PUT", path, body, None)

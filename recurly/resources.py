@@ -1379,10 +1379,14 @@ class LineItem(Resource):
         When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
     quantity : int
         This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
+    quantity_decimal : str
+        A floating-point alternative to Quantity. If this value is present, it will be used in place of Quantity for calculations, and Quantity will be the rounded integer value of this number. This field supports up to 9 decimal places. The Decimal Quantity feature must be enabled to utilize this field.
     refund : bool
         Refund?
     refunded_quantity : int
         For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
+    refunded_quantity_decimal : str
+        A floating-point alternative to Refunded Quantity. For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds). The Decimal Quantity feature must be enabled to utilize this field.
     revenue_schedule_type : str
         Revenue schedule type
     shipping_address : ShippingAddress
@@ -1448,8 +1452,10 @@ class LineItem(Resource):
         "product_code": str,
         "proration_rate": float,
         "quantity": int,
+        "quantity_decimal": str,
         "refund": bool,
         "refunded_quantity": int,
+        "refunded_quantity_decimal": str,
         "revenue_schedule_type": str,
         "shipping_address": "ShippingAddress",
         "start_date": datetime,
@@ -1991,7 +1997,7 @@ class SubscriptionRampIntervalResponse(Resource):
     remaining_billing_cycles : int
         Represents how many billing cycles are left in a ramp interval.
     starting_billing_cycle : int
-        Represents how many billing cycles are included in a ramp interval.
+        Represents the billing cycle where a ramp interval starts.
     unit_amount : int
         Represents the price for the ramp interval.
     """
@@ -2330,7 +2336,7 @@ class PlanRampInterval(Resource):
     currencies : :obj:`list` of :obj:`PlanRampPricing`
         Represents the price for the ramp interval.
     starting_billing_cycle : int
-        Represents the first billing cycle of a ramp.
+        Represents the billing cycle where a ramp interval starts.
     """
 
     schema = {
@@ -2644,7 +2650,7 @@ class Usage(Resource):
     Attributes
     ----------
     amount : float
-        The amount of usage. Can be positive, negative, or 0. No decimals allowed, we will strip them. If the usage-based add-on is billed with a percentage, your usage will be a monetary amount you will want to format in cents. (e.g., $5.00 is "500").
+        The amount of usage. Can be positive, negative, or 0. If the Decimal Quantity feature is enabled, this value will be rounded to nine decimal places.  Otherwise, all digits after the decimal will be stripped. If the usage-based add-on is billed with a percentage, your usage should be a monetary amount formatted in cents (e.g., $5.00 is "500").
     billed_at : datetime
         When the usage record was billed on an invoice.
     created_at : datetime
