@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.21.0](https://github.com/recurly/recurly-client-python/tree/4.21.0) (2022-10-21)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.20.1...4.21.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25(Decimal Usage and Quantities and DunningEvent new fields) [#598](https://github.com/recurly/recurly-client-python/pull/598) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.20.1](https://github.com/recurly/recurly-client-python/tree/4.20.1) (2022-09-08)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.20.0...4.20.1)
