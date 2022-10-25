@@ -2995,3 +2995,89 @@ class InvoiceTemplate(Resource):
         "name": str,
         "updated_at": datetime,
     }
+
+
+class Entitlements(Resource):
+    """
+    Attributes
+    ----------
+    data : :obj:`list` of :obj:`Entitlement`
+    has_more : bool
+        Indicates there are more results on subsequent pages.
+    next : str
+        Path to subsequent page of results.
+    object : str
+        Object Type
+    """
+
+    schema = {
+        "data": ["Entitlement"],
+        "has_more": bool,
+        "next": str,
+        "object": str,
+    }
+
+
+class Entitlement(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        Time object was created.
+    customer_permission : CustomerPermission
+    granted_by : :obj:`list` of :obj:`GrantedBy`
+        Subscription or item that granted the customer permission.
+    object : str
+        Entitlement
+    updated_at : datetime
+        Time the object was last updated
+    """
+
+    schema = {
+        "created_at": datetime,
+        "customer_permission": "CustomerPermission",
+        "granted_by": ["GrantedBy"],
+        "object": str,
+        "updated_at": datetime,
+    }
+
+
+class CustomerPermission(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Customer permission code.
+    description : str
+        Description of customer permission.
+    id : str
+        Customer permission ID.
+    name : str
+        Customer permission name.
+    object : str
+        It will always be "customer_permission".
+    """
+
+    schema = {
+        "code": str,
+        "description": str,
+        "id": str,
+        "name": str,
+        "object": str,
+    }
+
+
+class GrantedBy(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+        The ID of the subscription or external subscription that grants the permission to the account.
+    object : str
+        Object Type
+    """
+
+    schema = {
+        "id": str,
+        "object": str,
+    }

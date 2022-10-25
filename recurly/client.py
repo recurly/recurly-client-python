@@ -4451,3 +4451,34 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/invoice_templates/%s", invoice_template_id)
         return self._make_request("GET", path, None, **options)
+
+    def list_entitlements(self, account_id, **options):
+        """Show all entitlements granted to an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.state : str
+            Filter the entitlements based on the state of the applicable subscription.
+
+            - When `state=active`, `state=canceled`, `state=expired`, or `state=future`, subscriptions with states that match the query and only those subscriptions will be returned.
+            - When no state is provided, subscriptions with active or canceled states will be returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the entitlements granted to an account.
+        """
+        path = self._interpolate_path("/accounts/%s/entitlements", account_id)
+        return Pager(self, path, **options)
