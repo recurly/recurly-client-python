@@ -1,0 +1,32 @@
+POST https://api.recurly.com/v2/accounts HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <account_code>entitlementmock</account_code>
+</account>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/entitlementmock
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account href="https://api.recurly.com/v2/accounts/entitlementmock">
+  <adjustments href="https://api.recurly.com/v2/accounts/entitlementmock/adjustments"/>
+  <billing_info href="https://api.recurly.com/v2/accounts/entitlementmock/billing_info"/>
+  <invoices href="https://api.recurly.com/v2/accounts/entitlementmock/invoices"/>
+  <subscriptions href="https://api.recurly.com/v2/accounts/entitlementmock/subscriptions"/>
+  <transactions href="https://api.recurly.com/v2/accounts/entitlementmock/transactions"/>
+  <entitlements href="https://api.recurly.com/v2/accounts/entitlementmock/entitlements"/>
+  <account_code>entitlementmock</account_code>
+  <username nil="nil"></username>
+  <email nil="nil"></email>
+  <first_name nil="nil"></first_name>
+  <last_name nil="nil"></last_name>
+  <company_name nil="nil"></company_name>
+  <accept_language nil="nil"></accept_language>
+</account>
