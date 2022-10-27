@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.22.0](https://github.com/recurly/recurly-client-python/tree/4.22.0) (2022-10-27)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.21.0...4.22.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Entitlements feature) [#601](https://github.com/recurly/recurly-client-python/pull/601) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.21.0](https://github.com/recurly/recurly-client-python/tree/4.21.0) (2022-10-21)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.20.1...4.21.0)
