@@ -1927,7 +1927,7 @@ class SubscriptionAddOn(Resource):
     tier_type : str
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
@@ -2343,6 +2343,8 @@ class Plan(Resource):
         Created at
     currencies : :obj:`list` of :obj:`PlanPricing`
         Pricing
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     description : str
@@ -2400,6 +2402,7 @@ class Plan(Resource):
         "code": str,
         "created_at": datetime,
         "currencies": ["PlanPricing"],
+        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "description": str,
         "dunning_campaign_id": str,
@@ -2552,7 +2555,7 @@ class AddOn(Resource):
     tier_type : str
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`Tier`
         Tiers
@@ -2764,7 +2767,7 @@ class Usage(Resource):
     tier_type : str
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = []

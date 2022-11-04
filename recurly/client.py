@@ -648,7 +648,7 @@ class Client(BaseClient):
         return self._make_request("DELETE", path, None, **options)
 
     def list_account_coupon_redemptions(self, account_id, **options):
-        """Show the coupon redemptions for an account
+        """List the coupon redemptions for an account
 
         Parameters
         ----------
@@ -698,7 +698,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def list_active_coupon_redemptions(self, account_id, **options):
-        """Show the coupon redemptions that are active on an account
+        """List the coupon redemptions that are active on an account
 
         Parameters
         ----------
@@ -1012,7 +1012,7 @@ class Client(BaseClient):
         return self._make_request("POST", path, body, **options)
 
     def list_account_notes(self, account_id, **options):
-        """Fetch a list of an account's notes
+        """List an account's notes
 
         Parameters
         ----------
@@ -2574,7 +2574,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def list_invoice_coupon_redemptions(self, invoice_id, **options):
-        """Show the coupon redemptions applied to an invoice
+        """List the coupon redemptions applied to an invoice
 
         Parameters
         ----------
@@ -3847,7 +3847,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def list_subscription_coupon_redemptions(self, subscription_id, **options):
-        """Show the coupon redemptions for a subscription
+        """List the coupon redemptions for a subscription
 
         Parameters
         ----------
@@ -4325,7 +4325,7 @@ class Client(BaseClient):
         return self._make_request("GET", path, None, **options)
 
     def list_dunning_campaigns(self, **options):
-        """Show the dunning campaigns for a site
+        """List the dunning campaigns for a site
 
         Keyword Arguments
         -----------------
@@ -4351,7 +4351,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def get_dunning_campaign(self, dunning_campaign_id, **options):
-        """Show the settings for a dunning campaign
+        """Fetch a dunning campaign
 
         Parameters
         ----------
@@ -4429,7 +4429,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def get_invoice_template(self, invoice_template_id, **options):
-        """Show the settings for an invoice template
+        """Fetch an invoice template
 
         Parameters
         ----------
@@ -4453,7 +4453,7 @@ class Client(BaseClient):
         return self._make_request("GET", path, None, **options)
 
     def list_entitlements(self, account_id, **options):
-        """Show all entitlements granted to an account
+        """List entitlements granted to an account
 
         Parameters
         ----------
