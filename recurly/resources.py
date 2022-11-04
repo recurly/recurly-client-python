@@ -2247,6 +2247,8 @@ class Plan(Resource):
         Created at
     currencies : :obj:`list` of :obj:`PlanPricing`
         Pricing
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     description : str
@@ -2304,6 +2306,7 @@ class Plan(Resource):
         "code": str,
         "created_at": datetime,
         "currencies": ["PlanPricing"],
+        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "description": str,
         "dunning_campaign_id": str,
