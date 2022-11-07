@@ -1,0 +1,63 @@
+GET https://api.recurly.com/v2/external_products?per_page=200 HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_products type="array">
+    <external_product href="https://paulo.recurly.dev:3000/v2/external_products/rut1apk7qopu">
+        <plan href="https://paulo.recurly.dev:3000/v2/plans/annual">
+            <plan_code>annual</plan_code>
+            <name>annual</name>
+        </plan>
+        <name>external product 2</name>
+        <created_at type="datetime">2022-11-07T16:41:22Z</created_at>
+        <updated_at type="datetime">2022-11-07T16:41:22Z</updated_at>
+        <external_product_references type="array">
+            <external_product_reference>
+                <id>rut1apkhqaai</id>
+                <reference_code>apple</reference_code>
+                <external_connection_type>apple_app_store</external_connection_type>
+                <created_at type="datetime">2022-11-07T16:41:22Z</created_at>
+                <updated_at type="datetime">2022-11-07T16:41:22Z</updated_at>
+            </external_product_reference>
+            <external_product_reference>
+                <id>rut1apkhzlad</id>
+                <reference_code>google</reference_code>
+                <external_connection_type>google_play_store</external_connection_type>
+                <created_at type="datetime">2022-11-07T16:41:22Z</created_at>
+                <updated_at type="datetime">2022-11-07T16:41:22Z</updated_at>
+            </external_product_reference>
+        </external_product_references>
+    </external_product>
+    <external_product href="https://paulo.recurly.dev:3000/v2/external_products/ru1u1gms4msk">
+        <plan href="https://paulo.recurly.dev:3000/v2/plans/5_abril">
+            <plan_code>5_abril</plan_code>
+            <name>5 de abril</name>
+        </plan>
+        <name>product_name_teste</name>
+        <created_at type="datetime">2022-11-03T21:12:35Z</created_at>
+        <updated_at type="datetime">2022-11-03T21:12:35Z</updated_at>
+        <external_product_references type="array">
+            <external_product_reference>
+                <id>ru1u1gn5otsv</id>
+                <reference_code>code_teste_google</reference_code>
+                <external_connection_type>google_play_store</external_connection_type>
+                <created_at type="datetime">2022-11-03T21:12:35Z</created_at>
+                <updated_at type="datetime">2022-11-03T21:12:35Z</updated_at>
+            </external_product_reference>
+            <external_product_reference>
+                <id>ru1u1gn7ebod</id>
+                <reference_code>code_teste_apple</reference_code>
+                <external_connection_type>apple_app_store</external_connection_type>
+                <created_at type="datetime">2022-11-03T21:12:35Z</created_at>
+                <updated_at type="datetime">2022-11-03T21:12:35Z</updated_at>
+            </external_product_reference>
+        </external_product_references>
+    </external_product>
+</external_products>
