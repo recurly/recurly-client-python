@@ -219,6 +219,11 @@ class Account(Resource):
 
         return elem
 
+    def external_subscriptions(self):
+        """Return a list of external subscription on account."""
+        url = urljoin(recurly.base_uri(), self.member_path % (self.account_code) + '/external_subscriptions')
+        return Page.page_for_url(url)
+
     @classmethod
     def all_active(cls, **kwargs):
         """Return a `Page` of active customer accounts.
@@ -2007,6 +2012,65 @@ class CreditPayment(Resource):
         'voided_at',
     )
 
+class ExternalSubscription(Resource):
+
+    """ Comment about this class """
+
+    member_path = 'external_subscriptions/%s'
+    collection_path = 'external_subscriptions'
+
+    nodename = 'external_subscription'
+
+    attributes = (
+        'account',
+        'external_reference_id',
+        'external_resource',
+        'external_product_reference',
+        'last_purchased',
+        'auto_renew',
+        'app_identifier',
+        'quantity',
+        'activated_at',
+        'expires_at'
+    )
+
+class ExternalResource(Resource):
+
+    """ Comment about this class """
+
+    nodename = 'external_resource'
+
+    attributes = (
+        'external_object_reference',
+    )
+
+class ExternalProductReference(Resource):
+
+    """ Comment about this class """
+
+    nodename = 'external_product_reference'
+    collection_path = 'external_product_references'
+
+    attributes = (
+        'reference_code',
+        'external_connection_type'
+    )
+
+class ExternalProduct(Resource):
+
+    """ Comment about this class """
+
+    member_path = 'external_products/%s'
+    nodename = 'external_product'
+    collection_path = 'external_products'
+
+    attributes = (
+        'plan',
+        'name',
+        'created_at',
+        'updated_at',
+        'external_product_references'
+    )
 
 class ExportDate(Resource):
     nodename = 'export_date'

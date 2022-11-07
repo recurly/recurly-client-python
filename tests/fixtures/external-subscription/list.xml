@@ -1,0 +1,43 @@
+GET https://api.recurly.com/v2/external_subscriptions?per_page=200 HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_subscriptions type="array">
+    <external_subscription href="https://paulo.recurly.dev:3000/v2/external_subscriptions/ru8jbrg7i3c0">
+        <account href="https://paulo.recurly.dev:3000/v2/accounts/pphino"/>
+        <external_resource>
+            <external_object_reference>teste</external_object_reference>
+        </external_resource>
+        <external_product_reference nil="nil"></external_product_reference>
+        <last_purchased nil="nil"></last_purchased>
+        <auto_renew type="boolean">false</auto_renew>
+        <app_identifier nil="nil"></app_identifier>
+        <quantity type="integer">1</quantity>
+        <activated_at nil="nil"></activated_at>
+        <expires_at nil="nil"></expires_at>
+        <created_at type="datetime">2022-11-04T19:45:00Z</created_at>
+        <updated_at type="datetime">2022-11-04T19:45:00Z</updated_at>
+    </external_subscription>
+    <external_subscription href="https://paulo.recurly.dev:3000/v2/external_subscriptions/ru2208s6hmf0">
+        <account href="https://paulo.recurly.dev:3000/v2/accounts/pphino"/>
+        <external_resource>
+            <external_object_reference>teste</external_object_reference>
+        </external_resource>
+        <external_product_reference nil="nil"></external_product_reference>
+        <last_purchased nil="nil"></last_purchased>
+        <auto_renew type="boolean">false</auto_renew>
+        <app_identifier>app_identifier</app_identifier>
+        <quantity type="integer">1</quantity>
+        <activated_at nil="nil"></activated_at>
+        <expires_at nil="nil"></expires_at>
+        <created_at type="datetime">2022-11-03T21:57:14Z</created_at>
+        <updated_at type="datetime">2022-11-04T18:11:51Z</updated_at>
+    </external_subscription>
+</external_subscriptions>

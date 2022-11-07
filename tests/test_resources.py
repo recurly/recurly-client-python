@@ -9,7 +9,7 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval
+    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalResource, ExternalProduct, ExternalProductReference
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -2749,6 +2749,169 @@ class TestResources(RecurlyTest):
             export_date_file_download_information.expires_at.strftime("%Y-%m-%d %H:%M:%S"), "2019-05-09 14:00:00"
         )
         self.assertEqual(export_date_file_download_information.download_url, "https://api.recurly.com/download")
+
+    def test_external_subscriptions_on_account(self):
+        account = Account(account_code = 'account_code')
+
+        with self.mock_request('account/external-subscriptions.xml'):
+            external_subscriptions = account.external_subscriptions()
+
+        self.assertEqual(len(external_subscriptions), 2)
+
+        self.assertEqual(external_subscriptions[0].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[0].external_product_reference, None)
+        self.assertEqual(external_subscriptions[0].last_purchased, None)
+        self.assertEqual(external_subscriptions[0].auto_renew, False)
+        self.assertEqual(external_subscriptions[0].app_identifier, None)
+        self.assertEqual(external_subscriptions[0].quantity, 1)
+        self.assertEqual(external_subscriptions[0].activated_at, None)
+        self.assertEqual(external_subscriptions[0].expires_at, None)
+        self.assertEqual(external_subscriptions[0].created_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].created_at.tzinfo))
+        self.assertEqual(external_subscriptions[0].updated_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].updated_at.tzinfo))
+
+        self.assertEqual(external_subscriptions[1].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[1].external_product_reference, None)
+        self.assertEqual(external_subscriptions[1].last_purchased, None)
+        self.assertEqual(external_subscriptions[1].auto_renew, False)
+        self.assertEqual(external_subscriptions[1].app_identifier, 'app_identifier')
+        self.assertEqual(external_subscriptions[1].quantity, 1)
+        self.assertEqual(external_subscriptions[1].activated_at, None)
+        self.assertEqual(external_subscriptions[1].expires_at, None)
+        self.assertEqual(external_subscriptions[1].created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscriptions[1].created_at.tzinfo))
+        self.assertEqual(external_subscriptions[1].updated_at, datetime(2022, 11, 4, 18, 11, 51, tzinfo=external_subscriptions[1].updated_at.tzinfo))
+
+    def test_list_external_subscriptions(self):
+
+        with self.mock_request('external-subscription/list.xml'):
+            external_subscriptions = ExternalSubscription.all(per_page = 200)
+            
+        self.assertEqual(len(external_subscriptions), 2)
+
+        self.assertEqual(external_subscriptions[0].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[0].external_product_reference, None)
+        self.assertEqual(external_subscriptions[0].last_purchased, None)
+        self.assertEqual(external_subscriptions[0].auto_renew, False)
+        self.assertEqual(external_subscriptions[0].app_identifier, None)
+        self.assertEqual(external_subscriptions[0].quantity, 1)
+        self.assertEqual(external_subscriptions[0].activated_at, None)
+        self.assertEqual(external_subscriptions[0].expires_at, None)
+        self.assertEqual(external_subscriptions[0].created_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].created_at.tzinfo))
+        self.assertEqual(external_subscriptions[0].updated_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].created_at.tzinfo))
+
+        self.assertEqual(external_subscriptions[1].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[1].external_product_reference, None)
+        self.assertEqual(external_subscriptions[1].last_purchased, None)
+        self.assertEqual(external_subscriptions[1].auto_renew, False)
+        self.assertEqual(external_subscriptions[1].app_identifier, 'app_identifier')
+        self.assertEqual(external_subscriptions[1].quantity, 1)
+        self.assertEqual(external_subscriptions[1].activated_at, None)
+        self.assertEqual(external_subscriptions[1].expires_at, None)
+        self.assertEqual(external_subscriptions[1].created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscriptions[1].created_at.tzinfo))
+        self.assertEqual(external_subscriptions[1].updated_at, datetime(2022, 11, 4, 18, 11, 51, tzinfo=external_subscriptions[1].updated_at.tzinfo))
+
+    def test_get_external_subscription(self):
+
+        with self.mock_request('external-subscription/get.xml'):
+            external_subscription = ExternalSubscription.get('ru2208s6hmf0')
+            
+        self.assertEqual(external_subscription.external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscription.external_product_reference, None)
+        self.assertEqual(external_subscription.last_purchased, None)
+        self.assertEqual(external_subscription.auto_renew, False)
+        self.assertEqual(external_subscription.app_identifier, 'app_identifier')
+        self.assertEqual(external_subscription.quantity, 1)
+        self.assertEqual(external_subscription.activated_at, None)
+        self.assertEqual(external_subscription.expires_at, None)
+        self.assertEqual(external_subscription.created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscription.created_at.tzinfo))
+        self.assertEqual(external_subscription.updated_at, datetime(2022, 11, 4, 18, 11, 51, tzinfo=external_subscription.updated_at.tzinfo))
+
+    def test_list_external_products(self):
+
+        with self.mock_request('external-product/list.xml'):
+            external_products = ExternalProduct.all(per_page = 200)
+
+        self.assertEqual(len(external_products), 2)
+
+        first_external_product = external_products[0]
+
+        self.assertEqual(first_external_product.plan.plan_code, 'annual')
+        self.assertEqual(first_external_product.plan.name, 'annual')
+        self.assertEqual(first_external_product.name, 'external product 2')
+        self.assertEqual(first_external_product.created_at, datetime(2022, 11, 7, 16, 41, 22, tzinfo=first_external_product.created_at.tzinfo))
+        self.assertEqual(first_external_product.updated_at, datetime(2022, 11, 7, 16, 41, 22, tzinfo=first_external_product.updated_at.tzinfo))
+
+        self.assertEqual(len(first_external_product.external_product_references), 2)
+
+        first_external_product_reference = first_external_product.external_product_references[0]
+
+        self.assertEqual(first_external_product_reference.id, 'rut1apkhqaai')
+        self.assertEqual(first_external_product_reference.reference_code, 'apple')
+        self.assertEqual(first_external_product_reference.external_connection_type, 'apple_app_store')
+        self.assertEqual(first_external_product_reference.created_at, datetime(2022, 11, 7, 16, 41, 22, tzinfo=first_external_product_reference.created_at.tzinfo))
+        self.assertEqual(first_external_product_reference.updated_at, datetime(2022, 11, 7, 16, 41, 22, tzinfo=first_external_product_reference.updated_at.tzinfo))
+
+        second_external_product_reference = first_external_product.external_product_references[1]
+
+        self.assertEqual(second_external_product_reference.id, 'rut1apkhzlad')
+        self.assertEqual(second_external_product_reference.reference_code, 'google')
+        self.assertEqual(second_external_product_reference.external_connection_type, 'google_play_store')
+        self.assertEqual(second_external_product_reference.created_at, datetime(2022, 11, 7, 16, 41, 22, tzinfo=second_external_product_reference.created_at.tzinfo))
+        self.assertEqual(second_external_product_reference.updated_at, datetime(2022, 11, 7, 16, 41, 22, tzinfo=second_external_product_reference.updated_at.tzinfo))
+
+        second_external_product = external_products[1]
+
+        self.assertEqual(second_external_product.plan.plan_code, '5_abril')
+        self.assertEqual(second_external_product.plan.name, '5 de abril')
+        self.assertEqual(second_external_product.name, 'product_name_teste')
+        self.assertEqual(second_external_product.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product.created_at.tzinfo))
+        self.assertEqual(second_external_product.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product.updated_at.tzinfo))
+
+        self.assertEqual(len(second_external_product.external_product_references), 2)
+
+        third_external_product_reference = second_external_product.external_product_references[0]
+
+        self.assertEqual(third_external_product_reference.id, 'ru1u1gn5otsv')
+        self.assertEqual(third_external_product_reference.reference_code, 'code_teste_google')
+        self.assertEqual(third_external_product_reference.external_connection_type, 'google_play_store')
+        self.assertEqual(third_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=third_external_product_reference.created_at.tzinfo))
+        self.assertEqual(third_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=third_external_product_reference.updated_at.tzinfo))
+
+        forth_external_product_reference = second_external_product.external_product_references[1]
+
+        self.assertEqual(forth_external_product_reference.id, 'ru1u1gn7ebod')
+        self.assertEqual(forth_external_product_reference.reference_code, 'code_teste_apple')
+        self.assertEqual(forth_external_product_reference.external_connection_type, 'apple_app_store')
+        self.assertEqual(forth_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=forth_external_product_reference.created_at.tzinfo))
+        self.assertEqual(forth_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=forth_external_product_reference.updated_at.tzinfo))
+
+    def test_get_external_product(self):
+
+        with self.mock_request('external-product/get.xml'):
+            external_product = ExternalProduct.get('ru1u1gms4msk')
+            
+        self.assertEqual(external_product.plan.plan_code, '5_abril')
+        self.assertEqual(external_product.plan.name, '5 de abril')
+        self.assertEqual(external_product.name, 'product_name_teste')
+        self.assertEqual(external_product.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=external_product.created_at.tzinfo))
+        self.assertEqual(external_product.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=external_product.created_at.tzinfo))
+
+        self.assertEqual(len(external_product.external_product_references), 2)
+
+        first_external_product_reference = external_product.external_product_references[0]
+
+        self.assertEqual(first_external_product_reference.id, 'ru1u1gn5otsv')
+        self.assertEqual(first_external_product_reference.reference_code, 'code_teste_google')
+        self.assertEqual(first_external_product_reference.external_connection_type, 'google_play_store')
+        self.assertEqual(first_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=first_external_product_reference.created_at.tzinfo))
+        self.assertEqual(first_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=first_external_product_reference.updated_at.tzinfo))
+
+        second_external_product_reference = external_product.external_product_references[1]
+
+        self.assertEqual(second_external_product_reference.id, 'ru1u1gn7ebod')
+        self.assertEqual(second_external_product_reference.reference_code, 'code_teste_apple')
+        self.assertEqual(second_external_product_reference.external_connection_type, 'apple_app_store')
+        self.assertEqual(second_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.created_at.tzinfo))
+        self.assertEqual(second_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.updated_at.tzinfo))
 
 
 if __name__ == '__main__':
