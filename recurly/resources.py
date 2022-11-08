@@ -1940,6 +1940,8 @@ class SubscriptionAddOn(Resource):
         Supports up to 9 decimal places.
     updated_at : datetime
         Updated at
+    usage_calculation_type : str
+        The type of calculation to be employed for an add-on.  Cumulative billing will sum all usage records created in the current billing cycle.  Last-in-period billing will apply only the most recent usage record in the billing period.  If no value is specified, cumulative billing will be used.
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
     usage_timeframe : str
@@ -1962,6 +1964,7 @@ class SubscriptionAddOn(Resource):
         "unit_amount": float,
         "unit_amount_decimal": str,
         "updated_at": datetime,
+        "usage_calculation_type": str,
         "usage_percentage": float,
         "usage_timeframe": str,
     }
@@ -2309,6 +2312,133 @@ class MeasuredUnit(Resource):
     }
 
 
+class ExternalProduct(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        When the external product was created in Recurly.
+    external_product_references : :obj:`list` of :obj:`ExternalProductReferenceMini`
+        List of external product references of the external product.
+    id : str
+        System-generated unique identifier for an external product ID, e.g. `e28zov4fw0v2`.
+    name : str
+        Name to identify the external product in Recurly.
+    object : str
+        Object type
+    plan : PlanMini
+        Just the important parts.
+    updated_at : datetime
+        When the external product was updated in Recurly.
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_product_references": ["ExternalProductReferenceMini"],
+        "id": str,
+        "name": str,
+        "object": str,
+        "plan": "PlanMini",
+        "updated_at": datetime,
+    }
+
+
+class ExternalProductReferenceMini(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        When the external product was created in Recurly.
+    external_connection_type : str
+        Source connection platform.
+    id : str
+        System-generated unique identifier for an external product ID, e.g. `e28zov4fw0v2`.
+    object : str
+        object
+    reference_code : str
+        A code which associates the external product to a corresponding object or resource in an external platform like the Apple App Store or Google Play Store.
+    updated_at : datetime
+        When the external product was updated in Recurly.
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_connection_type": str,
+        "id": str,
+        "object": str,
+        "reference_code": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalSubscription(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    activated_at : datetime
+        When the external subscription was activated in the external platform.
+    app_identifier : str
+        Identifier of the app that generated the external subscription.
+    auto_renew : bool
+        An indication of whether or not the external subscription will auto-renew at the expiration date.
+    created_at : datetime
+        When the external subscription was created in Recurly.
+    expires_at : datetime
+        When the external subscription expires in the external platform.
+    external_product_reference : ExternalProductReferenceMini
+        External Product Reference details
+    external_resource : ExternalResourceMini
+        External Resource mini details
+    id : str
+        System-generated unique identifier for an external subscription ID, e.g. `e28zov4fw0v2`.
+    last_purchased : datetime
+        When a new billing event occurred on the external subscription in conjunction with a recent billing period, reactivation or upgrade/downgrade.
+    object : str
+        Object type
+    quantity : int
+        An indication of the quantity of a subscribed item's quantity.
+    updated_at : datetime
+        When the external subscription was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "activated_at": datetime,
+        "app_identifier": str,
+        "auto_renew": bool,
+        "created_at": datetime,
+        "expires_at": datetime,
+        "external_product_reference": "ExternalProductReferenceMini",
+        "external_resource": "ExternalResourceMini",
+        "id": str,
+        "last_purchased": datetime,
+        "object": str,
+        "quantity": int,
+        "updated_at": datetime,
+    }
+
+
+class ExternalResourceMini(Resource):
+    """
+    Attributes
+    ----------
+    external_object_reference : str
+        Identifier or URL reference where the resource is canonically available in the external platform.
+    id : str
+        System-generated unique identifier for an external resource ID, e.g. `e28zov4fw0v2`.
+    object : str
+        Object type
+    """
+
+    schema = {
+        "external_object_reference": str,
+        "id": str,
+        "object": str,
+    }
+
+
 class BinaryFile(Resource):
     """
     Attributes
@@ -2561,6 +2691,8 @@ class AddOn(Resource):
         Tiers
     updated_at : datetime
         Last updated at
+    usage_calculation_type : str
+        The type of calculation to be employed for an add-on.  Cumulative billing will sum all usage records created in the current billing cycle.  Last-in-period billing will apply only the most recent usage record in the billing period.  If no value is specified, cumulative billing will be used.
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
     usage_timeframe : str
@@ -2595,6 +2727,7 @@ class AddOn(Resource):
         "tier_type": str,
         "tiers": ["Tier"],
         "updated_at": datetime,
+        "usage_calculation_type": str,
         "usage_percentage": float,
         "usage_timeframe": str,
         "usage_type": str,

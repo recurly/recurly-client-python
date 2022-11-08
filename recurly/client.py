@@ -2236,6 +2236,108 @@ class Client(BaseClient):
         path = self._interpolate_path("/measured_units/%s", measured_unit_id)
         return self._make_request("DELETE", path, None, **options)
 
+    def list_external_products(self, **options):
+        """List a site's external products
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_products on a site.
+        """
+        path = self._interpolate_path(
+            "/external_products",
+        )
+        return Pager(self, path, **options)
+
+    def get_external_product(self, external_product_id, **options):
+        """Fetch an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Settings for an external product.
+        """
+        path = self._interpolate_path("/external_products/%s", external_product_id)
+        return self._make_request("GET", path, None, **options)
+
+    def list_external_subscriptions(self, **options):
+        """List a site's external subscriptions
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_subscriptions on a site.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions",
+        )
+        return Pager(self, path, **options)
+
+    def get_external_subscription(self, external_subscription_id, **options):
+        """Fetch an external subscription
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalSubscription
+            Settings for an external subscription.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s", external_subscription_id
+        )
+        return self._make_request("GET", path, None, **options)
+
     def list_invoices(self, **options):
         """List a site's invoices
 
@@ -4481,4 +4583,34 @@ class Client(BaseClient):
             A list of the entitlements granted to an account.
         """
         path = self._interpolate_path("/accounts/%s/entitlements", account_id)
+        return Pager(self, path, **options)
+
+    def list_account_external_subscriptions(self, account_id, **options):
+        """List an account's external subscriptions
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_subscriptions on an account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_subscriptions", account_id)
         return Pager(self, path, **options)
