@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.33](https://github.com/recurly/recurly-client-python/tree/2.9.33) (2022-10-27)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.32...2.9.33)
+
+
+**Merged Pull Requests**
+
+- Update client library to support entitlements [#595](https://github.com/recurly/recurly-client-python/pull/595) ([ELepolt](https://github.com/ELepolt))
+
+
+
 ## [2.9.32](https://github.com/recurly/recurly-client-python/tree/2.9.32) (2022-10-20)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.31...2.9.32)

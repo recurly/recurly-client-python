@@ -1,0 +1,28 @@
+GET https://api.recurly.com/v2/accounts/entitlementmock/entitlements HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+X-Records: 1
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<entitlements type="array">
+  <entitlement>
+    <customer_permission>
+      <id>rlvkez1y6fip</id>
+      <code>VIP-Meet-And-Greet</code>
+      <name>Meet the team!</name>
+      <description>All VIP members can meet the team.</description>
+    </customer_permission>
+    <granted_by type="array">
+      <subscription href="https://api.recurly.com/v2/subscriptions/rhind9aehvrt"/>
+      <external_subscription href="https://api.recurly.com/v2/external_subscriptions/rlhjggnogtc5"/>
+    </granted_by>
+    <created_at type="datetime">2022-09-20T15:50:56Z</created_at>
+    <updated_at type="datetime">2022-09-20T15:50:56Z</updated_at>
+  </entitlement>
+</entitlements>

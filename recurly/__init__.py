@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.9.32'
+__version__ = '2.9.33'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -1664,6 +1664,42 @@ class Subscription(Resource):
         return usage.post(url)
 
 Subscription._classes_for_nodename['subscription'] = Subscription
+
+class CustomerPermission(Resource):
+    """CustomerPermission"""
+
+    attributes = (
+      'id',
+      'code',
+      'name',
+      'description',
+    )
+
+class Entitlements(Resource):
+    """Entitlments available on an account"""
+
+    member_path = 'entitlements/%s'
+    collection_path = 'entitlements'
+
+    nodename = 'entitlement'
+
+    attributes = (
+        'created_at',
+        'updated_at'
+    )
+    _classes_for_nodename = { 'customer_permission': CustomerPermission }
+
+    # This is a 'bit' of a workaround in that we have an array of Entitlements, which include
+    # a nested array of 'granted_by', which is just single elements in which we need the href only.
+    # The loop in resource.py#value_for_element assumes that the array will be the child of the main class,
+    # in this case Entitlement, which it is not. So override it to get the array of hrefs
+    @classmethod
+    def value_for_element(cls, elem):
+        excludes = ['granted_by']
+        if elem is None or elem.tag not in excludes or elem.attrib.get('type') != 'array':
+            return super(Entitlements, cls).value_for_element(elem)
+
+        return [code_elem.attrib['href'] for code_elem in elem]
 
 class TransactionBillingInfo(recurly.Resource):
     node_name = 'billing_info'
