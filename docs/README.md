@@ -8,7 +8,7 @@ This library is the official python client for Recurly's V3 API.
 
 We recommend specifying this dependency in your requirements.txt:
 ```
-recurly~=4.22
+recurly~=4.23
 ```
 
 Or installing via the command line:
