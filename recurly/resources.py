@@ -594,6 +594,8 @@ class AccountBalanceAmount(Resource):
     ----------
     amount : float
         Total amount the account is past due.
+    available_credit_amount : float
+        Total amount of the open balances on credit invoices for the account.
     currency : str
         3-letter ISO 4217 currency code.
     processing_prepayment_amount : float
@@ -602,6 +604,7 @@ class AccountBalanceAmount(Resource):
 
     schema = {
         "amount": float,
+        "available_credit_amount": float,
         "currency": str,
         "processing_prepayment_amount": float,
     }
