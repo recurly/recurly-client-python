@@ -2466,6 +2466,30 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s.pdf", invoice_id)
         return self._make_request("GET", path, None, **options)
 
+    def apply_credit_balance(self, invoice_id, **options):
+        """Apply available credit to a pending or past due charge invoice
+
+        Parameters
+        ----------
+
+        invoice_id : str
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Invoice
+            The updated invoice.
+        """
+        path = self._interpolate_path("/invoices/%s/apply_credit_balance", invoice_id)
+        return self._make_request("PUT", path, None, **options)
+
     def collect_invoice(self, invoice_id, **options):
         """Collect a pending or past due, automatic invoice
 
