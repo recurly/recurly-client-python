@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.20.0](https://github.com/recurly/recurly-client-python/tree/3.20.0) (2022-11-17)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.19.0...3.20.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2019-10-10 (Apply Credit Balance feature) [#609](https://github.com/recurly/recurly-client-python/pull/609) ([recurly-integrations](https://github.com/recurly-integrations))
+- Generated Latest Changes for v2019-10-10 [#603](https://github.com/recurly/recurly-client-python/pull/603) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [3.19.0](https://github.com/recurly/recurly-client-python/tree/3.19.0) (2022-10-21)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.18.0...3.19.0)
