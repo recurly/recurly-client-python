@@ -115,6 +115,7 @@ class AccountBalance(Resource):
     attributes = (
         'balance_in_cents',
         'processing_prepayment_balance_in_cents',
+        'available_credit_balance_in_cents',
         'past_due',
     )
 
@@ -1139,6 +1140,16 @@ class Invoice(Resource):
         elem = ElementTree.fromstring(response_xml)
         invoice_collection = InvoiceCollection.from_element(elem)
         return invoice_collection
+
+    def apply_credit_balance(self):
+        url = urljoin(self._url, '/apply_credit_balance')
+        response = self.http_request(url, 'PUT')
+        if response.status not in (200, 201):
+            self.raise_http_error(response)
+        response_xml = response.read()
+        elem = ElementTree.fromstring(response_xml)
+        invoice = Invoice.from_element(elem)
+        return invoice
 
     def _create_refund_invoice(self, element):
         url = urljoin(self._url, '/refund')
