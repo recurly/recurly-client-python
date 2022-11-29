@@ -336,6 +336,9 @@ class TestResources(RecurlyTest):
         processing_prepayment_balance = account_balance.processing_prepayment_balance_in_cents
         self.assertTrue(processing_prepayment_balance['USD'] == -3000)
         self.assertTrue(processing_prepayment_balance['EUR'] == 0)
+        available_credit_balance_in_cents = account_balance.available_credit_balance_in_cents
+        self.assertTrue(available_credit_balance_in_cents['USD'] == -3000)
+        self.assertTrue(available_credit_balance_in_cents['EUR'] == 0)
 
         account.username = 'shmohawk58'
         account.email = 'larry.david'
@@ -1396,6 +1399,14 @@ class TestResources(RecurlyTest):
         with self.mock_request('invoice/collect-invoice.xml'):
             collection = invoice.force_collect()
             self.assertIsInstance(collection, InvoiceCollection)
+
+    def test_apply_credit_balance(self):
+        with self.mock_request('invoice/show-invoice.xml'):
+            invoice = Invoice.get("6019")
+
+        with self.mock_request('invoice/apply-credit-balance.xml'):
+            updated_invoice = invoice.apply_credit_balance()
+            self.assertIsInstance(updated_invoice, Invoice)
 
     def test_invoice_tax_details(self):
         with self.mock_request('invoice/show-invoice.xml'):
