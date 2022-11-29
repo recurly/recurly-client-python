@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.36](https://github.com/recurly/recurly-client-python/tree/2.9.36) (2022-11-29)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.35...2.9.36)
+
+
+**Merged Pull Requests**
+
+- V2 add support for Apply Credit Balance to existing invoice feature [#611](https://github.com/recurly/recurly-client-python/pull/611) ([judith](https://github.com/judith))
+
+
+
 ## [2.9.35](https://github.com/recurly/recurly-client-python/tree/2.9.35) (2022-11-15)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.34...2.9.35)
