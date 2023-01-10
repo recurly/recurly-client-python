@@ -9,6 +9,7 @@ Content-Type: application/xml; charset=utf-8
 <account>
   <account_code>testmock</account_code>
   <preferred_locale>en-US</preferred_locale>
+  <preferred_time_zone>America/Los_Angeles</preferred_time_zone>
   <vat_number>444444-UK</vat_number>
 </account>
 
@@ -43,4 +44,5 @@ Location: https://api.recurly.com/v2/accounts/testmock
   <accept_language nil="nil"></accept_language>
   <vat_location_enabled type="boolean">true</vat_location_enabled>
   <preferred_locale>en-US</preferred_locale>
+  <preferred_time_zone>America/Los_Angeles</preferred_time_zone>
 </account>

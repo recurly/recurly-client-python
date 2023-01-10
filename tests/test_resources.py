@@ -303,6 +303,7 @@ class TestResources(RecurlyTest):
         account = Account(account_code=account_code)
         account.vat_number = '444444-UK'
         account.preferred_locale = 'en-US'
+        account.preferred_time_zone = 'America/Los_Angeles'
         with self.mock_request('account/created.xml'):
             account.save()
         self.assertEqual(account._url, urljoin(recurly.base_uri(), 'accounts/%s' % account_code))
@@ -1286,7 +1287,7 @@ class TestResources(RecurlyTest):
                 'https://api.recurly.com/v2/subscriptions/rhind9aehvrt',
                 'https://api.recurly.com/v2/external_subscriptions/rlhjggnogtc5'
             ])
-            
+
     def test_invoice_templates(self):
         with self.mock_request('invoice_templates/list.xml'):
             template = InvoiceTemplate.all()[0]
@@ -2795,7 +2796,7 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('external-subscription/list.xml'):
             external_subscriptions = ExternalSubscription.all(per_page = 200)
-            
+
         self.assertEqual(len(external_subscriptions), 2)
 
         self.assertEqual(external_subscriptions[0].external_resource.external_object_reference, 'teste')
@@ -2824,7 +2825,7 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('external-subscription/get.xml'):
             external_subscription = ExternalSubscription.get('ru2208s6hmf0')
-            
+
         self.assertEqual(external_subscription.external_resource.external_object_reference, 'teste')
         self.assertEqual(external_subscription.external_product_reference, None)
         self.assertEqual(external_subscription.last_purchased, None)
@@ -2899,7 +2900,7 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('external-product/get.xml'):
             external_product = ExternalProduct.get('ru1u1gms4msk')
-            
+
         self.assertEqual(external_product.plan.plan_code, '5_abril')
         self.assertEqual(external_product.plan.name, '5 de abril')
         self.assertEqual(external_product.name, 'product_name_teste')

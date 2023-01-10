@@ -191,6 +191,7 @@ class Account(Resource):
         'has_paused_subscription',
         'has_past_due_invoice',
         'preferred_locale',
+        'preferred_time_zone',
         'custom_fields',
         'transaction_type',
         'dunning_campaign_id',
