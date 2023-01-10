@@ -172,6 +172,8 @@ class Account(Resource):
         The UUID of the parent account associated with this account.
     preferred_locale : str
         Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
+    preferred_time_zone : str
+        The [IANA time zone name](https://docs.recurly.com/docs/email-time-zones-and-time-stamps#supported-api-iana-time-zone-names) used to determine the time zone of emails sent on behalf of the merchant to the customer.
     shipping_addresses : :obj:`list` of :obj:`ShippingAddress`
         The shipping addresses on the account.
     state : str
@@ -212,6 +214,7 @@ class Account(Resource):
         "object": str,
         "parent_account_id": str,
         "preferred_locale": str,
+        "preferred_time_zone": str,
         "shipping_addresses": ["ShippingAddress"],
         "state": str,
         "tax_exempt": bool,
@@ -1134,7 +1137,7 @@ class Invoice(Resource):
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
     previous_invoice_id : str
-        On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
+        On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from. This field is only populated for sites without the [Only Bill What Changed](https://docs.recurly.com/docs/only-bill-what-changed) feature enabled. Sites with Only Bill What Changed enabled should use the [related_invoices endpoint](https://recurly.com/developers/api/v2019-10-10/index.html#operation/list_related_invoices) to see purchase invoices refunded by this invoice.
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
     shipping_address : ShippingAddress
