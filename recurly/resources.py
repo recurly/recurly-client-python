@@ -168,6 +168,8 @@ class Account(Resource):
         The UUID of the parent account associated with this account.
     preferred_locale : str
         Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
+    preferred_time_zone : str
+        The [IANA time zone name](https://docs.recurly.com/docs/email-time-zones-and-time-stamps#supported-api-iana-time-zone-names) used to determine the time zone of emails sent on behalf of the merchant to the customer.
     shipping_addresses : :obj:`list` of :obj:`ShippingAddress`
         The shipping addresses on the account.
     state : str
@@ -209,6 +211,7 @@ class Account(Resource):
         "object": str,
         "parent_account_id": str,
         "preferred_locale": str,
+        "preferred_time_zone": str,
         "shipping_addresses": ["ShippingAddress"],
         "state": str,
         "tax_exempt": bool,
@@ -1169,7 +1172,7 @@ class Invoice(Resource):
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
     previous_invoice_id : str
-        On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
+        On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from. This field is only populated for sites without the [Only Bill What Changed](https://docs.recurly.com/docs/only-bill-what-changed) feature enabled. Sites with Only Bill What Changed enabled should use the [related_invoices endpoint](https://recurly.com/developers/api/v2021-02-25/index.html#operation/list_related_invoices) to see purchase invoices refunded by this invoice.
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
     shipping_address : ShippingAddress
@@ -1919,8 +1922,8 @@ class SubscriptionAddOn(Resource):
     percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
         If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
         removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
-        add_on.usage_type is percentage.
-        There must be one tier without an `ending_amount` value which represents the final tier.
+        add_on.usage_type is percentage. There must be one tier without an `ending_amount` value which represents the final tier.
+        This feature is currently in development and requires approval and enablement, please contact support.
     quantity : int
         Add-on quantity
     revenue_schedule_type : str
@@ -2676,7 +2679,7 @@ class AddOn(Resource):
     optional : bool
         Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
     percentage_tiers : :obj:`list` of :obj:`PercentageTiersByCurrency`
-        Percentage Tiers
+        This feature is currently in development and requires approval and enablement, please contact support.
     plan_id : str
         Plan ID
     revenue_schedule_type : str
@@ -2897,7 +2900,7 @@ class Usage(Resource):
     object : str
         Object type
     percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
-        The percentage tiers of the subscription based on the usage_timestamp. If tier_type = flat, percentage_tiers = []
+        The percentage tiers of the subscription based on the usage_timestamp. If tier_type = flat, percentage_tiers = []. This feature is currently in development and requires approval and enablement, please contact support.
     recording_timestamp : datetime
         When the usage was recorded in your system.
     tier_type : str
