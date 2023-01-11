@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.37](https://github.com/recurly/recurly-client-python/tree/2.9.37) (2023-01-11)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.36...2.9.37)
+
+
+**Merged Pull Requests**
+
+- Add `preferred_time_zone` to Account [#613](https://github.com/recurly/recurly-client-python/pull/613) ([cbarton](https://github.com/cbarton))
+
+
+
 ## [2.9.36](https://github.com/recurly/recurly-client-python/tree/2.9.36) (2022-11-29)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.35...2.9.36)
