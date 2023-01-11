@@ -192,6 +192,13 @@ class TransactionError:
         if el is not None:
             return el.text
 
+     @property
+    def decline_code(self):
+        """Decline code from the issuer"""
+        el = self.response_doc.find('decline_code')
+        if el is not None:
+            return el.text
+
 
 class ValidationError(ClientError):
 

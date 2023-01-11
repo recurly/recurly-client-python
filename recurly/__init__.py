@@ -1785,6 +1785,7 @@ class TransactionError(recurly.Resource):
         'customer_message',
         'error_code',
         'gateway_error_code',
+        'decline_code'
     )
 
 class TransactionFraudInfo(recurly.Resource):
