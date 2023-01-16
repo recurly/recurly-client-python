@@ -927,9 +927,14 @@ class Adjustment(Resource):
         'shipping_address',
         'shipping_address_id',
         'refundable_total_in_cents',
+        'custom_fields',
     )
     xml_attribute_attributes = ('type',)
-    _classes_for_nodename = {'tax_detail': TaxDetail, 'shipping_address': ShippingAddress}
+    _classes_for_nodename = {
+        'tax_detail': TaxDetail,
+        'shipping_address': ShippingAddress,
+        'custom_field': CustomField,
+    }
 
     # This can be removed when the `original_adjustment_uuid` is moved to a link
     def __getattr__(self, name):

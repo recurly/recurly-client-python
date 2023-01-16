@@ -155,6 +155,71 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection.charge_invoice, Invoice)
             self.assertEqual(purchase.billing_info_uuid, 'uniqueUuid')
 
+    def test_purchase_with_custom_fields_on_adjustments(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                currency = 'USD',
+                gateway_code = 'aBcD1234',
+                collection_method = 'manual',
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        unit_amount_in_cents=1000,
+                        description='Item 1',
+                        quantity=1,
+                        custom_fields=[
+                            recurly.CustomField(
+                                name='adjustment-size',
+                                value='large'
+                            ),
+                            recurly.CustomField(
+                                name='adjustment-color',
+                                value='blue'
+                            ),
+                        ]
+                    ),
+                    recurly.Adjustment(
+                        unit_amount_in_cents=2000,
+                        description='Item 2',
+                        quantity=2
+                    ),
+                ]
+            )
+        def assert_custom_fields_on_charges():
+            self.assertIsInstance(collection.charge_invoice.line_items[0].custom_fields[0], CustomField)
+            self.assertEqual(collection.charge_invoice.line_items[0].custom_fields[0].name, 'adjustment-size')
+            self.assertEqual(collection.charge_invoice.line_items[0].custom_fields[0].value, 'large')
+            self.assertEqual(collection.charge_invoice.line_items[0].custom_fields[1].name, 'adjustment-color')
+            self.assertEqual(collection.charge_invoice.line_items[0].custom_fields[1].value, 'blue')
+            self.assertEqual(collection.charge_invoice.line_items[1].custom_fields, [])
+
+        with self.mock_request('purchase-with-custom-fields-on-adjustments/invoiced.xml'):
+            collection = create_purchase().invoice()
+            assert_custom_fields_on_charges()
+
+        with self.mock_request('purchase-with-custom-fields-on-adjustments/previewed.xml'):
+            collection = create_purchase().preview()
+            assert_custom_fields_on_charges()
+
+        with self.mock_request('purchase-with-custom-fields-on-adjustments/authorized.xml'):
+            collection = create_purchase().authorize()
+            assert_custom_fields_on_charges()
+
+        with self.mock_request('purchase-with-custom-fields-on-adjustments/pending.xml'):
+            collection = create_purchase().pending()
+            assert_custom_fields_on_charges()
+
+        with self.mock_request('purchase-with-custom-fields-on-adjustments/captured.xml'):
+            collection = create_purchase().capture('40625fdb0d71f87624a285476ba7d73d')
+            assert_custom_fields_on_charges()
+
+        with self.mock_request('purchase-with-custom-fields-on-adjustments/cancelled.xml'):
+            collection = create_purchase().cancel('40625fdb0d71f87624a285476ba7d73d')
+            assert_custom_fields_on_charges()
+
     def test_purchase_with_ramp_plan(self):
         account_code = 'test%s' % self.test_id
         def create_purchase():
