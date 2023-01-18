@@ -1107,6 +1107,34 @@ class TestResources(RecurlyTest):
                 credits = account.adjustments(type='credit')
             self.assertEqual(len(credits), 0)
 
+            """Test custom_fields"""
+            with self.mock_request('adjustment/charged-with-custom-fields.xml'):
+                # account = Account.get('chargemock')
+                charge = Adjustment(
+                    unit_amount_in_cents=1000,
+                    currency='USD',
+                    description='test charge',
+                    type='charge',
+                    custom_fields=[
+                        CustomField(name='size', value='small'),
+                        CustomField(name='color', value='blue'),
+                    ],
+                )
+                account.charge(charge)
+                self.assertEqual(charge.custom_fields[0].value, 'small')
+                self.assertEqual(charge.custom_fields[1].value, 'blue')
+
+            with self.mock_request('adjustment/account-has-adjustments.xml'):
+                adjustments = account.adjustments()
+                with self.mock_request('adjustment/lookup.xml'):
+                    adjustment = Adjustment.get(adjustments[0].uuid)
+                    self.assertEqual(adjustment.custom_fields[0].value, 'small')
+                    self.assertEqual(adjustment.custom_fields[1].value, 'blue')
+
+                    with self.mock_request('adjustment/credit-adjustments.xml'):
+                        credits = adjustment.credit_adjustments()
+                        self.assertEqual(len(credits), 1)
+
         finally:
             with self.mock_request('adjustment/account-deleted.xml'):
                 account.delete()
