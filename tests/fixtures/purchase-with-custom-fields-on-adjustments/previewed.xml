@@ -1,0 +1,153 @@
+POST https://api.recurly.com/v2/purchases/preview HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<purchase>
+  <account>
+    <account_code>testmock</account_code>
+  </account>
+  <adjustments>
+    <adjustment>
+      <custom_fields>
+        <custom_field>
+          <name>adjustment-size</name>
+          <value>large</value>
+        </custom_field>
+        <custom_field>
+          <name>adjustment-color</name>
+          <value>blue</value>
+        </custom_field>
+      </custom_fields>
+      <description>Item 1</description>
+      <quantity type="integer">1</quantity>
+      <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+    </adjustment>
+    <adjustment>
+      <description>Item 2</description>
+      <quantity type="integer">2</quantity>
+      <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
+    </adjustment>
+  </adjustments>
+  <collection_method>manual</collection_method>
+  <currency>USD</currency>
+  <gateway_code>aBcD1234</gateway_code>
+</purchase>
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/invoices/1021
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice_collection>
+  <charge_invoice href="https://api.recurly.com/v2/invoices/1021">
+    <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683" />
+    <address>
+      <address1>123 Main St</address1>
+      <address2 nil="nil"></address2>
+      <city>New Orleans</city>
+      <state>LA</state>
+      <zip>70114</zip>
+      <country>US</country>
+      <phone nil="nil"></phone>
+    </address>
+    <subscriptions href="https://api.recurly.com/v2/invoices/1021/subscriptions" />
+    <uuid>40625fdaa006a398c444204ae5bd42a3</uuid>
+    <state>paid</state>
+    <invoice_number_prefix></invoice_number_prefix>
+    <invoice_number type="integer">1021</invoice_number>
+    <po_number nil="nil"></po_number>
+    <vat_number nil="nil"></vat_number>
+    <subtotal_in_cents type="integer">6000</subtotal_in_cents>
+    <tax_in_cents type="integer">0</tax_in_cents>
+    <total_in_cents type="integer">6000</total_in_cents>
+    <subtotal_after_discount_in_cents type="integer">6000</subtotal_after_discount_in_cents>
+    <currency>USD</currency>
+    <created_at type="datetime">2023-01-16T12:20:37Z</created_at>
+    <updated_at type="datetime">2023-01-16T12:20:37Z</updated_at>
+    <attempt_next_collection_at nil="nil"></attempt_next_collection_at>
+    <closed_at type="datetime">2023-01-16T12:20:37Z</closed_at>
+    <terms_and_conditions nil="nil"></terms_and_conditions>
+    <customer_notes nil="nil"></customer_notes>
+    <recovery_reason nil="nil"></recovery_reason>
+    <net_terms type="integer">0</net_terms>
+    <collection_method>automatic</collection_method>
+    <line_items type="array">
+      <adjustment href="https://api.recurly.com/v2/adjustments/40625fda8b836c4ff51e764ef795fb87" type="charge">
+        <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683" />
+        <invoice href="https://api.recurly.com/v2/invoices/1021" />
+        <uuid>40625fda8b836c4ff51e764ef795fb87</uuid>
+        <state>invoiced</state>
+        <description>Item 1</description>
+        <accounting_code nil="nil"></accounting_code>
+        <product_code nil="nil"></product_code>
+        <origin>debit</origin>
+        <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+        <quantity type="integer">1</quantity>
+        <discount_in_cents type="integer">0</discount_in_cents>
+        <tax_in_cents type="integer">0</tax_in_cents>
+        <total_in_cents type="integer">1000</total_in_cents>
+        <currency>USD</currency>
+        <taxable type="boolean">false</taxable>
+        <start_date type="datetime">2023-01-06T12:20:37Z</start_date>
+        <end_date nil="nil"></end_date>
+        <created_at type="datetime">2023-01-16T12:20:37Z</created_at>
+        <updated_at type="datetime">2023-01-16T12:20:37Z</updated_at>
+        <revenue_schedule_type></revenue_schedule_type>
+        <custom_fields type="array">
+          <custom_field>
+            <name>adjustment-size</name>
+            <value>large</value>
+          </custom_field>
+          <custom_field>
+            <name>adjustment-color</name>
+            <value>blue</value>
+          </custom_field>
+        </custom_fields>
+      </adjustment>
+      <adjustment href="https://api.recurly.com/v2/adjustments/40625fda8ea4dbb77b2b8d4a5d8a9ac2" type="charge">
+        <account href="https://api.recurly.com/v2/accounts/03f2dad7-e0d3-4856-acbb-fa7a7ce26683" />
+        <invoice href="https://api.recurly.com/v2/invoices/1021" />
+        <uuid>
+          40625fda8ea4dbb77b2b8d4a5d8a9ac2</uuid>
+        <state>invoiced</state>
+        <description>Item 2</description>
+        <accounting_code nil="nil"></accounting_code>
+        <product_code nil="nil"></product_code>
+        <origin>
+          debit</origin>
+        <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
+        <quantity type="integer">2</quantity>
+        <discount_in_cents type="integer">0</discount_in_cents>
+        <tax_in_cents type="integer">0</tax_in_cents>
+        <total_in_cents type="integer">
+          4000</total_in_cents>
+        <currency>USD</currency>
+        <taxable type="boolean">false</taxable>
+        <start_date type="datetime">2023-01-06T12:20:37Z</start_date>
+        <end_date nil="nil"></end_date>
+        <created_at type="datetime">
+          2023-01-16T12:20:37Z</created_at>
+        <updated_at type="datetime">2023-01-16T12:20:37Z</updated_at>
+        <revenue_schedule_type></revenue_schedule_type>
+        <shipping_address>
+          <address1>123
+            Main St</address1>
+          <address2 nil="nil"></address2>
+          <city>New Orleans</city>
+          <state>LA</state>
+          <zip>70114</zip>
+          <country>US</country>
+          <nickname>Work</nickname>
+          <phone nil="nil"></phone>
+        </shipping_address>
+        <custom_fields type="array"></custom_fields>
+      </adjustment>
+    </line_items>
+    <transactions type="array"></transactions>
+  </charge_invoice>
+  <credit_invoices type="array"></credit_invoices>
+</invoice_collection>

@@ -4,6 +4,10 @@ To run these tests in Python 2.7, use the `unittest` test runner:
 
     $ python -m unittest discover -s tests
 
+To run a specific test, pass the name of the file and the test name prefixed with test class:
+
+    $ python tests/test_resources.py TestResources.test_purchase
+
 Under Python 2.6 or earlier, install the `unittest2` distribution and use it
 instead:
 
