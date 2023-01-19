@@ -1363,6 +1363,8 @@ class LineItem(Resource):
         The reason the credit was given when line item is `type=credit`.
     currency : str
         3-letter ISO 4217 currency code.
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     description : str
         Description that appears on the invoice. For subscription related items this will be filled in automatically.
     discount : float
@@ -1461,6 +1463,7 @@ class LineItem(Resource):
         "credit_applied": float,
         "credit_reason_code": str,
         "currency": str,
+        "custom_fields": ["CustomField"],
         "description": str,
         "discount": float,
         "end_date": datetime,
