@@ -948,6 +948,20 @@ class Adjustment(Resource):
         else:
             return super(Adjustment, self).__getattr__(name)
 
+    def credit_adjustments(self):
+        """A list of credit adjustments that were issued against this adjustment"""
+        url = recurly.base_uri() + (self.member_path % self.uuid) + '/credit_adjustments'
+
+        response = self.http_request(url, 'GET')
+        if response.status not in (200, 201):
+            self.raise_http_error(response)
+        response_xml = response.read()
+
+        # This can't be defined at the class level because it is a circular reference
+        Adjustment._classes_for_nodename['adjustment'] = Adjustment
+        elem = ElementTree.fromstring(response_xml)
+        return Adjustment.value_for_element(elem)
+
 class Invoice(Resource):
 
     """A payable charge to an account for the customer's charges and

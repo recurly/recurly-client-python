@@ -1,4 +1,4 @@
-GET https://api.recurly.com/v2/accounts/chargemock/adjustments HTTP/1.1
+GET https://api.recurly.com/v2/adjustments/4ba1531325014b4f969cd13676f514d8/credit_adjustments HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
@@ -11,7 +11,7 @@ X-Records: 1
 
 <adjustments type="array">
   <adjustment type="charge">
-    <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+    <uuid>4ba1531325014b4f969cd13676f514d9</uuid>
     <description>test charge</description>
     <account_code>chargemock</account_code>
     <tax_in_cents type="integer">5000</tax_in_cents>
@@ -34,7 +34,7 @@ X-Records: 1
         <tax_in_cents type="integer">2000</tax_in_cents>
       </tax_detail>
     </tax_details>
-    <start_date type="datetime">2009-11-03T23:27:46Z</start_date>
+    <start_date type="datetime"> 2009-11-03T23:27:46Z</start_date>
     <end_date nil="nil" type="datetime"></end_date>
     <created_at type="datetime">2009-11-03T23:27:46Z</created_at>
     <custom_fields type="array">

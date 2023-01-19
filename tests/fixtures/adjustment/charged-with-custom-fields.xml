@@ -1,0 +1,51 @@
+POST https://api.recurly.com/v2/accounts/chargemock/adjustments HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment type="charge">
+  <currency>USD</currency>
+  <custom_fields>
+    <custom_field>
+      <name>size</name>
+      <value>small</value>
+    </custom_field>
+    <custom_field>
+      <name>color</name>
+      <value>blue</value>
+    </custom_field>
+  </custom_fields>
+  <description>test charge</description>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+</adjustment>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/adjustments/4ba1531325014b4f969cd13676f514d8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment>
+  <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+  <account_code>chargemock</account_code>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+  <currency>
+    USD</currency>
+  <start_date type="datetime">2009-11-03T23:27:46-08:00</start_date>
+  <end_date type="datetime"></end_date>
+  <description>test charge</description>
+  <custom_fields type="array">
+    <custom_field>
+      <name>size</name>
+      <value>small</value>
+    </custom_field>
+    <custom_field>
+      <name>color</name>
+      <value>blue</value>
+    </custom_field>
+  </custom_fields>
+  <created_at type="datetime">
+    2009-11-03T23:27:46-08:00</created_at>
+</adjustment>
