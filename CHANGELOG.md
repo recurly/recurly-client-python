@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.26.0](https://github.com/recurly/recurly-client-python/tree/4.26.0) (2023-01-19)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.25.0...4.26.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Custom Fields on Line Items) [#621](https://github.com/recurly/recurly-client-python/pull/621) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.25.0](https://github.com/recurly/recurly-client-python/tree/4.25.0) (2023-01-11)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.24.0...4.25.0)
