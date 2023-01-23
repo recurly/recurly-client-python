@@ -1450,6 +1450,14 @@ class TestResources(RecurlyTest):
             self.assertEqual(invoice.invoice_number_prefix, 'GB')
             self.assertEqual(invoice.invoice_number_with_prefix(), 'GB1001')
 
+        """Test invoice with custom fields"""
+        with self.mock_request('invoice/invoiced-line-items-with-custom-fields.xml'):
+            invoice = account.invoice().charge_invoice
+            custom_field = invoice.line_items[0].custom_fields[0]
+            self.assertEqual(type(custom_field), recurly.CustomField)
+            self.assertEqual(custom_field.name, 'size')
+            self.assertEqual(custom_field.value, 'large')
+
     def test_invoice_refund_amount(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):

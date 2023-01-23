@@ -1,0 +1,50 @@
+POST https://api.recurly.com/v2/accounts/invoicemock/invoices HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Length: 0
+
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice_collection>
+    <charge_invoice href="https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8">
+        <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+        <account_code>invoicemock</account_code>
+        <invoice_number type="integer">1001</invoice_number>
+        <invoice_number_prefix></invoice_number_prefix>
+        <start_date type="datetime">2009-11-03T23:27:46-08:00</start_date>
+        <end_date type="datetime"></end_date>
+        <description>test charge</description>
+        <created_at type="datetime">2009-11-03T23:27:46-08:00</created_at>
+        <line_items type="array">
+            <adjustment href="https://your-subdomain.recurly.com/v2/adjustments/2bc3cf4cb513049c6aec1b419c97b508" type="charge">
+                <account href="https://your-subdomain.recurly.com/v2/accounts/1" />
+                <invoice href="https://your-subdomain.recurly.com/v2/invoices/1010" />
+                <uuid>2bc3cf4cb513049c6aec1b419c97b508</uuid>
+                <state>invoiced</state>
+                <unit_amount_in_cents type="integer">900</unit_amount_in_cents>
+                <quantity type="integer">-1</quantity>
+                <tax_in_cents type="integer">0</tax_in_cents>
+                <total_in_cents type="integer">-900</total_in_cents>
+                <currency>GBP</currency>
+                <taxable type="boolean">false</taxable>
+                <tax_exempt type="boolean">false</tax_exempt>
+                <tax_code nil="nil" />
+                <start_date type="datetime">2014-12-16T18:49:41Z</start_date>
+                <end_date nil="nil" />
+                <created_at type="datetime">2014-12-16T21:32:16Z</created_at>
+                <custom_fields type="array">
+                    <custom_field>
+                        <name>size</name>
+                        <value>large</value>
+                    </custom_field>
+                </custom_fields>
+            </adjustment>
+        </line_items>
+    </charge_invoice>
+</invoice_collection>
