@@ -25,5 +25,6 @@ Content-Type: application/xml; charset=utf-8
     <customer_message lang="en-US">The transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.</customer_message>
     <merchant_message lang="en-US">The card has insufficient funds to cover the cost of the transaction.</merchant_message>
     <gateway_error_code>123</gateway_error_code>
+    <decline_code>insufficient_funds</decline_code>
   </transaction_error>
 </errors>
