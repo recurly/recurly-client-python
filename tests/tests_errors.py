@@ -42,7 +42,7 @@ class RecurlyExceptionTests(RecurlyTest):
         self.assertEqual(transaction_error.customer_message, "The transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.")
         self.assertEqual(transaction_error.merchant_message, "The card has insufficient funds to cover the cost of the transaction.")
         self.assertEqual(transaction_error.gateway_error_code, "123")
-        self.assertEqual(transaction.decline_code, 'insufficient_funds')
+        self.assertEqual(transaction_error.decline_code, 'insufficient_funds')
 
     def test_transaction_error_code_property(self):
         """ Test ValidationError class 'transaction_error_code' property"""
