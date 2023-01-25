@@ -158,7 +158,7 @@ class CustomField(Resource):
 
 class CustomFieldDefinition(Resource):
 
-    """A definition for custom fields"""
+    """Defines the name, tool tip, and kind (related_type) for a custom field"""
 
     nodename = 'custom_field_definition'
     member_path = 'custom_field_definitions/%s'
