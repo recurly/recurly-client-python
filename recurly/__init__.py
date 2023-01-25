@@ -156,6 +156,25 @@ class CustomField(Resource):
 
         return super(CustomField, self).to_element(root_name)
 
+class CustomFieldDefinition(Resource):
+
+    """A definition for custom fields"""
+
+    nodename = 'custom_field_definition'
+    member_path = 'custom_field_definitions/%s'
+    collection_path = 'custom_field_definitions'
+
+    attributes = (
+        'id',
+        'related_type',
+        'name',
+        'user_access',
+        'display_name',
+        'tooltip',
+        'created_at',
+        'updated_at',
+    )
+
 class Account(Resource):
 
     """A customer account."""
