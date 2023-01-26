@@ -9,7 +9,8 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalResource, ExternalProduct, ExternalProductReference
+    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalResource, \
+    ExternalProduct, ExternalProductReference, CustomFieldDefinition
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -1706,6 +1707,40 @@ class TestResources(RecurlyTest):
         finally:
             with self.mock_request('item/deleted.xml'):
                 item.delete()
+
+    def test_custom_field_definition(self):
+        """Test custom field definitions list"""
+        with self.mock_request('custom_field_definitions/list.xml'):
+            definitions = CustomFieldDefinition.all()
+
+            self.assertEqual(len(definitions), 3)
+            self.assertEqual(type(definitions[0]), CustomFieldDefinition)
+
+        """Test custom field definitions list by related type"""
+        with self.mock_request('custom_field_definitions/list_charge.xml'):
+            definitions = CustomFieldDefinition.all(related_type='charge')
+
+            self.assertEqual(len(definitions), 2)
+            self.assertEqual(definitions[0].related_type, 'charge')
+            self.assertEqual(definitions[1].related_type, 'charge')
+
+        """Test custom field definitions get"""
+        with self.mock_request('custom_field_definitions/show.xml'):
+            definition_id = '3722298505492673710'
+            definition = CustomFieldDefinition.get(definition_id)
+
+            self.assertIsInstance(definition, CustomFieldDefinition)
+            self.assertEqual(definition.id, '3722298505492673710')
+            self.assertEqual(definition.related_type, 'plan')
+            self.assertEqual(definition.name, 'package')
+            self.assertEqual(definition.user_access, 'writable')
+            self.assertEqual(definition.display_name, 'Package')
+            self.assertEqual(definition.tooltip, 'Value can be \'Basic\' or \'Premium\'')
+            self.assertEqual(definition.created_at,
+                datetime(2023, 1, 23, 19, 2, 40, tzinfo=definition.created_at.tzinfo))
+            self.assertEqual(definition.updated_at,
+                datetime(2023, 1, 23, 19, 2, 47, tzinfo=definition.updated_at.tzinfo))
+            self.assertIsNone(definition.deleted_at)
 
     def test_plan(self):
         plan_code = 'plan%s' % self.test_id
