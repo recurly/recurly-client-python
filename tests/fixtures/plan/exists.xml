@@ -33,4 +33,10 @@ Content-Type: application/xml; charset=utf-8
   </unit_amount_in_cents>
   <setup_fee_in_cents>
   </setup_fee_in_cents>
+  <custom_fields type="array">
+    <custom_field>
+      <name>food</name>
+      <value>pizza</value>
+    </custom_field>
+  </custom_fields>
 </plan>

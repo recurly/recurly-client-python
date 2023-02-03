@@ -1449,9 +1449,10 @@ class Plan(Resource):
         'dunning_campaign_id',
         'pricing_model',
         'ramp_intervals',
+        'custom_fields',
     )
 
-    _classes_for_nodename = {'ramp_interval': PlanRampInterval }
+    _classes_for_nodename = {'ramp_interval': PlanRampInterval, 'custom_field': CustomField }
 
     def get_add_on(self, add_on_code):
         """Return the `AddOn` for this plan with the given add-on code."""
