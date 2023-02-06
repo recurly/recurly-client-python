@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.9.38](https://github.com/recurly/recurly-client-python/tree/2.9.38) (2023-02-06)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.37...2.9.38)
+
+
+**Merged Pull Requests**
+
+- Add support for custom field definitions [#624](https://github.com/recurly/recurly-client-python/pull/624) ([douglaslise](https://github.com/douglaslise))
+- Add tests for custom fields on invoice adjustments [#623](https://github.com/recurly/recurly-client-python/pull/623) ([douglaslise](https://github.com/douglaslise))
+- Add tests for custom fields on adjustments and support for /credit_adjustments [#620](https://github.com/recurly/recurly-client-python/pull/620) ([douglaslise](https://github.com/douglaslise))
+- Add Support for Custom Fields on Purchase Adjustments [#619](https://github.com/recurly/recurly-client-python/pull/619) ([douglaslise](https://github.com/douglaslise))
+- Added decline_code to TransactionError [#618](https://github.com/recurly/recurly-client-python/pull/618) ([arzitney](https://github.com/arzitney))
+
+
+
 ## [2.9.37](https://github.com/recurly/recurly-client-python/tree/2.9.37) (2023-01-11)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.9.36...2.9.37)
