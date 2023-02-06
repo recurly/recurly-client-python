@@ -4638,3 +4638,119 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/accounts/%s/external_subscriptions", account_id)
         return Pager(self, path, **options)
+
+    def list_gift_cards(self, **options):
+        """List gift cards
+
+        Returns
+        -------
+
+        Pager
+            List of all created gift cards on your site.
+        """
+        path = self._interpolate_path(
+            "/gift_cards",
+        )
+        return Pager(self, path, **options)
+
+    def create_gift_card(self, body, **options):
+        """Create gift card
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of GiftCardCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Returns the gift card
+        """
+        path = self._interpolate_path(
+            "/gift_cards",
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def get_gift_card(self, gift_card_id, **options):
+        """Fetch a gift card
+
+        Parameters
+        ----------
+
+        gift_card_id : str
+            Gift Card ID, e.g. `e28zov4fw0v2`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Gift card details
+        """
+        path = self._interpolate_path("/gift_cards/%s", gift_card_id)
+        return self._make_request("GET", path, None, **options)
+
+    def preview_gift_card(self, body, **options):
+        """Preview gift card
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of GiftCardCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Returns the gift card
+        """
+        path = self._interpolate_path(
+            "/gift_cards/preview",
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def redeem_gift_card(self, redemption_code, body, **options):
+        """Redeem gift card
+
+        Parameters
+        ----------
+
+        redemption_code : str
+            Gift Card redemption code, e.g., `N1A2T8IRXSCMO40V`.
+        body : dict
+            The request body. It should follow the schema of GiftCardRedeem.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Redeems and returns the gift card
+        """
+        path = self._interpolate_path("/gift_cards/%s/redeem", redemption_code)
+        return self._make_request("POST", path, body, **options)
