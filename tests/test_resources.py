@@ -1752,13 +1752,17 @@ class TestResources(RecurlyTest):
             name='Mock Plan',
             setup_fee_in_cents=Money(0),
             unit_amount_in_cents=Money(1000),
-            total_billing_cycles=10
+            total_billing_cycles=10,
+            custom_fields=[CustomField(name='food', value='pizza')],
         )
         with self.mock_request('plan/created.xml'):
             plan.save()
 
         try:
             self.assertEqual(plan.plan_code, plan_code)
+            self.assertIsInstance(plan.custom_fields[0], CustomField)
+            self.assertEqual(plan.custom_fields[0].name, 'food')
+            self.assertEqual(plan.custom_fields[0].value, 'pizza')
 
             with self.mock_request('plan/exists.xml'):
                 same_plan = Plan.get(plan_code)
