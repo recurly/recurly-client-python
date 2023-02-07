@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.27.0](https://github.com/recurly/recurly-client-python/tree/4.27.0) (2023-02-07)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.26.0...4.27.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (GiftCard endpoints and new transaction error support) [#627](https://github.com/recurly/recurly-client-python/pull/627) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.26.0](https://github.com/recurly/recurly-client-python/tree/4.26.0) (2023-01-19)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.25.0...4.26.0)
