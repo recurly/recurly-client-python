@@ -2194,6 +2194,7 @@ class CustomFieldDefinition(Resource):
         - `read_only` - Users with the Customers role will be able to view this field's data via the admin UI, but
           editing will only be available via the API.
         - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
+        - `set_only` - Users with the Customers role will be able to set this field's data via the admin console.
     """
 
     schema = {
@@ -2405,10 +2406,10 @@ class ExternalSubscription(Resource):
         When the external subscription was created in Recurly.
     expires_at : datetime
         When the external subscription expires in the external platform.
+    external_id : str
+        The id of the subscription in the external systems., I.e. Apple App Store or Google Play Store.
     external_product_reference : ExternalProductReferenceMini
         External Product Reference details
-    external_resource : ExternalResourceMini
-        External Resource mini details
     id : str
         System-generated unique identifier for an external subscription ID, e.g. `e28zov4fw0v2`.
     last_purchased : datetime
@@ -2417,6 +2418,8 @@ class ExternalSubscription(Resource):
         Object type
     quantity : int
         An indication of the quantity of a subscribed item's quantity.
+    state : str
+        External subscriptions can be active, canceled, expired, or future.
     updated_at : datetime
         When the external subscription was updated in Recurly.
     """
@@ -2428,32 +2431,14 @@ class ExternalSubscription(Resource):
         "auto_renew": bool,
         "created_at": datetime,
         "expires_at": datetime,
+        "external_id": str,
         "external_product_reference": "ExternalProductReferenceMini",
-        "external_resource": "ExternalResourceMini",
         "id": str,
         "last_purchased": datetime,
         "object": str,
         "quantity": int,
+        "state": str,
         "updated_at": datetime,
-    }
-
-
-class ExternalResourceMini(Resource):
-    """
-    Attributes
-    ----------
-    external_object_reference : str
-        Identifier or URL reference where the resource is canonically available in the external platform.
-    id : str
-        System-generated unique identifier for an external resource ID, e.g. `e28zov4fw0v2`.
-    object : str
-        Object type
-    """
-
-    schema = {
-        "external_object_reference": str,
-        "id": str,
-        "object": str,
     }
 
 
