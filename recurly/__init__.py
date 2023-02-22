@@ -2077,27 +2077,17 @@ class ExternalSubscription(Resource):
 
     attributes = (
         'account',
-        'external_reference_id',
-        'external_resource',
+        'external_id',
         'external_product_reference',
         'last_purchased',
         'auto_renew',
         'app_identifier',
         'quantity',
+        'state',
         'activated_at',
         'expires_at',
         'created_at',
         'updated_at'
-    )
-
-class ExternalResource(Resource):
-
-    """ Resource that is not managed by the Recurly platform and instead is managed by third-party platforms like Apple Store and Google Play. """
-
-    nodename = 'external_resource'
-
-    attributes = (
-        'external_object_reference',
     )
 
 class ExternalProductReference(Resource):

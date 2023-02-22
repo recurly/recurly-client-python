@@ -9,8 +9,8 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalResource, \
-    ExternalProduct, ExternalProductReference, CustomFieldDefinition
+    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
+    ExternalProductReference, CustomFieldDefinition
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -2911,23 +2911,25 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(len(external_subscriptions), 2)
 
-        self.assertEqual(external_subscriptions[0].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[0].external_id, 'abcd1234')
         self.assertEqual(external_subscriptions[0].external_product_reference, None)
         self.assertEqual(external_subscriptions[0].last_purchased, None)
         self.assertEqual(external_subscriptions[0].auto_renew, False)
         self.assertEqual(external_subscriptions[0].app_identifier, None)
         self.assertEqual(external_subscriptions[0].quantity, 1)
+        self.assertEqual(external_subscriptions[0].state, 'active')
         self.assertEqual(external_subscriptions[0].activated_at, None)
         self.assertEqual(external_subscriptions[0].expires_at, None)
         self.assertEqual(external_subscriptions[0].created_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].created_at.tzinfo))
         self.assertEqual(external_subscriptions[0].updated_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].updated_at.tzinfo))
 
-        self.assertEqual(external_subscriptions[1].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[1].external_id, 'efgh5678')
         self.assertEqual(external_subscriptions[1].external_product_reference, None)
         self.assertEqual(external_subscriptions[1].last_purchased, None)
         self.assertEqual(external_subscriptions[1].auto_renew, False)
         self.assertEqual(external_subscriptions[1].app_identifier, 'app_identifier')
         self.assertEqual(external_subscriptions[1].quantity, 1)
+        self.assertEqual(external_subscriptions[1].state, 'active')
         self.assertEqual(external_subscriptions[1].activated_at, None)
         self.assertEqual(external_subscriptions[1].expires_at, None)
         self.assertEqual(external_subscriptions[1].created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscriptions[1].created_at.tzinfo))
@@ -2940,23 +2942,25 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(len(external_subscriptions), 2)
 
-        self.assertEqual(external_subscriptions[0].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[0].external_id, 'abcd1234')
         self.assertEqual(external_subscriptions[0].external_product_reference, None)
         self.assertEqual(external_subscriptions[0].last_purchased, None)
         self.assertEqual(external_subscriptions[0].auto_renew, False)
         self.assertEqual(external_subscriptions[0].app_identifier, None)
         self.assertEqual(external_subscriptions[0].quantity, 1)
+        self.assertEqual(external_subscriptions[0].state, 'active')
         self.assertEqual(external_subscriptions[0].activated_at, None)
         self.assertEqual(external_subscriptions[0].expires_at, None)
         self.assertEqual(external_subscriptions[0].created_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].created_at.tzinfo))
         self.assertEqual(external_subscriptions[0].updated_at, datetime(2022, 11, 4, 19, 45, tzinfo=external_subscriptions[0].created_at.tzinfo))
 
-        self.assertEqual(external_subscriptions[1].external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscriptions[1].external_id, 'efgh5678')
         self.assertEqual(external_subscriptions[1].external_product_reference, None)
         self.assertEqual(external_subscriptions[1].last_purchased, None)
         self.assertEqual(external_subscriptions[1].auto_renew, False)
         self.assertEqual(external_subscriptions[1].app_identifier, 'app_identifier')
         self.assertEqual(external_subscriptions[1].quantity, 1)
+        self.assertEqual(external_subscriptions[1].state, 'active')
         self.assertEqual(external_subscriptions[1].activated_at, None)
         self.assertEqual(external_subscriptions[1].expires_at, None)
         self.assertEqual(external_subscriptions[1].created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscriptions[1].created_at.tzinfo))
@@ -2967,12 +2971,13 @@ class TestResources(RecurlyTest):
         with self.mock_request('external-subscription/get.xml'):
             external_subscription = ExternalSubscription.get('ru2208s6hmf0')
 
-        self.assertEqual(external_subscription.external_resource.external_object_reference, 'teste')
+        self.assertEqual(external_subscription.external_id, 'abcd1234')
         self.assertEqual(external_subscription.external_product_reference, None)
         self.assertEqual(external_subscription.last_purchased, None)
         self.assertEqual(external_subscription.auto_renew, False)
         self.assertEqual(external_subscription.app_identifier, 'app_identifier')
         self.assertEqual(external_subscription.quantity, 1)
+        self.assertEqual(external_subscription.state, 'active')
         self.assertEqual(external_subscription.activated_at, None)
         self.assertEqual(external_subscription.expires_at, None)
         self.assertEqual(external_subscription.created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscription.created_at.tzinfo))
