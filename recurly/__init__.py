@@ -245,6 +245,11 @@ class Account(Resource):
         url = urljoin(recurly.base_uri(), self.member_path % (self.account_code) + '/external_subscriptions')
         return Page.page_for_url(url)
 
+    def external_invoices(self):
+        """Return a list of external invoices on account."""
+        url = urljoin(recurly.base_uri(), self.member_path % (self.account_code) + '/external_invoices')
+        return Page.page_for_url(url)
+
     @classmethod
     def all_active(cls, **kwargs):
         """Return a `Page` of active customer accounts.
@@ -2066,6 +2071,48 @@ class CreditPayment(Resource):
         'voided_at',
     )
 
+class ExternalInvoice(Resource):
+
+    """ An invoice from an external resource that is not managed by the Recurly platform and instead is managed by third-party platforms like Apple Store and Google Play. """
+
+    member_path = 'external_invoices/%s'
+    collection_path = 'external_invoices'
+
+    nodename = 'external_invoice'
+
+    attributes = (
+        'account',
+        'external_subscription',
+        'external_id',
+        'state',
+        'total_in_cents',
+        'currency',
+        'source',
+        'purchased_at',
+        'created_at',
+        'updated_at'
+    )
+
+class ExternalCharge(Resource):
+
+    """ A line item on an external invoice. """
+
+    collection_path = 'external_charges'
+
+    nodename = 'external_charge'
+
+    attributes = (
+        'account',
+        'external_invoice',
+        'external_product_reference',
+        'unit_amount_in_cents',
+        'quantity',
+        'currency',
+        'description',
+        'created_at',
+        'updated_at'
+    )
+
 class ExternalSubscription(Resource):
 
     """ A subscription from an external resource that is not managed by the Recurly platform and instead is managed by third-party platforms like Apple Store and Google Play. """
@@ -2089,6 +2136,12 @@ class ExternalSubscription(Resource):
         'created_at',
         'updated_at'
     )
+
+    def external_invoices(self):
+        """Return a list of external invoices on an external subscription."""
+        # url = urljoin(recurly.base_uri(), self.member_path % (self.id) + '/external_invoices')
+        url = urljoin(self._url, '/external_invoices')
+        return Page.page_for_url(url)
 
 class ExternalProductReference(Resource):
 
