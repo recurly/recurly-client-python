@@ -2931,7 +2931,7 @@ class TestResources(RecurlyTest):
 
     def test_external_invoices_on_external_subscription(self):
         with self.mock_request('external-subscription/external-invoices.xml'):
-            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
+            external_subscription = ExternalSubscription(uuid = 'sd28t3zdm59r')
             external_invoices = external_subscription.external_invoices()
 
         self.assertEqual(len(external_invoices), 2)

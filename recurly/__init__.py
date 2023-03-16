@@ -2123,6 +2123,7 @@ class ExternalSubscription(Resource):
     nodename = 'external_subscription'
 
     attributes = (
+        'uuid',
         'account',
         'external_id',
         'external_product_reference',
@@ -2136,11 +2137,11 @@ class ExternalSubscription(Resource):
         'created_at',
         'updated_at'
     )
-
+    
     def external_invoices(self):
         """Return a list of external invoices on an external subscription."""
-        # url = urljoin(recurly.base_uri(), self.member_path % (self.id) + '/external_invoices')
-        url = urljoin(self._url, '/external_invoices')
+        url = urljoin(recurly.base_uri(), self.member_path % (self.uuid) + '/external_invoices')
+        # url = urljoin(self._url, '/external_invoices')
         return Page.page_for_url(url)
 
 class ExternalProductReference(Resource):
