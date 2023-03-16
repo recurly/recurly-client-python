@@ -1,4 +1,4 @@
-GET https://api.recurly.com/v2/accounts/account_code/external_invoices HTTP/1.1
+GET https://api.recurly.com/v2/accounts/testmock/external_invoices HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
@@ -11,7 +11,7 @@ Content-Type: application/xml; charset=utf-8
 <?xml version="1.0" encoding="UTF-8"?>
 <external_invoices type="array">
   <external_invoice href="https://api.recurly.com/v2/external_invoices/sd28t3zdm59r">
-    <account href="https://api.recurly.com/v2/accounts/1"/>
+    <account href="https://api.recurly.com/v2/accounts/testmock"/>
     <external_subscription href="https://api.recurly.com/v2/external_subscriptions/1"/>
     <external_id>external-id</external_id>
     <state>paid</state>

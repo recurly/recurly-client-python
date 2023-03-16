@@ -240,16 +240,6 @@ class Account(Resource):
 
         return elem
 
-    def external_subscriptions(self):
-        """Return a list of external subscription on account."""
-        url = urljoin(recurly.base_uri(), self.member_path % (self.account_code) + '/external_subscriptions')
-        return Page.page_for_url(url)
-
-    def external_invoices(self):
-        """Return a list of external invoices on account."""
-        url = urljoin(recurly.base_uri(), self.member_path % (self.account_code) + '/external_invoices')
-        return Page.page_for_url(url)
-
     @classmethod
     def all_active(cls, **kwargs):
         """Return a `Page` of active customer accounts.
@@ -2087,7 +2077,6 @@ class ExternalInvoice(Resource):
         'state',
         'total_in_cents',
         'currency',
-        'source',
         'purchased_at',
         'created_at',
         'updated_at'
@@ -2123,7 +2112,6 @@ class ExternalSubscription(Resource):
     nodename = 'external_subscription'
 
     attributes = (
-        'uuid',
         'account',
         'external_id',
         'external_product_reference',
@@ -2137,12 +2125,6 @@ class ExternalSubscription(Resource):
         'created_at',
         'updated_at'
     )
-    
-    def external_invoices(self):
-        """Return a list of external invoices on an external subscription."""
-        url = urljoin(recurly.base_uri(), self.member_path % (self.uuid) + '/external_invoices')
-        # url = urljoin(self._url, '/external_invoices')
-        return Page.page_for_url(url)
 
 class ExternalProductReference(Resource):
 

@@ -2904,7 +2904,8 @@ class TestResources(RecurlyTest):
         self.assertEqual(export_date_file_download_information.download_url, "https://api.recurly.com/download")
 
     def test_external_invoices_on_account(self):
-        account = Account(account_code = 'account_code')
+        with self.mock_request('account/exists.xml'):
+            account = Account.get('testmock')
 
         with self.mock_request('account/external-invoices.xml'):
             external_invoices = account.external_invoices()
@@ -2930,8 +2931,10 @@ class TestResources(RecurlyTest):
         self.assertEqual(external_invoices[1].updated_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
 
     def test_external_invoices_on_external_subscription(self):
+        with self.mock_request('external-subscription/get.xml'):
+            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
+
         with self.mock_request('external-subscription/external-invoices.xml'):
-            external_subscription = ExternalSubscription(uuid = 'sd28t3zdm59r')
             external_invoices = external_subscription.external_invoices()
 
         self.assertEqual(len(external_invoices), 2)
@@ -2994,7 +2997,8 @@ class TestResources(RecurlyTest):
         self.assertEqual(external_invoice.line_items[0].unit_amount, '50')
 
     def test_external_subscriptions_on_account(self):
-        account = Account(account_code = 'account_code')
+        with self.mock_request('account/exists.xml'):
+            account = Account.get('testmock')
 
         with self.mock_request('account/external-subscriptions.xml'):
             external_subscriptions = account.external_subscriptions()
@@ -3059,7 +3063,7 @@ class TestResources(RecurlyTest):
     def test_get_external_subscription(self):
 
         with self.mock_request('external-subscription/get.xml'):
-            external_subscription = ExternalSubscription.get('ru2208s6hmf0')
+            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
 
         self.assertEqual(external_subscription.external_id, 'abcd1234')
         self.assertEqual(external_subscription.external_product_reference, None)
