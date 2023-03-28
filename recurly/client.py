@@ -817,6 +817,40 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/credit_payments", account_id)
         return Pager(self, path, **options)
 
+    def list_account_external_invoices(self, account_id, **options):
+        """List the external invoices on an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_invoices on an account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_invoices", account_id)
+        return Pager(self, path, **options)
+
     def list_account_invoices(self, account_id, **options):
         """List an account's invoices
 
@@ -2337,6 +2371,44 @@ class Client(BaseClient):
             "/external_subscriptions/%s", external_subscription_id
         )
         return self._make_request("GET", path, None, **options)
+
+    def list_external_subscription_external_invoices(
+        self, external_subscription_id, **options
+    ):
+        """List the external invoices on an external subscription
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_invoices on a site.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s/external_invoices", external_subscription_id
+        )
+        return Pager(self, path, **options)
 
     def list_invoices(self, **options):
         """List a site's invoices
@@ -4576,6 +4648,60 @@ class Client(BaseClient):
             Settings for an invoice template.
         """
         path = self._interpolate_path("/invoice_templates/%s", invoice_template_id)
+        return self._make_request("GET", path, None, **options)
+
+    def list_external_invoices(self, **options):
+        """List the external invoices on a site
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_invoices on a site.
+        """
+        path = self._interpolate_path(
+            "/external_invoices",
+        )
+        return Pager(self, path, **options)
+
+    def show_external_invoice(self, external_invoice_id, **options):
+        """Fetch an external invoice
+
+        Parameters
+        ----------
+
+        external_invoice_id : str
+            External invoice ID, e.g. `e28zov4fw0v2`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalInvoice
+            Returns the external invoice
+        """
+        path = self._interpolate_path("/external_invoices/%s", external_invoice_id)
         return self._make_request("GET", path, None, **options)
 
     def list_entitlements(self, account_id, **options):
