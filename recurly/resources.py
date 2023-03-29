@@ -1123,6 +1123,168 @@ class CreditPayment(Resource):
     }
 
 
+class ExternalInvoice(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    created_at : datetime
+        When the external invoice was created in Recurly.
+    currency : str
+        3-letter ISO 4217 currency code.
+    external_id : str
+        An identifier which associates the external invoice to a corresponding object in an external platform.
+    external_subscription : ExternalSubscription
+        Subscription from an external resource such as Apple App Store or Google Play Store.
+    id : str
+        System-generated unique identifier for an external invoice ID, e.g. `e28zov4fw0v2`.
+    line_items : :obj:`list` of :obj:`ExternalCharge`
+    object : str
+        Object type
+    purchased_at : datetime
+        When the invoice was created in the external platform.
+    state : str
+    total : float
+        Total
+    updated_at : datetime
+        When the external invoice was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "created_at": datetime,
+        "currency": str,
+        "external_id": str,
+        "external_subscription": "ExternalSubscription",
+        "id": str,
+        "line_items": ["ExternalCharge"],
+        "object": str,
+        "purchased_at": datetime,
+        "state": str,
+        "total": float,
+        "updated_at": datetime,
+    }
+
+
+class ExternalSubscription(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    activated_at : datetime
+        When the external subscription was activated in the external platform.
+    app_identifier : str
+        Identifier of the app that generated the external subscription.
+    auto_renew : bool
+        An indication of whether or not the external subscription will auto-renew at the expiration date.
+    created_at : datetime
+        When the external subscription was created in Recurly.
+    expires_at : datetime
+        When the external subscription expires in the external platform.
+    external_id : str
+        The id of the subscription in the external systems., I.e. Apple App Store or Google Play Store.
+    external_product_reference : ExternalProductReferenceMini
+        External Product Reference details
+    id : str
+        System-generated unique identifier for an external subscription ID, e.g. `e28zov4fw0v2`.
+    last_purchased : datetime
+        When a new billing event occurred on the external subscription in conjunction with a recent billing period, reactivation or upgrade/downgrade.
+    object : str
+        Object type
+    quantity : int
+        An indication of the quantity of a subscribed item's quantity.
+    state : str
+        External subscriptions can be active, canceled, expired, or future.
+    updated_at : datetime
+        When the external subscription was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "activated_at": datetime,
+        "app_identifier": str,
+        "auto_renew": bool,
+        "created_at": datetime,
+        "expires_at": datetime,
+        "external_id": str,
+        "external_product_reference": "ExternalProductReferenceMini",
+        "id": str,
+        "last_purchased": datetime,
+        "object": str,
+        "quantity": int,
+        "state": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalProductReferenceMini(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        When the external product was created in Recurly.
+    external_connection_type : str
+        Source connection platform.
+    id : str
+        System-generated unique identifier for an external product ID, e.g. `e28zov4fw0v2`.
+    object : str
+        object
+    reference_code : str
+        A code which associates the external product to a corresponding object or resource in an external platform like the Apple App Store or Google Play Store.
+    updated_at : datetime
+        When the external product was updated in Recurly.
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_connection_type": str,
+        "id": str,
+        "object": str,
+        "reference_code": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalCharge(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    created_at : datetime
+        When the external charge was created in Recurly.
+    currency : str
+        3-letter ISO 4217 currency code.
+    description : str
+    external_product_reference : ExternalProductReferenceMini
+        External Product Reference details
+    id : str
+        System-generated unique identifier for an external charge ID, e.g. `e28zov4fw0v2`.
+    object : str
+        Object type
+    quantity : int
+    unit_amount : float
+        Unit Amount
+    updated_at : datetime
+        When the external charge was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "created_at": datetime,
+        "currency": str,
+        "description": str,
+        "external_product_reference": "ExternalProductReferenceMini",
+        "id": str,
+        "object": str,
+        "quantity": int,
+        "unit_amount": float,
+        "updated_at": datetime,
+    }
+
+
 class Invoice(Resource):
     """
     Attributes
@@ -2358,86 +2520,6 @@ class ExternalProduct(Resource):
         "name": str,
         "object": str,
         "plan": "PlanMini",
-        "updated_at": datetime,
-    }
-
-
-class ExternalProductReferenceMini(Resource):
-    """
-    Attributes
-    ----------
-    created_at : datetime
-        When the external product was created in Recurly.
-    external_connection_type : str
-        Source connection platform.
-    id : str
-        System-generated unique identifier for an external product ID, e.g. `e28zov4fw0v2`.
-    object : str
-        object
-    reference_code : str
-        A code which associates the external product to a corresponding object or resource in an external platform like the Apple App Store or Google Play Store.
-    updated_at : datetime
-        When the external product was updated in Recurly.
-    """
-
-    schema = {
-        "created_at": datetime,
-        "external_connection_type": str,
-        "id": str,
-        "object": str,
-        "reference_code": str,
-        "updated_at": datetime,
-    }
-
-
-class ExternalSubscription(Resource):
-    """
-    Attributes
-    ----------
-    account : AccountMini
-        Account mini details
-    activated_at : datetime
-        When the external subscription was activated in the external platform.
-    app_identifier : str
-        Identifier of the app that generated the external subscription.
-    auto_renew : bool
-        An indication of whether or not the external subscription will auto-renew at the expiration date.
-    created_at : datetime
-        When the external subscription was created in Recurly.
-    expires_at : datetime
-        When the external subscription expires in the external platform.
-    external_id : str
-        The id of the subscription in the external systems., I.e. Apple App Store or Google Play Store.
-    external_product_reference : ExternalProductReferenceMini
-        External Product Reference details
-    id : str
-        System-generated unique identifier for an external subscription ID, e.g. `e28zov4fw0v2`.
-    last_purchased : datetime
-        When a new billing event occurred on the external subscription in conjunction with a recent billing period, reactivation or upgrade/downgrade.
-    object : str
-        Object type
-    quantity : int
-        An indication of the quantity of a subscribed item's quantity.
-    state : str
-        External subscriptions can be active, canceled, expired, or future.
-    updated_at : datetime
-        When the external subscription was updated in Recurly.
-    """
-
-    schema = {
-        "account": "AccountMini",
-        "activated_at": datetime,
-        "app_identifier": str,
-        "auto_renew": bool,
-        "created_at": datetime,
-        "expires_at": datetime,
-        "external_id": str,
-        "external_product_reference": "ExternalProductReferenceMini",
-        "id": str,
-        "last_purchased": datetime,
-        "object": str,
-        "quantity": int,
-        "state": str,
         "updated_at": datetime,
     }
 
