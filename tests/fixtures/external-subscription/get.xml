@@ -1,4 +1,4 @@
-GET https://api.recurly.com/v2/external_subscriptions/ru2208s6hmf0 HTTP/1.1
+GET https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
@@ -9,8 +9,9 @@ HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
-<external_subscription href="https://paulo.recurly.dev:3000/v2/external_subscriptions/ru2208s6hmf0">
-    <account href="https://paulo.recurly.dev:3000/v2/accounts/pphino"/>
+<external_subscription href="https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r">
+    <account href="https://api.recurly.com/v2/accounts/pphino"/>
+    <external_invoices href="https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r/external_invoices"/>
     <external_id>abcd1234</external_id>
     <external_product_reference nil="nil"></external_product_reference>
     <last_purchased nil="nil"></last_purchased>

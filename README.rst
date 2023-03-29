@@ -50,7 +50,7 @@ Recurly Python Client Tests
 
 _NOTE_: The unit tests require certain packages to be installed on your system. Install the following packages with pip:
 
-    $ pip install six mock iso8601 backports.ssl-match-hostname
+    $ pip install defusedxml six mock iso8601 backports.ssl-match-hostname
 
 To run these tests, use the `unittest` test runner with the RECURLY_INSECURE_DEBUG environment variable set to 'true':
 
@@ -79,4 +79,3 @@ Support
 
 - `https://support.recurly.com <https://support.recurly.com>`_
 - `stackoverflow <http://stackoverflow.com/questions/tagged/recurly>`_
-

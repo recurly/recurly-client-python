@@ -10,7 +10,7 @@ from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, It
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
     DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
-    ExternalProductReference, CustomFieldDefinition
+    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -2903,8 +2903,102 @@ class TestResources(RecurlyTest):
         )
         self.assertEqual(export_date_file_download_information.download_url, "https://api.recurly.com/download")
 
+    def test_external_invoices_on_account(self):
+        with self.mock_request('account/exists.xml'):
+            account = Account.get('testmock')
+
+        with self.mock_request('account/external-invoices.xml'):
+            external_invoices = account.external_invoices()
+
+        self.assertEqual(len(external_invoices), 2)
+
+        self.assertEqual(external_invoices[0].external_id, 'external-id')
+        self.assertEqual(external_invoices[0].state, 'paid')
+        self.assertEqual(external_invoices[0].total, '100')
+        self.assertEqual(external_invoices[0].currency, 'USD')
+        self.assertEqual(external_invoices[0].purchased_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
+        self.assertEqual(external_invoices[0].created_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
+        self.assertEqual(external_invoices[0].updated_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
+        self.assertEqual(len(external_invoices[0].line_items), 1)
+        self.assertEqual(external_invoices[0].line_items[0].unit_amount, '50')
+
+        self.assertEqual(external_invoices[1].external_id, 'external-id2')
+        self.assertEqual(external_invoices[1].state, 'paid')
+        self.assertEqual(external_invoices[1].total, '200')
+        self.assertEqual(external_invoices[1].currency, 'USD')
+        self.assertEqual(external_invoices[1].purchased_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
+        self.assertEqual(external_invoices[1].created_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
+        self.assertEqual(external_invoices[1].updated_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
+
+    def test_external_invoices_on_external_subscription(self):
+        with self.mock_request('external-subscription/get.xml'):
+            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
+
+        with self.mock_request('external-subscription/external-invoices.xml'):
+            external_invoices = external_subscription.external_invoices()
+
+        self.assertEqual(len(external_invoices), 2)
+
+        self.assertEqual(external_invoices[0].external_id, 'external-id')
+        self.assertEqual(external_invoices[0].state, 'paid')
+        self.assertEqual(external_invoices[0].total, '100')
+        self.assertEqual(external_invoices[0].currency, 'USD')
+        self.assertEqual(external_invoices[0].purchased_at, datetime(2022, 12, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
+        self.assertEqual(external_invoices[0].created_at, datetime(2022, 12, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
+        self.assertEqual(external_invoices[0].updated_at, datetime(2022, 12, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
+        self.assertEqual(len(external_invoices[0].line_items), 1)
+        self.assertEqual(external_invoices[0].line_items[0].unit_amount, '50')
+
+        self.assertEqual(external_invoices[1].external_id, 'external-id2')
+        self.assertEqual(external_invoices[1].state, 'paid')
+        self.assertEqual(external_invoices[1].total, '200')
+        self.assertEqual(external_invoices[1].currency, 'USD')
+        self.assertEqual(external_invoices[1].purchased_at, datetime(2022, 12, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
+        self.assertEqual(external_invoices[1].created_at, datetime(2022, 12, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
+        self.assertEqual(external_invoices[1].updated_at, datetime(2022, 12, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
+
+    def test_list_external_invoices(self):
+        with self.mock_request('external-invoice/list.xml'):
+            external_invoices = ExternalInvoice.all(per_page = 200)
+
+        self.assertEqual(len(external_invoices), 2)
+
+        self.assertEqual(external_invoices[0].external_id, 'external-id')
+        self.assertEqual(external_invoices[0].state, 'paid')
+        self.assertEqual(external_invoices[0].total, '100')
+        self.assertEqual(external_invoices[0].currency, 'USD')
+        self.assertEqual(external_invoices[0].purchased_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
+        self.assertEqual(external_invoices[0].created_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
+        self.assertEqual(external_invoices[0].updated_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
+        self.assertEqual(len(external_invoices[0].line_items), 1)
+        self.assertEqual(external_invoices[0].line_items[0].unit_amount, '50')
+
+        self.assertEqual(external_invoices[1].external_id, 'external-id2')
+        self.assertEqual(external_invoices[1].state, 'paid')
+        self.assertEqual(external_invoices[1].total, '200')
+        self.assertEqual(external_invoices[1].currency, 'USD')
+        self.assertEqual(external_invoices[1].purchased_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
+        self.assertEqual(external_invoices[1].created_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
+        self.assertEqual(external_invoices[1].updated_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
+
+    def test_get_external_invoice(self):
+
+        with self.mock_request('external-invoice/get.xml'):
+            external_invoice = ExternalInvoice.get('sd28t3zdm59r')
+
+        self.assertEqual(external_invoice.external_id, 'external-id')
+        self.assertEqual(external_invoice.state, 'paid')
+        self.assertEqual(external_invoice.total, '100')
+        self.assertEqual(external_invoice.currency, 'USD')
+        self.assertEqual(external_invoice.purchased_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoice.purchased_at.tzinfo))
+        self.assertEqual(external_invoice.created_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoice.created_at.tzinfo))
+        self.assertEqual(external_invoice.updated_at, datetime(2023, 10, 13, 17, 28, 2, tzinfo=external_invoice.updated_at.tzinfo))
+        self.assertEqual(len(external_invoice.line_items), 1)
+        self.assertEqual(external_invoice.line_items[0].unit_amount, '50')
+
     def test_external_subscriptions_on_account(self):
-        account = Account(account_code = 'account_code')
+        with self.mock_request('account/exists.xml'):
+            account = Account.get('testmock')
 
         with self.mock_request('account/external-subscriptions.xml'):
             external_subscriptions = account.external_subscriptions()
@@ -2969,7 +3063,7 @@ class TestResources(RecurlyTest):
     def test_get_external_subscription(self):
 
         with self.mock_request('external-subscription/get.xml'):
-            external_subscription = ExternalSubscription.get('ru2208s6hmf0')
+            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
 
         self.assertEqual(external_subscription.external_id, 'abcd1234')
         self.assertEqual(external_subscription.external_product_reference, None)
