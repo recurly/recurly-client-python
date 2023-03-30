@@ -2914,13 +2914,13 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_invoices[0].external_id, 'external-id')
         self.assertEqual(external_invoices[0].state, 'paid')
-        self.assertEqual(external_invoices[0].total, '100')
+        self.assertEqual(external_invoices[0].total, '100.50')
         self.assertEqual(external_invoices[0].currency, 'USD')
         self.assertEqual(external_invoices[0].purchased_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].purchased_at.tzinfo))
         self.assertEqual(external_invoices[0].created_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].created_at.tzinfo))
         self.assertEqual(external_invoices[0].updated_at, datetime(2022, 11, 13, 17, 28, 2, tzinfo=external_invoices[0].updated_at.tzinfo))
         self.assertEqual(len(external_invoices[0].line_items), 1)
-        self.assertEqual(external_invoices[0].line_items[0].unit_amount, '50')
+        self.assertEqual(external_invoices[0].line_items[0].unit_amount, '50.25')
 
         self.assertEqual(external_invoices[1].external_id, 'external-id2')
         self.assertEqual(external_invoices[1].state, 'paid')
