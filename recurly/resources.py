@@ -1145,7 +1145,7 @@ class ExternalInvoice(Resource):
     purchased_at : datetime
         When the invoice was created in the external platform.
     state : str
-    total : float
+    total : str
         Total
     updated_at : datetime
         When the external invoice was updated in Recurly.
@@ -1162,7 +1162,7 @@ class ExternalInvoice(Resource):
         "object": str,
         "purchased_at": datetime,
         "state": str,
-        "total": float,
+        "total": str,
         "updated_at": datetime,
     }
 
@@ -1265,7 +1265,7 @@ class ExternalCharge(Resource):
     object : str
         Object type
     quantity : int
-    unit_amount : float
+    unit_amount : str
         Unit Amount
     updated_at : datetime
         When the external charge was updated in Recurly.
@@ -1280,7 +1280,7 @@ class ExternalCharge(Resource):
         "id": str,
         "object": str,
         "quantity": int,
-        "unit_amount": float,
+        "unit_amount": str,
         "updated_at": datetime,
     }
 
