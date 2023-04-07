@@ -54,14 +54,14 @@ _NOTE_: The unit tests require certain packages to be installed on your system. 
 
 To run these tests, use the `unittest` test runner with the RECURLY_INSECURE_DEBUG environment variable set to 'true':
 
-    $ RECURLY_INSECURE_DEBUG=true python -m unittest discover -s tests
+    $ RECURLY_INSECURE_DEBUG=true python3 -m unittest discover -s tests
 
 The resource tests in `test_resources.py` will run using the HTTP fixtures in
 `tests/fixtures`. To run the tests against a live Recurly API endpoint,
 configure your Recurly test account and use its API key in the
 `RECURLY_API_KEY` environment variable:
 
-    $ RECURLY_API_KEY=1274...54e3 python -m unittest tests.test_resources
+    $ RECURLY_API_KEY=1274...54e3 python3 -m unittest tests.test_resources
 
 The live Recurly API endpoint can also be tested while validating the server
 certificate with the `RECURLY_CA_CERTS_FILE` environment variable, which should

@@ -1,23 +1,37 @@
-GET https://api.recurly.com/v2/accounts/testmock HTTP/1.1
+POST https://api.recurly.com/v2/accounts HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
-
-
-HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <account_code>testmock</account_code>
+  <external_accounts>
+    <external_account>
+      <external_account_code>google-code</external_account_code>
+      <external_connection_type>GooglePlayStore</external_connection_type>
+    </external_account>
+    <external_account>
+      <external_account_code>google-code-2</external_account_code>
+      <external_connection_type>GooglePlayStore</external_connection_type>
+    </external_account>
+  </external_accounts>
+</account>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/testmock
 
 <?xml version="1.0" encoding="UTF-8"?>
 <account href="https://api.recurly.com/v2/accounts/testmock">
   <adjustments href="https://api.recurly.com/v2/accounts/testmock/adjustments"/>
   <billing_info href="https://api.recurly.com/v2/accounts/testmock/billing_info"/>
   <invoices href="https://api.recurly.com/v2/accounts/testmock/invoices"/>
+  <shipping_addresses href="https://api.recurly.com/v2/accounts/testmock/shipping_addresses"/>
   <subscriptions href="https://api.recurly.com/v2/accounts/testmock/subscriptions"/>
   <transactions href="https://api.recurly.com/v2/accounts/testmock/transactions"/>
-  <account_balance href="https://api.recurly.com/v2/accounts/testmock/balance"/>
-  <external_subscriptions href="https://api.recurly.com/v2/accounts/testmock/external_subscriptions"/>
-  <external_invoices href="https://api.recurly.com/v2/accounts/testmock/external_invoices"/>
   <external_accounts href="https://api.recurly.com/v2/accounts/testmock/external_accounts"/>
   <account_code>testmock</account_code>
   <username nil="nil"></username>
@@ -25,6 +39,6 @@ Content-Type: application/xml; charset=utf-8
   <first_name nil="nil"></first_name>
   <last_name nil="nil"></last_name>
   <company_name nil="nil"></company_name>
-  <entity_use_code>I</entity_use_code>
+  <vat_number nil="nil"></vat_number>
   <accept_language nil="nil"></accept_language>
 </account>

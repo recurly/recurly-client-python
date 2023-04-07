@@ -10,7 +10,7 @@ from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, It
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
     DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
-    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge
+    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -3165,6 +3165,73 @@ class TestResources(RecurlyTest):
         self.assertEqual(second_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.created_at.tzinfo))
         self.assertEqual(second_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.updated_at.tzinfo))
 
+    def test_list_external_accounts(self):
+        account_code = 'testmock'
+        with self.mock_request('account/exists.xml'):
+            account = Account.get(account_code)
+
+        with self.mock_request('external-account/list.xml'):
+            external_accounts = account.external_accounts()
+
+        self.assertEqual(len(external_accounts), 2)
+
+        first_external_account = external_accounts[0]
+        first_external_account.external_account_code = '948eb638-bef5-4e48-a955-2646d7e353e5'
+        first_external_account.external_connection_type = 'GooglePlayStore'
+        first_external_account.created_at = '2023-04-06T22:25:44Z'
+        first_external_account.updated_at = '2023-04-06T22:25:44Z'
+
+    def test_create_external_account(self):
+        account_code = 'testmock'
+        with self.mock_request('account/exists.xml'):
+            account = Account.get(account_code)
+
+        external_account = recurly.ExternalAccount(
+            external_account_code = '948eb638-bef5-4e48-a955-2646d7e353e5',
+            external_connection_type = 'GooglePlayStore'
+        )
+        with self.mock_request('external-account/create.xml'):
+            account.create_external_account(external_account)
+
+    def test_update_external_account(self):
+        account_code = 'testmock'
+        with self.mock_request('account/exists.xml'):
+            account = Account.get(account_code)
+
+        with self.mock_request('external-account/list.xml'):
+            external_accounts = account.external_accounts()
+
+        external_account = external_accounts[0]
+        external_account.external_account_code = 'new google code'
+
+        with self.mock_request('external-account/updated.xml'):
+            external_account.save()
+
+    def test_delete_external_account(self):
+        account_code = 'testmock'
+        with self.mock_request('account/exists.xml'):
+            account = Account.get(account_code)
+
+        with self.mock_request('external-account/list.xml'):
+            external_accounts = account.external_accounts()
+
+        external_account = external_accounts[0]
+
+        with self.mock_request('external-account/deleted.xml'):
+            external_account.delete()
+
+    def test_account_external_accounts(self):
+        account_code = 'testmock'
+        """Create an account with an external_account"""
+        account = Account(
+            account_code=account_code,
+            external_accounts=[
+                ExternalAccount(external_account_code="google-code", external_connection_type="GooglePlayStore"),
+                ExternalAccount(external_account_code="google-code-2", external_connection_type="GooglePlayStore")
+            ]
+        )
+        with self.mock_request('account/created-with-external-accounts.xml'):
+            account.save()
 
 if __name__ == '__main__':
     import unittest

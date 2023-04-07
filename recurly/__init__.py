@@ -216,6 +216,7 @@ class Account(Resource):
         'dunning_campaign_id',
         'invoice_template',
         'invoice_template_uuid',
+        'external_accounts'
     )
 
     _classes_for_nodename = { 'address': Address, 'custom_field': CustomField }
@@ -448,6 +449,19 @@ class Account(Resource):
         request"""
         url = urljoin(self._url, '/shipping_addresses')
         return shipping_address.post(url)
+
+    def get_external_account(self, external_account_uuid):
+        """Fetch external_account info from account."""
+        url = urljoin(self._url, '/external_accounts/{}'.format(external_account_uuid))
+        resp, elem = ExternalAccount.element_for_url(url)
+        return ExternalAccount.from_element(elem)
+
+    def create_external_account(self, external_account):
+        """Creates an external_account on an existing account. If you are
+        creating an account, you can embed the external_accounts with the
+        request"""
+        url = urljoin(self._url, '/external_accounts')
+        return external_account.post(url)
 
 class BillingInfoFraudInfo(recurly.Resource):
     node_name = 'fraud'
@@ -2059,6 +2073,21 @@ class CreditPayment(Resource):
         'created_at',
         'updated_at',
         'voided_at',
+    )
+
+class ExternalAccount(Resource):
+
+    """External Account information"""
+
+    nodename = 'external_account'
+    member_path = 'external_accounts/%s'
+    
+    attributes = (
+        'id',
+        'external_account_code',
+        'external_connection_type',
+        'created_at',
+        'updated_at'
     )
 
 class ExternalInvoice(Resource):
