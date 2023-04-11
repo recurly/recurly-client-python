@@ -143,6 +143,8 @@ class Account(Resource):
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     exemption_certificate : str
         The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
+    external_accounts : :obj:`list` of :obj:`ExternalAccount`
+        The external accounts belonging to this account
     first_name : str
     has_active_subscription : bool
         Indicates if the account has an active subscription.
@@ -197,6 +199,7 @@ class Account(Resource):
         "dunning_campaign_id": str,
         "email": str,
         "exemption_certificate": str,
+        "external_accounts": ["ExternalAccount"],
         "first_name": str,
         "has_active_subscription": bool,
         "has_canceled_subscription": bool,
@@ -272,6 +275,33 @@ class ShippingAddress(Resource):
         "street2": str,
         "updated_at": datetime,
         "vat_number": str,
+    }
+
+
+class ExternalAccount(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        Created at
+    external_account_code : str
+        Represents the account code for the external account.
+    external_connection_type : str
+        Represents the connection type. `AppleAppStore` or `GooglePlayStore`
+    id : str
+        UUID of the external_account .
+    object : str
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_account_code": str,
+        "external_connection_type": str,
+        "id": str,
+        "object": str,
+        "updated_at": datetime,
     }
 
 

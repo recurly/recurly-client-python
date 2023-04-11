@@ -817,6 +817,146 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/credit_payments", account_id)
         return Pager(self, path, **options)
 
+    def list_account_external_account(self, account_id, **options):
+        """List external accounts for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Pager
+            A list of external accounts on an account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_accounts", account_id)
+        return Pager(self, path, **options)
+
+    def create_account_external_account(self, account_id, body, **options):
+        """Create an external account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of ExternalAccountCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            A representation of the created external_account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_accounts", account_id)
+        return self._make_request("POST", path, body, **options)
+
+    def get_account_external_account(self, account_id, external_account_id, **options):
+        """Get an external account for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        external_account_id : str
+            External account ID, e.g. `s28zov4fw0cb`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            A external account on an account.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/external_accounts/%s", account_id, external_account_id
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def update_account_external_account(
+        self, account_id, external_account_id, body, **options
+    ):
+        """Update an external account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        external_account_id : str
+            External account ID, e.g. `s28zov4fw0cb`.
+        body : dict
+            The request body. It should follow the schema of ExternalAccountUpdate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            A representation of the updated external_account.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/external_accounts/%s", account_id, external_account_id
+        )
+        return self._make_request("PUT", path, body, **options)
+
+    def delete_account_external_account(
+        self, account_id, external_account_id, **options
+    ):
+        """Delete an external account for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        external_account_id : str
+            External account ID, e.g. `s28zov4fw0cb`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            Successful Delete
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/external_accounts/%s", account_id, external_account_id
+        )
+        return self._make_request("DELETE", path, None, **options)
+
     def list_account_external_invoices(self, account_id, **options):
         """List the external invoices on an account
 
