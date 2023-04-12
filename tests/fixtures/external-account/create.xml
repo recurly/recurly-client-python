@@ -1,0 +1,25 @@
+POST https://api.recurly.com/v2/accounts/testmock/external_accounts HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_account>
+    <external_account_code>948eb638-bef5-4e48-a955-2646d7e353e5</external_account_code>
+    <external_connection_type>GooglePlayStore</external_connection_type>
+</external_account>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/accounts/testmock/external_accounts/sol7gvrm8vkh
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_account href="https://api.recurly.com/v2/accounts/testmock/external_accounts/sol7gvrm8vkh">
+    <id>sol7gvrm8vkh</id>
+    <external_account_code>948eb638-bef5-4e48-a955-2646d7e353e5</external_account_code>
+    <external_connection_type>GooglePlayStore</external_connection_type>
+    <created_at type="datetime">2023-04-06T22:25:44Z</created_at>
+    <updated_at type="datetime">2023-04-06T22:25:44Z</updated_at>
+</external_account>
