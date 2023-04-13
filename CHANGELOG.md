@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.2](https://github.com/recurly/recurly-client-python/tree/2.10.2) (2023-04-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.1...2.10.2)
+
+
+
+
+
 ## [2.10.1](https://github.com/recurly/recurly-client-python/tree/2.10.1) (2023-04-05)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.0...2.10.1)
