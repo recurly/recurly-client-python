@@ -1037,7 +1037,8 @@ class Invoice(Resource):
         'billing_info',
         'billing_info_uuid',
         'dunning_campaign_id',
-        'refundable_in_cents'
+        'refundable_in_cents',
+        'used_tax_service'
     )
 
     blacklist_attributes = (
