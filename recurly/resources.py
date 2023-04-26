@@ -1161,6 +1161,8 @@ class Invoice(Resource):
         Invoices are either charge, credit, or legacy invoices.
     updated_at : datetime
         Last updated at
+    used_tax_service : bool
+        Will be `true` when the invoice had a successful response from the tax service and `false` when the invoice was not sent to tax service due to a lack of address or enabled jurisdiction or was processed without tax due to a non-blocking error returned from the tax service.
     vat_number : str
         VAT registration number for the customer on this invoice. This will come from the VAT Number field in the Billing Info or the Account Info depending on your tax settings and the invoice collection method.
     vat_reverse_charge_notes : str
@@ -1202,6 +1204,7 @@ class Invoice(Resource):
         "transactions": ["Transaction"],
         "type": str,
         "updated_at": datetime,
+        "used_tax_service": bool,
         "vat_number": str,
         "vat_reverse_charge_notes": str,
     }
@@ -2086,6 +2089,7 @@ class CustomFieldDefinition(Resource):
         - `read_only` - Users with the Customers role will be able to view this field's data via the admin UI, but
           editing will only be available via the API.
         - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
+        - `set_only` - Users with the Customers role will be able to set this field's data via the admin console.
     """
 
     schema = {
