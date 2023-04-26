@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.23.0](https://github.com/recurly/recurly-client-python/tree/3.23.0) (2023-04-26)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.22.0...3.23.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2019-10-10 (used_tax_service on Invoice) [#639](https://github.com/recurly/recurly-client-python/pull/639) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [3.22.0](https://github.com/recurly/recurly-client-python/tree/3.22.0) (2023-01-19)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/3.21.0...3.22.0)
