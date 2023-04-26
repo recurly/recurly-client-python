@@ -1391,6 +1391,8 @@ class Invoice(Resource):
         Invoices are either charge, credit, or legacy invoices.
     updated_at : datetime
         Last updated at
+    used_tax_service : bool
+        Will be `true` when the invoice had a successful response from the tax service and `false` when the invoice was not sent to tax service due to a lack of address or enabled jurisdiction or was processed without tax due to a non-blocking error returned from the tax service.
     uuid : str
         Invoice UUID
     vat_number : str
@@ -1437,6 +1439,7 @@ class Invoice(Resource):
         "transactions": ["Transaction"],
         "type": str,
         "updated_at": datetime,
+        "used_tax_service": bool,
         "uuid": str,
         "vat_number": str,
         "vat_reverse_charge_notes": str,
