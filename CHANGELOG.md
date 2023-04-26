@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.3](https://github.com/recurly/recurly-client-python/tree/2.10.3) (2023-04-26)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.2...2.10.3)
+
+
+**Merged Pull Requests**
+
+- Add used_tax_service to Invoice response [#638](https://github.com/recurly/recurly-client-python/pull/638) ([judith](https://github.com/judith))
+
+
+
 ## [2.10.2](https://github.com/recurly/recurly-client-python/tree/2.10.2) (2023-04-13)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.1...2.10.2)
