@@ -1258,13 +1258,13 @@ class TaxInfo(Resource):
     Attributes
     ----------
     rate : float
-        Rate
+        The combined tax rate. Not present when Avalara for Communications is enabled.
     region : str
-        Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST.
+        Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST. Not present when Avalara for Communications is enabled.
     tax_details : :obj:`list` of :obj:`TaxDetail`
-        Provides additional tax details for Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItem.
+        Provides additional tax details for Communications taxes when Avalara for Communications is enabled or Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItemList. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
     type : str
-        Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries.
+        Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries. Not present when Avalara for Communications is enabled.
     """
 
     schema = {
@@ -1279,17 +1279,26 @@ class TaxDetail(Resource):
     """
     Attributes
     ----------
+    billable : bool
+        Whether or not the line item is taxable. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
+    level : str
+        Provides the jurisdiction level for the Communications tax applied. Example values include city, state and federal. Present only when Avalara for Communications is enabled.
+    name : str
+        Provides the name of the Communications tax applied. Present only when Avalara for Communications is enabled.
     rate : float
         Provides the tax rate for the region.
     region : str
-        Provides the tax region applied on an invoice. For Canadian Sales Tax, this will be either the 2 letter province code or country code.
+        Provides the tax region applied on an invoice. For Canadian Sales Tax, this will be either the 2 letter province code or country code. Not present when Avalara for Communications is enabled.
     tax : float
         The total tax applied for this tax type.
     type : str
-        Provides the tax type for the region. For Canadian Sales Tax, this will be GST, HST, QST or PST.
+        Provides the tax type for the region or type of Comminications tax when Avalara for Communications is enabled. For Canadian Sales Tax, this will be GST, HST, QST or PST.
     """
 
     schema = {
+        "billable": bool,
+        "level": str,
+        "name": str,
         "rate": float,
         "region": str,
         "tax": float,
