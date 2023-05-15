@@ -2177,12 +2177,25 @@ class ExternalProduct(Resource):
     collection_path = 'external_products'
 
     attributes = (
-        'plan',
+        'plan_code',
         'name',
         'created_at',
         'updated_at',
         'external_product_references'
     )
+
+    def create_external_product_reference(self, external_product_reference):
+        """Creates an external_product_reference on an existing product_reference. If you are
+        creating an product_reference, you can embed the external_product_references with the
+        request"""
+        url = urljoin(self._url, '/external_product_references')
+        return external_product_reference.post(url)
+
+    def get_external_product_reference(self, external_product_reference_uuid):
+      """Fetch an external product reference from an external account."""
+      url = urljoin(self._url, '/external_product_references/{}'.format(external_product_reference_uuid))
+      resp, elem = ExternalProductReference().element_for_url(url)
+      return ExternalProductReference().from_element(elem)
 
 class ExportDate(Resource):
     nodename = 'export_date'

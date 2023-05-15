@@ -1,0 +1,18 @@
+GET https://api.recurly.com/v2/external_products/ru1u1gms4msk/external_product_references/ru1u1gn5otsv HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_product_reference href="https://api.recurly.com/v2/external_products/ru1u1gms4msk/external_product_references/ru1u1gn5otsv">
+    <id>ru1u1gn5otsv</id>
+    <reference_code>code_test_google</reference_code>
+    <external_connection_type>google_play_store</external_connection_type>
+    <created_at type="datetime">2022-11-03T21:12:35Z</created_at>
+    <updated_at type="datetime">2022-11-03T21:12:35Z</updated_at>
+</external_product_reference>
