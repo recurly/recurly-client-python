@@ -345,6 +345,8 @@ class PaymentMethod(Resource):
         Expiration year.
     first_six : str
         Credit card number's first six digits.
+    gateway_attributes : GatewayAttributes
+        Gateway specific attributes associated with this PaymentMethod
     gateway_code : str
         An identifier for a specific payment gateway.
     gateway_token : str
@@ -370,6 +372,7 @@ class PaymentMethod(Resource):
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
+        "gateway_attributes": "GatewayAttributes",
         "gateway_code": str,
         "gateway_token": str,
         "last_four": str,
@@ -378,6 +381,19 @@ class PaymentMethod(Resource):
         "object": str,
         "routing_number": str,
         "routing_number_bank": str,
+    }
+
+
+class GatewayAttributes(Resource):
+    """
+    Attributes
+    ----------
+    account_reference : str
+        Used by Adyen gateways. The Shopper Reference value used when the external token was created.
+    """
+
+    schema = {
+        "account_reference": str,
     }
 
 
