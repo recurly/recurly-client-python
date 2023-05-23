@@ -2582,6 +2582,27 @@ class ExternalProduct(Resource):
     }
 
 
+class ExternalProductReferenceCollection(Resource):
+    """
+    Attributes
+    ----------
+    data : :obj:`list` of :obj:`ExternalProductReferenceMini`
+    has_more : bool
+        Indicates there are more results on subsequent pages.
+    next : str
+        Path to subsequent page of results.
+    object : str
+        Will always be List.
+    """
+
+    schema = {
+        "data": ["ExternalProductReferenceMini"],
+        "has_more": bool,
+        "next": str,
+        "object": str,
+    }
+
+
 class BinaryFile(Resource):
     """
     Attributes

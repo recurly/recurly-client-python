@@ -2436,6 +2436,32 @@ class Client(BaseClient):
         )
         return Pager(self, path, **options)
 
+    def create_external_product(self, body, **options):
+        """Create an external product
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of ExternalProductCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Returns the external product
+        """
+        path = self._interpolate_path(
+            "/external_products",
+        )
+        return self._make_request("POST", path, body, **options)
+
     def get_external_product(self, external_product_id, **options):
         """Fetch an external product
 
@@ -2459,6 +2485,184 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/external_products/%s", external_product_id)
         return self._make_request("GET", path, None, **options)
+
+    def update_external_product(self, external_product_id, body, **options):
+        """Update an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        body : dict
+            The request body. It should follow the schema of ExternalProductUpdate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Settings for an external product.
+        """
+        path = self._interpolate_path("/external_products/%s", external_product_id)
+        return self._make_request("PUT", path, body, **options)
+
+    def deactivate_external_products(self, external_product_id, **options):
+        """Deactivate an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Deactivated external product.
+        """
+        path = self._interpolate_path("/external_products/%s", external_product_id)
+        return self._make_request("DELETE", path, None, **options)
+
+    def list_external_product_external_product_references(
+        self, external_product_id, **options
+    ):
+        """List the external product references for an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external product references for an external product.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references", external_product_id
+        )
+        return Pager(self, path, **options)
+
+    def create_external_product_external_product_reference(
+        self, external_product_id, body, **options
+    ):
+        """Create an external product reference on an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        body : dict
+            The request body. It should follow the schema of ExternalProductReferenceCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProductReferenceMini
+            Details for the external product reference.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references", external_product_id
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def get_external_product_external_product_reference(
+        self, external_product_id, external_product_reference_id, **options
+    ):
+        """Fetch an external product reference
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        external_product_reference_id : str
+            External product reference ID, e.g. `d39iun2fw1v4`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProductReferenceMini
+            Details for an external product reference.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references/%s",
+            external_product_id,
+            external_product_reference_id,
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def deactivate_external_product_external_product_reference(
+        self, external_product_id, external_product_reference_id, **options
+    ):
+        """Deactivate an external product reference
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        external_product_reference_id : str
+            External product reference ID, e.g. `d39iun2fw1v4`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProductReferenceMini
+            Details for an external product reference.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references/%s",
+            external_product_id,
+            external_product_reference_id,
+        )
+        return self._make_request("DELETE", path, None, **options)
 
     def list_external_subscriptions(self, **options):
         """List a site's external subscriptions
