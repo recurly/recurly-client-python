@@ -3165,6 +3165,51 @@ class TestResources(RecurlyTest):
         self.assertEqual(second_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.created_at.tzinfo))
         self.assertEqual(second_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.updated_at.tzinfo))
 
+    def test_update_external_product(self):
+        with self.mock_request('external-product/get.xml'):
+            external_product = ExternalProduct.get('ru1u1gms4msk')
+
+        external_product.plan_code = "test-plan"
+        with self.mock_request('external-product/updated.xml'):
+            external_product.save()
+
+    def test_delete_external_product(self):
+        with self.mock_request('external-product/get.xml'):
+            external_product = ExternalProduct.get('ru1u1gms4msk')
+
+        with self.mock_request('external-product/deleted.xml'):
+            external_product.delete()
+
+    def test_create_external_product_reference(self):
+        with self.mock_request('external-product/get.xml'):
+            external_product = ExternalProduct.get('ru1u1gms4msk')
+
+        external_product_reference = recurly.ExternalProductReference(
+            reference_code = '948eb638-bef5-4e48-a955-2646d7e353e5',
+            external_connection_type = 'google_play_store'
+        )
+        with self.mock_request('external-product-references/create.xml'):
+            external_product.create_external_product_reference(external_product_reference)
+
+    def test_get_external_product_reference(self):
+        with self.mock_request('external-product/get.xml'):
+            external_product = ExternalProduct.get('ru1u1gms4msk')
+        with self.mock_request('external-product-references/get.xml'):
+            external_product_reference = external_product.get_external_product_reference('ru1u1gn5otsv')
+
+        self.assertEqual(external_product_reference.reference_code, "code_test_google")
+        self.assertEqual(external_product_reference.external_connection_type, "google_play_store")
+
+    def test_delete_external_product_reference(self):
+        with self.mock_request('external-product/get.xml'):
+            external_product = ExternalProduct.get('ru1u1gms4msk')
+
+        with self.mock_request('external-product-references/get.xml'):
+            external_product_reference = external_product.get_external_product_reference('ru1u1gn5otsv')
+
+        with self.mock_request('external-product-references/deleted.xml'):
+            external_product_reference.delete()
+
     def test_list_external_accounts(self):
         account_code = 'testmock'
         with self.mock_request('account/exists.xml'):

@@ -1,15 +1,22 @@
-GET https://api.recurly.com/v2/external_products/ru1u1gms4msk HTTP/1.1
+PUT https://api.recurly.com/v2/external_products/ru1u1gms4msk HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==
 User-Agent: {user-agent}
-
-
-HTTP/1.1 200 OK
 Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
+<external_product>
+    <plan_code>test-plan</plan_code>
+</external_product>
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/external_products/ru1u1gms4msk
+
+<?xml version="1.0" encoding="UTF-8"?>
 <external_product href="https://api.recurly.com/v2/external_products/ru1u1gms4msk">
+    <id>sol7gvrm8vkh</id>
     <plan href="https://api.recurly.com/v2/plans/5_abril">
         <plan_code>5_abril</plan_code>
         <name>5 de abril</name>

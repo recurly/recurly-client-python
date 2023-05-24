@@ -1,0 +1,25 @@
+POST https://api.recurly.com/v2/external_products/ru1u1gms4msk/external_product_references HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_product_reference>
+    <external_connection_type>google_play_store</external_connection_type>
+    <reference_code>948eb638-bef5-4e48-a955-2646d7e353e5</reference_code>
+</external_product_reference>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/external_products/ru1u1gms4msk/external_product_references/swafyj8wqw6n
+
+<?xml version="1.0" encoding="UTF-8"?>
+<external_product_reference href="https://api.recurly.com/v2/external_products/ru1u1gms4msk/external_product_references/swafyj8wqw6n">
+    <id>swafyj8wqw6n</id>
+    <reference_code>948eb638-bef5-4e48-a955-2646d7e353e5</reference_code>
+    <external_connection_type>google_play_store</external_connection_type>
+    <created_at type="datetime">2023-05-15T18:46:48Z</created_at>
+    <updated_at type="datetime">2023-05-15T18:46:48Z</updated_at>
+</external_product_reference>
