@@ -477,7 +477,7 @@ class GatewayAttributes(Resource):
     nodename = 'gateway_attributes'
 
     attributes = (
-        'account_reference'
+        'account_reference',
     )
 
 class BillingInfo(Resource):
@@ -553,7 +553,7 @@ class BillingInfo(Resource):
 
     def verify_cvv(self, account_code, verification_value = None):
       recurly.Account.get(account_code).verify_cvv(verification_value)
-
+ 
 class ShippingAddress(Resource):
 
     """Shipping Address information"""
