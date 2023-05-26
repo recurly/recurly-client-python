@@ -12,6 +12,9 @@ Content-Type: application/xml; charset=utf-8
   <country>US</country>
   <currency>USD</currency>
   <first_name>Verena</first_name>
+  <gateway_attributes>
+    <account_reference>ABC123</account_reference>
+  </gateway_attributes>
   <gateway_code>gatewaycode123</gateway_code>
   <gateway_token>gatewaytoken123</gateway_token>
   <last_name>Example</last_name>
@@ -45,6 +48,9 @@ Location: https://api.recurly.com/v2/accounts/binfomock/billing_info
   <currency>USD</currency>
   <gateway_token>gatewaytoken123</gateway_token>
   <gateway_code>gatewaycode123</gateway_code>
+  <gateway_attributes>
+    <account_reference>ABC123</account_reference>
+  </gateway_attributes>
   <fraud>
     <score type="integer">87</score>
     <decision>DECLINED</decision>
