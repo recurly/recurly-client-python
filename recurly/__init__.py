@@ -470,6 +470,16 @@ class BillingInfoFraudInfo(recurly.Resource):
         'decision',
     )
 
+class GatewayAttributes(Resource):
+
+    """Additional attributes to send to the gateway"""
+
+    nodename = 'gateway_attributes'
+
+    attributes = (
+        'account_reference',
+    )
+
 class BillingInfo(Resource):
 
     """A set of billing information for an account."""
@@ -515,6 +525,7 @@ class BillingInfo(Resource):
         'external_hpp_type',
         'gateway_token',
         'gateway_code',
+        'gateway_attributes',
         'three_d_secure_action_result_token_id',
         'transaction_type',
         'iban',
@@ -532,6 +543,7 @@ class BillingInfo(Resource):
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {
         'fraud': BillingInfoFraudInfo,
+        'gateway_attributes': GatewayAttributes
     }
 
     # Allows user to call verify() on billing_info object
@@ -541,7 +553,7 @@ class BillingInfo(Resource):
 
     def verify_cvv(self, account_code, verification_value = None):
       recurly.Account.get(account_code).verify_cvv(verification_value)
-
+ 
 class ShippingAddress(Resource):
 
     """Shipping Address information"""

@@ -10,7 +10,7 @@ from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, It
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
     DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
-    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount
+    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, GatewayAttributes
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -862,6 +862,7 @@ class TestResources(RecurlyTest):
             log_content = StringIO()
             log_handler = logging.StreamHandler(log_content)
             logger.addHandler(log_handler)
+            gateway_attributes = GatewayAttributes(account_reference='ABC123')
 
             binfo = BillingInfo(
                 first_name='Verena',
@@ -878,6 +879,7 @@ class TestResources(RecurlyTest):
                 month='12',
                 gateway_token='gatewaytoken123',
                 gateway_code='gatewaycode123',
+                gateway_attributes=gateway_attributes,
             )
             with self.mock_request('billing-info/created.xml'):
                 account.update_billing_info(binfo)
@@ -886,6 +888,7 @@ class TestResources(RecurlyTest):
             self.assertEqual(binfo.gateway_code, 'gatewaycode123')
             self.assertEqual(binfo.fraud.score, 87)
             self.assertEqual(binfo.fraud.decision, 'DECLINED')
+            self.assertEqual(binfo.gateway_attributes.account_reference, 'ABC123')
 
             logger.removeHandler(log_handler)
             log_content = log_content.getvalue()
