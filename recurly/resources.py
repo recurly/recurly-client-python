@@ -166,6 +166,8 @@ class Account(Resource):
     last_name : str
     object : str
         Object type
+    override_business_entity_id : str
+        Unique ID to identify the business entity assigned to the account. Available when the `Multiple Business Entities` feature is enabled.
     parent_account_id : str
         The UUID of the parent account associated with this account.
     preferred_locale : str
@@ -212,6 +214,7 @@ class Account(Resource):
         "invoice_template_id": str,
         "last_name": str,
         "object": str,
+        "override_business_entity_id": str,
         "parent_account_id": str,
         "preferred_locale": str,
         "preferred_time_zone": str,
@@ -1342,6 +1345,8 @@ class Invoice(Resource):
         The outstanding balance remaining on this invoice.
     billing_info_id : str
         The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info. `billing_info_id` can ONLY be used for sites utilizing the Wallet feature.
+    business_entity_id : str
+        Unique ID to identify the business entity assigned to the invoice. Available when the `Multiple Business Entities` feature is enabled.
     closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
@@ -1422,6 +1427,7 @@ class Invoice(Resource):
         "address": "InvoiceAddress",
         "balance": float,
         "billing_info_id": str,
+        "business_entity_id": str,
         "closed_at": datetime,
         "collection_method": str,
         "created_at": datetime,
@@ -3380,6 +3386,49 @@ class GrantedBy(Resource):
     schema = {
         "id": str,
         "object": str,
+    }
+
+
+class BusinessEntity(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The entity code of the business entity.
+    created_at : datetime
+        Created at
+    default_registration_number : str
+        Registration number for the customer used on the invoice.
+    default_vat_number : str
+        VAT number for the customer used on the invoice.
+    id : str
+        Business entity ID
+    invoice_display_address : Address
+        Address information for the business entity that will appear on the invoice.
+    name : str
+        This name describes your business entity and will appear on the invoice.
+    object : str
+        Object type
+    subscriber_location_countries : :obj:`list` of :obj:`str`
+        List of countries for which the business entity will be used.
+    tax_address : Address
+        Address information for the business entity that will be used for calculating taxes.
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "code": str,
+        "created_at": datetime,
+        "default_registration_number": str,
+        "default_vat_number": str,
+        "id": str,
+        "invoice_display_address": "Address",
+        "name": str,
+        "object": str,
+        "subscriber_location_countries": list,
+        "tax_address": "Address",
+        "updated_at": datetime,
     }
 
 

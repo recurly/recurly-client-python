@@ -5109,6 +5109,44 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/external_subscriptions", account_id)
         return Pager(self, path, **options)
 
+    def get_business_entity(self, business_entity_id, **options):
+        """Fetch a business entity
+
+        Parameters
+        ----------
+
+        business_entity_id : str
+            Business Entity ID. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-entity1`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        BusinessEntity
+            Business entity details
+        """
+        path = self._interpolate_path("/business_entities/%s", business_entity_id)
+        return self._make_request("GET", path, None, **options)
+
+    def list_business_entities(self, **options):
+        """List business entities
+
+        Returns
+        -------
+
+        Pager
+            List of all business entities on your site.
+        """
+        path = self._interpolate_path(
+            "/business_entities",
+        )
+        return Pager(self, path, **options)
+
     def list_gift_cards(self, **options):
         """List gift cards
 
@@ -5224,3 +5262,63 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/gift_cards/%s/redeem", redemption_code)
         return self._make_request("POST", path, body, **options)
+
+    def list_business_entity_invoices(self, business_entity_id, **options):
+        """List a business entity's invoices
+
+        Parameters
+        ----------
+
+        business_entity_id : str
+            Business Entity ID. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-entity1`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.begin_time : datetime
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.end_time : datetime
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.type : str
+            Filter by type when:
+            - `type=charge`, only charge invoices will be returned.
+            - `type=credit`, only credit invoices will be returned.
+            - `type=non-legacy`, only charge and credit invoices will be returned.
+            - `type=legacy`, only legacy invoices will be returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the business entity's invoices.
+        """
+        path = self._interpolate_path(
+            "/business_entities/%s/invoices", business_entity_id
+        )
+        return Pager(self, path, **options)
