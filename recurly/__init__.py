@@ -214,6 +214,7 @@ class Account(Resource):
         'custom_fields',
         'transaction_type',
         'dunning_campaign_id',
+        'override_business_entity_id',
         'invoice_template',
         'invoice_template_uuid',
         'external_accounts'
@@ -469,6 +470,40 @@ class BillingInfoFraudInfo(recurly.Resource):
         'score',
         'decision',
     )
+
+class BusinessEntity(Resource):
+
+    """ A resource representing a merchant's business identity. """
+
+    member_path = 'business_entities/%s'
+    collection_path = 'business_entities'
+
+    nodename = 'business_entity'
+
+    attributes = (
+        'id',
+        'code',
+        'name',
+        'invoice_display_address',
+        'tax_address',
+        'subscriber_location_countries',
+        'default_vat_number',
+        'default_registration_number',
+        'created_at',
+        'updated_at'
+    )
+
+    _classes_for_nodename = {
+        'tax_address': Address, 'invoice_display_address': Address
+    }
+
+
+    @classmethod
+    def value_for_element(cls, elem):
+        excludes = ['subscriber_location_countries']
+        if elem is None or elem.tag not in excludes or elem.attrib.get('type') != 'array':
+            return super(BusinessEntity, cls).value_for_element(elem)
+        return [code_elem.text for code_elem in elem]
 
 class GatewayAttributes(Resource):
 

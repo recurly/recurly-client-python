@@ -12,6 +12,7 @@ Location: https://api.recurly.com/v2/invoices/6019
 <?xml version="1.0" encoding="UTF-8"?>
 <invoice href="https://api.recurly.com/v2/invoices/6019">
   <account href="https://api.recurly.com/v2/accounts/aa463d59-a618-4b71-b1f4-0410f835fe74"/>
+  <business_entity href="https://api.recurly.com/v2/business_entities/sy8yqpgxmeqc"/>
   <address>
     <address1 nil="nil"></address1>
     <address2 nil="nil"></address2>

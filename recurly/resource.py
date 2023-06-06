@@ -229,7 +229,7 @@ class Resource(object):
                 elif type(attr_value) is list and len(attr_value) > 0:
                     attrs_output += '{}=['.format(attribute)
                     for val in attr_value: 
-                        attrs_output += val._beauty_print()
+                        attrs_output += val._beauty_print() if val is list else val + ','
                     attrs_output += ']'
                 else:
                     attrs_output += '{}={}'.format(attribute, attr_value)

@@ -10,7 +10,8 @@ from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, It
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
     DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
-    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, GatewayAttributes
+    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
+    GatewayAttributes, BusinessEntity
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
 from recurlytests import RecurlyTest
@@ -3167,6 +3168,60 @@ class TestResources(RecurlyTest):
         self.assertEqual(second_external_product_reference.external_connection_type, 'apple_app_store')
         self.assertEqual(second_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.created_at.tzinfo))
         self.assertEqual(second_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.updated_at.tzinfo))
+
+    
+    def test_get_business_entity(self):
+        with self.mock_request('business_entity/get.xml'):
+            entity = BusinessEntity.get('sy8yqpgxmeqc')
+
+        self.assertEqual(entity.id, 'sy8yqpgxmeqc')
+        self.assertEqual(entity.code, '302-test')
+        self.assertEqual(entity.name, '302-test')
+        self.assertEqual(entity.default_vat_number, 'ab2')
+        self.assertEqual(entity.default_registration_number, 'ab1')
+        self.assertEqual(entity.subscriber_location_countries, ['GB', 'CA'])
+        self.assertIsInstance(entity.tax_address, Address)
+        self.assertIsInstance(entity.invoice_display_address, Address)
+        self.assertEqual(entity.created_at, datetime(2023, 5, 13, 17, 28, 47, tzinfo=entity.created_at.tzinfo))
+        self.assertEqual(entity.updated_at, datetime(2023, 10, 13, 17, 28, 48, tzinfo=entity.updated_at.tzinfo))
+
+    def test_list_business_entities(self):
+        with self.mock_request('business_entity/list.xml'):
+            entities = BusinessEntity.all()
+
+        self.assertEqual(len(entities), 2)
+        self.assertIsInstance(entities[0], BusinessEntity)
+        self.assertIsInstance(entities[1], BusinessEntity)
+
+    def test_invoices_for_business_entity(self):
+        with self.mock_request('business_entity/get.xml'):
+            entity = BusinessEntity.get('sy8yqpgxmeqc')
+
+        with self.mock_request('business_entity/invoices_for_entity.xml'):
+            invoices = entity.invoices()
+
+        self.assertEqual(len(invoices), 2)
+        self.assertIsInstance(invoices[0], Invoice)
+        self.assertIsInstance(invoices[1], Invoice)
+
+    def test_business_entity_for_account(self):
+        account_code = 'testmock'
+        with self.mock_request('account/exists.xml'):
+            account = Account.get(account_code)
+
+        with self.mock_request('business_entity/get.xml'):
+            entity = account.business_entity()
+        
+        self.assertIsInstance(entity, BusinessEntity)
+
+    def test_business_entity_for_invoice(self):
+        with self.mock_request('invoice/show-invoice.xml'):
+            invoice = Invoice.get(6019)
+
+        with self.mock_request('business_entity/get.xml'):
+            entity = invoice.business_entity()
+        
+        self.assertIsInstance(entity, BusinessEntity)
 
     def test_update_external_product(self):
         with self.mock_request('external-product/get.xml'):

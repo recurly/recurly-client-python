@@ -19,6 +19,7 @@ Content-Type: application/xml; charset=utf-8
   <external_subscriptions href="https://api.recurly.com/v2/accounts/testmock/external_subscriptions"/>
   <external_invoices href="https://api.recurly.com/v2/accounts/testmock/external_invoices"/>
   <external_accounts href="https://api.recurly.com/v2/accounts/testmock/external_accounts"/>
+  <business_entity href="https://api.recurly.com/v2/business_entities/sy8yqpgxmeqc"/>
   <account_code>testmock</account_code>
   <username nil="nil"></username>
   <email nil="nil"></email>

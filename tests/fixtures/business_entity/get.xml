@@ -1,0 +1,43 @@
+GET https://api.recurly.com/v2/business_entities/sy8yqpgxmeqc HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<business_entity href="https://api.recurly.com/v2/business_entities/sy8yqpgxmeqc">
+    <invoices href="https://api.recurly.com/v2/business_entities/sy8yqpgxmeqc/invoices"/>
+    <id>sy8yqpgxmeqc</id>
+    <code>302-test</code>
+    <name>302-test</name>
+    <invoice_display_address>
+        <address1>200 2nd st</address1>
+        <address2>100 1st street</address2>
+        <city>denver</city>
+        <state>CO</state>
+        <zip>80209</zip>
+        <country>US</country>
+        <phone>4344444222</phone>
+    </invoice_display_address>
+    <tax_address>
+        <address1>200 2nd st</address1>
+        <address2>100 1st street</address2>
+        <city>denver</city>
+        <state>CO</state>
+        <zip>80209</zip>
+        <country>US</country>
+        <phone>4344444222</phone>
+    </tax_address>
+    <subscriber_location_countries type="array">
+        <subscriber_location_country>GB</subscriber_location_country>
+        <subscriber_location_country>CA</subscriber_location_country>
+    </subscriber_location_countries>
+    <default_vat_number>ab2</default_vat_number>
+    <default_registration_number>ab1</default_registration_number>
+    <created_at type="datetime">2023-05-13T17:28:47Z</created_at>
+    <updated_at type="datetime">2023-10-13T17:28:48Z</updated_at>
+</business_entity>

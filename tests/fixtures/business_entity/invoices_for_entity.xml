@@ -1,0 +1,185 @@
+GET https://api.recurly.com/v2/business_entities/sy8yqpgxmeqc/invoices HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoices type="array">
+    <invoice href="https://pcc.recurly.dev:3000/v2/invoices/1077">
+        <account href="https://pcc.recurly.dev:3000/v2/accounts/BEN-329-demo"/>
+        <dunning_campaign_id>sppvju7px5wh</dunning_campaign_id>
+        <business_entity href="https://pcc.recurly.dev:3000/v2/business_entities/sy8yqpgxmeqc"/>
+        <address>
+            <name_on_account nil="nil"></name_on_account>
+            <first_name></first_name>
+            <last_name></last_name>
+            <company></company>
+            <address1></address1>
+            <address2></address2>
+            <city></city>
+            <state></state>
+            <zip></zip>
+            <country></country>
+            <phone></phone>
+        </address>
+        <subscriptions href="https://pcc.recurly.dev:3000/v2/invoices/1077/subscriptions"/>
+        <uuid>69c286dc6d9a71c0bae9024e1a99c152</uuid>
+        <state>past_due</state>
+        <invoice_number_prefix></invoice_number_prefix>
+        <invoice_number type="integer">1077</invoice_number>
+        <vat_number></vat_number>
+        <tax_in_cents type="integer">0</tax_in_cents>
+        <total_in_cents type="integer">1</total_in_cents>
+        <currency>USD</currency>
+        <created_at type="datetime">2023-05-25T16:26:24Z</created_at>
+        <updated_at type="datetime">2023-05-26T16:26:25Z</updated_at>
+        <attempt_next_collection_at nil="nil"></attempt_next_collection_at>
+        <closed_at nil="nil"></closed_at>
+        <customer_notes nil="nil"></customer_notes>
+        <recovery_reason nil="nil"></recovery_reason>
+        <gateway_code nil="nil"></gateway_code>
+        <subtotal_before_discount_in_cents type="integer">1</subtotal_before_discount_in_cents>
+        <subtotal_in_cents type="integer">1</subtotal_in_cents>
+        <discount_in_cents type="integer">0</discount_in_cents>
+        <due_on type="datetime">2023-05-26T16:26:24Z</due_on>
+        <balance_in_cents type="integer">1</balance_in_cents>
+        <type>charge</type>
+        <origin>immediate_change</origin>
+        <credit_invoices href="https://pcc.recurly.dev:3000/v2/invoices/1077/credit_invoices"/>
+        <refundable_total_in_cents type="integer">1</refundable_total_in_cents>
+        <credit_payments type="array">
+    </credit_payments>
+        <net_terms type="integer">0</net_terms>
+        <collection_method>manual</collection_method>
+        <po_number></po_number>
+        <terms_and_conditions nil="nil"></terms_and_conditions>
+        <line_items type="array">
+            <adjustment href="https://pcc.recurly.dev:3000/v2/adjustments/69c286dc4c94b7e62c8eed456da77461" type="charge">
+                <account href="https://pcc.recurly.dev:3000/v2/accounts/BEN-329-demo"/>
+                <bill_for_account href="https://pcc.recurly.dev:3000/v2/accounts/BEN-329-demo"/>
+                <item_code nil="nil"></item_code>
+                <external_sku nil="nil"></external_sku>
+                <invoice href="https://pcc.recurly.dev:3000/v2/invoices/1077"/>
+                <subscription href="https://pcc.recurly.dev:3000/v2/subscriptions/69c285f1588f5942d29b4848f7992411"/>
+                <credit_adjustments href="https://pcc.recurly.dev:3000/v2/adjustments/69c286dc4c94b7e62c8eed456da77461/credit_adjustments"/>
+                <refundable_total_in_cents type="integer">1</refundable_total_in_cents>
+                <uuid>69c286dc4c94b7e62c8eed456da77461</uuid>
+                <state>invoiced</state>
+                <description>1-dollar-fixed</description>
+                <accounting_code></accounting_code>
+                <product_code>1-dollar-fixed</product_code>
+                <origin>plan</origin>
+                <unit_amount_in_cents type="integer">1</unit_amount_in_cents>
+                <quantity type="integer">1</quantity>
+                <discount_in_cents type="integer">0</discount_in_cents>
+                <tax_in_cents type="integer">0</tax_in_cents>
+                <total_in_cents type="integer">1</total_in_cents>
+                <currency>USD</currency>
+                <proration_rate type="float">1.0</proration_rate>
+                <start_date type="datetime">2023-05-25T16:26:23Z</start_date>
+                <end_date type="datetime">2023-06-25T16:25:24Z</end_date>
+                <created_at type="datetime">2023-05-25T16:26:24Z</created_at>
+                <updated_at type="datetime">2023-05-25T16:26:24Z</updated_at>
+                <revenue_schedule_type>evenly</revenue_schedule_type>
+                <custom_fields type="array">
+        </custom_fields>
+            </adjustment>
+        </line_items>
+        <transactions type="array">
+    </transactions>
+        <a name="mark_successful" href="https://pcc.recurly.dev:3000/v2/invoices/1077/mark_successful" method="put"/>
+        <a name="mark_failed" href="https://pcc.recurly.dev:3000/v2/invoices/1077/mark_failed" method="put"/>
+        <a name="apply_credit_balance" href="https://pcc.recurly.dev:3000/v2/invoices/1077/apply_credit_balance" method="put"/>
+    </invoice>
+    <invoice href="https://pcc.recurly.dev:3000/v2/invoices/1076">
+        <account href="https://pcc.recurly.dev:3000/v2/accounts/BEN-329-demo"/>
+        <dunning_campaign_id>sppvju7px5wh</dunning_campaign_id>
+        <business_entity href="https://pcc.recurly.dev:3000/v2/business_entities/sy8yqpgxmeqc"/>
+        <address>
+            <name_on_account nil="nil"></name_on_account>
+            <first_name></first_name>
+            <last_name></last_name>
+            <company></company>
+            <address1></address1>
+            <address2></address2>
+            <city></city>
+            <state></state>
+            <zip></zip>
+            <country></country>
+            <phone></phone>
+        </address>
+        <subscriptions href="https://pcc.recurly.dev:3000/v2/invoices/1076/subscriptions"/>
+        <uuid>69c285f1d13e1e565a71a84e2cb450b8</uuid>
+        <state>past_due</state>
+        <invoice_number_prefix></invoice_number_prefix>
+        <invoice_number type="integer">1076</invoice_number>
+        <vat_number></vat_number>
+        <tax_in_cents type="integer">0</tax_in_cents>
+        <total_in_cents type="integer">100</total_in_cents>
+        <currency>USD</currency>
+        <created_at type="datetime">2023-05-25T16:25:24Z</created_at>
+        <updated_at type="datetime">2023-05-26T16:25:32Z</updated_at>
+        <attempt_next_collection_at nil="nil"></attempt_next_collection_at>
+        <closed_at nil="nil"></closed_at>
+        <customer_notes nil="nil"></customer_notes>
+        <recovery_reason nil="nil"></recovery_reason>
+        <gateway_code nil="nil"></gateway_code>
+        <subtotal_before_discount_in_cents type="integer">100</subtotal_before_discount_in_cents>
+        <subtotal_in_cents type="integer">100</subtotal_in_cents>
+        <discount_in_cents type="integer">0</discount_in_cents>
+        <due_on type="datetime">2023-05-26T16:25:24Z</due_on>
+        <balance_in_cents type="integer">100</balance_in_cents>
+        <type>charge</type>
+        <origin>purchase</origin>
+        <credit_invoices href="https://pcc.recurly.dev:3000/v2/invoices/1076/credit_invoices"/>
+        <refundable_total_in_cents type="integer">100</refundable_total_in_cents>
+        <credit_payments type="array">
+    </credit_payments>
+        <net_terms type="integer">0</net_terms>
+        <collection_method>manual</collection_method>
+        <po_number></po_number>
+        <terms_and_conditions nil="nil"></terms_and_conditions>
+        <line_items type="array">
+            <adjustment href="https://pcc.recurly.dev:3000/v2/adjustments/69c285f1c629bead52055d4a6389f6c8" type="charge">
+                <account href="https://pcc.recurly.dev:3000/v2/accounts/BEN-329-demo"/>
+                <bill_for_account href="https://pcc.recurly.dev:3000/v2/accounts/BEN-329-demo"/>
+                <item_code nil="nil"></item_code>
+                <external_sku nil="nil"></external_sku>
+                <invoice href="https://pcc.recurly.dev:3000/v2/invoices/1076"/>
+                <subscription href="https://pcc.recurly.dev:3000/v2/subscriptions/69c285f1588f5942d29b4848f7992411"/>
+                <credit_adjustments href="https://pcc.recurly.dev:3000/v2/adjustments/69c285f1c629bead52055d4a6389f6c8/credit_adjustments"/>
+                <refundable_total_in_cents type="integer">100</refundable_total_in_cents>
+                <uuid>69c285f1c629bead52055d4a6389f6c8</uuid>
+                <state>invoiced</state>
+                <description>1-dollar-fixed</description>
+                <accounting_code></accounting_code>
+                <product_code>1-dollar-fixed</product_code>
+                <origin>plan</origin>
+                <unit_amount_in_cents type="integer">100</unit_amount_in_cents>
+                <quantity type="integer">1</quantity>
+                <discount_in_cents type="integer">0</discount_in_cents>
+                <tax_in_cents type="integer">0</tax_in_cents>
+                <total_in_cents type="integer">100</total_in_cents>
+                <currency>USD</currency>
+                <proration_rate nil="nil"></proration_rate>
+                <start_date type="datetime">2023-05-25T16:25:24Z</start_date>
+                <end_date type="datetime">2023-06-25T16:25:24Z</end_date>
+                <created_at type="datetime">2023-05-25T16:25:24Z</created_at>
+                <updated_at type="datetime">2023-05-25T16:25:24Z</updated_at>
+                <revenue_schedule_type>evenly</revenue_schedule_type>
+                <custom_fields type="array">
+        </custom_fields>
+            </adjustment>
+        </line_items>
+        <transactions type="array">
+    </transactions>
+        <a name="mark_successful" href="https://pcc.recurly.dev:3000/v2/invoices/1076/mark_successful" method="put"/>
+        <a name="mark_failed" href="https://pcc.recurly.dev:3000/v2/invoices/1076/mark_failed" method="put"/>
+        <a name="apply_credit_balance" href="https://pcc.recurly.dev:3000/v2/invoices/1076/apply_credit_balance" method="put"/>
+    </invoice>
+</invoices>
