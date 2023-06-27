@@ -57,7 +57,7 @@ info:
 
     We encourage you to update to the latest version of the API and corresponding client library,
     as most recent versions are more performant than their predecessors. See the
-    [changelog](https://developers.recurly.com/api/changelog.html) for a comprehensive list of changes
+    [changelog](https://recurly.com/developers/api/changelog.html) for a comprehensive list of changes
     introduced in the latest API version.
 
     ### Default Versions
@@ -114,7 +114,7 @@ info:
     Please consider changing these messages in the target system to be better
     suited to the audience of the system.
 
-    Please see [transaction error codes](https://developers.recurly.com/pages/api-transaction-errors.html) for more details.
+    Please see [transaction error codes](https://recurly.com/developers/pages/api-transaction-errors.html) for more details.
 
     ## Pagination
     ### Response Schema
@@ -181,7 +181,7 @@ info:
 
     ## Change Log
 
-    A list of changes for this version can be found [in the changelog](https://developers.recurly.com/api/changelog.html#v2021-02-25---current-ga-version).
+    A list of changes for this version can be found [in the changelog](https://recurly.com/developers/api/changelog.html#v2021-02-25---current-ga-version).
   version: v2021-02-25
 security:
 - api_key: []
@@ -199,6 +199,14 @@ x-tagGroups:
   - purchase
   - usage
   - automated_exports
+  - gift_cards
+- name: App Management
+  tags:
+  - external_subscriptions
+  - external_invoices
+  - external_products
+  - external_accounts
+  - external_product_references
 - name: Products and Promotions
   tags:
   - item
@@ -220,13 +228,14 @@ x-tagGroups:
   - custom_field_definition
   - shipping_method
   - dunning_campaigns
+  - business_entities
 tags:
 - name: site
   x-displayName: Site
 - name: custom_field_definition
   x-displayName: Custom Field Definition
-  description: Describes the fields that can use used as custom fields on accounts
-    or subscriptions.
+  description: Describes the fields that can be used as custom fields on accounts,
+    items, line-items (one time charges), plans, or subscriptions.
 - name: item
   x-displayName: Item
   description: |-
@@ -305,6 +314,8 @@ tags:
   description: A purchase is a checkout containing at least one or more subscriptions
     or one-time charges (line items) and supports both coupon and gift card redemptions.
     All items purchased will be on one invoice and paid for with one transaction.
+    The purchases endpoint can also be used to immediately create a credit invoice
+    on an account, when Credit Invoices is enabled on your site.
 - name: usage
   x-displayName: Usage
   description: Send Recurly your customer usage and we will automatically bill them
@@ -336,6 +347,38 @@ tags:
 - name: dunning_campaigns
   x-displayName: Dunning Campaigns
   description: Settings used when attempting to dun customers whose payments are declined.
+- name: external_subscriptions
+  x-displayName: External Subscription
+  description: A subscription from an external resource that is not managed by the
+    Recurly platform and instead is managed by third-party platforms like Apple App
+    Store and Google Play Store.
+- name: external_invoices
+  x-displayName: External Invoice
+  description: An invoice from an external resource that is not managed by the Recurly
+    platform and instead is managed by third-party platforms like Apple App Store
+    and Google Play Store.
+- name: external_products
+  x-displayName: External Product
+  description: A product from an external resource that is not managed by the Recurly
+    platform and instead is managed by third-party platforms like Apple App Store
+    and Google Play Store.
+- name: external_product_references
+  x-displayName: External Product Reference
+  description: Associates an external product to a corresponding resource on an external
+    platform like the Apple App Store or Google Play Store.
+- name: gift_cards
+  x-displayName: Gift Cards
+  description: Add gift card purchases to your checkout and allow gift card recipients
+    to redeem the gift card for credit towards any of your products.
+- name: external_accounts
+  x-displayName: External Account
+  description: An account from an external resource that is not managed by the Recurly
+    platform and instead is managed by third-party platforms like Apple App Store
+    and Google Play Store.
+- name: business_entities
+  x-displayName: Business Entities
+  description: Describes the business address that will be used for invoices and taxes
+    depending on settings and subscriber location.
 paths:
   "/sites":
     get:
@@ -344,7 +387,7 @@ paths:
       description: |
         This route is most useful for finding a site's ID for subsequent requests.
 
-        See the [Pagination Guide](/guides/pagination.html) to learn how to use pagination in the API and Client Libraries.
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn how to use pagination in the API and Client Libraries.
       tags:
       - site
       parameters:
@@ -557,8 +600,8 @@ paths:
       - account
       operationId: list_accounts
       summary: List a site's accounts
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -708,6 +751,7 @@ paths:
               code: accountCode,
               firstName: 'Benjamin',
               lastName: 'Du Monde',
+              preferredTimeZone: 'America/Chicago',
               address: {
                 street1: '900 Camp St',
                 city: 'New Orleans',
@@ -736,6 +780,7 @@ paths:
                   "code": account_code,
                   "first_name": "Benjamin",
                   "last_name": "Du Monde",
+                  "preferred_time_zone": "America/Chicago",
                   "acquisition": {
                       "campaign": "podcast-marketing",
                       "channel": "social_media",
@@ -771,6 +816,7 @@ paths:
                   Code = accountCode,
                   FirstName = "Benjamin",
                   LastName = "Du Monde",
+                  PreferredTimeZone = "America/Chicago",
                   Address = new Address()
                   {
                       City = "New Orleans",
@@ -801,6 +847,7 @@ paths:
               code: account_code,
               first_name: "Benjamin",
               last_name: "Du Monde",
+              preferred_time_zone: "America/Chicago",
               acquisition: {
                 campaign: "podcast-marketing",
                 channel: "social_media",
@@ -839,6 +886,7 @@ paths:
               accountReq.setCode(accountCode);
               accountReq.setFirstName("Aaron");
               accountReq.setLastName("Du Monde");
+              accountReq.setPreferredTimeZone("America/Chicago");
 
               address.setStreet1("900 Camp St.");
               address.setCity("New Orleans");
@@ -865,6 +913,7 @@ paths:
                   "code" => $account_code,
                   "first_name" => "Douglas",
                   "last_name" => "DuMonde",
+                  "preferred_time_zone" => "America/Chicago",
                   "shipping_addresses" => [
                       [
                           "first_name" => "Douglas",
@@ -894,17 +943,17 @@ paths:
       - lang: Go
         source: "accountReq := &recurly.AccountCreate{\n\tCode:      &accountCode,\n\tFirstName:
           recurly.String(\"Isaac\"),\n\tLastName:  recurly.String(\"Du Monde\"),\n\tEmail:
-          \    recurly.String(\"isaac@example.com\"),\n\tBillingInfo: &recurly.BillingInfoCreate{\n\t\tFirstName:
-          recurly.String(\"Isaac\"),\n\t\tLastName:  recurly.String(\"Du Monde\"),\n\t\tAddress:
-          &recurly.AddressCreate{\n\t\t\tPhone:      recurly.String(\"415-555-5555\"),\n\t\t\tStreet1:
-          \   recurly.String(\"400 Alabama St.\"),\n\t\t\tCity:       recurly.String(\"San
-          Francisco\"),\n\t\t\tPostalCode: recurly.String(\"94110\"),\n\t\t\tCountry:
-          \   recurly.String(\"US\"),\n\t\t\tRegion:     recurly.String(\"CA\"),\n\t\t},\n\t\tNumber:
-          recurly.String(\"4111111111111111\"),\n\t\tMonth:  recurly.String(\"12\"),\n\t\tYear:
-          \  recurly.String(\"22\"),\n\t\tCvv:    recurly.String(\"123\"),\n\t},\n}\n\naccount,
-          err := client.CreateAccount(accountReq)\nif e, ok := err.(*recurly.Error);
-          ok {\n\tif e.Type == recurly.ErrorTypeValidation {\n\t\tfmt.Printf(\"Failed
-          validation: %v\", e)\n\t\treturn nil, err\n\t}\n\tfmt.Printf(\"Unexpected
+          \    recurly.String(\"isaac@example.com\"),\n\tPreferredTimeZone: recurly.String(\"America/Los_Angeles\"),\n\tBillingInfo:
+          &recurly.BillingInfoCreate{\n\t\tFirstName: recurly.String(\"Isaac\"),\n\t\tLastName:
+          \ recurly.String(\"Du Monde\"),\n\t\tAddress: &recurly.AddressCreate{\n\t\t\tPhone:
+          \     recurly.String(\"415-555-5555\"),\n\t\t\tStreet1:    recurly.String(\"400
+          Alabama St.\"),\n\t\t\tCity:       recurly.String(\"San Francisco\"),\n\t\t\tPostalCode:
+          recurly.String(\"94110\"),\n\t\t\tCountry:    recurly.String(\"US\"),\n\t\t\tRegion:
+          \    recurly.String(\"CA\"),\n\t\t},\n\t\tNumber: recurly.String(\"4111111111111111\"),\n\t\tMonth:
+          \ recurly.String(\"12\"),\n\t\tYear:   recurly.String(\"22\"),\n\t\tCvv:
+          \   recurly.String(\"123\"),\n\t},\n}\n\naccount, err := client.CreateAccount(accountReq)\nif
+          e, ok := err.(*recurly.Error); ok {\n\tif e.Type == recurly.ErrorTypeValidation
+          {\n\t\tfmt.Printf(\"Failed validation: %v\", e)\n\t\treturn nil, err\n\t}\n\tfmt.Printf(\"Unexpected
           Recurly error: %v\", e)\n\treturn nil, err\n}\nfmt.Printf(\"Created Account:
           %s\", account.Id)"
   "/accounts/{account_id}":
@@ -2441,14 +2490,55 @@ paths:
           {\n\t\tfmt.Printf(\"Resource not found: %v\", e)\n\t\treturn nil, err\n\t}\n\tfmt.Printf(\"Unexpected
           Recurly error: %v\", e)\n\treturn nil, err\n}\n\nfmt.Printf(\"Fetched Transaction:
           %v\", transaction)"
+  "/accounts/{account_id}/billing_info/verify_cvv":
+    post:
+      tags:
+      - billing_info
+      operationId: verify_billing_info_cvv
+      summary: Verify an account's credit card billing cvv
+      parameters:
+      - "$ref": "#/components/parameters/account_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/BillingInfoVerifyCVV"
+      responses:
+        '200':
+          description: Transaction information from verify.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Transaction"
+        '429':
+          description: Over limit error. A credit card can only be checked 3 times
+            in 24 hours.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Invalid billing information, or error running the verification
+            transaction.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMayHaveTransaction"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
   "/accounts/{account_id}/billing_infos":
     get:
       tags:
       - billing_infos
       operationId: list_billing_infos
       summary: Get the list of billing information associated with an account
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -2651,9 +2741,9 @@ paths:
       tags:
       - coupon_redemption
       operationId: list_account_coupon_redemptions
-      summary: Show the coupon redemptions for an account
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      summary: List the coupon redemptions for an account
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -2748,9 +2838,9 @@ paths:
       tags:
       - coupon_redemption
       operationId: list_active_coupon_redemptions
-      summary: Show the coupon redemptions that are active on an account
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      summary: List the coupon redemptions that are active on an account
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       responses:
@@ -3077,8 +3167,8 @@ paths:
       - credit_payment
       operationId: list_account_credit_payments
       summary: List an account's credit payments
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/limit"
@@ -3178,14 +3268,250 @@ paths:
           := err.(*recurly.Error); ok {\n\t\tfmt.Printf(\"Failed to retrieve next
           page: %v\", e)\n\t\tbreak\n\t}\n\tfor i, creditPayment := range creditPayments.Data()
           {\n\t\tfmt.Printf(\"Account Credit Payment %3d: %s\\n\",\n\t\t\ti,\n\t\t\tcreditPayment.Id,\n\t\t)\n\t}\n}"
+  "/accounts/{account_id}/external_accounts":
+    parameters:
+    - "$ref": "#/components/parameters/account_id"
+    get:
+      tags:
+      - external_accounts
+      operationId: list_account_external_account
+      summary: List external accounts for an account
+      responses:
+        '200':
+          description: A list of external accounts on an account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalAccountList"
+        '404':
+          description: Incorrect account or external_account ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '406':
+          description: Unavailable API version
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Feature not enabled on site
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    post:
+      tags:
+      - external_accounts
+      operationId: create_account_external_account
+      summary: Create an external account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ExternalAccountCreate"
+      responses:
+        '200':
+          description: A representation of the created external_account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalAccount"
+        '404':
+          description: Incorrect account or external_account ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '406':
+          description: Unavailable API version
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Feature not enabled on site
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/accounts/{account_id}/external_accounts/{external_account_id}":
+    parameters:
+    - "$ref": "#/components/parameters/account_id"
+    - "$ref": "#/components/parameters/external_account_id"
+    get:
+      tags:
+      - external_accounts
+      operationId: get_account_external_account
+      summary: Get an external account for an account
+      responses:
+        '200':
+          description: A external account on an account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalAccount"
+        '404':
+          description: Incorrect account or external_account ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '406':
+          description: Unavailable API version
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Feature not enabled on site
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    put:
+      tags:
+      - external_accounts
+      operationId: update_account_external_account
+      summary: Update an external account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ExternalAccountUpdate"
+      responses:
+        '200':
+          description: A representation of the updated external_account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalAccount"
+        '404':
+          description: Incorrect account or external_account ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '406':
+          description: Unavailable API version
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Feature not enabled on site
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    delete:
+      tags:
+      - external_accounts
+      operationId: delete_account_external_account
+      summary: Delete an external account for an account
+      responses:
+        '200':
+          description: Successful Delete
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalAccount"
+        '404':
+          description: External Account not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '406':
+          description: Unavailable API version
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Feature not enabled on site
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/accounts/{account_id}/external_invoices":
+    parameters:
+    - "$ref": "#/components/parameters/account_id"
+    get:
+      tags:
+      - account
+      operationId: list_account_external_invoices
+      summary: List the external invoices on an account
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      - "$ref": "#/components/parameters/limit"
+      - "$ref": "#/components/parameters/order"
+      responses:
+        '200':
+          description: A list of the the external_invoices on an account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalInvoiceList"
+        '404':
+          description: Incorrect account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
   "/accounts/{account_id}/invoices":
     get:
       tags:
       - invoice
       operationId: list_account_invoices
       summary: List an account's invoices
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -3626,8 +3952,8 @@ paths:
       - line_item
       operationId: list_account_line_items
       summary: List an account's line items
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -3732,6 +4058,8 @@ paths:
       - line_item
       operationId: create_line_item
       summary: Create a new line item for the account
+      description: When using the Credit Invoices feature, utilize the purchases endpoint
+        in order to immediately post credit to a credit invoice.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       requestBody:
@@ -3899,9 +4227,9 @@ paths:
       tags:
       - note
       operationId: list_account_notes
-      summary: Fetch a list of an account's notes
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      summary: List an account's notes
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -4114,8 +4442,8 @@ paths:
       - shipping_address
       operationId: list_shipping_addresses
       summary: Fetch a list of an account's shipping addresses
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -4796,8 +5124,8 @@ paths:
       - subscription
       operationId: list_account_subscriptions
       summary: List an account's subscriptions
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -4900,8 +5228,8 @@ paths:
       - transaction
       operationId: list_account_transactions
       summary: List an account's transactions
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -5006,8 +5334,8 @@ paths:
       - account
       operationId: list_child_accounts
       summary: List an account's child accounts
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/account_id"
       - "$ref": "#/components/parameters/ids"
@@ -5089,8 +5417,8 @@ paths:
       - account_acquisition
       operationId: list_account_acquisition
       summary: List a site's account acquisition data
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -5188,8 +5516,8 @@ paths:
       - coupon
       operationId: list_coupons
       summary: List a site's coupons
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -5952,8 +6280,8 @@ paths:
       - unique_coupon_code
       operationId: list_unique_coupon_codes
       summary: List unique coupon codes associated with a bulk coupon
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/coupon_id"
       - "$ref": "#/components/parameters/ids"
@@ -5988,8 +6316,8 @@ paths:
       - credit_payment
       operationId: list_credit_payments
       summary: List a site's credit payments
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/limit"
       - "$ref": "#/components/parameters/order"
@@ -6118,8 +6446,8 @@ paths:
       - custom_field_definition
       operationId: list_custom_field_definitions
       summary: List a site's custom field definitions
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -6343,8 +6671,8 @@ paths:
       - account
       operationId: list_invoice_template_accounts
       summary: List an invoice template's associated accounts
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/invoice_template_id"
       - "$ref": "#/components/parameters/ids"
@@ -6388,8 +6716,8 @@ paths:
       - item
       operationId: list_items
       summary: List a site's items
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -7223,8 +7551,8 @@ paths:
       - measured_unit
       operationId: list_measured_unit
       summary: List a site's measured units
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -7397,14 +7725,383 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Error"
       x-code-samples: []
+  "/external_products":
+    get:
+      tags:
+      - external_products
+      operationId: list_external_products
+      summary: List a site's external products
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      responses:
+        '200':
+          description: A list of the the external_products on a site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProductList"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    post:
+      tags:
+      - external_products
+      operationId: create_external_product
+      summary: Create an external product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ExternalProductCreate"
+        required: true
+      responses:
+        '201':
+          description: Returns the external product
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProduct"
+        '400':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: External product cannot be created for the specified reason.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_products/{external_product_id}":
+    parameters:
+    - "$ref": "#/components/parameters/external_product_id"
+    get:
+      tags:
+      - external_products
+      operationId: get_external_product
+      summary: Fetch an external product
+      responses:
+        '200':
+          description: Settings for an external product.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProduct"
+        '404':
+          description: Incorrect site or external product ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    put:
+      tags:
+      - external_products
+      operationId: update_external_product
+      summary: Update an external product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ExternalProductUpdate"
+        required: true
+      responses:
+        '200':
+          description: Settings for an external product.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProduct"
+        '404':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    delete:
+      tags:
+      - external_products
+      operationId: deactivate_external_products
+      summary: Deactivate an external product
+      description: Deactivate an external product.
+      responses:
+        '200':
+          description: Deactivated external product.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProduct"
+        '404':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_products/{external_product_id}/external_product_references":
+    parameters:
+    - "$ref": "#/components/parameters/external_product_id"
+    get:
+      tags:
+      - external_product_references
+      operationId: list_external_product_external_product_references
+      summary: List the external product references for an external product
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      responses:
+        '200':
+          description: A list of the the external product references for an external
+            product.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProductReferenceCollection"
+        '404':
+          description: Incorrect site or external product ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    post:
+      tags:
+      - external_product_references
+      operationId: create_external_product_external_product_reference
+      summary: Create an external product reference on an external product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ExternalProductReferenceCreate"
+        required: true
+      responses:
+        '201':
+          description: Details for the external product reference.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProductReferenceMini"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_products/{external_product_id}/external_product_references/{external_product_reference_id}":
+    parameters:
+    - "$ref": "#/components/parameters/external_product_id"
+    - "$ref": "#/components/parameters/external_product_reference_id"
+    get:
+      tags:
+      - external_product_references
+      operationId: get_external_product_external_product_reference
+      summary: Fetch an external product reference
+      responses:
+        '200':
+          description: Details for an external product reference.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProductReferenceMini"
+        '404':
+          description: Incorrect site or external product ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    delete:
+      tags:
+      - external_product_references
+      operationId: deactivate_external_product_external_product_reference
+      summary: Deactivate an external product reference
+      responses:
+        '200':
+          description: Details for an external product reference.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalProductReferenceMini"
+        '404':
+          description: Incorrect site or external product reference ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_subscriptions":
+    get:
+      tags:
+      - external_subscriptions
+      operationId: list_external_subscriptions
+      summary: List a site's external subscriptions
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      responses:
+        '200':
+          description: A list of the the external_subscriptions on a site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalSubscriptionList"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_subscriptions/{external_subscription_id}":
+    parameters:
+    - "$ref": "#/components/parameters/external_subscription_id"
+    get:
+      tags:
+      - external_subscriptions
+      operationId: get_external_subscription
+      summary: Fetch an external subscription
+      responses:
+        '200':
+          description: Settings for an external subscription.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalSubscription"
+        '404':
+          description: Incorrect site or external subscription ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Validation error with external resource connection or feature
+            flag.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_subscriptions/{external_subscription_id}/external_invoices":
+    parameters:
+    - "$ref": "#/components/parameters/external_subscription_id"
+    get:
+      tags:
+      - external_subscriptions
+      operationId: list_external_subscription_external_invoices
+      summary: List the external invoices on an external subscription
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      - "$ref": "#/components/parameters/limit"
+      - "$ref": "#/components/parameters/order"
+      responses:
+        '200':
+          description: A list of the the external_invoices on a site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalInvoiceList"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
   "/invoices":
     get:
       tags:
       - invoice
       operationId: list_invoices
       summary: List a site's invoices
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -7904,6 +8601,135 @@ paths:
               // Something bad happened... tell the user so that they can fix it?
               echo 'Some unexpected Recurly error happened. Try again later.' . PHP_EOL;
           }
+  "/invoices/{invoice_id}/apply_credit_balance":
+    put:
+      tags:
+      - invoice
+      operationId: apply_credit_balance
+      summary: Apply available credit to a pending or past due charge invoice
+      description: Apply credit payment to the outstanding balance on an existing
+        charge invoice from an account’s available balance from existing credit invoices.
+        Credit that was refunded from the invoice cannot be applied back to the invoice
+        as payment.
+      parameters:
+      - "$ref": "#/components/parameters/site_id"
+      - "$ref": "#/components/parameters/invoice_id"
+      responses:
+        '200':
+          description: The updated invoice.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Invoice"
+        '404':
+          description: Incorrect site or invoice ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Tried applying credit to a legacy or closed invoice or there
+            was an error processing the credit payment, such as no available credit
+            on the account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples:
+      - lang: Node.js
+        source: |
+          try {
+            const invoice = await client.applyCreditBalance(invoiceId)
+            console.log('Applied credit balance to invoice: ', invoice)
+          } catch (err) {
+            if (err instanceof recurly.errors.ValidationError) {
+              // If the request was not valid, you may want to tell your user
+              // why. You can find the invalid params and reasons in err.params
+              console.log('Failed validation', err.params)
+            } else {
+              // If we don't know what to do with the err, we should
+              // probably re-raise and let our web framework and logger handle it
+              console.log('Unknown Error: ', err)
+            }
+          }
+      - lang: Python
+        source: |
+          try:
+              invoice = client.apply_credit_balance(invoice_id)
+              print("Applied credit balance to invoice %s" % invoice.id)
+          except recurly.errors.NotFoundError:
+              # If the resource was not found, you may want to alert the user or
+              # just return nil
+              print("Resource Not Found")
+      - lang: ".NET"
+        source: |
+          try
+          {
+              Invoice invoice = client.ApplyCreditBalance(invoiceId);
+              Console.WriteLine($"Applied credit balance to invoice #{invoice.Number}");
+          }
+          catch (Recurly.Errors.Validation ex)
+          {
+              // If the request was not valid, you may want to tell your user
+              // why. You can find the invalid params and reasons in ex.Error.Params
+              Console.WriteLine($"Failed validation: {ex.Error.Message}");
+          }
+          catch (Recurly.Errors.ApiError ex)
+          {
+              // Use ApiError to catch a generic error from the API
+              Console.WriteLine($"Unexpected Recurly Error: {ex.Error.Message}");
+          }
+      - lang: Ruby
+        source: |
+          begin
+            invoice = @client.apply_credit_balance(invoice_id: invoice_id)
+            puts "Applied credit balance to invoice #{invoice}"
+          rescue Recurly::Errors::NotFoundError
+            # If the resource was not found, you may want to alert the user or
+            # just return nil
+            puts "Resource Not Found"
+          end
+      - lang: Java
+        source: |
+          try {
+            final Invoice invoice = client.applyCreditBalance(invoiceId);
+            System.out.println("Applied credit balance to invoice " + invoice.getId());
+          } catch (final ValidationException e) {
+            // If the request was not valid, you may want to tell your user
+            // why. You can find the invalid params and reasons in e.getError().getParams()
+            System.out.println("Failed validation: " + e.getError().getMessage());
+          } catch (final ApiException e) {
+              // Use ApiException to catch a generic error from the API
+              System.out.println("Unexpected Recurly Error: " + e.getError().getMessage());
+          }
+      - lang: PHP
+        source: |
+          try {
+              $invoice = $client->applyCreditBalance($invoice_id);
+
+              echo 'Applied credit balance to invoice:' . PHP_EOL;
+              var_dump($invoice);
+          } catch (\Recurly\Errors\Validation $e) {
+              // If the request was not valid, you may want to tell your user
+              // why. You can find the invalid params and reasons in err.params
+              var_dump($e);
+          } catch (\Recurly\RecurlyError $e) {
+              // If we don't know what to do with the err, we should
+              // probably re-raise and let our web framework and logger handle it
+              var_dump($e);
+          }
+      - lang: Go
+        source: "invoice, err := client.ApplyCreditBalance(invoiceID)\nif e, ok :=
+          err.(*recurly.Error); ok {\n\tif e.Type == recurly.ErrorTypeValidation {\n\t\tfmt.Printf(\"Failed
+          validation: %v\", e)\n\t\treturn nil, err\n\t}\n\tfmt.Printf(\"Unexpected
+          Recurly error: %v\", e)\n\treturn nil, err\n}\n\nfmt.Printf(\"Applied credit
+          balance to invoice: %v\", invoice)"
   "/invoices/{invoice_id}/collect":
     put:
       tags:
@@ -8588,8 +9414,8 @@ paths:
       - line_item
       operationId: list_invoice_line_items
       summary: List an invoice's line items
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/invoice_id"
       - "$ref": "#/components/parameters/ids"
@@ -8697,9 +9523,9 @@ paths:
       tags:
       - coupon_redemption
       operationId: list_invoice_coupon_redemptions
-      summary: Show the coupon redemptions applied to an invoice
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      summary: List the coupon redemptions applied to an invoice
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/invoice_id"
       - "$ref": "#/components/parameters/ids"
@@ -8798,7 +9624,7 @@ paths:
         For a charge invoice the related invoices will be credit invoices.
         For a credit invoice the related invoices will be charge invoices.
 
-        See the [Pagination Guide](/guides/pagination.html) to learn how to use pagination in the API and Client Libraries.
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/invoice_id"
       responses:
@@ -9052,8 +9878,8 @@ paths:
       - line_item
       operationId: list_line_items
       summary: List a site's line items
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -9393,8 +10219,8 @@ paths:
       - plan
       operationId: list_plans
       summary: List a site's plans
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -10062,8 +10888,8 @@ paths:
       - add-on
       operationId: list_plan_add_ons
       summary: List a plan's add-ons
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/plan_id"
       - "$ref": "#/components/parameters/ids"
@@ -10728,8 +11554,8 @@ paths:
       - add-on
       operationId: list_add_ons
       summary: List a site's add-ons
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -10946,8 +11772,8 @@ paths:
       - shipping_method
       operationId: list_shipping_methods
       summary: List a site's shipping methods
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -11192,8 +12018,8 @@ paths:
       - subscription
       operationId: list_subscriptions
       summary: List a site's subscriptions
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -13072,8 +13898,8 @@ paths:
       - invoice
       operationId: list_subscription_invoices
       summary: List a subscription's invoices
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/subscription_id"
       - "$ref": "#/components/parameters/ids"
@@ -13176,8 +14002,8 @@ paths:
       - line_item
       operationId: list_subscription_line_items
       summary: List a subscription's line items
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/subscription_id"
       - "$ref": "#/components/parameters/ids"
@@ -13282,9 +14108,9 @@ paths:
       tags:
       - coupon_redemption
       operationId: list_subscription_coupon_redemptions
-      summary: Show the coupon redemptions for a subscription
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      summary: List the coupon redemptions for a subscription
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/subscription_id"
       - "$ref": "#/components/parameters/ids"
@@ -13582,8 +14408,8 @@ paths:
       - transaction
       operationId: list_transactions
       summary: List a site's transactions
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/ids"
       - "$ref": "#/components/parameters/limit"
@@ -14379,6 +15205,8 @@ paths:
         The API request allows the inclusion of one of the following fields: **external_hpp_type** with `'adyen'` and **online_banking_payment_type** with `'ideal'` or `'sofort'` in the **billing_info** object.
 
         For additional information regarding shipping fees, please see https://docs.recurly.com/docs/shipping
+
+        Note: an email address is required on the account for a Pending Purchase.
       requestBody:
         content:
           application/json:
@@ -14862,9 +15690,9 @@ paths:
       tags:
       - dunning_campaigns
       operationId: list_dunning_campaigns
-      summary: Show the dunning campaigns for a site
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      summary: List the dunning campaigns for a site
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/sort_dates"
       responses:
@@ -14894,7 +15722,7 @@ paths:
       tags:
       - dunning_campaigns
       operationId: get_dunning_campaign
-      summary: Show the settings for a dunning campaign
+      summary: Fetch a dunning campaign
       responses:
         '200':
           description: Settings for a dunning campaign.
@@ -14922,6 +15750,8 @@ paths:
                 "$ref": "#/components/schemas/Error"
       x-code-samples: []
   "/dunning_campaigns/{dunning_campaign_id}/bulk_update":
+    parameters:
+    - "$ref": "#/components/parameters/dunning_campaign_id"
     put:
       tags:
       - dunning_campaigns
@@ -14964,8 +15794,8 @@ paths:
       - invoice_templates
       operationId: list_invoice_templates
       summary: Show the invoice templates for a site
-      description: See the [Pagination Guide](/guides/pagination.html) to learn how
-        to use pagination in the API and Client Libraries.
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
       parameters:
       - "$ref": "#/components/parameters/sort_dates"
       responses:
@@ -14995,7 +15825,7 @@ paths:
       tags:
       - invoice_templates
       operationId: get_invoice_template
-      summary: Show the settings for an invoice template
+      summary: Fetch an invoice template
       responses:
         '200':
           description: Settings for an invoice template.
@@ -15011,6 +15841,399 @@ paths:
                 "$ref": "#/components/schemas/Error"
         '404':
           description: Incorrect site or invoice template ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_invoices":
+    get:
+      tags:
+      - external_invoices
+      operationId: list_external_invoices
+      summary: List the external invoices on a site
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      - "$ref": "#/components/parameters/limit"
+      - "$ref": "#/components/parameters/order"
+      responses:
+        '200':
+          description: A list of the the external_invoices on a site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalInvoiceList"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/external_invoices/{external_invoice_id}":
+    parameters:
+    - "$ref": "#/components/parameters/external_invoice_id"
+    get:
+      tags:
+      - external_invoices
+      operationId: show_external_invoice
+      summary: Fetch an external invoice
+      responses:
+        '201':
+          description: Returns the external invoice
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalInvoice"
+        '400':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: External invoice cannot be found for the specified reason.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/accounts/{account_id}/entitlements":
+    parameters:
+    - "$ref": "#/components/parameters/account_id"
+    - "$ref": "#/components/parameters/filter_limited_subscription_state"
+    get:
+      tags:
+      - account
+      operationId: list_entitlements
+      summary: List entitlements granted to an account
+      responses:
+        '200':
+          description: A list of the entitlements granted to an account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Entitlements"
+        '404':
+          description: Incorrect site or account ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/accounts/{account_id}/external_subscriptions":
+    parameters:
+    - "$ref": "#/components/parameters/account_id"
+    get:
+      tags:
+      - account
+      operationId: list_account_external_subscriptions
+      summary: List an account's external subscriptions
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/sort_dates"
+      responses:
+        '200':
+          description: A list of the the external_subscriptions on an account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ExternalSubscriptionList"
+        '404':
+          description: Incorrect account.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/business_entities/{business_entity_id}":
+    parameters:
+    - "$ref": "#/components/parameters/business_entity_id"
+    get:
+      tags:
+      - business_entities
+      operationId: get_business_entity
+      summary: Fetch a business entity
+      responses:
+        '200':
+          description: Business entity details
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BusinessEntity"
+        '404':
+          description: Incorrect site or business entity ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/business_entities":
+    get:
+      tags:
+      - business_entities
+      operationId: list_business_entities
+      summary: List business entities
+      responses:
+        '200':
+          description: List of all business entities on your site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BusinessEntityList"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/gift_cards":
+    get:
+      tags:
+      - gift_cards
+      operationId: list_gift_cards
+      summary: List gift cards
+      responses:
+        '200':
+          description: List of all created gift cards on your site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GiftCardList"
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+    post:
+      tags:
+      - gift_cards
+      operationId: create_gift_card
+      summary: Create gift card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GiftCardCreate"
+        required: true
+      responses:
+        '201':
+          description: Returns the gift card
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GiftCard"
+        '400':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Gift card cannot be completed for the specified reason.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/gift_cards/{gift_card_id}":
+    parameters:
+    - "$ref": "#/components/parameters/gift_card_id"
+    get:
+      tags:
+      - gift_cards
+      operationId: get_gift_card
+      summary: Fetch a gift card
+      responses:
+        '200':
+          description: Gift card details
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GiftCard"
+        '404':
+          description: Incorrect site or gift card ID.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/gift_cards/preview":
+    post:
+      tags:
+      - gift_cards
+      operationId: preview_gift_card
+      summary: Preview gift card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GiftCardCreate"
+        required: true
+      responses:
+        '201':
+          description: Returns the gift card
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GiftCard"
+        '400':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Gift card cannot be completed for the specified reason.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/gift_cards/{redemption_code}/redeem":
+    parameters:
+    - "$ref": "#/components/parameters/redemption_code"
+    post:
+      tags:
+      - gift_cards
+      operationId: redeem_gift_card
+      summary: Redeem gift card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GiftCardRedeem"
+        required: true
+      responses:
+        '201':
+          description: Redeems and returns the gift card
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GiftCard"
+        '400':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '422':
+          description: Gift card cannot be redeemed for the specified reason.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      x-code-samples: []
+  "/business_entities/{business_entity_id}/invoices":
+    get:
+      tags:
+      - invoice
+      operationId: list_business_entity_invoices
+      summary: List a business entity's invoices
+      description: See the [Pagination Guide](/developers/guides/pagination.html)
+        to learn how to use pagination in the API and Client Libraries.
+      parameters:
+      - "$ref": "#/components/parameters/business_entity_id"
+      - "$ref": "#/components/parameters/ids"
+      - "$ref": "#/components/parameters/limit"
+      - "$ref": "#/components/parameters/order"
+      - "$ref": "#/components/parameters/sort_dates"
+      - "$ref": "#/components/parameters/filter_begin_time"
+      - "$ref": "#/components/parameters/filter_end_time"
+      - "$ref": "#/components/parameters/filter_invoice_type"
+      responses:
+        '200':
+          description: A list of the business entity's invoices.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InvoiceList"
+        '400':
+          description: Invalid or unpermitted parameter.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Incorrect site or business entity ID.
           content:
             application/json:
               schema:
@@ -15059,6 +16282,14 @@ components:
       required: true
       schema:
         type: string
+    business_entity_id:
+      name: business_entity_id
+      in: path
+      description: Business Entity ID. For ID no prefix is used e.g. `e28zov4fw0v2`.
+        For code use prefix `code-`, e.g. `code-entity1`.
+      required: true
+      schema:
+        type: string
     usage_id:
       name: usage_id
       in: path
@@ -15086,6 +16317,41 @@ components:
       name: custom_field_definition_id
       in: path
       description: Custom Field Definition ID
+      required: true
+      schema:
+        type: string
+    external_account_id:
+      name: external_account_id
+      in: path
+      description: External account ID, e.g. `s28zov4fw0cb`.
+      required: true
+      schema:
+        type: string
+    external_invoice_id:
+      name: external_invoice_id
+      in: path
+      description: External invoice ID, e.g. `e28zov4fw0v2`.
+      required: true
+      schema:
+        type: string
+    external_product_id:
+      name: external_product_id
+      in: path
+      description: External product id
+      required: true
+      schema:
+        type: string
+    external_product_reference_id:
+      name: external_product_reference_id
+      in: path
+      description: External product reference ID, e.g. `d39iun2fw1v4`.
+      required: true
+      schema:
+        type: string
+    external_subscription_id:
+      name: external_subscription_id
+      in: path
+      description: External subscription id
       required: true
       schema:
         type: string
@@ -15182,6 +16448,20 @@ components:
       required: true
       schema:
         type: string
+    gift_card_id:
+      name: gift_card_id
+      in: path
+      description: Gift Card ID, e.g. `e28zov4fw0v2`.
+      required: true
+      schema:
+        type: string
+    redemption_code:
+      name: redemption_code
+      in: path
+      description: Gift Card redemption code, e.g., `N1A2T8IRXSCMO40V`.
+      required: true
+      schema:
+        type: string
     ids:
       name: ids
       in: query
@@ -15263,6 +16543,16 @@ components:
         - When `state=live`, only subscriptions that are in an active, canceled, or future state or are in trial will be returned.
       schema:
         "$ref": "#/components/schemas/FilterSubscriptionStateEnum"
+    filter_limited_subscription_state:
+      name: state
+      in: query
+      description: |
+        Filter the entitlements based on the state of the applicable subscription.
+
+        - When `state=active`, `state=canceled`, `state=expired`, or `state=future`, subscriptions with states that match the query and only those subscriptions will be returned.
+        - When no state is provided, subscriptions with active or canceled states will be returned.
+      schema:
+        "$ref": "#/components/schemas/FilterLimitedSubscriptionStateEnum"
     filter_begin_time:
       name: begin_time
       in: query
@@ -15827,6 +17117,11 @@ components:
             maxLength: 50
           acquisition:
             "$ref": "#/components/schemas/AccountAcquisitionUpdate"
+          external_accounts:
+            type: array
+            title: External Accounts
+            items:
+              "$ref": "#/components/schemas/ExternalAccountCreate"
           shipping_addresses:
             type: array
             items:
@@ -15853,6 +17148,15 @@ components:
         required:
         - code
       - "$ref": "#/components/schemas/AccountUpdate"
+    AccountReference:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 13
+        code:
+          type: string
+          maxLength: 50
     AccountUpdate:
       type: object
       properties:
@@ -15872,6 +17176,11 @@ components:
             behalf of the merchant to the customer. The list of locales is restricted
             to those the merchant has enabled on the site.
           "$ref": "#/components/schemas/PreferredLocaleEnum"
+        preferred_time_zone:
+          type: string
+          example: America/Los_Angeles
+          description: Used to determine the time zone of emails sent on behalf of
+            the merchant to the customer. Must be a [supported IANA time zone name](https://docs.recurly.com/docs/email-time-zones-and-time-stamps#supported-api-iana-time-zone-names)
         cc_emails:
           type: string
           description: Additional email address that should receive account correspondence.
@@ -15902,6 +17211,11 @@ components:
             merchant has an integration for the Vertex tax provider, this optional
             value will be sent in any tax calculation requests for the account.
           maxLength: 30
+        override_business_entity_id:
+          type: string
+          title: Override Business Entity ID
+          description: Unique ID to identify the business entity assigned to the account.
+            Available when the `Multiple Business Entities` feature is enabled.
         parent_account_code:
           type: string
           maxLength: 50
@@ -15970,10 +17284,21 @@ components:
             The customer will also use this email address to log into your hosted
             account management pages. This value does not need to be unique.
           maxLength: 255
+        override_business_entity_id:
+          type: string
+          title: Override Business Entity ID
+          description: Unique ID to identify the business entity assigned to the account.
+            Available when the `Multiple Business Entities` feature is enabled.
         preferred_locale:
           description: Used to determine the language and locale of emails sent on
             behalf of the merchant to the customer.
           "$ref": "#/components/schemas/PreferredLocaleEnum"
+        preferred_time_zone:
+          type: string
+          example: America/Los_Angeles
+          description: The [IANA time zone name](https://docs.recurly.com/docs/email-time-zones-and-time-stamps#supported-api-iana-time-zone-names)
+            used to determine the time zone of emails sent on behalf of the merchant
+            to the customer.
         cc_emails:
           type: string
           description: Additional email address that should receive account correspondence.
@@ -16004,6 +17329,11 @@ components:
             merchant has an integration for the Vertex tax provider, this optional
             value will be sent in any tax calculation requests for the account.
           maxLength: 30
+        external_accounts:
+          type: array
+          description: The external accounts belonging to this account
+          items:
+            "$ref": "#/components/schemas/ExternalAccount"
         parent_account_id:
           type: string
           maxLength: 13
@@ -16133,9 +17463,15 @@ components:
         processing_prepayment_amount:
           type: number
           format: float
-          title: Amount
+          title: Processing Prepayment Amount
           description: Total amount for the prepayment credit invoices in a `processing`
             state on the account.
+        available_credit_amount:
+          type: number
+          format: float
+          title: Available Credit Amount
+          description: Total amount of the open balances on credit invoices for the
+            account.
     InvoiceAddress:
       allOf:
       - "$ref": "#/components/schemas/Address"
@@ -16283,6 +17619,8 @@ components:
           "$ref": "#/components/schemas/AddOnTypeEnum"
         usage_type:
           "$ref": "#/components/schemas/UsageTypeEnum"
+        usage_calculation_type:
+          "$ref": "#/components/schemas/UsageCalculationTypeEnum"
         usage_percentage:
           type: number
           format: float
@@ -16371,6 +17709,8 @@ components:
         percentage_tiers:
           type: array
           title: Percentage Tiers
+          description: This feature is currently in development and requires approval
+            and enablement, please contact support.
           items:
             "$ref": "#/components/schemas/PercentageTiersByCurrency"
         external_sku:
@@ -16436,6 +17776,8 @@ components:
           "$ref": "#/components/schemas/AddOnTypeCreateEnum"
         usage_type:
           "$ref": "#/components/schemas/UsageTypeCreateEnum"
+        usage_calculation_type:
+          "$ref": "#/components/schemas/UsageCalculationTypeEnum"
         usage_percentage:
           type: number
           format: float
@@ -16562,7 +17904,8 @@ components:
             Array of objects which must have at least one set of tiers
             per currency and the currency code. The tier_type must be `volume` or `tiered`,
             if not, it must be absent. There must be one tier without an `ending_amount` value
-            which represents the final tier.
+            which represents the final tier. This feature is currently in development and
+            requires approval and enablement, please contact support.
       required:
       - code
       - name
@@ -16596,6 +17939,8 @@ components:
             This can be up to 4 decimal places. A value between 0.0 and 100.0. Required
             if `add_on_type` is usage, `tier_type` is `flat` and `usage_type` is percentage.
             Must be omitted otherwise.
+        usage_calculation_type:
+          "$ref": "#/components/schemas/UsageCalculationTypeEnum"
         measured_unit_id:
           type: string
           title: Measured Unit ID
@@ -16701,7 +18046,8 @@ components:
             `percentage_tiers` is an array of objects, which must have the set of tiers
             per currency and the currency code. The tier_type must be `volume` or `tiered`,
             if not, it must be absent. There must be one tier without an `ending_amount` value
-            which represents the final tier.
+            which represents the final tier.  This feature is currently in development and
+            requires approval and enablement, please contact support.
     BillingInfo:
       type: object
       properties:
@@ -16796,7 +18142,7 @@ components:
         token_id:
           type: string
           title: Token ID
-          description: A token [generated by Recurly.js](https://developers.recurly.com/reference/recurly-js/#getting-a-token).
+          description: A token [generated by Recurly.js](https://recurly.com/developers/reference/recurly-js/#getting-a-token).
           maxLength: 22
         first_name:
           type: string
@@ -16829,6 +18175,9 @@ components:
           title: Security code or CVV
           description: "*STRONGLY RECOMMENDED*"
           maxLength: 4
+        currency:
+          type: string
+          description: 3-letter ISO 4217 currency code.
         vat_number:
           type: string
           title: VAT number
@@ -16848,6 +18197,17 @@ components:
           title: An identifier for a specific payment gateway. Must be used in conjunction
             with `gateway_token`.
           maxLength: 12
+        gateway_attributes:
+          type: object
+          description: Additional attributes to send to the gateway.
+          x-class-name: GatewayAttributes
+          properties:
+            account_reference:
+              type: string
+              description: Used by Adyen gateways. The Shopper Reference value used
+                when the external token was created. Must be used in conjunction with
+                gateway_token and gateway_code.
+              maxLength: 264
         amazon_billing_agreement_id:
           type: string
           title: Amazon billing agreement ID
@@ -16931,6 +18291,8 @@ components:
           "$ref": "#/components/schemas/ExternalHppTypeEnum"
         online_banking_payment_type:
           "$ref": "#/components/schemas/OnlineBankingPaymentTypeEnum"
+        card_type:
+          "$ref": "#/components/schemas/CardTypeEnum"
     BillingInfoVerify:
       type: object
       properties:
@@ -16938,6 +18300,12 @@ components:
           type: string
           description: An identifier for a specific payment gateway.
           maxLength: 13
+    BillingInfoVerifyCVV:
+      type: object
+      properties:
+        verification_value:
+          type: string
+          description: Unique security code for a credit card.
     Coupon:
       type: object
       properties:
@@ -17533,7 +18901,7 @@ components:
           title: Field value
           description: Any values that resemble a credit card number or security code
             (CVV/CVC) will be rejected.
-          maxLength: 100
+          maxLength: 255
       required:
       - name
       - value
@@ -17575,6 +18943,7 @@ components:
             - `read_only` - Users with the Customers role will be able to view this field's data via the admin UI, but
               editing will only be available via the API.
             - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
+            - `set_only` - Users with the Customers role will be able to set this field's data via the admin console.
           "$ref": "#/components/schemas/UserAccessEnum"
         display_name:
           type: string
@@ -17931,7 +19300,11 @@ components:
           type: string
           title: Previous invoice ID
           description: On refund invoices, this value will exist and show the invoice
-            ID of the purchase invoice the refund was created from.
+            ID of the purchase invoice the refund was created from. This field is
+            only populated for sites without the [Only Bill What Changed](https://docs.recurly.com/docs/only-bill-what-changed)
+            feature enabled. Sites with Only Bill What Changed enabled should use
+            the [related_invoices endpoint](https://recurly.com/developers/api/v2021-02-25/index.html#operation/list_related_invoices)
+            to see purchase invoices refunded by this invoice.
           maxLength: 13
         number:
           type: string
@@ -18016,6 +19389,13 @@ components:
           description: The outstanding balance remaining on this invoice.
         tax_info:
           "$ref": "#/components/schemas/TaxInfo"
+        used_tax_service:
+          type: boolean
+          title: Used Tax Service?
+          description: Will be `true` when the invoice had a successful response from
+            the tax service and `false` when the invoice was not sent to tax service
+            due to a lack of address or enabled jurisdiction or was processed without
+            tax due to a non-blocking error returned from the tax service.
         vat_number:
           type: string
           title: VAT number
@@ -18090,6 +19470,19 @@ components:
           description: Unique ID to identify the dunning campaign used when dunning
             the invoice. For sites without multiple dunning campaigns enabled, this
             will always be the default dunning campaign.
+        dunning_events_sent:
+          type: integer
+          title: Dunning Event Sent
+          description: Number of times the event was sent.
+        final_dunning_event:
+          type: boolean
+          title: Final Dunning Event
+          description: Last communication attempt.
+        business_entity_id:
+          type: string
+          title: Business Entity ID
+          description: Unique ID to identify the business entity assigned to the invoice.
+            Available when the `Multiple Business Entities` feature is enabled.
     InvoiceCreate:
       type: object
       properties:
@@ -18571,6 +19964,14 @@ components:
           description: This number will be multiplied by the unit amount to compute
             the subtotal before any discounts or taxes.
           default: 1
+        quantity_decimal:
+          type: string
+          title: Quantity Decimal
+          description: A floating-point alternative to Quantity. If this value is
+            present, it will be used in place of Quantity for calculations, and Quantity
+            will be the rounded integer value of this number. This field supports
+            up to 9 decimal places. The Decimal Quantity feature must be enabled to
+            utilize this field.
         unit_amount:
           type: number
           format: float
@@ -18580,6 +19981,12 @@ components:
           type: string
           title: Unit amount decimal
           description: Positive amount for a charge, negative amount for a credit.
+        tax_inclusive:
+          type: boolean
+          title: Tax Inclusive?
+          description: Determines whether or not tax is included in the unit amount.
+            The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing
+            feature) must be enabled to utilize this flag.
         subtotal:
           type: number
           format: float
@@ -18649,6 +20056,13 @@ components:
           title: Refunded Quantity
           description: For refund charges, the quantity being refunded. For non-refund
             charges, the total quantity refunded (possibly over multiple refunds).
+        refunded_quantity_decimal:
+          type: string
+          title: Refunded Quantity Decimal
+          description: A floating-point alternative to Refunded Quantity. For refund
+            charges, the quantity being refunded. For non-refund charges, the total
+            quantity refunded (possibly over multiple refunds). The Decimal Quantity
+            feature must be enabled to utilize this field.
         credit_applied:
           type: number
           format: float
@@ -18669,6 +20083,8 @@ components:
           format: date-time
           title: End date
           description: If this date is provided, it indicates the end of a time range.
+        custom_fields:
+          "$ref": "#/components/schemas/CustomFields"
         created_at:
           type: string
           format: date-time
@@ -18690,6 +20106,14 @@ components:
           type: integer
           title: Quantity
           description: Line item quantity to be refunded.
+        quantity_decimal:
+          type: string
+          title: Quantity Decimal
+          description: A floating-point alternative to Quantity. If this value is
+            present, it will be used in place of Quantity for calculations, and Quantity
+            will be the rounded integer value of this number. This field supports
+            up to 9 decimal places. The Decimal Quantity feature must be enabled to
+            utilize this field.
         prorate:
           type: boolean
           title: Prorate
@@ -18827,6 +20251,8 @@ components:
             true.  This origin creates a charge and opposite credit on the account
             to be used for future invoices.
           "$ref": "#/components/schemas/LineItemCreateOriginEnum"
+        custom_fields:
+          "$ref": "#/components/schemas/CustomFields"
         start_date:
           type: string
           format: date-time
@@ -18951,6 +20377,16 @@ components:
             renew its term at renewal. If `auto_renew` is `false`, then a subscription
             will expire at the end of its term. `auto_renew` can be overridden on
             the subscription record itself.
+        pricing_model:
+          title: Pricing Model
+          "$ref": "#/components/schemas/PricingModelTypeEnum"
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          items:
+            "$ref": "#/components/schemas/PlanRampInterval"
+        custom_fields:
+          "$ref": "#/components/schemas/CustomFields"
         revenue_schedule_type:
           title: Revenue schedule type
           "$ref": "#/components/schemas/RevenueScheduleTypeEnum"
@@ -19113,6 +20549,16 @@ components:
             renew its term at renewal. If `auto_renew` is `false`, then a subscription
             will expire at the end of its term. `auto_renew` can be overridden on
             the subscription record itself.
+        pricing_model:
+          title: Pricing Model
+          "$ref": "#/components/schemas/PricingModelTypeEnum"
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          items:
+            "$ref": "#/components/schemas/PlanRampInterval"
+        custom_fields:
+          "$ref": "#/components/schemas/CustomFields"
         revenue_schedule_type:
           title: Revenue schedule type
           "$ref": "#/components/schemas/RevenueScheduleTypeEnum"
@@ -19234,6 +20680,7 @@ components:
           type: number
           format: float
           title: Unit price
+          description: This field should not be sent when the pricing model is 'ramp'.
           minimum: 0
           maximum: 1000000
         tax_inclusive:
@@ -19242,6 +20689,19 @@ components:
           default: false
           description: This field is deprecated. Please do not use it.
           deprecated: true
+    PlanRampInterval:
+      type: object
+      title: Plan Ramp Interval
+      properties:
+        starting_billing_cycle:
+          type: integer
+          description: Represents the billing cycle where a ramp interval starts.
+          default: 1
+        currencies:
+          type: array
+          description: Represents the price for the ramp interval.
+          items:
+            "$ref": "#/components/schemas/PlanRampPricing"
     PlanUpdate:
       type: object
       properties:
@@ -19308,6 +20768,13 @@ components:
             renew its term at renewal. If `auto_renew` is `false`, then a subscription
             will expire at the end of its term. `auto_renew` can be overridden on
             the subscription record itself.
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          items:
+            "$ref": "#/components/schemas/PlanRampInterval"
+        custom_fields:
+          "$ref": "#/components/schemas/CustomFields"
         revenue_schedule_type:
           title: Revenue schedule type
           "$ref": "#/components/schemas/RevenueScheduleTypeEnum"
@@ -19354,6 +20821,7 @@ components:
         currencies:
           type: array
           title: Pricing
+          description: Optional when the pricing model is 'ramp'.
           items:
             "$ref": "#/components/schemas/PlanPricing"
           minItems: 1
@@ -19433,6 +20901,24 @@ components:
             If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
       required:
       - currency
+    PlanRampPricing:
+      type: object
+      properties:
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        unit_amount:
+          type: number
+          format: float
+          title: Unit price
+          description: Represents the price for the Ramp Interval.
+          minimum: 0
+          maximum: 1000000
+      required:
+      - currency
+      - unit_amount
     Pricing:
       type: object
       properties:
@@ -20036,6 +21522,13 @@ components:
           default: true
           title: Auto renew
           description: Whether the subscription renews at the end of its term.
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          description: The ramp intervals representing the pricing schedule for the
+            subscription.
+          items:
+            "$ref": "#/components/schemas/SubscriptionRampIntervalResponse"
         paused_at:
           type: string
           format: date-time
@@ -20059,6 +21552,12 @@ components:
           type: number
           format: float
           title: Subscription unit price
+        tax_inclusive:
+          type: boolean
+          title: Tax Inclusive?
+          description: Determines whether or not tax is included in the unit amount.
+            The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing
+            feature) must be enabled to utilize this flag.
         quantity:
           type: integer
           title: Subscription quantity
@@ -20164,6 +21663,16 @@ components:
             subscription.
           maxLength: 13
           readOnly: true
+        started_with_gift:
+          type: boolean
+          default: false
+          description: Whether the subscription was started with a gift certificate.
+          title: Started with Gift
+        converted_at:
+          type: string
+          format: date-time
+          description: When the subscription was converted from a gift card.
+          title: Converted at
     SubscriptionAddOn:
       type: object
       title: Subscription Add-on
@@ -20203,6 +21712,8 @@ components:
           "$ref": "#/components/schemas/RevenueScheduleTypeEnum"
         tier_type:
           "$ref": "#/components/schemas/TierTypeEnum"
+        usage_calculation_type:
+          "$ref": "#/components/schemas/UsageCalculationTypeEnum"
         usage_timeframe:
           "$ref": "#/components/schemas/UsageTimeframeEnum"
         tiers:
@@ -20225,8 +21736,8 @@ components:
           description: |
             If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
             removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
-            add_on.usage_type is percentage.
-            There must be one tier without an `ending_amount` value which represents the final tier.
+            add_on.usage_type is percentage. There must be one tier without an `ending_amount` value which represents the final tier.
+            This feature is currently in development and requires approval and enablement, please contact support.
         usage_percentage:
           type: number
           format: float
@@ -20293,7 +21804,7 @@ components:
             If the plan add-on's `tier_type` is `flat`, then `tiers` must be absent. The `tiers` object
             must include one to many tiers with `ending_quantity` and `unit_amount`.
             There must be one tier without an `ending_quantity` value which represents the final tier.
-            See our [Guide](https://developers.recurly.com/guides/item-addon-guide.html)
+            See our [Guide](https://recurly.com/developers/guides/item-addon-guide.html)
             for an overview of how to configure quantity-based pricing models.
         percentage_tiers:
           type: array
@@ -20303,8 +21814,9 @@ components:
           minItems: 1
           description: |
             If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
-            removed and replaced by the percentage tiers in the request. There must be one tier without ending_amount value which represents the final tier.
-            Use only if add_on.tier_type is tiered or volume and add_on.usage_type is percentage.
+            removed and replaced by the percentage tiers in the request. There must be one tier without ending_amount value
+            which represents the final tier. Use only if add_on.tier_type is tiered or volume and add_on.usage_type is
+            percentage. This feature is currently in development and requires approval and enablement, please contact support.
         usage_percentage:
           type: number
           format: float
@@ -20314,7 +21826,7 @@ components:
           description: The percentage taken of the monetary amount of usage tracked.
             This can be up to 4 decimal places. A value between 0.0 and 100.0. Required
             if `add_on_type` is usage and `usage_type` is percentage. Must be omitted
-            otherwise. `usage_percentage` does not support tiers. See our [Guide](https://developers.recurly.com/guides/usage-based-billing-guide.html)
+            otherwise. `usage_percentage` does not support tiers. See our [Guide](https://recurly.com/developers/guides/usage-based-billing-guide.html)
             for an overview of how to configure usage add-ons.
         revenue_schedule_type:
           title: Revenue schedule type
@@ -20383,8 +21895,8 @@ components:
           description: |
             If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
             removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
-            add_on.usage_type is percentage.
-            There must be one tier without an `ending_amount` value which represents the final tier.
+            add_on.usage_type is percentage. There must be one tier without an `ending_amount` value which represents the
+            final tier. This feature is currently in development and requires approval and enablement, please contact support.
         usage_percentage:
           type: number
           format: float
@@ -20532,6 +22044,13 @@ components:
           readOnly: true
         billing_info:
           "$ref": "#/components/schemas/SubscriptionChangeBillingInfo"
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          description: The ramp intervals representing the pricing schedule for the
+            subscription.
+          items:
+            "$ref": "#/components/schemas/SubscriptionRampIntervalResponse"
     SubscriptionChangeBillingInfo:
       type: object
       description: Accept nested attributes for three_d_secure_action_result_token_id
@@ -20657,6 +22176,12 @@ components:
           "$ref": "#/components/schemas/GatewayTransactionTypeEnum"
         billing_info:
           "$ref": "#/components/schemas/SubscriptionChangeBillingInfoCreate"
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          description: The new set of ramp intervals for the subscription.
+          items:
+            "$ref": "#/components/schemas/SubscriptionRampInterval"
     SubscriptionChangeShippingCreate:
       type: object
       title: Shipping details that will be changed on a subscription
@@ -20686,7 +22211,7 @@ components:
             zero then a `method_id` or `method_code` is required.
         address_id:
           type: string
-          titpe: Shipping address ID
+          title: Shipping address ID
           description: Assign a shipping address from the account's existing shipping
             addresses. If this and address are both present, address will take precedence.
         address:
@@ -20811,6 +22336,12 @@ components:
           default: true
           title: Auto renew
           description: Whether the subscription renews at the end of its term.
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          description: The new set of ramp intervals for the subscription.
+          items:
+            "$ref": "#/components/schemas/SubscriptionRampInterval"
         revenue_schedule_type:
           title: Revenue schedule type
           "$ref": "#/components/schemas/RevenueScheduleTypeEnum"
@@ -20854,6 +22385,11 @@ components:
             created by this request. Supports 'moto' value, which is the acronym for
             mail order and telephone transactions.
           "$ref": "#/components/schemas/GatewayTransactionTypeEnum"
+        gift_card_redemption_code:
+          type: string
+          title: Gift card Redemption Code
+          description: A gift card redemption code to be redeemed on the purchase
+            invoice.
       required:
       - plan_code
       - currency
@@ -20950,6 +22486,12 @@ components:
         revenue_schedule_type:
           title: Revenue schedule type
           "$ref": "#/components/schemas/RevenueScheduleTypeEnum"
+        ramp_intervals:
+          type: array
+          title: Ramp Intervals
+          description: The new set of ramp intervals for the subscription.
+          items:
+            "$ref": "#/components/schemas/SubscriptionRampInterval"
       required:
       - plan_code
     SubscriptionUpdate:
@@ -21131,6 +22673,32 @@ components:
           format: float
           title: Assigns the subscription's shipping cost. If this is greater than
             zero then a `method_id` or `method_code` is required.
+    SubscriptionRampInterval:
+      type: object
+      title: Subscription Ramp Interval
+      properties:
+        starting_billing_cycle:
+          type: integer
+          description: Represents the billing cycle where a ramp interval starts.
+          default: 1
+        unit_amount:
+          type: integer
+          description: Represents the price for the ramp interval.
+    SubscriptionRampIntervalResponse:
+      type: object
+      title: Subscription Ramp Interval
+      properties:
+        starting_billing_cycle:
+          type: integer
+          description: Represents the billing cycle where a ramp interval starts.
+        remaining_billing_cycles:
+          type: integer
+          description: Represents how many billing cycles are left in a ramp interval.
+        unit_amount:
+          type: number
+          format: float
+          title: Unit price
+          description: Represents the price for the ramp interval.
     TaxInfo:
       type: object
       title: Tax info
@@ -21141,23 +22709,29 @@ components:
           description: Provides the tax type as "vat" for EU VAT, "usst" for U.S.
             Sales Tax, or the 2 letter country code for country level tax types like
             Canada, Australia, New Zealand, Israel, and all non-EU European countries.
+            Not present when Avalara for Communications is enabled.
         region:
           type: string
           title: Region
           description: Provides the tax region applied on an invoice. For U.S. Sales
             Tax, this will be the 2 letter state code. For EU VAT this will be the
             2 letter country code. For all country level tax types, this will display
-            the regional tax, like VAT, GST, or PST.
+            the regional tax, like VAT, GST, or PST. Not present when Avalara for
+            Communications is enabled.
         rate:
           type: number
           format: float
           title: Rate
+          description: The combined tax rate. Not present when Avalara for Communications
+            is enabled.
         tax_details:
           type: array
-          description: Provides additional tax details for Canadian Sales Tax when
-            there is tax applied at both the country and province levels. This will
-            only be populated for the Invoice response when fetching a single invoice
-            and not for the InvoiceList or LineItem.
+          description: Provides additional tax details for Communications taxes when
+            Avalara for Communications is enabled or Canadian Sales Tax when there
+            is tax applied at both the country and province levels. This will only
+            be populated for the Invoice response when fetching a single invoice and
+            not for the InvoiceList or LineItemList. Only populated for a single LineItem
+            fetch when Avalara for Communications is enabled.
           items:
             "$ref": "#/components/schemas/TaxDetail"
     TaxDetail:
@@ -21167,13 +22741,15 @@ components:
         type:
           type: string
           title: Type
-          description: Provides the tax type for the region. For Canadian Sales Tax,
+          description: Provides the tax type for the region or type of Comminications
+            tax when Avalara for Communications is enabled. For Canadian Sales Tax,
             this will be GST, HST, QST or PST.
         region:
           type: string
           title: Region
           description: Provides the tax region applied on an invoice. For Canadian
             Sales Tax, this will be either the 2 letter province code or country code.
+            Not present when Avalara for Communications is enabled.
         rate:
           type: number
           format: float
@@ -21184,6 +22760,22 @@ components:
           format: float
           title: Tax
           description: The total tax applied for this tax type.
+        name:
+          type: string
+          title: Name
+          description: Provides the name of the Communications tax applied. Present
+            only when Avalara for Communications is enabled.
+        level:
+          type: string
+          title: Level
+          description: Provides the jurisdiction level for the Communications tax
+            applied. Example values include city, state and federal. Present only
+            when Avalara for Communications is enabled.
+        billable:
+          type: boolean
+          title: Billable
+          description: Whether or not the line item is taxable. Only populated for
+            a single LineItem fetch when Avalara for Communications is enabled.
     Transaction:
       type: object
       properties:
@@ -21492,10 +23084,11 @@ components:
         amount:
           type: number
           format: float
-          description: The amount of usage. Can be positive, negative, or 0. No decimals
-            allowed, we will strip them. If the usage-based add-on is billed with
-            a percentage, your usage will be a monetary amount you will want to format
-            in cents. (e.g., $5.00 is "500").
+          description: The amount of usage. Can be positive, negative, or 0. If the
+            Decimal Quantity feature is enabled, this value will be rounded to nine
+            decimal places.  Otherwise, all digits after the decimal will be stripped.
+            If the usage-based add-on is billed with a percentage, your usage should
+            be a monetary amount formatted in cents (e.g., $5.00 is "500").
         usage_type:
           "$ref": "#/components/schemas/UsageTypeEnum"
         tier_type:
@@ -21513,7 +23106,8 @@ components:
           items:
             "$ref": "#/components/schemas/SubscriptionAddOnPercentageTier"
           description: The percentage tiers of the subscription based on the usage_timestamp.
-            If tier_type = flat, percentage_tiers = []
+            If tier_type = flat, percentage_tiers = []. This feature is currently
+            in development and requires approval and enablement, please contact support.
         measured_unit_id:
           type: string
           description: The ID of the measured unit associated with the add-on the
@@ -21566,10 +23160,11 @@ components:
         amount:
           type: number
           format: float
-          description: The amount of usage. Can be positive, negative, or 0. No decimals
-            allowed, we will strip them. If the usage-based add-on is billed with
-            a percentage, your usage will be a monetary amount you will want to format
-            in cents. (e.g., $5.00 is "500").
+          description: The amount of usage. Can be positive, negative, or 0. If the
+            Decimal Quantity feature is enabled, this value will be rounded to nine
+            decimal places.  Otherwise, all digits after the decimal will be stripped.
+            If the usage-based add-on is billed with a percentage, your usage should
+            be a monetary amount formatted in cents (e.g., $5.00 is "500").
         recording_timestamp:
           type: string
           format: date-time
@@ -21885,6 +23480,477 @@ components:
           maxItems: 200
           items:
             "$ref": "#/components/schemas/Plan"
+    Entitlements:
+      type: object
+      description: A list of privileges granted to a customer through the purchase
+        of a plan or item.
+      properties:
+        object:
+          type: string
+          title: Object Type
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Entitlement"
+    Entitlement:
+      type: object
+      properties:
+        object:
+          type: string
+          description: Entitlement
+        customer_permission:
+          "$ref": "#/components/schemas/CustomerPermission"
+        granted_by:
+          type: array
+          description: Subscription or item that granted the customer permission.
+          items:
+            "$ref": "#/components/schemas/GrantedBy"
+        created_at:
+          type: string
+          format: date-time
+          description: Time object was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Time the object was last updated
+    ExternalProduct:
+      type: object
+      description: Product from an external resource such as Apple App Store or Google
+        Play Store.
+      properties:
+        id:
+          type: string
+          title: External product ID.
+          description: System-generated unique identifier for an external product
+            ID, e.g. `e28zov4fw0v2`.
+        object:
+          type: string
+          title: Object type
+        name:
+          type: string
+          title: Name
+          description: Name to identify the external product in Recurly.
+        plan:
+          "$ref": "#/components/schemas/PlanMini"
+        created_at:
+          type: string
+          format: date-time
+          description: When the external product was created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the external product was updated in Recurly.
+        external_product_references:
+          type: array
+          title: External Product References
+          description: List of external product references of the external product.
+          items:
+            "$ref": "#/components/schemas/ExternalProductReferenceMini"
+    ExternalProductList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalProduct"
+    ExternalProductCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: External product name.
+        plan_id:
+          type: string
+          description: Recurly plan UUID.
+        external_product_references:
+          type: array
+          title: External Product References
+          description: List of external product references of the external product.
+          items:
+            "$ref": "#/components/schemas/ExternalProductReferenceBase"
+      required:
+      - name
+    ExternalProductUpdate:
+      type: object
+      properties:
+        plan_id:
+          type: string
+          description: Recurly plan UUID.
+      required:
+      - plan_id
+    ExternalProductReferenceBase:
+      type: object
+      properties:
+        reference_code:
+          type: string
+          description: A code which associates the external product to a corresponding
+            object or resource in an external platform like the Apple App Store or
+            Google Play Store.
+          maxLength: 255
+        external_connection_type:
+          "$ref": "#/components/schemas/ExternalProductReferenceConnectionTypeEnum"
+    ExternalProductReferenceCollection:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalProductReferenceMini"
+    ExternalProductReferenceCreate:
+      allOf:
+      - "$ref": "#/components/schemas/ExternalProductReferenceBase"
+      required:
+      - reference_code
+      - external_connection_type
+    ExternalProductReferenceUpdate:
+      allOf:
+      - "$ref": "#/components/schemas/ExternalProductReferenceBase"
+    ExternalProductReferenceConnectionTypeEnum:
+      type: string
+      enum:
+      - apple_app_store
+      - google_play_store
+    ExternalAccountList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalAccount"
+    ExternalAccountCreate:
+      type: object
+      properties:
+        external_account_code:
+          type: string
+          description: Represents the account code for the external account.
+        external_connection_type:
+          type: string
+          description: Represents the connection type. `AppleAppStore` or `GooglePlayStore`
+      required:
+      - external_account_code
+      - external_connection_type
+    ExternalAccountUpdate:
+      type: object
+      properties:
+        external_account_code:
+          type: string
+          description: Represents the account code for the external account.
+        external_connection_type:
+          type: string
+          description: Represents the connection type. `AppleAppStore` or `GooglePlayStore`
+    ExternalAccount:
+      type: object
+      title: External Account
+      properties:
+        object:
+          type: string
+          default: external_account
+        id:
+          type: string
+          description: UUID of the external_account .
+        external_account_code:
+          type: string
+          description: Represents the account code for the external account.
+        external_connection_type:
+          type: string
+          description: Represents the connection type. `AppleAppStore` or `GooglePlayStore`
+        created_at:
+          type: string
+          format: date-time
+          description: Created at
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated at
+          readOnly: true
+    ExternalProductReferenceMini:
+      type: object
+      title: External Product Reference details
+      description: External Product Reference details
+      properties:
+        id:
+          type: string
+          title: External Product ID
+          description: System-generated unique identifier for an external product
+            ID, e.g. `e28zov4fw0v2`.
+        object:
+          type: string
+          title: object
+        reference_code:
+          type: string
+          title: reference_code
+          description: A code which associates the external product to a corresponding
+            object or resource in an external platform like the Apple App Store or
+            Google Play Store.
+        external_connection_type:
+          type: string
+          title: external_connection_type
+          description: Source connection platform.
+        created_at:
+          type: string
+          format: date-time
+          description: When the external product was created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the external product was updated in Recurly.
+    ExternalSubscription:
+      type: object
+      description: Subscription from an external resource such as Apple App Store
+        or Google Play Store.
+      properties:
+        id:
+          type: string
+          title: External subscription ID
+          description: System-generated unique identifier for an external subscription
+            ID, e.g. `e28zov4fw0v2`.
+        object:
+          type: string
+          title: Object type
+        account:
+          "$ref": "#/components/schemas/AccountMini"
+        external_product_reference:
+          "$ref": "#/components/schemas/ExternalProductReferenceMini"
+        external_id:
+          type: string
+          title: External Id
+          description: The id of the subscription in the external systems., I.e. Apple
+            App Store or Google Play Store.
+        last_purchased:
+          type: string
+          format: date-time
+          title: Last purchased
+          description: When a new billing event occurred on the external subscription
+            in conjunction with a recent billing period, reactivation or upgrade/downgrade.
+        auto_renew:
+          type: boolean
+          title: Auto-renew
+          description: An indication of whether or not the external subscription will
+            auto-renew at the expiration date.
+          default: false
+        app_identifier:
+          type: string
+          title: App identifier
+          description: Identifier of the app that generated the external subscription.
+        quantity:
+          type: integer
+          title: Quantity
+          description: An indication of the quantity of a subscribed item's quantity.
+          default: 1
+          minimum: 0
+        state:
+          type: string
+          description: External subscriptions can be active, canceled, expired, or
+            future.
+        activated_at:
+          type: string
+          format: date-time
+          title: Activated at
+          description: When the external subscription was activated in the external
+            platform.
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires at
+          description: When the external subscription expires in the external platform.
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+          description: When the external subscription was created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated at
+          description: When the external subscription was updated in Recurly.
+    ExternalSubscriptionList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalSubscription"
+    ExternalInvoice:
+      type: object
+      description: Invoice from an external resource such as Apple App Store or Google
+        Play Store.
+      properties:
+        id:
+          type: string
+          title: External invoice ID
+          description: System-generated unique identifier for an external invoice
+            ID, e.g. `e28zov4fw0v2`.
+        object:
+          type: string
+          title: Object type
+        account:
+          "$ref": "#/components/schemas/AccountMini"
+        external_subscription:
+          "$ref": "#/components/schemas/ExternalSubscription"
+        external_id:
+          type: string
+          description: An identifier which associates the external invoice to a corresponding
+            object in an external platform.
+        state:
+          "$ref": "#/components/schemas/ExternalInvoiceStateEnum"
+        total:
+          type: string
+          format: decimal
+          title: Total
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+        line_items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalCharge"
+        purchased_at:
+          type: string
+          format: date-time
+          description: When the invoice was created in the external platform.
+        created_at:
+          type: string
+          format: date-time
+          description: When the external invoice was created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated at
+          description: When the external invoice was updated in Recurly.
+    ExternalInvoiceList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalInvoice"
+    ExternalCharge:
+      type: object
+      description: Charge from an external resource such as Apple App Store or Google
+        Play Store.
+      properties:
+        id:
+          type: string
+          title: External invoice ID
+          description: System-generated unique identifier for an external charge ID,
+            e.g. `e28zov4fw0v2`.
+        object:
+          type: string
+          title: Object type
+        account:
+          "$ref": "#/components/schemas/AccountMini"
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+        unit_amount:
+          type: string
+          format: decimal
+          title: Unit Amount
+        quantity:
+          type: integer
+        description:
+          type: string
+        external_product_reference:
+          "$ref": "#/components/schemas/ExternalProductReferenceMini"
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+          description: When the external charge was created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated at
+          description: When the external charge was updated in Recurly.
+    CustomerPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Customer permission ID.
+        code:
+          type: string
+          description: Customer permission code.
+        name:
+          type: string
+          description: Customer permission name.
+        description:
+          type: string
+          description: Description of customer permission.
+        object:
+          type: string
+          description: It will always be "customer_permission".
+    GrantedBy:
+      type: object
+      description: The subscription or external subscription that grants customer
+        permissions.
+      properties:
+        object:
+          type: string
+          title: Object Type
+        id:
+          type: string
+          description: The ID of the subscription or external subscription that grants
+            the permission to the account.
     InvoiceTemplateList:
       type: object
       properties:
@@ -21967,6 +24033,16 @@ components:
           type: string
           description: An identifier for a specific payment gateway.
           maxLength: 13
+        gateway_attributes:
+          type: object
+          description: Gateway specific attributes associated with this PaymentMethod
+          x-class-name: GatewayAttributes
+          properties:
+            account_reference:
+              type: string
+              description: Used by Adyen gateways. The Shopper Reference value used
+                when the external token was created.
+              maxLength: 264
         billing_agreement_id:
           type: string
           description: Billing Agreement identifier. Only present for Amazon or Paypal
@@ -21984,6 +24060,344 @@ components:
         routing_number_bank:
           type: string
           description: The bank name of this routing number.
+        username:
+          type: string
+          description: Username of the associated payment method. Currently only associated
+            with Venmo.
+    BusinessEntityList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BusinessEntity"
+    BusinessEntity:
+      type: object
+      description: Business entity details
+      properties:
+        id:
+          title: Business entity ID
+          type: string
+          maxLength: 13
+          readOnly: true
+        object:
+          title: Object type
+          type: string
+          readOnly: true
+        code:
+          title: Business entity code
+          type: string
+          maxLength: 50
+          description: The entity code of the business entity.
+        name:
+          type: string
+          title: Name
+          description: This name describes your business entity and will appear on
+            the invoice.
+          maxLength: 255
+        invoice_display_address:
+          title: Invoice display address
+          description: Address information for the business entity that will appear
+            on the invoice.
+          "$ref": "#/components/schemas/Address"
+        tax_address:
+          title: Tax address
+          description: Address information for the business entity that will be used
+            for calculating taxes.
+          "$ref": "#/components/schemas/Address"
+        default_vat_number:
+          type: string
+          title: Default VAT number
+          description: VAT number for the customer used on the invoice.
+          maxLength: 20
+        default_registration_number:
+          type: string
+          title: Default registration number
+          description: Registration number for the customer used on the invoice.
+          maxLength: 30
+        subscriber_location_countries:
+          type: array
+          title: Subscriber location countries
+          description: List of countries for which the business entity will be used.
+          items:
+            type: string
+            title: Country code
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          title: Last updated at
+          readOnly: true
+    GiftCardList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GiftCard"
+    GiftCard:
+      type: object
+      description: Gift card details
+      properties:
+        id:
+          title: Gift card ID
+          type: string
+          maxLength: 13
+          readOnly: true
+        object:
+          title: Object type
+          type: string
+          readOnly: true
+        gifter_account_id:
+          title: Gifter account ID
+          type: string
+          maxLength: 13
+          description: The ID of the account that purchased the gift card.
+        recipient_account_id:
+          title: Recipient account ID
+          type: string
+          maxLength: 13
+          description: The ID of the account that redeemed the gift card redemption
+            code.  Does not have a value until gift card is redeemed.
+        purchase_invoice_id:
+          title: Purchase invoice ID
+          type: string
+          maxLength: 13
+          description: The ID of the invoice for the gift card purchase made by the
+            gifter.
+        redemption_invoice_id:
+          title: Redemption invoice ID
+          type: string
+          maxLength: 13
+          description: The ID of the invoice for the gift card redemption made by
+            the recipient.  Does not have a value until gift card is redeemed.
+        redemption_code:
+          title: Redemption code
+          type: string
+          description: The unique redemption code for the gift card, generated by
+            Recurly. Will be 16 characters, alphanumeric, displayed uppercase, but
+            accepted in any case at redemption. Used by the recipient account to create
+            a credit in the amount of the `unit_amount` on their account.
+        balance:
+          title: Remaining balance
+          type: number
+          format: float
+          description: The remaining credit on the recipient account associated with
+            this gift card. Only has a value once the gift card has been redeemed.
+            Can be used to create gift card balance displays for your customers.
+        product_code:
+          title: Product code
+          type: string
+          description: The product code or SKU of the gift card product.
+        unit_amount:
+          title: Purchase unit amount
+          type: number
+          format: float
+          description: The amount of the gift card, which is the amount of the charge
+            to the gifter account and the amount of credit that is applied to the
+            recipient account upon successful redemption.
+        currency:
+          title: Currency
+          type: string
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        delivery:
+          title: Delivery details
+          description: The delivery details for the gift card.
+          readOnly: true
+          "$ref": "#/components/schemas/GiftCardDelivery"
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          title: Last updated at
+          readOnly: true
+        delivered_at:
+          type: string
+          format: date-time
+          title: Delivered at
+          readOnly: true
+          description: When the gift card was sent to the recipient by Recurly via
+            email, if method was email and the "Gift Card Delivery" email template
+            was enabled. This will be empty for post delivery or email delivery where
+            the email template was disabled.
+        redeemed_at:
+          type: string
+          format: date-time
+          title: Redeemed at
+          readOnly: true
+          description: When the gift card was redeemed by the recipient.
+        canceled_at:
+          type: string
+          format: date-time
+          title: Canceled at
+          readOnly: true
+          description: When the gift card was canceled.
+    GiftCardCreate:
+      type: object
+      description: Gift card details
+      properties:
+        product_code:
+          title: Product code
+          type: string
+          description: The product code or SKU of the gift card product.
+        unit_amount:
+          title: Purchase unit amount
+          type: number
+          format: float
+          description: The amount of the gift card, which is the amount of the charge
+            to the gifter account and the amount of credit that is applied to the
+            recipient account upon successful redemption.
+        currency:
+          title: Currency
+          type: string
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        delivery:
+          title: Delivery details
+          description: The delivery details for the gift card.
+          readOnly: true
+          "$ref": "#/components/schemas/GiftCardDeliveryCreate"
+        gifter_account:
+          title: Gifter account details
+          description: Block of account details for the gifter. This references an
+            existing account_code.
+          readOnly: true
+          "$ref": "#/components/schemas/AccountPurchase"
+      required:
+      - product_code
+      - unit_amount
+      - currency
+      - delivery
+      - gifter_account
+    GiftCardDeliveryCreate:
+      type: object
+      description: Gift card delivery details
+      properties:
+        method:
+          title: Delivery method
+          description: Whether the delivery method is email or postal service.
+          "$ref": "#/components/schemas/DeliveryMethodEnum"
+        email_address:
+          title: Recipient email address
+          type: string
+          description: The email address of the recipient. Required if `method` is
+            `email`.
+        deliver_at:
+          type: string
+          format: date-time
+          title: Deliver at
+          readOnly: true
+          description: When the gift card should be delivered to the recipient. If
+            null, the gift card will be delivered immediately. If a datetime is provided,
+            the delivery will be in an hourly window, rounding down. For example,
+            6:23 pm will be in the 6:00 pm hourly batch.
+        first_name:
+          title: Recipient first name
+          type: string
+          description: The first name of the recipient.
+        last_name:
+          title: Recipient last name
+          type: string
+          description: The last name of the recipient.
+        recipient_address:
+          title: Recipient address
+          description: Address information for the recipient. Required if `method`
+            is `post`.
+          "$ref": "#/components/schemas/Address"
+        gifter_name:
+          title: Gifter name
+          type: string
+          description: The name of the gifter for the purpose of a message displayed
+            to the recipient.
+        personal_message:
+          title: Personal message
+          type: string
+          maxLength: 255
+          description: The personal message from the gifter to the recipient.
+      required:
+      - method
+    GiftCardDelivery:
+      type: object
+      description: Gift card delivery details
+      properties:
+        method:
+          title: Delivery method
+          description: Whether the delivery method is email or postal service.
+          "$ref": "#/components/schemas/DeliveryMethodEnum"
+        email_address:
+          title: Recipient email address
+          type: string
+          description: The email address of the recipient.
+        deliver_at:
+          type: string
+          format: date-time
+          title: Deliver at
+          readOnly: true
+          description: When the gift card should be delivered to the recipient. If
+            null, the gift card will be delivered immediately. If a datetime is provided,
+            the delivery will be in an hourly window, rounding down. For example,
+            6:23 pm will be in the 6:00 pm hourly batch.
+        first_name:
+          title: Recipient first name
+          type: string
+          description: The first name of the recipient.
+        last_name:
+          title: Recipient last name
+          type: string
+          description: The last name of the recipient.
+        recipient_address:
+          title: Recipient address
+          description: Address information for the recipient.
+          "$ref": "#/components/schemas/Address"
+        gifter_name:
+          title: Gifter name
+          type: string
+          description: The name of the gifter for the purpose of a message displayed
+            to the recipient.
+        personal_message:
+          title: Personal message
+          type: string
+          maxLength: 255
+          description: The personal message from the gifter to the recipient.
+    GiftCardRedeem:
+      type: object
+      description: The information necessary to redeem a gift card.
+      properties:
+        recipient_account:
+          title: Recipient account
+          description: The account for the recipient of the gift card.
+          "$ref": "#/components/schemas/AccountReference"
+      required:
+      - recipient_account
     Error:
       type: object
       properties:
@@ -22025,6 +24439,9 @@ components:
               code:
                 title: Code
                 "$ref": "#/components/schemas/ErrorCodeEnum"
+              decline_code:
+                title: Decline code
+                "$ref": "#/components/schemas/DeclineCodeEnum"
               message:
                 type: string
                 title: Customer message
@@ -22043,7 +24460,9 @@ components:
       enum:
       - account
       - item
+      - plan
       - subscription
+      - charge
     RefundTypeEnum:
       type: string
       enum:
@@ -22068,6 +24487,15 @@ components:
       - percentage
       title: Usage Type
       description: Type of usage, returns usage type if `add_on_type` is `usage`.
+    UsageCalculationTypeEnum:
+      type: string
+      description: The type of calculation to be employed for an add-on.  Cumulative
+        billing will sum all usage records created in the current billing cycle.  Last-in-period
+        billing will apply only the most recent usage record in the billing period.  If
+        no value is specified, cumulative billing will be used.
+      enum:
+      - cumulative
+      - last_in_period
     BillingStatusEnum:
       type: string
       default: unbilled
@@ -22094,6 +24522,13 @@ components:
       - future
       - in_trial
       - live
+    FilterLimitedSubscriptionStateEnum:
+      type: string
+      enum:
+      - active
+      - canceled
+      - expired
+      - future
     TrueEnum:
       type: string
       enum:
@@ -22156,7 +24591,9 @@ components:
       - es-MX
       - es-US
       - fi-FI
+      - fr-BE
       - fr-CA
+      - fr-CH
       - fr-FR
       - hi-IN
       - it-IT
@@ -22178,6 +24615,11 @@ components:
       enum:
       - parent
       - self
+    DeliveryMethodEnum:
+      type: string
+      enum:
+      - email
+      - post
     GatewayTransactionTypeEnum:
       type: string
       enum:
@@ -22265,7 +24707,7 @@ components:
       title: Usage Type
       description: |
         Type of usage, required if `add_on_type` is `usage`. See our
-        [Guide](https://developers.recurly.com/guides/usage-based-billing-guide.html) for an
+        [Guide](https://recurly.com/developers/guides/usage-based-billing-guide.html) for an
         overview of how to configure usage add-ons.
     TierTypeEnum:
       type: string
@@ -22273,7 +24715,7 @@ components:
       description: |
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
       default: flat
       enum:
@@ -22313,6 +24755,17 @@ components:
       - api_only
       - read_only
       - write
+      - set_only
+    PricingModelTypeEnum:
+      type: string
+      enum:
+      - fixed
+      - ramp
+      default: fixed
+      description: |
+        A fixed pricing model has the same price for each billing period.
+        A ramp pricing model defines a set of Ramp Intervals, where a subscription changes price on
+        a specified cadence of billing periods. The price change could be an increase or decrease.
     RevenueScheduleTypeEnum:
       type: string
       enum:
@@ -22376,6 +24829,7 @@ components:
     ExternalPaymentMethodEnum:
       type: string
       enum:
+      - bacs
       - ach
       - amazon
       - apple_pay
@@ -22496,6 +24950,7 @@ components:
       enum:
       - api
       - chargeback
+      - external_recovery
       - force_collect
       - hpp
       - merchant
@@ -22565,6 +25020,7 @@ components:
     PaymentMethodEnum:
       type: string
       enum:
+      - bacs
       - amazon
       - amazon_billing_agreement
       - apple_pay
@@ -22580,6 +25036,7 @@ components:
       - paypal_billing_agreement
       - roku
       - sepadirectdebit
+      - venmo
       - wire_transfer
       - braintree_v_zero
     CardTypeEnum:
@@ -22589,7 +25046,9 @@ components:
       - Dankort
       - Diners Club
       - Discover
+      - ELO
       - Forbrugsforeningen
+      - Hipercard
       - JCB
       - Laser
       - Maestro
@@ -22802,6 +25261,38 @@ components:
       - unmapped_partner_error
       - vaultly_service_unavailable
       - zero_dollar_auth_not_supported
+    DeclineCodeEnum:
+      type: string
+      enum:
+      - account_closed
+      - call_issuer
+      - card_not_activated
+      - card_not_supported
+      - cardholder_requested_stop
+      - do_not_honor
+      - do_not_try_again
+      - exceeds_daily_limit
+      - generic_decline
+      - expired_card
+      - fraudulent
+      - insufficient_funds
+      - incorrect_address
+      - incorrect_security_code
+      - invalid_amount
+      - invalid_number
+      - invalid_transaction
+      - issuer_unavailable
+      - lifecycle_decline
+      - lost_card
+      - pickup_card
+      - policy_decline
+      - restricted_card
+      - restricted_card_chargeback
+      - security_decline
+      - stolen_card
+      - try_again
+      - update_cardholder_data
+      - requires_3d_secure
     ExportDates:
       type: object
       properties:
@@ -22868,12 +25359,20 @@ components:
       - savings
     ExternalHppTypeEnum:
       type: string
-      description: Use for Adyen HPP billing info.
+      description: Use for Adyen HPP billing info. This should only be used as part
+        of a pending purchase request, when the billing info is nested inside an account
+        object.
       enum:
       - adyen
     OnlineBankingPaymentTypeEnum:
       type: string
-      description: Use for Online Banking billing info.
+      description: Use for Online Banking billing info. This should only be used as
+        part of a pending purchase request, when the billing info is nested inside
+        an account object.
       enum:
       - ideal
       - sofort
+    ExternalInvoiceStateEnum:
+      type: string
+      enum:
+      - paid

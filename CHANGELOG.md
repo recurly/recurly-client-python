@@ -1,5 +1,227 @@
 # Changelog
 
+## [4.36.0](https://github.com/recurly/recurly-client-python/tree/4.36.0) (2023-06-01)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.35.0...4.36.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Multiple Business Entities) [#649](https://github.com/recurly/recurly-client-python/pull/649) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.35.0](https://github.com/recurly/recurly-client-python/tree/4.35.0) (2023-05-24)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.34.0...4.35.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (External Products & References) [#647](https://github.com/recurly/recurly-client-python/pull/647) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.34.0](https://github.com/recurly/recurly-client-python/tree/4.34.0) (2023-05-23)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.33.0...4.34.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (gateway_attributes on PaymentMethod) [#645](https://github.com/recurly/recurly-client-python/pull/645) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.33.0](https://github.com/recurly/recurly-client-python/tree/4.33.0) (2023-05-03)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.32.0...4.33.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#642](https://github.com/recurly/recurly-client-python/pull/642) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.32.0](https://github.com/recurly/recurly-client-python/tree/4.32.0) (2023-04-26)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.31.0...4.32.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (used_tax_service on Invoice) [#640](https://github.com/recurly/recurly-client-python/pull/640) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.31.0](https://github.com/recurly/recurly-client-python/tree/4.31.0) (2023-04-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.30.0...4.31.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (External Accounts) [#637](https://github.com/recurly/recurly-client-python/pull/637) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.30.0](https://github.com/recurly/recurly-client-python/tree/4.30.0) (2023-04-05)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.29.0...4.30.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#634](https://github.com/recurly/recurly-client-python/pull/634) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.29.0](https://github.com/recurly/recurly-client-python/tree/4.29.0) (2023-03-29)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.28.0...4.29.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (External Invoices) [#632](https://github.com/recurly/recurly-client-python/pull/632) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.28.0](https://github.com/recurly/recurly-client-python/tree/4.28.0) (2023-02-22)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.27.0...4.28.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#630](https://github.com/recurly/recurly-client-python/pull/630) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.27.0](https://github.com/recurly/recurly-client-python/tree/4.27.0) (2023-02-07)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.26.0...4.27.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (GiftCard endpoints and new transaction error support) [#627](https://github.com/recurly/recurly-client-python/pull/627) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.26.0](https://github.com/recurly/recurly-client-python/tree/4.26.0) (2023-01-19)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.25.0...4.26.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Custom Fields on Line Items) [#621](https://github.com/recurly/recurly-client-python/pull/621) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.25.0](https://github.com/recurly/recurly-client-python/tree/4.25.0) (2023-01-11)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.24.0...4.25.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Account Preferred Time Zone)  [#615](https://github.com/recurly/recurly-client-python/pull/615) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.24.0](https://github.com/recurly/recurly-client-python/tree/4.24.0) (2022-11-17)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.23.0...4.24.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Apply Credit Balance feature) [#610](https://github.com/recurly/recurly-client-python/pull/610) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.23.0](https://github.com/recurly/recurly-client-python/tree/4.23.0) (2022-11-15)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.22.0...4.23.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (External Subscriptions feature) [#607](https://github.com/recurly/recurly-client-python/pull/607) ([recurly-integrations](https://github.com/recurly-integrations))
+- Generated Latest Changes for v2021-02-25 [#604](https://github.com/recurly/recurly-client-python/pull/604) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.22.0](https://github.com/recurly/recurly-client-python/tree/4.22.0) (2022-10-27)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.21.0...4.22.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (Entitlements feature) [#601](https://github.com/recurly/recurly-client-python/pull/601) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.21.0](https://github.com/recurly/recurly-client-python/tree/4.21.0) (2022-10-21)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.20.1...4.21.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25(Decimal Usage and Quantities and DunningEvent new fields) [#598](https://github.com/recurly/recurly-client-python/pull/598) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.20.1](https://github.com/recurly/recurly-client-python/tree/4.20.1) (2022-09-08)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.20.0...4.20.1)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#592](https://github.com/recurly/recurly-client-python/pull/592) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.20.0](https://github.com/recurly/recurly-client-python/tree/4.20.0) (2022-09-07)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.19.0...4.20.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#591](https://github.com/recurly/recurly-client-python/pull/591) ([recurly-integrations](https://github.com/recurly-integrations))
+- Fixes bug with put_dunning_campaign_bulk_update [#586](https://github.com/recurly/recurly-client-python/pull/586) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.19.0](https://github.com/recurly/recurly-client-python/tree/4.19.0) (2022-08-03)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.18.0...4.19.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#573](https://github.com/recurly/recurly-client-python/pull/573) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
+## [4.18.0](https://github.com/recurly/recurly-client-python/tree/4.18.0) (2022-07-11)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.17.0...4.18.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#569](https://github.com/recurly/recurly-client-python/pull/569) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.17.0](https://github.com/recurly/recurly-client-python/tree/4.17.0) (2022-06-16)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.16.1...4.17.0)

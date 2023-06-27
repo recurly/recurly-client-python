@@ -459,6 +459,34 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/billing_info/verify", account_id)
         return self._make_request("POST", path, body, **options)
 
+    def verify_billing_info_cvv(self, account_id, body, **options):
+        """Verify an account's credit card billing cvv
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of BillingInfoVerifyCVV.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_info/verify_cvv", account_id
+        )
+        return self._make_request("POST", path, body, **options)
+
     def list_billing_infos(self, account_id, **options):
         """Get the list of billing information associated with an account
 
@@ -620,7 +648,7 @@ class Client(BaseClient):
         return self._make_request("DELETE", path, None, **options)
 
     def list_account_coupon_redemptions(self, account_id, **options):
-        """Show the coupon redemptions for an account
+        """List the coupon redemptions for an account
 
         Parameters
         ----------
@@ -670,7 +698,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def list_active_coupon_redemptions(self, account_id, **options):
-        """Show the coupon redemptions that are active on an account
+        """List the coupon redemptions that are active on an account
 
         Parameters
         ----------
@@ -787,6 +815,180 @@ class Client(BaseClient):
             A list of the account's credit payments.
         """
         path = self._interpolate_path("/accounts/%s/credit_payments", account_id)
+        return Pager(self, path, **options)
+
+    def list_account_external_account(self, account_id, **options):
+        """List external accounts for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Pager
+            A list of external accounts on an account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_accounts", account_id)
+        return Pager(self, path, **options)
+
+    def create_account_external_account(self, account_id, body, **options):
+        """Create an external account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of ExternalAccountCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            A representation of the created external_account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_accounts", account_id)
+        return self._make_request("POST", path, body, **options)
+
+    def get_account_external_account(self, account_id, external_account_id, **options):
+        """Get an external account for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        external_account_id : str
+            External account ID, e.g. `s28zov4fw0cb`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            A external account on an account.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/external_accounts/%s", account_id, external_account_id
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def update_account_external_account(
+        self, account_id, external_account_id, body, **options
+    ):
+        """Update an external account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        external_account_id : str
+            External account ID, e.g. `s28zov4fw0cb`.
+        body : dict
+            The request body. It should follow the schema of ExternalAccountUpdate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            A representation of the updated external_account.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/external_accounts/%s", account_id, external_account_id
+        )
+        return self._make_request("PUT", path, body, **options)
+
+    def delete_account_external_account(
+        self, account_id, external_account_id, **options
+    ):
+        """Delete an external account for an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        external_account_id : str
+            External account ID, e.g. `s28zov4fw0cb`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalAccount
+            Successful Delete
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/external_accounts/%s", account_id, external_account_id
+        )
+        return self._make_request("DELETE", path, None, **options)
+
+    def list_account_external_invoices(self, account_id, **options):
+        """List the external invoices on an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_invoices on an account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_invoices", account_id)
         return Pager(self, path, **options)
 
     def list_account_invoices(self, account_id, **options):
@@ -984,7 +1186,7 @@ class Client(BaseClient):
         return self._make_request("POST", path, body, **options)
 
     def list_account_notes(self, account_id, **options):
-        """Fetch a list of an account's notes
+        """List an account's notes
 
         Parameters
         ----------
@@ -2208,6 +2410,350 @@ class Client(BaseClient):
         path = self._interpolate_path("/measured_units/%s", measured_unit_id)
         return self._make_request("DELETE", path, None, **options)
 
+    def list_external_products(self, **options):
+        """List a site's external products
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_products on a site.
+        """
+        path = self._interpolate_path(
+            "/external_products",
+        )
+        return Pager(self, path, **options)
+
+    def create_external_product(self, body, **options):
+        """Create an external product
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of ExternalProductCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Returns the external product
+        """
+        path = self._interpolate_path(
+            "/external_products",
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def get_external_product(self, external_product_id, **options):
+        """Fetch an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Settings for an external product.
+        """
+        path = self._interpolate_path("/external_products/%s", external_product_id)
+        return self._make_request("GET", path, None, **options)
+
+    def update_external_product(self, external_product_id, body, **options):
+        """Update an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        body : dict
+            The request body. It should follow the schema of ExternalProductUpdate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Settings for an external product.
+        """
+        path = self._interpolate_path("/external_products/%s", external_product_id)
+        return self._make_request("PUT", path, body, **options)
+
+    def deactivate_external_products(self, external_product_id, **options):
+        """Deactivate an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProduct
+            Deactivated external product.
+        """
+        path = self._interpolate_path("/external_products/%s", external_product_id)
+        return self._make_request("DELETE", path, None, **options)
+
+    def list_external_product_external_product_references(
+        self, external_product_id, **options
+    ):
+        """List the external product references for an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external product references for an external product.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references", external_product_id
+        )
+        return Pager(self, path, **options)
+
+    def create_external_product_external_product_reference(
+        self, external_product_id, body, **options
+    ):
+        """Create an external product reference on an external product
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        body : dict
+            The request body. It should follow the schema of ExternalProductReferenceCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProductReferenceMini
+            Details for the external product reference.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references", external_product_id
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def get_external_product_external_product_reference(
+        self, external_product_id, external_product_reference_id, **options
+    ):
+        """Fetch an external product reference
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        external_product_reference_id : str
+            External product reference ID, e.g. `d39iun2fw1v4`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProductReferenceMini
+            Details for an external product reference.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references/%s",
+            external_product_id,
+            external_product_reference_id,
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def deactivate_external_product_external_product_reference(
+        self, external_product_id, external_product_reference_id, **options
+    ):
+        """Deactivate an external product reference
+
+        Parameters
+        ----------
+
+        external_product_id : str
+            External product id
+        external_product_reference_id : str
+            External product reference ID, e.g. `d39iun2fw1v4`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalProductReferenceMini
+            Details for an external product reference.
+        """
+        path = self._interpolate_path(
+            "/external_products/%s/external_product_references/%s",
+            external_product_id,
+            external_product_reference_id,
+        )
+        return self._make_request("DELETE", path, None, **options)
+
+    def list_external_subscriptions(self, **options):
+        """List a site's external subscriptions
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_subscriptions on a site.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions",
+        )
+        return Pager(self, path, **options)
+
+    def get_external_subscription(self, external_subscription_id, **options):
+        """Fetch an external subscription
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalSubscription
+            Settings for an external subscription.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s", external_subscription_id
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def list_external_subscription_external_invoices(
+        self, external_subscription_id, **options
+    ):
+        """List the external invoices on an external subscription
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_invoices on a site.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s/external_invoices", external_subscription_id
+        )
+        return Pager(self, path, **options)
+
     def list_invoices(self, **options):
         """List a site's invoices
 
@@ -2335,6 +2881,30 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/invoices/%s.pdf", invoice_id)
         return self._make_request("GET", path, None, **options)
+
+    def apply_credit_balance(self, invoice_id, **options):
+        """Apply available credit to a pending or past due charge invoice
+
+        Parameters
+        ----------
+
+        invoice_id : str
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Invoice
+            The updated invoice.
+        """
+        path = self._interpolate_path("/invoices/%s/apply_credit_balance", invoice_id)
+        return self._make_request("PUT", path, None, **options)
 
     def collect_invoice(self, invoice_id, **options):
         """Collect a pending or past due, automatic invoice
@@ -2546,7 +3116,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def list_invoice_coupon_redemptions(self, invoice_id, **options):
-        """Show the coupon redemptions applied to an invoice
+        """List the coupon redemptions applied to an invoice
 
         Parameters
         ----------
@@ -3819,7 +4389,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def list_subscription_coupon_redemptions(self, subscription_id, **options):
-        """Show the coupon redemptions for a subscription
+        """List the coupon redemptions for a subscription
 
         Parameters
         ----------
@@ -4297,7 +4867,7 @@ class Client(BaseClient):
         return self._make_request("GET", path, None, **options)
 
     def list_dunning_campaigns(self, **options):
-        """Show the dunning campaigns for a site
+        """List the dunning campaigns for a site
 
         Keyword Arguments
         -----------------
@@ -4323,7 +4893,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def get_dunning_campaign(self, dunning_campaign_id, **options):
-        """Show the settings for a dunning campaign
+        """Fetch a dunning campaign
 
         Parameters
         ----------
@@ -4346,12 +4916,14 @@ class Client(BaseClient):
         path = self._interpolate_path("/dunning_campaigns/%s", dunning_campaign_id)
         return self._make_request("GET", path, None, **options)
 
-    def put_dunning_campaign_bulk_update(self, body, **options):
+    def put_dunning_campaign_bulk_update(self, dunning_campaign_id, body, **options):
         """Assign a dunning campaign to multiple plans
 
         Parameters
         ----------
 
+        dunning_campaign_id : str
+            Dunning Campaign ID, e.g. `e28zov4fw0v2`.
         body : dict
             The request body. It should follow the schema of DunningCampaignsBulkUpdate.
 
@@ -4368,7 +4940,7 @@ class Client(BaseClient):
             A list of updated plans.
         """
         path = self._interpolate_path(
-            "/dunning_campaigns/%s/bulk_update",
+            "/dunning_campaigns/%s/bulk_update", dunning_campaign_id
         )
         return self._make_request("PUT", path, body, **options)
 
@@ -4399,7 +4971,7 @@ class Client(BaseClient):
         return Pager(self, path, **options)
 
     def get_invoice_template(self, invoice_template_id, **options):
-        """Show the settings for an invoice template
+        """Fetch an invoice template
 
         Parameters
         ----------
@@ -4421,3 +4993,332 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/invoice_templates/%s", invoice_template_id)
         return self._make_request("GET", path, None, **options)
+
+    def list_external_invoices(self, **options):
+        """List the external invoices on a site
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_invoices on a site.
+        """
+        path = self._interpolate_path(
+            "/external_invoices",
+        )
+        return Pager(self, path, **options)
+
+    def show_external_invoice(self, external_invoice_id, **options):
+        """Fetch an external invoice
+
+        Parameters
+        ----------
+
+        external_invoice_id : str
+            External invoice ID, e.g. `e28zov4fw0v2`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalInvoice
+            Returns the external invoice
+        """
+        path = self._interpolate_path("/external_invoices/%s", external_invoice_id)
+        return self._make_request("GET", path, None, **options)
+
+    def list_entitlements(self, account_id, **options):
+        """List entitlements granted to an account
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.state : str
+            Filter the entitlements based on the state of the applicable subscription.
+
+            - When `state=active`, `state=canceled`, `state=expired`, or `state=future`, subscriptions with states that match the query and only those subscriptions will be returned.
+            - When no state is provided, subscriptions with active or canceled states will be returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the entitlements granted to an account.
+        """
+        path = self._interpolate_path("/accounts/%s/entitlements", account_id)
+        return Pager(self, path, **options)
+
+    def list_account_external_subscriptions(self, account_id, **options):
+        """List an account's external subscriptions
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_subscriptions on an account.
+        """
+        path = self._interpolate_path("/accounts/%s/external_subscriptions", account_id)
+        return Pager(self, path, **options)
+
+    def get_business_entity(self, business_entity_id, **options):
+        """Fetch a business entity
+
+        Parameters
+        ----------
+
+        business_entity_id : str
+            Business Entity ID. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-entity1`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        BusinessEntity
+            Business entity details
+        """
+        path = self._interpolate_path("/business_entities/%s", business_entity_id)
+        return self._make_request("GET", path, None, **options)
+
+    def list_business_entities(self, **options):
+        """List business entities
+
+        Returns
+        -------
+
+        Pager
+            List of all business entities on your site.
+        """
+        path = self._interpolate_path(
+            "/business_entities",
+        )
+        return Pager(self, path, **options)
+
+    def list_gift_cards(self, **options):
+        """List gift cards
+
+        Returns
+        -------
+
+        Pager
+            List of all created gift cards on your site.
+        """
+        path = self._interpolate_path(
+            "/gift_cards",
+        )
+        return Pager(self, path, **options)
+
+    def create_gift_card(self, body, **options):
+        """Create gift card
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of GiftCardCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Returns the gift card
+        """
+        path = self._interpolate_path(
+            "/gift_cards",
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def get_gift_card(self, gift_card_id, **options):
+        """Fetch a gift card
+
+        Parameters
+        ----------
+
+        gift_card_id : str
+            Gift Card ID, e.g. `e28zov4fw0v2`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Gift card details
+        """
+        path = self._interpolate_path("/gift_cards/%s", gift_card_id)
+        return self._make_request("GET", path, None, **options)
+
+    def preview_gift_card(self, body, **options):
+        """Preview gift card
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of GiftCardCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Returns the gift card
+        """
+        path = self._interpolate_path(
+            "/gift_cards/preview",
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def redeem_gift_card(self, redemption_code, body, **options):
+        """Redeem gift card
+
+        Parameters
+        ----------
+
+        redemption_code : str
+            Gift Card redemption code, e.g., `N1A2T8IRXSCMO40V`.
+        body : dict
+            The request body. It should follow the schema of GiftCardRedeem.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        GiftCard
+            Redeems and returns the gift card
+        """
+        path = self._interpolate_path("/gift_cards/%s/redeem", redemption_code)
+        return self._make_request("POST", path, body, **options)
+
+    def list_business_entity_invoices(self, business_entity_id, **options):
+        """List a business entity's invoices
+
+        Parameters
+        ----------
+
+        business_entity_id : str
+            Business Entity ID. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-entity1`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.begin_time : datetime
+            Inclusively filter by begin_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.end_time : datetime
+            Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
+            **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.type : str
+            Filter by type when:
+            - `type=charge`, only charge invoices will be returned.
+            - `type=credit`, only credit invoices will be returned.
+            - `type=non-legacy`, only charge and credit invoices will be returned.
+            - `type=legacy`, only legacy invoices will be returned.
+
+        Returns
+        -------
+
+        Pager
+            A list of the business entity's invoices.
+        """
+        path = self._interpolate_path(
+            "/business_entities/%s/invoices", business_entity_id
+        )
+        return Pager(self, path, **options)

@@ -143,6 +143,8 @@ class Account(Resource):
         The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     exemption_certificate : str
         The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
+    external_accounts : :obj:`list` of :obj:`ExternalAccount`
+        The external accounts belonging to this account
     first_name : str
     has_active_subscription : bool
         Indicates if the account has an active subscription.
@@ -164,10 +166,14 @@ class Account(Resource):
     last_name : str
     object : str
         Object type
+    override_business_entity_id : str
+        Unique ID to identify the business entity assigned to the account. Available when the `Multiple Business Entities` feature is enabled.
     parent_account_id : str
         The UUID of the parent account associated with this account.
     preferred_locale : str
         Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
+    preferred_time_zone : str
+        The [IANA time zone name](https://docs.recurly.com/docs/email-time-zones-and-time-stamps#supported-api-iana-time-zone-names) used to determine the time zone of emails sent on behalf of the merchant to the customer.
     shipping_addresses : :obj:`list` of :obj:`ShippingAddress`
         The shipping addresses on the account.
     state : str
@@ -195,6 +201,7 @@ class Account(Resource):
         "dunning_campaign_id": str,
         "email": str,
         "exemption_certificate": str,
+        "external_accounts": ["ExternalAccount"],
         "first_name": str,
         "has_active_subscription": bool,
         "has_canceled_subscription": bool,
@@ -207,8 +214,10 @@ class Account(Resource):
         "invoice_template_id": str,
         "last_name": str,
         "object": str,
+        "override_business_entity_id": str,
         "parent_account_id": str,
         "preferred_locale": str,
+        "preferred_time_zone": str,
         "shipping_addresses": ["ShippingAddress"],
         "state": str,
         "tax_exempt": bool,
@@ -269,6 +278,33 @@ class ShippingAddress(Resource):
         "street2": str,
         "updated_at": datetime,
         "vat_number": str,
+    }
+
+
+class ExternalAccount(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        Created at
+    external_account_code : str
+        Represents the account code for the external account.
+    external_connection_type : str
+        Represents the connection type. `AppleAppStore` or `GooglePlayStore`
+    id : str
+        UUID of the external_account .
+    object : str
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_account_code": str,
+        "external_connection_type": str,
+        "id": str,
+        "object": str,
+        "updated_at": datetime,
     }
 
 
@@ -339,6 +375,8 @@ class PaymentMethod(Resource):
         Expiration year.
     first_six : str
         Credit card number's first six digits.
+    gateway_attributes : GatewayAttributes
+        Gateway specific attributes associated with this PaymentMethod
     gateway_code : str
         An identifier for a specific payment gateway.
     gateway_token : str
@@ -354,6 +392,8 @@ class PaymentMethod(Resource):
         The bank account's routing number. Only present for ACH payment methods.
     routing_number_bank : str
         The bank name of this routing number.
+    username : str
+        Username of the associated payment method. Currently only associated with Venmo.
     """
 
     schema = {
@@ -364,6 +404,7 @@ class PaymentMethod(Resource):
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
+        "gateway_attributes": "GatewayAttributes",
         "gateway_code": str,
         "gateway_token": str,
         "last_four": str,
@@ -372,6 +413,20 @@ class PaymentMethod(Resource):
         "object": str,
         "routing_number": str,
         "routing_number_bank": str,
+        "username": str,
+    }
+
+
+class GatewayAttributes(Resource):
+    """
+    Attributes
+    ----------
+    account_reference : str
+        Used by Adyen gateways. The Shopper Reference value used when the external token was created.
+    """
+
+    schema = {
+        "account_reference": str,
     }
 
 
@@ -456,6 +511,8 @@ class TransactionError(Resource):
         Category
     code : str
         Code
+    decline_code : str
+        Decline code
     merchant_advice : str
         Merchant message
     message : str
@@ -471,6 +528,7 @@ class TransactionError(Resource):
     schema = {
         "category": str,
         "code": str,
+        "decline_code": str,
         "merchant_advice": str,
         "message": str,
         "object": str,
@@ -591,6 +649,8 @@ class AccountBalanceAmount(Resource):
     ----------
     amount : float
         Total amount the account is past due.
+    available_credit_amount : float
+        Total amount of the open balances on credit invoices for the account.
     currency : str
         3-letter ISO 4217 currency code.
     processing_prepayment_amount : float
@@ -599,6 +659,7 @@ class AccountBalanceAmount(Resource):
 
     schema = {
         "amount": float,
+        "available_credit_amount": float,
         "currency": str,
         "processing_prepayment_amount": float,
     }
@@ -1111,6 +1172,168 @@ class CreditPayment(Resource):
     }
 
 
+class ExternalInvoice(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    created_at : datetime
+        When the external invoice was created in Recurly.
+    currency : str
+        3-letter ISO 4217 currency code.
+    external_id : str
+        An identifier which associates the external invoice to a corresponding object in an external platform.
+    external_subscription : ExternalSubscription
+        Subscription from an external resource such as Apple App Store or Google Play Store.
+    id : str
+        System-generated unique identifier for an external invoice ID, e.g. `e28zov4fw0v2`.
+    line_items : :obj:`list` of :obj:`ExternalCharge`
+    object : str
+        Object type
+    purchased_at : datetime
+        When the invoice was created in the external platform.
+    state : str
+    total : str
+        Total
+    updated_at : datetime
+        When the external invoice was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "created_at": datetime,
+        "currency": str,
+        "external_id": str,
+        "external_subscription": "ExternalSubscription",
+        "id": str,
+        "line_items": ["ExternalCharge"],
+        "object": str,
+        "purchased_at": datetime,
+        "state": str,
+        "total": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalSubscription(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    activated_at : datetime
+        When the external subscription was activated in the external platform.
+    app_identifier : str
+        Identifier of the app that generated the external subscription.
+    auto_renew : bool
+        An indication of whether or not the external subscription will auto-renew at the expiration date.
+    created_at : datetime
+        When the external subscription was created in Recurly.
+    expires_at : datetime
+        When the external subscription expires in the external platform.
+    external_id : str
+        The id of the subscription in the external systems., I.e. Apple App Store or Google Play Store.
+    external_product_reference : ExternalProductReferenceMini
+        External Product Reference details
+    id : str
+        System-generated unique identifier for an external subscription ID, e.g. `e28zov4fw0v2`.
+    last_purchased : datetime
+        When a new billing event occurred on the external subscription in conjunction with a recent billing period, reactivation or upgrade/downgrade.
+    object : str
+        Object type
+    quantity : int
+        An indication of the quantity of a subscribed item's quantity.
+    state : str
+        External subscriptions can be active, canceled, expired, or future.
+    updated_at : datetime
+        When the external subscription was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "activated_at": datetime,
+        "app_identifier": str,
+        "auto_renew": bool,
+        "created_at": datetime,
+        "expires_at": datetime,
+        "external_id": str,
+        "external_product_reference": "ExternalProductReferenceMini",
+        "id": str,
+        "last_purchased": datetime,
+        "object": str,
+        "quantity": int,
+        "state": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalProductReferenceMini(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        When the external product was created in Recurly.
+    external_connection_type : str
+        Source connection platform.
+    id : str
+        System-generated unique identifier for an external product ID, e.g. `e28zov4fw0v2`.
+    object : str
+        object
+    reference_code : str
+        A code which associates the external product to a corresponding object or resource in an external platform like the Apple App Store or Google Play Store.
+    updated_at : datetime
+        When the external product was updated in Recurly.
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_connection_type": str,
+        "id": str,
+        "object": str,
+        "reference_code": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalCharge(Resource):
+    """
+    Attributes
+    ----------
+    account : AccountMini
+        Account mini details
+    created_at : datetime
+        When the external charge was created in Recurly.
+    currency : str
+        3-letter ISO 4217 currency code.
+    description : str
+    external_product_reference : ExternalProductReferenceMini
+        External Product Reference details
+    id : str
+        System-generated unique identifier for an external charge ID, e.g. `e28zov4fw0v2`.
+    object : str
+        Object type
+    quantity : int
+    unit_amount : str
+        Unit Amount
+    updated_at : datetime
+        When the external charge was updated in Recurly.
+    """
+
+    schema = {
+        "account": "AccountMini",
+        "created_at": datetime,
+        "currency": str,
+        "description": str,
+        "external_product_reference": "ExternalProductReferenceMini",
+        "id": str,
+        "object": str,
+        "quantity": int,
+        "unit_amount": str,
+        "updated_at": datetime,
+    }
+
+
 class Invoice(Resource):
     """
     Attributes
@@ -1122,6 +1345,8 @@ class Invoice(Resource):
         The outstanding balance remaining on this invoice.
     billing_info_id : str
         The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info. `billing_info_id` can ONLY be used for sites utilizing the Wallet feature.
+    business_entity_id : str
+        Unique ID to identify the business entity assigned to the invoice. Available when the `Multiple Business Entities` feature is enabled.
     closed_at : datetime
         Date invoice was marked paid or failed.
     collection_method : str
@@ -1140,6 +1365,10 @@ class Invoice(Resource):
         Date invoice is due. This is the date the net terms are reached.
     dunning_campaign_id : str
         Unique ID to identify the dunning campaign used when dunning the invoice. For sites without multiple dunning campaigns enabled, this will always be the default dunning campaign.
+    dunning_events_sent : int
+        Number of times the event was sent.
+    final_dunning_event : bool
+        Last communication attempt.
     has_more_line_items : bool
         Identifies if the invoice has more line items than are returned in `line_items`. If `has_more_line_items` is `true`, then a request needs to be made to the `list_invoice_line_items` endpoint.
     id : str
@@ -1159,7 +1388,7 @@ class Invoice(Resource):
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
     previous_invoice_id : str
-        On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
+        On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from. This field is only populated for sites without the [Only Bill What Changed](https://docs.recurly.com/docs/only-bill-what-changed) feature enabled. Sites with Only Bill What Changed enabled should use the [related_invoices endpoint](https://recurly.com/developers/api/v2021-02-25/index.html#operation/list_related_invoices) to see purchase invoices refunded by this invoice.
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
     shipping_address : ShippingAddress
@@ -1183,6 +1412,8 @@ class Invoice(Resource):
         Invoices are either charge, credit, or legacy invoices.
     updated_at : datetime
         Last updated at
+    used_tax_service : bool
+        Will be `true` when the invoice had a successful response from the tax service and `false` when the invoice was not sent to tax service due to a lack of address or enabled jurisdiction or was processed without tax due to a non-blocking error returned from the tax service.
     uuid : str
         Invoice UUID
     vat_number : str
@@ -1196,6 +1427,7 @@ class Invoice(Resource):
         "address": "InvoiceAddress",
         "balance": float,
         "billing_info_id": str,
+        "business_entity_id": str,
         "closed_at": datetime,
         "collection_method": str,
         "created_at": datetime,
@@ -1205,6 +1437,8 @@ class Invoice(Resource):
         "discount": float,
         "due_at": datetime,
         "dunning_campaign_id": str,
+        "dunning_events_sent": int,
+        "final_dunning_event": bool,
         "has_more_line_items": bool,
         "id": str,
         "line_items": ["LineItem"],
@@ -1227,6 +1461,7 @@ class Invoice(Resource):
         "transactions": ["Transaction"],
         "type": str,
         "updated_at": datetime,
+        "used_tax_service": bool,
         "uuid": str,
         "vat_number": str,
         "vat_reverse_charge_notes": str,
@@ -1281,13 +1516,13 @@ class TaxInfo(Resource):
     Attributes
     ----------
     rate : float
-        Rate
+        The combined tax rate. Not present when Avalara for Communications is enabled.
     region : str
-        Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST.
+        Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST. Not present when Avalara for Communications is enabled.
     tax_details : :obj:`list` of :obj:`TaxDetail`
-        Provides additional tax details for Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItem.
+        Provides additional tax details for Communications taxes when Avalara for Communications is enabled or Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItemList. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
     type : str
-        Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries.
+        Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries. Not present when Avalara for Communications is enabled.
     """
 
     schema = {
@@ -1302,17 +1537,26 @@ class TaxDetail(Resource):
     """
     Attributes
     ----------
+    billable : bool
+        Whether or not the line item is taxable. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
+    level : str
+        Provides the jurisdiction level for the Communications tax applied. Example values include city, state and federal. Present only when Avalara for Communications is enabled.
+    name : str
+        Provides the name of the Communications tax applied. Present only when Avalara for Communications is enabled.
     rate : float
         Provides the tax rate for the region.
     region : str
-        Provides the tax region applied on an invoice. For Canadian Sales Tax, this will be either the 2 letter province code or country code.
+        Provides the tax region applied on an invoice. For Canadian Sales Tax, this will be either the 2 letter province code or country code. Not present when Avalara for Communications is enabled.
     tax : float
         The total tax applied for this tax type.
     type : str
-        Provides the tax type for the region. For Canadian Sales Tax, this will be GST, HST, QST or PST.
+        Provides the tax type for the region or type of Comminications tax when Avalara for Communications is enabled. For Canadian Sales Tax, this will be GST, HST, QST or PST.
     """
 
     schema = {
+        "billable": bool,
+        "level": str,
+        "name": str,
         "rate": float,
         "region": str,
         "tax": float,
@@ -1348,6 +1592,8 @@ class LineItem(Resource):
         The reason the credit was given when line item is `type=credit`.
     currency : str
         3-letter ISO 4217 currency code.
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     description : str
         Description that appears on the invoice. For subscription related items this will be filled in automatically.
     discount : float
@@ -1390,10 +1636,14 @@ class LineItem(Resource):
         When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
     quantity : int
         This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
+    quantity_decimal : str
+        A floating-point alternative to Quantity. If this value is present, it will be used in place of Quantity for calculations, and Quantity will be the rounded integer value of this number. This field supports up to 9 decimal places. The Decimal Quantity feature must be enabled to utilize this field.
     refund : bool
         Refund?
     refunded_quantity : int
         For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
+    refunded_quantity_decimal : str
+        A floating-point alternative to Refunded Quantity. For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds). The Decimal Quantity feature must be enabled to utilize this field.
     revenue_schedule_type : str
         Revenue schedule type
     shipping_address : ShippingAddress
@@ -1411,6 +1661,8 @@ class LineItem(Resource):
         Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
         Tax info
     taxable : bool
@@ -1440,6 +1692,7 @@ class LineItem(Resource):
         "credit_applied": float,
         "credit_reason_code": str,
         "currency": str,
+        "custom_fields": ["CustomField"],
         "description": str,
         "discount": float,
         "end_date": datetime,
@@ -1459,8 +1712,10 @@ class LineItem(Resource):
         "product_code": str,
         "proration_rate": float,
         "quantity": int,
+        "quantity_decimal": str,
         "refund": bool,
         "refunded_quantity": int,
+        "refunded_quantity_decimal": str,
         "revenue_schedule_type": str,
         "shipping_address": "ShippingAddress",
         "start_date": datetime,
@@ -1470,6 +1725,7 @@ class LineItem(Resource):
         "tax": float,
         "tax_code": str,
         "tax_exempt": bool,
+        "tax_inclusive": bool,
         "tax_info": "TaxInfo",
         "taxable": bool,
         "type": str,
@@ -1572,6 +1828,8 @@ class Subscription(Resource):
         Canceled at
     collection_method : str
         Collection method
+    converted_at : datetime
+        When the subscription was converted from a gift card.
     coupon_redemptions : :obj:`list` of :obj:`CouponRedemptionMini`
         Returns subscription level coupon redemptions that are tied to this subscription.
     created_at : datetime
@@ -1612,6 +1870,8 @@ class Subscription(Resource):
         For manual invoicing, this identifies the PO number associated with the subscription.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        The ramp intervals representing the pricing schedule for the subscription.
     remaining_billing_cycles : int
         The remaining billing cycles in the current term.
     remaining_pause_cycles : int
@@ -1622,12 +1882,16 @@ class Subscription(Resource):
         Revenue schedule type
     shipping : SubscriptionShipping
         Subscription shipping details
+    started_with_gift : bool
+        Whether the subscription was started with a gift certificate.
     state : str
         State
     subtotal : float
         Estimated total, before tax.
     tax : float
         Estimated tax
+    tax_inclusive : bool
+        Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
         Tax info
     terms_and_conditions : str
@@ -1659,6 +1923,7 @@ class Subscription(Resource):
         "billing_info_id": str,
         "canceled_at": datetime,
         "collection_method": str,
+        "converted_at": datetime,
         "coupon_redemptions": ["CouponRedemptionMini"],
         "created_at": datetime,
         "currency": str,
@@ -1679,14 +1944,17 @@ class Subscription(Resource):
         "plan": "PlanMini",
         "po_number": str,
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
         "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
+        "started_with_gift": bool,
         "state": str,
         "subtotal": float,
         "tax": float,
+        "tax_inclusive": bool,
         "tax_info": "TaxInfo",
         "terms_and_conditions": str,
         "total": float,
@@ -1831,6 +2099,8 @@ class SubscriptionChange(Resource):
         Just the important parts.
     quantity : int
         Subscription quantity
+    ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
+        The ramp intervals representing the pricing schedule for the subscription.
     revenue_schedule_type : str
         Revenue schedule type
     shipping : SubscriptionShipping
@@ -1858,6 +2128,7 @@ class SubscriptionChange(Resource):
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
+        "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "subscription_id": str,
@@ -1889,8 +2160,8 @@ class SubscriptionAddOn(Resource):
     percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
         If percentage tiers are provided in the request, all existing percentage tiers on the Subscription Add-on will be
         removed and replaced by the percentage tiers in the request. Use only if add_on.tier_type is tiered or volume and
-        add_on.usage_type is percentage.
-        There must be one tier without an `ending_amount` value which represents the final tier.
+        add_on.usage_type is percentage. There must be one tier without an `ending_amount` value which represents the final tier.
+        This feature is currently in development and requires approval and enablement, please contact support.
     quantity : int
         Add-on quantity
     revenue_schedule_type : str
@@ -1900,7 +2171,7 @@ class SubscriptionAddOn(Resource):
     tier_type : str
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
@@ -1913,6 +2184,8 @@ class SubscriptionAddOn(Resource):
         Supports up to 9 decimal places.
     updated_at : datetime
         Updated at
+    usage_calculation_type : str
+        The type of calculation to be employed for an add-on.  Cumulative billing will sum all usage records created in the current billing cycle.  Last-in-period billing will apply only the most recent usage record in the billing period.  If no value is specified, cumulative billing will be used.
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
     usage_timeframe : str
@@ -1935,6 +2208,7 @@ class SubscriptionAddOn(Resource):
         "unit_amount": float,
         "unit_amount_decimal": str,
         "updated_at": datetime,
+        "usage_calculation_type": str,
         "usage_percentage": float,
         "usage_timeframe": str,
     }
@@ -2037,6 +2311,25 @@ class SubscriptionChangeBillingInfo(Resource):
     }
 
 
+class SubscriptionRampIntervalResponse(Resource):
+    """
+    Attributes
+    ----------
+    remaining_billing_cycles : int
+        Represents how many billing cycles are left in a ramp interval.
+    starting_billing_cycle : int
+        Represents the billing cycle where a ramp interval starts.
+    unit_amount : float
+        Represents the price for the ramp interval.
+    """
+
+    schema = {
+        "remaining_billing_cycles": int,
+        "starting_billing_cycle": int,
+        "unit_amount": float,
+    }
+
+
 class UniqueCouponCodeParams(Resource):
     """
     Attributes
@@ -2127,6 +2420,7 @@ class CustomFieldDefinition(Resource):
         - `read_only` - Users with the Customers role will be able to view this field's data via the admin UI, but
           editing will only be available via the API.
         - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
+        - `set_only` - Users with the Customers role will be able to set this field's data via the admin console.
     """
 
     schema = {
@@ -2263,6 +2557,58 @@ class MeasuredUnit(Resource):
     }
 
 
+class ExternalProduct(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        When the external product was created in Recurly.
+    external_product_references : :obj:`list` of :obj:`ExternalProductReferenceMini`
+        List of external product references of the external product.
+    id : str
+        System-generated unique identifier for an external product ID, e.g. `e28zov4fw0v2`.
+    name : str
+        Name to identify the external product in Recurly.
+    object : str
+        Object type
+    plan : PlanMini
+        Just the important parts.
+    updated_at : datetime
+        When the external product was updated in Recurly.
+    """
+
+    schema = {
+        "created_at": datetime,
+        "external_product_references": ["ExternalProductReferenceMini"],
+        "id": str,
+        "name": str,
+        "object": str,
+        "plan": "PlanMini",
+        "updated_at": datetime,
+    }
+
+
+class ExternalProductReferenceCollection(Resource):
+    """
+    Attributes
+    ----------
+    data : :obj:`list` of :obj:`ExternalProductReferenceMini`
+    has_more : bool
+        Indicates there are more results on subsequent pages.
+    next : str
+        Path to subsequent page of results.
+    object : str
+        Will always be List.
+    """
+
+    schema = {
+        "data": ["ExternalProductReferenceMini"],
+        "has_more": bool,
+        "next": str,
+        "object": str,
+    }
+
+
 class BinaryFile(Resource):
     """
     Attributes
@@ -2297,6 +2643,8 @@ class Plan(Resource):
         Created at
     currencies : :obj:`list` of :obj:`PlanPricing`
         Pricing
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
         Deleted at
     description : str
@@ -2315,6 +2663,12 @@ class Plan(Resource):
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
     object : str
         Object type
+    pricing_model : str
+        A fixed pricing model has the same price for each billing period.
+        A ramp pricing model defines a set of Ramp Intervals, where a subscription changes price on
+        a specified cadence of billing periods. The price change could be an increase or decrease.
+    ramp_intervals : :obj:`list` of :obj:`PlanRampInterval`
+        Ramp Intervals
     revenue_schedule_type : str
         Revenue schedule type
     setup_fee_accounting_code : str
@@ -2348,6 +2702,7 @@ class Plan(Resource):
         "code": str,
         "created_at": datetime,
         "currencies": ["PlanPricing"],
+        "custom_fields": ["CustomField"],
         "deleted_at": datetime,
         "description": str,
         "dunning_campaign_id": str,
@@ -2357,6 +2712,8 @@ class Plan(Resource):
         "interval_unit": str,
         "name": str,
         "object": str,
+        "pricing_model": str,
+        "ramp_intervals": ["PlanRampInterval"],
         "revenue_schedule_type": str,
         "setup_fee_accounting_code": str,
         "setup_fee_revenue_schedule_type": str,
@@ -2371,6 +2728,38 @@ class Plan(Resource):
     }
 
 
+class PlanRampInterval(Resource):
+    """
+    Attributes
+    ----------
+    currencies : :obj:`list` of :obj:`PlanRampPricing`
+        Represents the price for the ramp interval.
+    starting_billing_cycle : int
+        Represents the billing cycle where a ramp interval starts.
+    """
+
+    schema = {
+        "currencies": ["PlanRampPricing"],
+        "starting_billing_cycle": int,
+    }
+
+
+class PlanRampPricing(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    unit_amount : float
+        Represents the price for the Ramp Interval.
+    """
+
+    schema = {
+        "currency": str,
+        "unit_amount": float,
+    }
+
+
 class PlanPricing(Resource):
     """
     Attributes
@@ -2382,7 +2771,7 @@ class PlanPricing(Resource):
     tax_inclusive : bool
         This field is deprecated. Please do not use it.
     unit_amount : float
-        Unit price
+        This field should not be sent when the pricing model is 'ramp'.
     """
 
     schema = {
@@ -2454,7 +2843,7 @@ class AddOn(Resource):
     optional : bool
         Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
     percentage_tiers : :obj:`list` of :obj:`PercentageTiersByCurrency`
-        Percentage Tiers
+        This feature is currently in development and requires approval and enablement, please contact support.
     plan_id : str
         Plan ID
     revenue_schedule_type : str
@@ -2466,12 +2855,14 @@ class AddOn(Resource):
     tier_type : str
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`Tier`
         Tiers
     updated_at : datetime
         Last updated at
+    usage_calculation_type : str
+        The type of calculation to be employed for an add-on.  Cumulative billing will sum all usage records created in the current billing cycle.  Last-in-period billing will apply only the most recent usage record in the billing period.  If no value is specified, cumulative billing will be used.
     usage_percentage : float
         The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
     usage_timeframe : str
@@ -2506,6 +2897,7 @@ class AddOn(Resource):
         "tier_type": str,
         "tiers": ["Tier"],
         "updated_at": datetime,
+        "usage_calculation_type": str,
         "usage_percentage": float,
         "usage_timeframe": str,
         "usage_type": str,
@@ -2659,7 +3051,7 @@ class Usage(Resource):
     Attributes
     ----------
     amount : float
-        The amount of usage. Can be positive, negative, or 0. No decimals allowed, we will strip them. If the usage-based add-on is billed with a percentage, your usage will be a monetary amount you will want to format in cents. (e.g., $5.00 is "500").
+        The amount of usage. Can be positive, negative, or 0. If the Decimal Quantity feature is enabled, this value will be rounded to nine decimal places.  Otherwise, all digits after the decimal will be stripped. If the usage-based add-on is billed with a percentage, your usage should be a monetary amount formatted in cents (e.g., $5.00 is "500").
     billed_at : datetime
         When the usage record was billed on an invoice.
     created_at : datetime
@@ -2672,13 +3064,13 @@ class Usage(Resource):
     object : str
         Object type
     percentage_tiers : :obj:`list` of :obj:`SubscriptionAddOnPercentageTier`
-        The percentage tiers of the subscription based on the usage_timestamp. If tier_type = flat, percentage_tiers = []
+        The percentage tiers of the subscription based on the usage_timestamp. If tier_type = flat, percentage_tiers = []. This feature is currently in development and requires approval and enablement, please contact support.
     recording_timestamp : datetime
         When the usage was recorded in your system.
     tier_type : str
         The pricing model for the add-on.  For more information,
         [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
-        [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
+        [Guide](https://recurly.com/developers/guides/item-addon-guide.html) for an overview of how
         to configure quantity-based pricing models.
     tiers : :obj:`list` of :obj:`SubscriptionAddOnTier`
         The tiers and prices of the subscription based on the usage_timestamp. If tier_type = flat, tiers = []
@@ -2908,4 +3300,228 @@ class InvoiceTemplate(Resource):
         "id": str,
         "name": str,
         "updated_at": datetime,
+    }
+
+
+class Entitlements(Resource):
+    """
+    Attributes
+    ----------
+    data : :obj:`list` of :obj:`Entitlement`
+    has_more : bool
+        Indicates there are more results on subsequent pages.
+    next : str
+        Path to subsequent page of results.
+    object : str
+        Object Type
+    """
+
+    schema = {
+        "data": ["Entitlement"],
+        "has_more": bool,
+        "next": str,
+        "object": str,
+    }
+
+
+class Entitlement(Resource):
+    """
+    Attributes
+    ----------
+    created_at : datetime
+        Time object was created.
+    customer_permission : CustomerPermission
+    granted_by : :obj:`list` of :obj:`GrantedBy`
+        Subscription or item that granted the customer permission.
+    object : str
+        Entitlement
+    updated_at : datetime
+        Time the object was last updated
+    """
+
+    schema = {
+        "created_at": datetime,
+        "customer_permission": "CustomerPermission",
+        "granted_by": ["GrantedBy"],
+        "object": str,
+        "updated_at": datetime,
+    }
+
+
+class CustomerPermission(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        Customer permission code.
+    description : str
+        Description of customer permission.
+    id : str
+        Customer permission ID.
+    name : str
+        Customer permission name.
+    object : str
+        It will always be "customer_permission".
+    """
+
+    schema = {
+        "code": str,
+        "description": str,
+        "id": str,
+        "name": str,
+        "object": str,
+    }
+
+
+class GrantedBy(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+        The ID of the subscription or external subscription that grants the permission to the account.
+    object : str
+        Object Type
+    """
+
+    schema = {
+        "id": str,
+        "object": str,
+    }
+
+
+class BusinessEntity(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The entity code of the business entity.
+    created_at : datetime
+        Created at
+    default_registration_number : str
+        Registration number for the customer used on the invoice.
+    default_vat_number : str
+        VAT number for the customer used on the invoice.
+    id : str
+        Business entity ID
+    invoice_display_address : Address
+        Address information for the business entity that will appear on the invoice.
+    name : str
+        This name describes your business entity and will appear on the invoice.
+    object : str
+        Object type
+    subscriber_location_countries : :obj:`list` of :obj:`str`
+        List of countries for which the business entity will be used.
+    tax_address : Address
+        Address information for the business entity that will be used for calculating taxes.
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "code": str,
+        "created_at": datetime,
+        "default_registration_number": str,
+        "default_vat_number": str,
+        "id": str,
+        "invoice_display_address": "Address",
+        "name": str,
+        "object": str,
+        "subscriber_location_countries": list,
+        "tax_address": "Address",
+        "updated_at": datetime,
+    }
+
+
+class GiftCard(Resource):
+    """
+    Attributes
+    ----------
+    balance : float
+        The remaining credit on the recipient account associated with this gift card. Only has a value once the gift card has been redeemed. Can be used to create gift card balance displays for your customers.
+    canceled_at : datetime
+        When the gift card was canceled.
+    created_at : datetime
+        Created at
+    currency : str
+        3-letter ISO 4217 currency code.
+    delivered_at : datetime
+        When the gift card was sent to the recipient by Recurly via email, if method was email and the "Gift Card Delivery" email template was enabled. This will be empty for post delivery or email delivery where the email template was disabled.
+    delivery : GiftCardDelivery
+        The delivery details for the gift card.
+    gifter_account_id : str
+        The ID of the account that purchased the gift card.
+    id : str
+        Gift card ID
+    object : str
+        Object type
+    product_code : str
+        The product code or SKU of the gift card product.
+    purchase_invoice_id : str
+        The ID of the invoice for the gift card purchase made by the gifter.
+    recipient_account_id : str
+        The ID of the account that redeemed the gift card redemption code.  Does not have a value until gift card is redeemed.
+    redeemed_at : datetime
+        When the gift card was redeemed by the recipient.
+    redemption_code : str
+        The unique redemption code for the gift card, generated by Recurly. Will be 16 characters, alphanumeric, displayed uppercase, but accepted in any case at redemption. Used by the recipient account to create a credit in the amount of the `unit_amount` on their account.
+    redemption_invoice_id : str
+        The ID of the invoice for the gift card redemption made by the recipient.  Does not have a value until gift card is redeemed.
+    unit_amount : float
+        The amount of the gift card, which is the amount of the charge to the gifter account and the amount of credit that is applied to the recipient account upon successful redemption.
+    updated_at : datetime
+        Last updated at
+    """
+
+    schema = {
+        "balance": float,
+        "canceled_at": datetime,
+        "created_at": datetime,
+        "currency": str,
+        "delivered_at": datetime,
+        "delivery": "GiftCardDelivery",
+        "gifter_account_id": str,
+        "id": str,
+        "object": str,
+        "product_code": str,
+        "purchase_invoice_id": str,
+        "recipient_account_id": str,
+        "redeemed_at": datetime,
+        "redemption_code": str,
+        "redemption_invoice_id": str,
+        "unit_amount": float,
+        "updated_at": datetime,
+    }
+
+
+class GiftCardDelivery(Resource):
+    """
+    Attributes
+    ----------
+    deliver_at : datetime
+        When the gift card should be delivered to the recipient. If null, the gift card will be delivered immediately. If a datetime is provided, the delivery will be in an hourly window, rounding down. For example, 6:23 pm will be in the 6:00 pm hourly batch.
+    email_address : str
+        The email address of the recipient.
+    first_name : str
+        The first name of the recipient.
+    gifter_name : str
+        The name of the gifter for the purpose of a message displayed to the recipient.
+    last_name : str
+        The last name of the recipient.
+    method : str
+        Whether the delivery method is email or postal service.
+    personal_message : str
+        The personal message from the gifter to the recipient.
+    recipient_address : Address
+        Address information for the recipient.
+    """
+
+    schema = {
+        "deliver_at": datetime,
+        "email_address": str,
+        "first_name": str,
+        "gifter_name": str,
+        "last_name": str,
+        "method": str,
+        "personal_message": str,
+        "recipient_address": "Address",
     }
