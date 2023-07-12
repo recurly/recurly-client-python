@@ -1535,7 +1535,9 @@ class SubRampInterval(Resource):
     attributes = {
         'unit_amount_in_cents',
         'starting_billing_cycle',
-        'remaining_billing_cycles'
+        'remaining_billing_cycles',
+        'starting_on',
+        'ending_on'
     }
 
 class SubAddOnPercentageTier(Resource):
