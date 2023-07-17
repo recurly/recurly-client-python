@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.7](https://github.com/recurly/recurly-client-python/tree/2.10.7) (2023-07-17)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.6...2.10.7)
+
+
+**Merged Pull Requests**
+
+- V2 Client Library External Subscription changes [#654](https://github.com/recurly/recurly-client-python/pull/654) ([paulorbpinho-fullstacklabs](https://github.com/paulorbpinho-fullstacklabs))
+
+
+
 ## [2.10.6](https://github.com/recurly/recurly-client-python/tree/2.10.6) (2023-06-13)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.5...2.10.6)
