@@ -2194,11 +2194,15 @@ class ExternalSubscription(Resource):
         'external_product_reference',
         'last_purchased',
         'auto_renew',
+        'in_grace_period',
         'app_identifier',
         'quantity',
         'state',
         'activated_at',
+        'canceled_at',
         'expires_at',
+        'trial_started_at',
+        'trial_ends_at',
         'created_at',
         'updated_at'
     )

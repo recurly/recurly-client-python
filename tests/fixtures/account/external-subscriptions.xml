@@ -17,11 +17,15 @@ Content-Type: application/xml; charset=utf-8
         <external_product_reference nil="nil"></external_product_reference>
         <last_purchased nil="nil"></last_purchased>
         <auto_renew type="boolean">false</auto_renew>
+        <in_grace_period type="boolean">false</in_grace_period>
         <app_identifier nil="nil"></app_identifier>
         <quantity type="integer">1</quantity>
         <state>active</state>
         <activated_at nil="nil"></activated_at>
+        <canceled_at type="datetime">2022-11-03T21:57:14Z</canceled_at>
         <expires_at nil="nil"></expires_at>
+        <trial_started_at type="datetime">2022-11-03T21:57:14Z</trial_started_at>
+        <trial_ends_at type="datetime">2022-11-03T21:57:14Z</trial_ends_at>
         <created_at type="datetime">2022-11-04T19:45:00Z</created_at>
         <updated_at type="datetime">2022-11-04T19:45:00Z</updated_at>
     </external_subscription>
@@ -32,11 +36,15 @@ Content-Type: application/xml; charset=utf-8
         <external_product_reference nil="nil"></external_product_reference>
         <last_purchased nil="nil"></last_purchased>
         <auto_renew type="boolean">false</auto_renew>
+        <in_grace_period type="boolean">false</in_grace_period>
         <app_identifier>app_identifier</app_identifier>
         <quantity type="integer">1</quantity>
         <state>active</state>
         <activated_at nil="nil"></activated_at>
+        <canceled_at type="datetime">2022-11-03T21:57:14Z</canceled_at>
         <expires_at nil="nil"></expires_at>
+        <trial_started_at type="datetime">2022-11-03T21:57:14Z</trial_started_at>
+        <trial_ends_at type="datetime">2022-11-03T21:57:14Z</trial_ends_at>
         <created_at type="datetime">2022-11-03T21:57:14Z</created_at>
         <updated_at type="datetime">2022-11-04T18:11:51Z</updated_at>
     </external_subscription>
