@@ -1228,6 +1228,8 @@ class ExternalSubscription(Resource):
         Identifier of the app that generated the external subscription.
     auto_renew : bool
         An indication of whether or not the external subscription will auto-renew at the expiration date.
+    canceled_at : datetime
+        When the external subscription was canceled in the external platform.
     created_at : datetime
         When the external subscription was created in Recurly.
     expires_at : datetime
@@ -1238,6 +1240,8 @@ class ExternalSubscription(Resource):
         External Product Reference details
     id : str
         System-generated unique identifier for an external subscription ID, e.g. `e28zov4fw0v2`.
+    in_grace_period : bool
+        An indication of whether or not the external subscription is in a grace period.
     last_purchased : datetime
         When a new billing event occurred on the external subscription in conjunction with a recent billing period, reactivation or upgrade/downgrade.
     object : str
@@ -1245,7 +1249,11 @@ class ExternalSubscription(Resource):
     quantity : int
         An indication of the quantity of a subscribed item's quantity.
     state : str
-        External subscriptions can be active, canceled, expired, or future.
+        External subscriptions can be active, canceled, expired, or past_due.
+    trial_ends_at : datetime
+        When the external subscription trial period ends in the external platform.
+    trial_started_at : datetime
+        When the external subscription trial period started in the external platform.
     updated_at : datetime
         When the external subscription was updated in Recurly.
     """
@@ -1255,15 +1263,19 @@ class ExternalSubscription(Resource):
         "activated_at": datetime,
         "app_identifier": str,
         "auto_renew": bool,
+        "canceled_at": datetime,
         "created_at": datetime,
         "expires_at": datetime,
         "external_id": str,
         "external_product_reference": "ExternalProductReferenceMini",
         "id": str,
+        "in_grace_period": bool,
         "last_purchased": datetime,
         "object": str,
         "quantity": int,
         "state": str,
+        "trial_ends_at": datetime,
+        "trial_started_at": datetime,
         "updated_at": datetime,
     }
 
