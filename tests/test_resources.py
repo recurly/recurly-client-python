@@ -1950,9 +1950,14 @@ class TestResources(RecurlyTest):
         self.assertEqual(len(new_sub.ramp_intervals), 2)
         self.assertEqual(new_sub.ramp_intervals[0].starting_billing_cycle, 1)
         self.assertEqual(new_sub.ramp_intervals[0].unit_amount_in_cents, '3000')
+        self.assertEqual(new_sub.ramp_intervals[0].starting_on, datetime(2023, 10, 12, 15, 38, 5, tzinfo=new_sub.ramp_intervals[0].starting_on.tzinfo))
+        self.assertEqual(new_sub.ramp_intervals[0].ending_on, datetime(2024, 1, 12, 15, 38, 5, tzinfo=new_sub.ramp_intervals[0].ending_on.tzinfo))
+
 
         self.assertEqual(new_sub.ramp_intervals[1].starting_billing_cycle, 2)
         self.assertEqual(new_sub.ramp_intervals[1].unit_amount_in_cents, '4000')
+        self.assertEqual(new_sub.ramp_intervals[1].starting_on, datetime(2024, 1, 12, 15, 38, 5, tzinfo=new_sub.ramp_intervals[1].starting_on.tzinfo))
+        self.assertEqual(new_sub.ramp_intervals[1].ending_on, None)
 
     def test_subscription_with_plan_custom_ramp(self):
         plan_code = 'plan%s' % self.test_id
