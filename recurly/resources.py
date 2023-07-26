@@ -798,6 +798,8 @@ class InvoiceMini(Resource):
     """
     Attributes
     ----------
+    business_entity_id : str
+        Unique ID to identify the business entity assigned to the invoice. Available when the `Multiple Business Entities` feature is enabled.
     id : str
         Invoice ID
     number : str
@@ -811,6 +813,7 @@ class InvoiceMini(Resource):
     """
 
     schema = {
+        "business_entity_id": str,
         "id": str,
         "number": str,
         "object": str,
@@ -1388,7 +1391,25 @@ class Invoice(Resource):
     line_items : :obj:`list` of :obj:`LineItem`
         Line Items
     net_terms : int
-        Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
+        Integer paired with `Net Terms Type` and representing the number
+        of days past the current date (for `net` Net Terms Type) or days after
+        the last day of the current month (for `eom` Net Terms Type) that the
+        invoice will become past due. For any value, an additional 24 hours is
+        added to ensure the customer has the entire last day to make payment before
+        becoming past due.  For example:
+
+        If an invoice is due `net 0`, it is due 'On Receipt' and will become past due 24 hours after it's created.
+        If an invoice is due `net 30`, it will become past due at 31 days exactly.
+        If an invoice is due `eom 30`, it will become past due 31 days from the last day of the current month.
+
+        When `eom` Net Terms Type is passed, the value for `Net Terms` is restricted to `0, 15, 30, 45, 60, or 90`.
+        For more information please visit our docs page (https://docs.recurly.com/docs/manual-payments#section-collection-terms)
+    net_terms_type : str
+        Optionally supplied string that may be either `net` or `eom` (end-of-month).
+        When `net`, an invoice becomes past due the specified number of `Net Terms` days from the current date.
+        When `eom` an invoice becomes past due the specified number of `Net Terms` days from the last day of the current month.
+
+        This field is only available when the EOM Net Terms feature is enabled.
     number : str
         If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     object : str
@@ -1455,6 +1476,7 @@ class Invoice(Resource):
         "id": str,
         "line_items": ["LineItem"],
         "net_terms": int,
+        "net_terms_type": str,
         "number": str,
         "object": str,
         "origin": str,
@@ -1869,7 +1891,25 @@ class Subscription(Resource):
     id : str
         Subscription ID
     net_terms : int
-        Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
+        Integer paired with `Net Terms Type` and representing the number
+        of days past the current date (for `net` Net Terms Type) or days after
+        the last day of the current month (for `eom` Net Terms Type) that the
+        invoice will become past due. For any value, an additional 24 hours is
+        added to ensure the customer has the entire last day to make payment before
+        becoming past due.  For example:
+
+        If an invoice is due `net 0`, it is due 'On Receipt' and will become past due 24 hours after it's created.
+        If an invoice is due `net 30`, it will become past due at 31 days exactly.
+        If an invoice is due `eom 30`, it will become past due 31 days from the last day of the current month.
+
+        When `eom` Net Terms Type is passed, the value for `Net Terms` is restricted to `0, 15, 30, 45, 60, or 90`.
+        For more information please visit our docs page (https://docs.recurly.com/docs/manual-payments#section-collection-terms)
+    net_terms_type : str
+        Optionally supplied string that may be either `net` or `eom` (end-of-month).
+        When `net`, an invoice becomes past due the specified number of `Net Terms` days from the current date.
+        When `eom` an invoice becomes past due the specified number of `Net Terms` days from the last day of the current month.
+
+        This field is only available when the EOM Net Terms feature is enabled.
     object : str
         Object type
     paused_at : datetime
@@ -1950,6 +1990,7 @@ class Subscription(Resource):
         "gateway_code": str,
         "id": str,
         "net_terms": int,
+        "net_terms_type": str,
         "object": str,
         "paused_at": datetime,
         "pending_change": "SubscriptionChange",
@@ -2327,17 +2368,23 @@ class SubscriptionRampIntervalResponse(Resource):
     """
     Attributes
     ----------
+    ending_on : datetime
+        Date the ramp interval ends
     remaining_billing_cycles : int
         Represents how many billing cycles are left in a ramp interval.
     starting_billing_cycle : int
         Represents the billing cycle where a ramp interval starts.
+    starting_on : datetime
+        Date the ramp interval starts
     unit_amount : float
         Represents the price for the ramp interval.
     """
 
     schema = {
+        "ending_on": datetime,
         "remaining_billing_cycles": int,
         "starting_billing_cycle": int,
+        "starting_on": datetime,
         "unit_amount": float,
     }
 
