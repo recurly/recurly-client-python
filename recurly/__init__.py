@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.10.6'
+__version__ = '2.10.7'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -2196,11 +2196,15 @@ class ExternalSubscription(Resource):
         'external_product_reference',
         'last_purchased',
         'auto_renew',
+        'in_grace_period',
         'app_identifier',
         'quantity',
         'state',
         'activated_at',
+        'canceled_at',
         'expires_at',
+        'trial_started_at',
+        'trial_ends_at',
         'created_at',
         'updated_at'
     )
