@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.8](https://github.com/recurly/recurly-client-python/tree/2.10.8) (2023-07-27)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.7...2.10.8)
+
+
+**Merged Pull Requests**
+
+- [V2] Add starting_on and ending_on to subscription ramps [#655](https://github.com/recurly/recurly-client-python/pull/655) ([Patrick-Duvall](https://github.com/Patrick-Duvall))
+
+
+
 ## [2.10.7](https://github.com/recurly/recurly-client-python/tree/2.10.7) (2023-07-17)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.6...2.10.7)
