@@ -83,4 +83,5 @@ Location: https://api.recurly.com/v2/transactions/123456789012345678901234567890
     <decision>DECLINED</decision>
   </fraud>
   <a name="refund" href="https://api.recurly.com/v2/transactions/123456789012345678901234567890ab" method="delete"/>
+  <action_result>example</action_result>
 </transaction>
