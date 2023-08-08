@@ -2629,6 +2629,7 @@ class TestResources(RecurlyTest):
         fraud_info = transaction.fraud
         self.assertEquals(fraud_info.score, 88)
         self.assertEquals(fraud_info.decision, 'DECLINED')
+        self.assertEquals(transaction.action_result, 'example')
 
         logger.removeHandler(log_handler)
 

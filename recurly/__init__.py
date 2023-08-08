@@ -1663,6 +1663,7 @@ class Subscription(Resource):
         'billing_info',
         'billing_info_uuid',
         'ramp_intervals',
+        'action_result'
     )
 
     sensitive_attributes = ('number', 'verification_value', 'bulk')
@@ -1916,7 +1917,8 @@ class Transaction(Resource):
         'message',
         'approval_code',
         'payment_method',
-        'collected_at'
+        'collected_at',
+        'action_result'
     )
     xml_attribute_attributes = ('type',)
     sensitive_attributes = ('number', 'verification_value',)
