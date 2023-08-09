@@ -422,7 +422,7 @@ class GatewayAttributes(Resource):
     Attributes
     ----------
     account_reference : str
-        Used by Adyen gateways. The Shopper Reference value used when the external token was created.
+        Used by Adyen and Braintree gateways. For Adyen the Shopper Reference value used when the external token was created. For Braintree the PayPal PayerID is populated in the response.
     """
 
     schema = {
@@ -671,6 +671,8 @@ class Transaction(Resource):
     ----------
     account : AccountMini
         Account mini details
+    action_result : dict
+        Action result params to be used in Recurly-JS to complete a payment when using asynchronous payment methods, e.g., Boleto, iDEAL and Sofort.
     amount : float
         Total transaction amount sent to the payment gateway.
     avs_check : str
@@ -754,6 +756,7 @@ class Transaction(Resource):
 
     schema = {
         "account": "AccountMini",
+        "action_result": dict,
         "amount": float,
         "avs_check": str,
         "backup_payment_method_used": bool,
@@ -1844,6 +1847,8 @@ class Subscription(Resource):
     ----------
     account : AccountMini
         Account mini details
+    action_result : dict
+        Action result params to be used in Recurly-JS to complete a payment when using asynchronous payment methods, e.g., Boleto, iDEAL and Sofort.
     activated_at : datetime
         Activated at
     active_invoice_id : str
@@ -1966,6 +1971,7 @@ class Subscription(Resource):
 
     schema = {
         "account": "AccountMini",
+        "action_result": dict,
         "activated_at": datetime,
         "active_invoice_id": str,
         "add_ons": ["SubscriptionAddOn"],
