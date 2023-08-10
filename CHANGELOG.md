@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.9](https://github.com/recurly/recurly-client-python/tree/2.10.9) (2023-08-10)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.8...2.10.9)
+
+
+**Merged Pull Requests**
+
+- [V2] add action_result to subscription & trx [#659](https://github.com/recurly/recurly-client-python/pull/659) ([fkosouski](https://github.com/fkosouski))
+
+
+
 ## [2.10.8](https://github.com/recurly/recurly-client-python/tree/2.10.8) (2023-07-27)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.7...2.10.8)
