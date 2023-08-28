@@ -748,6 +748,8 @@ class Transaction(Resource):
         Updated at
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    vat_number : str
+        VAT number for the customer on this transaction. If the customer's Billing Info country is BR or AR, then this will be their Tax Identifier. For all other countries this will come from the VAT Number field in the Billing Info.
     voided_at : datetime
         Voided at
     voided_by_invoice : InvoiceMini
@@ -792,6 +794,7 @@ class Transaction(Resource):
         "type": str,
         "updated_at": datetime,
         "uuid": str,
+        "vat_number": str,
         "voided_at": datetime,
         "voided_by_invoice": "InvoiceMini",
     }
