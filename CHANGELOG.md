@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.40.0](https://github.com/recurly/recurly-client-python/tree/4.40.0) (2023-08-29)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.39.0...4.40.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 (`VATNumber`, `LifecycleDecline`) [#662](https://github.com/recurly/recurly-client-python/pull/662) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.39.0](https://github.com/recurly/recurly-client-python/tree/4.39.0) (2023-08-10)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.38.0...4.39.0)
