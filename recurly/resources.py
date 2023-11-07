@@ -55,6 +55,8 @@ class Address(Resource):
         City
     country : str
         Country, 2-letter ISO 3166-1 alpha-2 code.
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     phone : str
         Phone number
     postal_code : str
@@ -70,6 +72,7 @@ class Address(Resource):
     schema = {
         "city": str,
         "country": str,
+        "geo_code": str,
         "phone": str,
         "postal_code": str,
         "region": str,
@@ -162,7 +165,7 @@ class Account(Resource):
         The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
     id : str
     invoice_template_id : str
-        Unique ID to identify an invoice template. Available when the site is on a Pro or Enterprise plan. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
+        Unique ID to identify an invoice template. Available when the site is on a Pro or Elite plan. Used to specify if a non-default invoice template will be used to generate invoices for the account. For sites without multiple invoice templates enabled, the default template will always be used.
     last_name : str
     object : str
         Object type
@@ -241,6 +244,8 @@ class ShippingAddress(Resource):
         Created at
     email : str
     first_name : str
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     id : str
         Shipping Address ID
     last_name : str
@@ -267,6 +272,7 @@ class ShippingAddress(Resource):
         "created_at": datetime,
         "email": str,
         "first_name": str,
+        "geo_code": str,
         "id": str,
         "last_name": str,
         "nickname": str,
@@ -838,6 +844,8 @@ class AddressWithName(Resource):
         Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     last_name : str
         Last name
     phone : str
@@ -856,6 +864,7 @@ class AddressWithName(Resource):
         "city": str,
         "country": str,
         "first_name": str,
+        "geo_code": str,
         "last_name": str,
         "phone": str,
         "postal_code": str,
@@ -1520,6 +1529,8 @@ class InvoiceAddress(Resource):
         Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     last_name : str
         Last name
     name_on_account : str
@@ -1541,6 +1552,7 @@ class InvoiceAddress(Resource):
         "company": str,
         "country": str,
         "first_name": str,
+        "geo_code": str,
         "last_name": str,
         "name_on_account": str,
         "phone": str,
