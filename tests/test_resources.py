@@ -10,7 +10,7 @@ from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, It
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
     DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
-    ExternalProductReference, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
+    ExternalProductReference, ExternalPaymentPhase, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
     GatewayAttributes, BusinessEntity
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
 from recurly import recurly_logging as logging
@@ -3195,7 +3195,7 @@ class TestResources(RecurlyTest):
         self.assertEqual(second_external_product_reference.created_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.created_at.tzinfo))
         self.assertEqual(second_external_product_reference.updated_at, datetime(2022, 11, 3, 21, 12, 35, tzinfo=second_external_product_reference.updated_at.tzinfo))
 
-    
+
     def test_get_business_entity(self):
         with self.mock_request('business_entity/get.xml'):
             entity = BusinessEntity.get('sy8yqpgxmeqc')
@@ -3237,7 +3237,7 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('business_entity/get.xml'):
             entity = account.business_entity()
-        
+
         self.assertIsInstance(entity, BusinessEntity)
 
     def test_business_entity_for_invoice(self):
@@ -3246,7 +3246,7 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('business_entity/get.xml'):
             entity = invoice.business_entity()
-        
+
         self.assertIsInstance(entity, BusinessEntity)
 
     def test_update_external_product(self):
@@ -3293,6 +3293,37 @@ class TestResources(RecurlyTest):
 
         with self.mock_request('external-product-references/deleted.xml'):
             external_product_reference.delete()
+
+    def test_list_external_payment_phases_on_external_subscription(self):
+        with self.mock_request('external-subscription/get.xml'):
+            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
+
+        with self.mock_request('external-subscription/external-payment-phases.xml'):
+            external_payment_phases = external_subscription.external_payment_phases()
+
+        self.assertEqual(len(external_payment_phases), 1)
+
+        self.assertEqual(external_payment_phases[0].id, 'sk0bmpw0wbby')
+        self.assertEqual(external_payment_phases[0].starting_billing_period_index, '1')
+        self.assertEqual(external_payment_phases[0].ending_billing_period_index, '4')
+        self.assertEqual(external_payment_phases[0].currency, 'USD')
+        self.assertEqual(external_payment_phases[0].amount, '0.00')
+        self.assertEqual(external_payment_phases[0].created_at, datetime(2023, 3, 14, 19, 55, 7, tzinfo=external_payment_phases[0].created_at.tzinfo))
+        self.assertEqual(external_payment_phases[0].updated_at, datetime(2023, 4, 14, 19, 55, 7, tzinfo=external_payment_phases[0].updated_at.tzinfo))
+
+    def test_get_external_payment_phase(self):
+        with self.mock_request('external-subscription/get.xml'):
+            external_subscription = ExternalSubscription.get('sd28t3zdm59r')
+        with self.mock_request('external-payment-phases/get.xml'):
+            external_payment_phase = external_subscription.get_external_payment_phase('sk0bmpw0wbby')
+
+        self.assertEqual(external_payment_phase.id, "sk0bmpw0wbby")
+        self.assertEqual(external_payment_phase.starting_billing_period_index, '1')
+        self.assertEqual(external_payment_phase.ending_billing_period_index, '4')
+        self.assertEqual(external_payment_phase.currency, 'USD')
+        self.assertEqual(external_payment_phase.amount,'0.00')
+        self.assertEqual(external_payment_phase.created_at, datetime(2023, 3, 14, 19, 55, 7, tzinfo=external_payment_phase.created_at.tzinfo))
+        self.assertEqual(external_payment_phase.updated_at, datetime(2023, 4, 14, 19, 55, 7, tzinfo=external_payment_phase.updated_at.tzinfo))
 
     def test_list_external_accounts(self):
         account_code = 'testmock'

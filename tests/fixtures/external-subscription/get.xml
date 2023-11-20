@@ -12,6 +12,7 @@ Content-Type: application/xml; charset=utf-8
 <external_subscription href="https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r">
     <account href="https://api.recurly.com/v2/accounts/pphino"/>
     <external_invoices href="https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r/external_invoices"/>
+    <external_payment_phases href="https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r/external_payment_phases"/>
     <external_id>abcd1234</external_id>
     <external_product_reference nil="nil"></external_product_reference>
     <last_purchased nil="nil"></last_purchased>

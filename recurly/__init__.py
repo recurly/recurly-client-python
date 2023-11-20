@@ -588,7 +588,7 @@ class BillingInfo(Resource):
 
     def verify_cvv(self, account_code, verification_value = None):
       recurly.Account.get(account_code).verify_cvv(verification_value)
- 
+
 class ShippingAddress(Resource):
 
     """Shipping Address information"""
@@ -2133,7 +2133,7 @@ class ExternalAccount(Resource):
 
     nodename = 'external_account'
     member_path = 'external_accounts/%s'
-    
+
     attributes = (
         'id',
         'external_account_code',
@@ -2154,6 +2154,7 @@ class ExternalInvoice(Resource):
     attributes = (
         'account',
         'external_subscription',
+        'external_payment_phase',
         'external_id',
         'state',
         'total',
@@ -2196,6 +2197,8 @@ class ExternalSubscription(Resource):
         'account',
         'external_id',
         'external_product_reference',
+        'external_invoices',
+        'external_payment_phases',
         'last_purchased',
         'auto_renew',
         'in_grace_period',
@@ -2211,6 +2214,12 @@ class ExternalSubscription(Resource):
         'updated_at'
     )
 
+    def get_external_payment_phase(self, external_payment_phase_uuid):
+      """Fetch an external payment phase from an external subscription."""
+      url = urljoin(self._url, '/external_payment_phases/{}'.format(external_payment_phase_uuid))
+      resp, elem = ExternalPaymentPhase().element_for_url(url)
+      return ExternalPaymentPhase().from_element(elem)
+
 class ExternalProductReference(Resource):
 
     """ A reference of a product from an external resource that is not managed by the Recurly platform and instead is managed by third-party platforms like Apple Store and Google Play. """
@@ -2221,6 +2230,30 @@ class ExternalProductReference(Resource):
     attributes = (
         'reference_code',
         'external_connection_type'
+    )
+
+class ExternalPaymentPhase(Resource):
+
+    """ Payment details in the lifecycle of a subscription that is not managed by the Recurly platform and instead is managed by third-party platforms like Apple Store and Google Play. """
+
+    nodename = 'external_payment_phase'
+    collection_path = 'external_payment_phases'
+    member_path = 'external_payment_phases/%s'
+
+    attributes = (
+        'id',
+        'started_at',
+        'ends_at',
+        'starting_billing_period_index',
+        'ending_billing_period_index',
+        'offer_type',
+        'offer_name',
+        'period_count',
+        'period_length',
+        'amount',
+        'currency',
+        'created_at',
+        'updated_at'
     )
 
 class ExternalProduct(Resource):

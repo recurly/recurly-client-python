@@ -12,6 +12,8 @@ Content-Type: application/xml; charset=utf-8
 <external_subscriptions type="array">
     <external_subscription href="https://paulo.recurly.dev:3000/v2/external_subscriptions/ru8jbrg7i3c0">
         <account href="https://paulo.recurly.dev:3000/v2/accounts/pphino"/>
+        <external_invoices href="https://api.recurly.com/v2/external_subscriptions/ru8jbrg7i3c0/external_invoices"/>
+        <external_payment_phases href="https://api.recurly.com/v2/external_subscriptions/ru8jbrg7i3c0/external_payment_phases"/>
         <external_id>abcd1234</external_id>
         <external_product_reference nil="nil"></external_product_reference>
         <last_purchased nil="nil"></last_purchased>
@@ -30,6 +32,8 @@ Content-Type: application/xml; charset=utf-8
     </external_subscription>
     <external_subscription href="https://paulo.recurly.dev:3000/v2/external_subscriptions/ru2208s6hmf0">
         <account href="https://paulo.recurly.dev:3000/v2/accounts/pphino"/>
+        <external_invoices href="https://api.recurly.com/v2/external_subscriptions/ru2208s6hmf0/external_invoices"/>
+        <external_payment_phases href="https://api.recurly.com/v2/external_subscriptions/ru2208s6hmf0/external_payment_phases"/>
         <external_id>efgh5678</external_id>
         <external_product_reference nil="nil"></external_product_reference>
         <last_purchased nil="nil"></last_purchased>
