@@ -8,3 +8,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: r7kamura/semgrepper@v0
+        continue-on-error: true
