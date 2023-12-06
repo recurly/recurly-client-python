@@ -5048,6 +5048,77 @@ class Client(BaseClient):
         path = self._interpolate_path("/external_invoices/%s", external_invoice_id)
         return self._make_request("GET", path, None, **options)
 
+    def list_external_subscription_external_payment_phases(
+        self, external_subscription_id, **options
+    ):
+        """List the external payment phases on an external subscription
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.sort : str
+            Sort field. You *really* only want to sort by `updated_at` in ascending
+            order. In descending order updated records will move behind the cursor and could
+            prevent some records from being returned.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of the the external_payment_phases on a site.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s/external_payment_phases",
+            external_subscription_id,
+        )
+        return Pager(self, path, **options)
+
+    def get_external_subscription_external_payment_phase(
+        self, external_subscription_id, external_payment_phase_id, **options
+    ):
+        """Fetch an external payment_phase
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+        external_payment_phase_id : str
+            External payment phase ID, e.g. `a34ypb2ef9w1`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalPaymentPhase
+            Details for an external payment_phase.
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s/external_payment_phases/%s",
+            external_subscription_id,
+            external_payment_phase_id,
+        )
+        return self._make_request("GET", path, None, **options)
+
     def list_entitlements(self, account_id, **options):
         """List entitlements granted to an account
 
