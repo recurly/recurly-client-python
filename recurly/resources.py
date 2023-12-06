@@ -1449,7 +1449,7 @@ class Invoice(Resource):
     tax : float
         The total tax on this invoice.
     tax_info : TaxInfo
-        Tax info
+        Only for merchants using Recurly's In-The-Box taxes.
     terms_and_conditions : str
         This will default to the Terms and Conditions text specified on the Invoice Settings page in your Recurly admin. Specify custom notes to add or override Terms and Conditions.
     total : float
@@ -1716,7 +1716,7 @@ class LineItem(Resource):
     tax_inclusive : bool
         Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
-        Tax info
+        Only for merchants using Recurly's In-The-Box taxes.
     taxable : bool
         `true` if the line item is taxable, `false` if it is not.
     type : str
@@ -1961,11 +1961,11 @@ class Subscription(Resource):
     subtotal : float
         Estimated total, before tax.
     tax : float
-        Estimated tax
+        Only for merchants using Recurly's In-The-Box taxes.
     tax_inclusive : bool
         Determines whether or not tax is included in the unit amount. The Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing feature) must be enabled to utilize this flag.
     tax_info : TaxInfo
-        Tax info
+        Only for merchants using Recurly's In-The-Box taxes.
     terms_and_conditions : str
         Terms and conditions
     total : float
@@ -3379,6 +3379,61 @@ class InvoiceTemplate(Resource):
         "description": str,
         "id": str,
         "name": str,
+        "updated_at": datetime,
+    }
+
+
+class ExternalPaymentPhase(Resource):
+    """
+    Attributes
+    ----------
+    amount : str
+        Allows up to 9 decimal places
+    created_at : datetime
+        When the external subscription was created in Recurly.
+    currency : str
+        3-letter ISO 4217 currency code.
+    ending_billing_period_index : int
+        Ending Billing Period Index
+    ends_at : datetime
+        Ends At
+    external_subscription : ExternalSubscription
+        Subscription from an external resource such as Apple App Store or Google Play Store.
+    id : str
+        System-generated unique identifier for an external payment phase ID, e.g. `e28zov4fw0v2`.
+    object : str
+        Object type
+    offer_name : str
+        Name of the discount offer given, e.g. "introductory"
+    offer_type : str
+        Type of discount offer given, e.g. "FREE_TRIAL"
+    period_count : int
+        Number of billing periods
+    period_length : str
+        Billing cycle length
+    started_at : datetime
+        Started At
+    starting_billing_period_index : int
+        Starting Billing Period Index
+    updated_at : datetime
+        When the external subscription was updated in Recurly.
+    """
+
+    schema = {
+        "amount": str,
+        "created_at": datetime,
+        "currency": str,
+        "ending_billing_period_index": int,
+        "ends_at": datetime,
+        "external_subscription": "ExternalSubscription",
+        "id": str,
+        "object": str,
+        "offer_name": str,
+        "offer_type": str,
+        "period_count": int,
+        "period_length": str,
+        "started_at": datetime,
+        "starting_billing_period_index": int,
         "updated_at": datetime,
     }
 
