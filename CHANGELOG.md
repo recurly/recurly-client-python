@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.10](https://github.com/recurly/recurly-client-python/tree/2.10.10) (2023-12-06)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.9...2.10.10)
+
+
+**Merged Pull Requests**
+
+- add external payment phases [#664](https://github.com/recurly/recurly-client-python/pull/664) ([amandamfielding](https://github.com/amandamfielding))
+
+
+
 ## [2.10.9](https://github.com/recurly/recurly-client-python/tree/2.10.9) (2023-08-10)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.8...2.10.9)
@@ -336,7 +347,7 @@
 - Release version 2.9.7 [#290](https://github.com/recurly/recurly-client-python/pull/290) ([aaron-junot](https://github.com/aaron-junot))
 - Add "Automated Exports" API calls [#288](https://github.com/recurly/recurly-client-python/pull/288) ([mohamagdy](https://github.com/mohamagdy))
 - Bump to version 2.9.6 [#287](https://github.com/recurly/recurly-client-python/pull/287) ([aaron-junot](https://github.com/aaron-junot))
-- Add product_code to Adjustment attributes [#286](https://github.com/recurly/recurly-client-python/pull/286) ([sarendsen](https://github.com/sarendsen))
+- Add product_code to Adjustment attributes [#286](https://github.com/recurly/recurly-client-python/pull/286) ([lostb1t](https://github.com/lostb1t))
 - Update issue templates [#285](https://github.com/recurly/recurly-client-python/pull/285) ([bhelx](https://github.com/bhelx))
 - Release version 2.9.5 / API version 2.19 [#284](https://github.com/recurly/recurly-client-python/pull/284) ([aaron-junot](https://github.com/aaron-junot))
 - Release version 2.9.4 / API version 2.18 [#283](https://github.com/recurly/recurly-client-python/pull/283) ([aaron-junot](https://github.com/aaron-junot))
@@ -761,7 +772,7 @@
 **Merged Pull Requests**
 
 - Bump to version 2.9.6 [#287](https://github.com/recurly/recurly-client-python/pull/287) ([aaron-junot](https://github.com/aaron-junot))
-- Add product_code to Adjustment attributes [#286](https://github.com/recurly/recurly-client-python/pull/286) ([sarendsen](https://github.com/sarendsen))
+- Add product_code to Adjustment attributes [#286](https://github.com/recurly/recurly-client-python/pull/286) ([lostb1t](https://github.com/lostb1t))
 - Update issue templates [#285](https://github.com/recurly/recurly-client-python/pull/285) ([bhelx](https://github.com/bhelx))
 
 
