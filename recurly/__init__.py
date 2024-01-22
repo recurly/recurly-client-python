@@ -515,6 +515,24 @@ class GatewayAttributes(Resource):
         'account_reference',
     )
 
+class GeneralLedgerAccount(Resource):
+
+    """General Ledger Account for Revenue Recognition"""
+
+    member_path = 'general_ledger_accounts/%s'
+    collection_path = 'general_ledger_accounts'
+
+    nodename = 'general_ledger_account'
+
+    attributes = (
+        'id',
+        'account_type',
+        'code',
+        'description',
+        'created_at',
+        'updated_at',
+    )
+
 class BillingInfo(Resource):
 
     """A set of billing information for an account."""

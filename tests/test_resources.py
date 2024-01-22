@@ -9,7 +9,7 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
+    DunningCycle, GeneralLedgerAccount, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
     ExternalProductReference, ExternalPaymentPhase, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
     GatewayAttributes, BusinessEntity
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
@@ -3392,6 +3392,53 @@ class TestResources(RecurlyTest):
         )
         with self.mock_request('account/created-with-external-accounts.xml'):
             account.save()
+
+    def test_list_general_ledger_accounts(self):
+        with self.mock_request('general_ledger_accounts/list.xml'):
+            general_ledger_accounts = GeneralLedgerAccount.all()
+
+        self.assertEqual(len(general_ledger_accounts), 2)
+
+    def test_list_filtered_general_ledger_accounts(self):
+        with self.mock_request('general_ledger_accounts/list_filtered.xml'):
+            general_ledger_accounts = GeneralLedgerAccount.all(account_type='revenue')
+
+        self.assertEqual(len(general_ledger_accounts), 1)
+        self.assertEqual(general_ledger_accounts[0].account_type, 'revenue')
+
+    def test_get_general_ledger_accounts(self):
+        with self.mock_request('general_ledger_accounts/get.xml'):
+            general_ledger_account = GeneralLedgerAccount.get('u90r5deeaxix')
+
+        self.assertEqual(general_ledger_account.id, 'u90r5deeaxix')
+        self.assertEqual(general_ledger_account.code, 'code1')
+        self.assertEqual(general_ledger_account.account_type, 'revenue')
+        self.assertEqual(general_ledger_account.description, 'Some Description')
+
+    def test_create_general_ledger_account(self):
+        general_ledger_account = GeneralLedgerAccount(
+            code='code2',
+            account_type='liability',
+            description='Liability Description'
+        )
+        with self.mock_request('general_ledger_accounts/created.xml'):
+            general_ledger_account.save()
+
+        self.assertEquals(general_ledger_account.code, 'code2')
+        self.assertEquals(general_ledger_account.account_type, 'liability')
+        self.assertEquals(general_ledger_account.description, 'Liability Description')
+
+    def test_update_general_ledger_account(self):
+        with self.mock_request('general_ledger_accounts/get.xml'):
+            general_ledger_account = GeneralLedgerAccount.get('u90r5deeaxix')
+
+        with self.mock_request('general_ledger_accounts/updated.xml'):
+            general_ledger_account.code = 'code2'
+            general_ledger_account.description = 'Updated Description'
+            general_ledger_account.save()
+
+        self.assertEquals(general_ledger_account.code, 'code2')
+        self.assertEquals(general_ledger_account.description, 'Updated Description')
 
 if __name__ == '__main__':
     import unittest
