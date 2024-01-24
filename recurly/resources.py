@@ -519,6 +519,8 @@ class TransactionError(Resource):
         Code
     decline_code : str
         Decline code
+    fraud_info : TransactionFraudInfo
+        Fraud information
     merchant_advice : str
         Merchant message
     message : str
@@ -535,11 +537,53 @@ class TransactionError(Resource):
         "category": str,
         "code": str,
         "decline_code": str,
+        "fraud_info": "TransactionFraudInfo",
         "merchant_advice": str,
         "message": str,
         "object": str,
         "three_d_secure_action_token_id": str,
         "transaction_id": str,
+    }
+
+
+class TransactionFraudInfo(Resource):
+    """
+    Attributes
+    ----------
+    decision : str
+        Kount decision
+    object : str
+        Object type
+    reference : str
+        Kount transaction reference ID
+    risk_rules_triggered : :obj:`list` of :obj:`FraudRiskRule`
+        A list of fraud risk rules that were triggered for the transaction.
+    score : int
+        Kount score
+    """
+
+    schema = {
+        "decision": str,
+        "object": str,
+        "reference": str,
+        "risk_rules_triggered": ["FraudRiskRule"],
+        "score": int,
+    }
+
+
+class FraudRiskRule(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The Kount rule number.
+    message : str
+        Description of why the rule was triggered
+    """
+
+    schema = {
+        "code": str,
+        "message": str,
     }
 
 
@@ -893,47 +937,6 @@ class TransactionPaymentGateway(Resource):
         "name": str,
         "object": str,
         "type": str,
-    }
-
-
-class TransactionFraudInfo(Resource):
-    """
-    Attributes
-    ----------
-    decision : str
-        Kount decision
-    object : str
-        Object type
-    reference : str
-        Kount transaction reference ID
-    risk_rules_triggered : :obj:`list` of :obj:`FraudRiskRule`
-        A list of fraud risk rules that were triggered for the transaction.
-    score : int
-        Kount score
-    """
-
-    schema = {
-        "decision": str,
-        "object": str,
-        "reference": str,
-        "risk_rules_triggered": ["FraudRiskRule"],
-        "score": int,
-    }
-
-
-class FraudRiskRule(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        The Kount rule number.
-    message : str
-        Description of why the rule was triggered
-    """
-
-    schema = {
-        "code": str,
-        "message": str,
     }
 
 
