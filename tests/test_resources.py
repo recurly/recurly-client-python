@@ -9,7 +9,7 @@ import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
     SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, GeneralLedgerAccount, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
+    DunningCycle, GeneralLedgerAccount, InvoiceTemplate, PerformanceObligation, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
     ExternalProductReference, ExternalPaymentPhase, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
     GatewayAttributes, BusinessEntity
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
@@ -3439,6 +3439,19 @@ class TestResources(RecurlyTest):
 
         self.assertEquals(general_ledger_account.code, 'code2')
         self.assertEquals(general_ledger_account.description, 'Updated Description')
+
+    def test_list_performance_obligations(self):
+        with self.mock_request('performance_obligations/list.xml'):
+            performance_obligations = PerformanceObligation.all()
+
+        self.assertEqual(len(performance_obligations), 6)
+
+    def test_get_performance_obligation(self):
+        with self.mock_request('performance_obligations/get.xml'):
+            performance_obligation = PerformanceObligation.get(6)
+
+        self.assertEqual(performance_obligation.id, '6')
+        self.assertEqual(performance_obligation.name, 'Over Time (Daily)')
 
 if __name__ == '__main__':
     import unittest

@@ -533,6 +533,22 @@ class GeneralLedgerAccount(Resource):
         'updated_at',
     )
 
+class PerformanceObligation(Resource):
+
+    """Performance Obligation for Revenue Recognition"""
+
+    member_path = 'performance_obligations/%s'
+    collection_path = 'performance_obligations'
+
+    nodename = 'performance_obligation'
+
+    attributes = (
+        'id',
+        'name',
+        'created_at',
+        'updated_at',
+    )
+
 class BillingInfo(Resource):
 
     """A set of billing information for an account."""
