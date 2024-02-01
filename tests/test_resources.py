@@ -3210,6 +3210,8 @@ class TestResources(RecurlyTest):
         self.assertIsInstance(entity.invoice_display_address, Address)
         self.assertEqual(entity.created_at, datetime(2023, 5, 13, 17, 28, 47, tzinfo=entity.created_at.tzinfo))
         self.assertEqual(entity.updated_at, datetime(2023, 10, 13, 17, 28, 48, tzinfo=entity.updated_at.tzinfo))
+        self.assertEqual(entity.default_liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(entity.default_revenue_gl_account_id, 't5ejtgf1vxh1')
 
     def test_list_business_entities(self):
         with self.mock_request('business_entity/list.xml'):

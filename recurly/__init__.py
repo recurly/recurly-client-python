@@ -490,7 +490,9 @@ class BusinessEntity(Resource):
         'default_vat_number',
         'default_registration_number',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'default_revenue_gl_account_id',
+        'default_liability_gl_account_id',
     )
 
     _classes_for_nodename = {
