@@ -40,4 +40,6 @@ Content-Type: application/xml; charset=utf-8
     <default_registration_number>ab1</default_registration_number>
     <created_at type="datetime">2023-05-13T17:28:47Z</created_at>
     <updated_at type="datetime">2023-10-13T17:28:48Z</updated_at>
+    <default_liability_gl_account_id>t5ejtge1xw0x</default_liability_gl_account_id>
+    <default_revenue_gl_account_id>t5ejtgf1vxh1</default_revenue_gl_account_id>
 </business_entity>
