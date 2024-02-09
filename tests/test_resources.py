@@ -1841,6 +1841,67 @@ class TestResources(RecurlyTest):
         with self.mock_request('plan/updated_with_ramps.xml'):
             plan.save()
 
+    def test_plan_with_revrec(self):
+        plan_code = 'plan%s' % self.test_id
+        with self.mock_request('plan/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Plan.get, plan_code)
+
+        plan = Plan(
+            name='RevRec Plan',
+            plan_code=plan_code,
+            setup_fee_in_cents=Money(200),
+            unit_amount_in_cents=Money(1000),
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5',
+            setup_fee_liability_gl_account_id='t5ejtge1xw0x',
+            setup_fee_revenue_gl_account_id='t5ejtgf1vxh1',
+            setup_fee_performance_obligation_id='5'
+        )
+
+        with self.mock_request('plan/created-with-revrec.xml'):
+            plan.save()
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(plan.name, 'RevRec Plan')
+        self.assertEqual(plan.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.performance_obligation_id, '5')
+        self.assertEqual(plan.setup_fee_liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.setup_fee_revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.setup_fee_performance_obligation_id, '5')
+
+        with self.mock_request('plan/exists_with_revrec.xml'):
+            same_plan = Plan.get(plan_code)
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(plan.name, 'RevRec Plan')
+        self.assertEqual(plan.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.performance_obligation_id, '5')
+        self.assertEqual(plan.setup_fee_liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.setup_fee_revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.setup_fee_performance_obligation_id, '5')
+
+        plan.liability_gl_account_id = None
+        plan.revenue_gl_account_id = None
+        plan.performance_obligation_id = None
+        plan.setup_fee_liability_gl_account_id = None
+        plan.setup_fee_revenue_gl_account_id = None
+        plan.setup_fee_performance_obligation_id = None
+
+        with self.mock_request('plan/updated_with_revrec.xml'):
+            plan.save()
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(plan.name, 'RevRec Plan')
+        self.assertEqual(plan.liability_gl_account_id, None)
+        self.assertEqual(plan.revenue_gl_account_id, None)
+        self.assertEqual(plan.performance_obligation_id, '6')
+        self.assertEqual(plan.setup_fee_liability_gl_account_id, None)
+        self.assertEqual(plan.setup_fee_revenue_gl_account_id, None)
+        self.assertEqual(plan.setup_fee_performance_obligation_id, '4')
+
     def test_preview_subscription_change(self):
         with self.mock_request('subscription/show.xml'):
             sub = Subscription.get('123456789012345678901234567890ab')
