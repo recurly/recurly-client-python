@@ -7,7 +7,7 @@ from six.moves.urllib.parse import urljoin
 
 import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
-    SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
+    SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, ShippingMethod, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
     DunningCycle, GeneralLedgerAccount, InvoiceTemplate, PerformanceObligation, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
     ExternalProductReference, ExternalPaymentPhase, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
@@ -3515,6 +3515,26 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(performance_obligation.id, '6')
         self.assertEqual(performance_obligation.name, 'Over Time (Daily)')
+
+    def test_get_shipping_method(self):
+        with self.mock_request('shipping-method/get.xml'):
+            shipping_method = ShippingMethod.get('shipping2')
+
+        self.assertEqual(shipping_method.code, 'shipping2')
+        self.assertEqual(shipping_method.name, 'shipping 2')
+        self.assertEqual(shipping_method.accounting_code, 'ship')
+        self.assertEqual(shipping_method.tax_code, 'FR')
+        self.assertEqual(shipping_method.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(shipping_method.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(shipping_method.performance_obligation_id, '6')
+
+    def test_list_shipping_methods(self):
+        with self.mock_request('shipping-method/list.xml'):
+            shipping_methods = ShippingMethod.all()
+
+        self.assertEqual(len(shipping_methods), 2)
+        self.assertIsInstance(shipping_methods[0], ShippingMethod)
+        self.assertIsInstance(shipping_methods[1], ShippingMethod)
 
 if __name__ == '__main__':
     import unittest

@@ -1483,6 +1483,9 @@ class ShippingMethod(Resource):
       'name',
       'accounting_code',
       'tax_code',
+      'liability_gl_account_id',
+      'revenue_gl_account_id',
+      'performance_obligation_id',
       'created_at',
       'updated_at',
     )
