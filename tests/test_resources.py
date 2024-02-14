@@ -2901,6 +2901,33 @@ class TestResources(RecurlyTest):
         gift_card.gifter_account = account
         return gift_card
 
+    def test_get_gift_card(self):
+        with self.mock_request('gift_cards/get.xml'):
+            gift_card = GiftCard.get(3880289408739841209)
+
+        self.assertEqual(gift_card.id, 3880289408739841209)
+        self.assertEqual(gift_card.redemption_code, 'ASDR63PM4JUTXW9I')
+        self.assertEqual(gift_card.product_code, 'test_gift_card')
+        self.assertEqual(gift_card.unit_amount_in_cents, 1000)
+        self.assertEqual(gift_card.currency, 'USD')
+        self.assertEqual(gift_card.delivery.method, 'email')
+        self.assertEqual(gift_card.delivery.email_address, 'sally@example.com')
+        self.assertEqual(gift_card.delivery.first_name, 'Sally')
+        self.assertEqual(gift_card.delivery.last_name, 'Smith')
+        self.assertEqual(gift_card.delivery.gifter_name, 'John')
+        self.assertEqual(gift_card.delivery.personal_message, 'Congrats!')
+        self.assertEqual(gift_card.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(gift_card.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(gift_card.performance_obligation_id, '4')
+
+    def test_list_gift_cards(self):
+        with self.mock_request('gift_cards/list.xml'):
+            gift_cards = GiftCard.all()
+
+        self.assertEqual(len(gift_cards), 2)
+        self.assertIsInstance(gift_cards[0], GiftCard)
+        self.assertIsInstance(gift_cards[1], GiftCard)
+
     def test_gift_cards_purchase(self):
         gift_card = self._build_gift_card()
 
