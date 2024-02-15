@@ -1712,6 +1712,49 @@ class TestResources(RecurlyTest):
             with self.mock_request('item/deleted.xml'):
                 item.delete()
 
+    def test_item_with_revrec(self):
+        item_code = 'item%s' % self.test_id
+        with self.mock_request('item/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Item.get, item_code)
+
+        item = Item(
+            item_code=item_code,
+            name='Mock Item',
+            description='An item of the mocked variety',
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5'
+        )
+
+        with self.mock_request('item/created-with-revrec.xml'):
+            item.save()
+
+        self.assertEqual(item.item_code, item_code)
+        self.assertEqual(item.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(item.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(item.performance_obligation_id, '5')
+
+        with self.mock_request('item/exists-with-revrec.xml'):
+            same_item = Item.get(item_code)
+
+        self.assertEqual(same_item.item_code, item_code)
+        self.assertEqual(same_item.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(same_item.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(same_item.performance_obligation_id, '5')
+
+        item.description = 'A mocked description'
+        item.liability_gl_account_id = None
+        item.revenue_gl_account_id = None
+        item.performance_obligation_id = None
+
+        with self.mock_request('item/updated-with-revrec.xml'):
+            item.save()
+
+        self.assertEqual(item.description, 'A mocked description')
+        self.assertEqual(item.liability_gl_account_id, None)
+        self.assertEqual(item.revenue_gl_account_id, None)
+        self.assertEqual(item.performance_obligation_id, '6')
+
     def test_custom_field_definition(self):
         """Test custom field definitions list"""
         with self.mock_request('custom_field_definitions/list.xml'):

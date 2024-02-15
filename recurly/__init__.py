@@ -1000,6 +1000,9 @@ class Item(Resource):
         'created_at',
         'updated_at',
         'deleted_at',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
 
 class Adjustment(Resource):
