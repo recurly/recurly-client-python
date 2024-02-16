@@ -787,6 +787,9 @@ class GiftCard(Resource):
         'updated_at',
         'unit_amount_in_cents',
         'billing_info',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
     _classes_for_nodename = {'recipient_account': Account,'gifter_account':
             Account, 'delivery': Delivery}
@@ -997,6 +1000,9 @@ class Item(Resource):
         'created_at',
         'updated_at',
         'deleted_at',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
 
 class Adjustment(Resource):

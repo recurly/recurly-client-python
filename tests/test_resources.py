@@ -1712,6 +1712,49 @@ class TestResources(RecurlyTest):
             with self.mock_request('item/deleted.xml'):
                 item.delete()
 
+    def test_item_with_revrec(self):
+        item_code = 'item%s' % self.test_id
+        with self.mock_request('item/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Item.get, item_code)
+
+        item = Item(
+            item_code=item_code,
+            name='Mock Item',
+            description='An item of the mocked variety',
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5'
+        )
+
+        with self.mock_request('item/created-with-revrec.xml'):
+            item.save()
+
+        self.assertEqual(item.item_code, item_code)
+        self.assertEqual(item.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(item.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(item.performance_obligation_id, '5')
+
+        with self.mock_request('item/exists-with-revrec.xml'):
+            same_item = Item.get(item_code)
+
+        self.assertEqual(same_item.item_code, item_code)
+        self.assertEqual(same_item.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(same_item.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(same_item.performance_obligation_id, '5')
+
+        item.description = 'A mocked description'
+        item.liability_gl_account_id = None
+        item.revenue_gl_account_id = None
+        item.performance_obligation_id = None
+
+        with self.mock_request('item/updated-with-revrec.xml'):
+            item.save()
+
+        self.assertEqual(item.description, 'A mocked description')
+        self.assertEqual(item.liability_gl_account_id, None)
+        self.assertEqual(item.revenue_gl_account_id, None)
+        self.assertEqual(item.performance_obligation_id, '6')
+
     def test_custom_field_definition(self):
         """Test custom field definitions list"""
         with self.mock_request('custom_field_definitions/list.xml'):
@@ -2900,6 +2943,33 @@ class TestResources(RecurlyTest):
         gift_card.delivery = delivery
         gift_card.gifter_account = account
         return gift_card
+
+    def test_get_gift_card(self):
+        with self.mock_request('gift_cards/get.xml'):
+            gift_card = GiftCard.get(3880289408739841209)
+
+        self.assertEqual(gift_card.id, 3880289408739841209)
+        self.assertEqual(gift_card.redemption_code, 'ASDR63PM4JUTXW9I')
+        self.assertEqual(gift_card.product_code, 'test_gift_card')
+        self.assertEqual(gift_card.unit_amount_in_cents, 1000)
+        self.assertEqual(gift_card.currency, 'USD')
+        self.assertEqual(gift_card.delivery.method, 'email')
+        self.assertEqual(gift_card.delivery.email_address, 'sally@example.com')
+        self.assertEqual(gift_card.delivery.first_name, 'Sally')
+        self.assertEqual(gift_card.delivery.last_name, 'Smith')
+        self.assertEqual(gift_card.delivery.gifter_name, 'John')
+        self.assertEqual(gift_card.delivery.personal_message, 'Congrats!')
+        self.assertEqual(gift_card.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(gift_card.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(gift_card.performance_obligation_id, '4')
+
+    def test_list_gift_cards(self):
+        with self.mock_request('gift_cards/list.xml'):
+            gift_cards = GiftCard.all()
+
+        self.assertEqual(len(gift_cards), 2)
+        self.assertIsInstance(gift_cards[0], GiftCard)
+        self.assertIsInstance(gift_cards[1], GiftCard)
 
     def test_gift_cards_purchase(self):
         gift_card = self._build_gift_card()

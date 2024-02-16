@@ -1,0 +1,39 @@
+GET https://api.recurly.com/v2/gift_cards/3880289408739841209 HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<gift_card href="https://api.recurly.com/v2/gift_cards/3880289408739841209">
+    <gifter_account href="https://api.recurly.com/v2/accounts/VAToverrideus3@example.com"/>
+    <purchase_invoice href="https://api.recurly.com/v2/invoices/1125"/>
+    <id type="integer">3880289408739841209</id>
+    <redemption_code>ASDR63PM4JUTXW9I</redemption_code>
+    <product_code>test_gift_card</product_code>
+    <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+    <currency>USD</currency>
+    <delivery>
+        <method>email</method>
+        <email_address>sally@example.com</email_address>
+        <deliver_at nil="nil"></deliver_at>
+        <first_name>Sally</first_name>
+        <last_name>Smith</last_name>
+        <address nil="nil"></address>
+        <gifter_name>John</gifter_name>
+        <personal_message>Congrats!</personal_message>
+    </delivery>
+    <created_at type="datetime">2023-08-29T18:42:23Z</created_at>
+    <updated_at type="datetime">2023-08-29T18:42:23Z</updated_at>
+    <delivered_at type="datetime">2023-08-29T18:42:23Z</delivered_at>
+    <redeemed_at nil="nil"></redeemed_at>
+    <canceled_at nil="nil"></canceled_at>
+    <a name="redeem" href="https://api.recurly.com/v2/gift_cards/ASDR63PM4JUTXW9I/redeem" method="post"/>
+    <liability_gl_account_id>t5ejtge1xw0x</liability_gl_account_id>
+    <revenue_gl_account_id>t5ejtgf1vxh1</revenue_gl_account_id>
+    <performance_obligation_id>4</performance_obligation_id>
+</gift_card>
