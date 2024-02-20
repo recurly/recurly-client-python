@@ -1019,6 +1019,8 @@ class Client(BaseClient):
               results correspond to your request.
             * Records are returned in an arbitrary order. Since results are all
               returned at once you can sort the records yourself.
+        params.state : str
+            Invoice state.
         params.limit : int
             Limit number of records 1-200.
         params.order : str
@@ -2776,6 +2778,8 @@ class Client(BaseClient):
               results correspond to your request.
             * Records are returned in an arbitrary order. Since results are all
               returned at once you can sort the records yourself.
+        params.state : str
+            Invoice state.
         params.limit : int
             Limit number of records 1-200.
         params.order : str
@@ -4300,6 +4304,8 @@ class Client(BaseClient):
               results correspond to your request.
             * Records are returned in an arbitrary order. Since results are all
               returned at once you can sort the records yourself.
+        params.state : str
+            Invoice state.
         params.limit : int
             Limit number of records 1-200.
         params.order : str
@@ -5362,6 +5368,8 @@ class Client(BaseClient):
               results correspond to your request.
             * Records are returned in an arbitrary order. Since results are all
               returned at once you can sort the records yourself.
+        params.state : str
+            Invoice state.
         params.limit : int
             Limit number of records 1-200.
         params.order : str
