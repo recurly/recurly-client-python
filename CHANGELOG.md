@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.45.0](https://github.com/recurly/recurly-client-python/tree/4.45.0) (2024-02-20)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.44.0...4.45.0)
+
+
+**Merged Pull Requests**
+
+- Add invoice state param for v2021-02-25 [#677](https://github.com/recurly/recurly-client-python/pull/677) ([recurly-integrations](https://github.com/recurly-integrations))
+- Remove internal wiki link. [#674](https://github.com/recurly/recurly-client-python/pull/674) ([recurly-bearley](https://github.com/recurly-bearley))
+
+
+
 ## [4.44.0](https://github.com/recurly/recurly-client-python/tree/4.44.0) (2024-01-24)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.43.0...4.44.0)
