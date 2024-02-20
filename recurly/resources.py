@@ -57,6 +57,8 @@ class Address(Resource):
         Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     last_name : str
         Last name
     phone : str
@@ -75,6 +77,7 @@ class Address(Resource):
         "city": str,
         "country": str,
         "first_name": str,
+        "geo_code": str,
         "last_name": str,
         "phone": str,
         "postal_code": str,
@@ -238,6 +241,8 @@ class ShippingAddress(Resource):
         Created at
     email : str
     first_name : str
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     id : str
         Shipping Address ID
     last_name : str
@@ -264,6 +269,7 @@ class ShippingAddress(Resource):
         "created_at": datetime,
         "email": str,
         "first_name": str,
+        "geo_code": str,
         "id": str,
         "last_name": str,
         "nickname": str,
@@ -389,7 +395,7 @@ class GatewayAttributes(Resource):
     Attributes
     ----------
     account_reference : str
-        Used by Adyen gateways. The Shopper Reference value used when the external token was created.
+        Used by Adyen and Braintree gateways. For Adyen the Shopper Reference value used when the external token was created. For Braintree the PayPal PayerID is populated in the response.
     """
 
     schema = {
@@ -1238,6 +1244,8 @@ class InvoiceAddress(Resource):
         Country, 2-letter ISO 3166-1 alpha-2 code.
     first_name : str
         First name
+    geo_code : str
+        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
     last_name : str
         Last name
     name_on_account : str
@@ -1259,6 +1267,7 @@ class InvoiceAddress(Resource):
         "company": str,
         "country": str,
         "first_name": str,
+        "geo_code": str,
         "last_name": str,
         "name_on_account": str,
         "phone": str,
@@ -2031,17 +2040,23 @@ class SubscriptionRampIntervalResponse(Resource):
     """
     Attributes
     ----------
+    ending_on : datetime
+        Date the ramp interval ends
     remaining_billing_cycles : int
         Represents how many billing cycles are left in a ramp interval.
     starting_billing_cycle : int
         Represents the billing cycle where a ramp interval starts.
+    starting_on : datetime
+        Date the ramp interval starts
     unit_amount : int
         Represents the price for the ramp interval.
     """
 
     schema = {
+        "ending_on": datetime,
         "remaining_billing_cycles": int,
         "starting_billing_cycle": int,
+        "starting_on": datetime,
         "unit_amount": int,
     }
 
