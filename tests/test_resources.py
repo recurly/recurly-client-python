@@ -839,6 +839,56 @@ class TestResources(RecurlyTest):
             with self.mock_request('add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_add_on_with_revrec(self):
+        plan_code = 'plan%s' % self.test_id
+        add_on_code = 'addonrevrec'
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('add-on/plan-created.xml'):
+            plan.save()
+
+        add_on = AddOn(
+            add_on_code=add_on_code,
+            name='Add-On with RevRec',
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5',
+            unit_amount_in_cents=Money(40)
+        )
+
+        with self.mock_request('add-on/created-with-revrec.xml'):
+            plan.create_add_on(add_on)
+
+        self.assertEqual(add_on.add_on_code, add_on_code)
+        self.assertEqual(add_on.name, 'Add-On with RevRec')
+        self.assertEqual(add_on.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(add_on.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(add_on.performance_obligation_id, '5')
+
+        with self.mock_request('add-on/exists-with-revrec.xml'):
+            same_add_on = plan.get_add_on(add_on_code)
+
+        self.assertEqual(same_add_on.add_on_code, add_on_code)
+        self.assertEqual(same_add_on.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(same_add_on.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(same_add_on.performance_obligation_id, '5')
+
+        add_on.liability_gl_account_id = None
+        add_on.revenue_gl_account_id = None
+        add_on.performance_obligation_id = None
+
+        with self.mock_request('add-on/updated-with-revrec.xml'):
+            add_on.save()
+
+        self.assertEqual(add_on.liability_gl_account_id, None)
+        self.assertEqual(add_on.revenue_gl_account_id, None)
+        self.assertEqual(add_on.performance_obligation_id, '6')
+
     def test_billing_info(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')
