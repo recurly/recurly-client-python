@@ -2132,7 +2132,10 @@ class AddOn(Resource):
         'updated_at',
         'tier_type',
         'tiers',
-        'percentage_tiers'
+        'percentage_tiers',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
 
     _classes_for_nodename = {
