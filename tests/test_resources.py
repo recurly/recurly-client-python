@@ -362,6 +362,63 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
 
+    def test_purchase_with_revrec(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        unit_amount_in_cents=500,
+                        liability_gl_account_id='t5ejtge1xw0x',
+                        revenue_gl_account_id='t5ejtgf1vxh1',
+                        performance_obligation_id='5'
+                    )
+                ]
+            )
+
+        with self.mock_request('purchase/invoiced-with-revrec.xml'):
+            collection = create_purchase().invoice()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+        with self.mock_request('purchase/previewed-with-revrec.xml'):
+            collection = create_purchase().preview()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+        with self.mock_request('purchase/authorized-with-revrec.xml'):
+            collection = create_purchase().authorize()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+        with self.mock_request('purchase/pending-with-revrec.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'testmock@example.com'
+            collection = purchase.pending()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+
     def test_account(self):
         account_code = 'test%s' % self.test_id
         with self.mock_request('account/does-not-exist.xml'):
@@ -1189,6 +1246,29 @@ class TestResources(RecurlyTest):
                     with self.mock_request('adjustment/credit-adjustments.xml'):
                         credits = adjustment.credit_adjustments()
                         self.assertEqual(len(credits), 1)
+
+            """Test revrec adjustment"""
+            with self.mock_request('adjustment/charged-with-revrec.xml'):
+                charge = Adjustment(
+                    unit_amount_in_cents=1000,
+                    currency='USD',
+                    description='test charge',
+                    type='charge',
+                    liability_gl_account_id='t5ejtge1xw0x',
+                    revenue_gl_account_id='t5ejtgf1vxh1',
+                    performance_obligation_id='5',
+                )
+                account.charge(charge)
+
+            with self.mock_request('adjustment/account-has-adjustments.xml'):
+                charges = account.adjustments()
+
+            self.assertEqual(len(charges), 1)
+            same_charge = charges[0]
+            self.assertEqual(same_charge.unit_amount_in_cents, 1000)
+            self.assertEqual(same_charge.liability_gl_account_code, 'firstliab')
+            self.assertEqual(same_charge.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(same_charge.performance_obligation_id, '5')
 
         finally:
             with self.mock_request('adjustment/account-deleted.xml'):

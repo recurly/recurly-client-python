@@ -1045,6 +1045,11 @@ class Adjustment(Resource):
         'shipping_address_id',
         'refundable_total_in_cents',
         'custom_fields',
+        'liability_gl_account_code',
+        'liability_gl_account_id',
+        'revenue_gl_account_code',
+        'revenue_gl_account_id',
+        'performance_obligation_id',
     )
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {
