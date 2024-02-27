@@ -1,0 +1,56 @@
+POST https://api.recurly.com/v2/accounts/chargemock/adjustments HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment type="charge">
+  <currency>USD</currency>
+  <description>test charge</description>
+  <liability_gl_account_id>t5ejtge1xw0x</liability_gl_account_id>
+  <performance_obligation_id>5</performance_obligation_id>
+  <revenue_gl_account_id>t5ejtgf1vxh1</revenue_gl_account_id>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+</adjustment>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/adjustments/6f56942e01241200964cb6425c85b9d4
+
+<?xml version="1.0" encoding="UTF-8"?>
+<adjustment href="https://api.recurly.com/v2/adjustments/6f56942e01241200964cb6425c85b9d4" type="charge">
+  <account href="https://api.recurly.com/v2/accounts/chargemock"/>
+  <bill_for_account href="https://api.recurly.com/v2/accounts/chargemock"/>
+  <item_code nil="nil"></item_code>
+  <external_sku nil="nil"></external_sku>
+  <credit_adjustments href="https://api.recurly.com/v2/adjustments/6f56942e01241200964cb6425c85b9d4/credit_adjustments"/>
+  <refundable_total_in_cents type="integer">0</refundable_total_in_cents>
+  <uuid>6f56942e01241200964cb6425c85b9d4</uuid>
+  <state>pending</state>
+  <description>test charge</description>
+  <accounting_code nil="nil"></accounting_code>
+  <product_code nil="nil"></product_code>
+  <origin>debit</origin>
+  <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>
+  <quantity type="integer">1</quantity>
+  <discount_in_cents type="integer">0</discount_in_cents>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <total_in_cents type="integer">1000</total_in_cents>
+  <tax_inclusive type="boolean">false</tax_inclusive>
+  <currency>USD</currency>
+  <proration_rate nil="nil"></proration_rate>
+  <tax_exempt type="boolean">false</tax_exempt>
+  <tax_code nil="nil"></tax_code>
+  <start_date type="datetime">2024-02-26T23:38:41Z</start_date>
+  <end_date nil="nil"></end_date>
+  <created_at type="datetime">2024-02-26T23:38:42Z</created_at>
+  <updated_at type="datetime">2024-02-26T23:38:42Z</updated_at>
+  <revenue_schedule_type></revenue_schedule_type>
+  <custom_fields type="array">
+  </custom_fields>
+  <liability_gl_account_code>firstliab</liability_gl_account_code>
+  <revenue_gl_account_code>firstrev</revenue_gl_account_code>
+  <performance_obligation_id>5</performance_obligation_id>
+</adjustment>
