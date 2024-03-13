@@ -7,9 +7,9 @@ from six.moves.urllib.parse import urljoin
 
 import recurly
 from recurly import Account, AddOn, Address, Adjustment, BillingInfo, Coupon, Item, Plan, Redemption, Subscription, \
-    SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, AccountAcquisition, \
+    SubscriptionAddOn, Transaction, MeasuredUnit, Usage, GiftCard, Delivery, ShippingAddress, ShippingMethod, AccountAcquisition, \
     Purchase, Invoice, InvoiceCollection, CreditPayment, CustomField, ExportDate, ExportDateFile, DunningCampaign, \
-    DunningCycle, InvoiceTemplate, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
+    DunningCycle, GeneralLedgerAccount, InvoiceTemplate, PerformanceObligation, PlanRampInterval, SubRampInterval, ExternalSubscription, ExternalProduct, \
     ExternalProductReference, ExternalPaymentPhase, CustomFieldDefinition, ExternalInvoice, ExternalCharge, ExternalAccount, \
     GatewayAttributes, BusinessEntity
 from recurly import Money, NotFoundError, ValidationError, BadRequestError, PageError
@@ -361,6 +361,63 @@ class TestResources(RecurlyTest):
             collection = purchase.pending()
             self.assertIsInstance(collection, InvoiceCollection)
             self.assertIsInstance(collection.charge_invoice, Invoice)
+
+    def test_purchase_with_revrec(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        unit_amount_in_cents=500,
+                        liability_gl_account_id='t5ejtge1xw0x',
+                        revenue_gl_account_id='t5ejtgf1vxh1',
+                        performance_obligation_id='5'
+                    )
+                ]
+            )
+
+        with self.mock_request('purchase/invoiced-with-revrec.xml'):
+            collection = create_purchase().invoice()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+        with self.mock_request('purchase/previewed-with-revrec.xml'):
+            collection = create_purchase().preview()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+        with self.mock_request('purchase/authorized-with-revrec.xml'):
+            collection = create_purchase().authorize()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
+        with self.mock_request('purchase/pending-with-revrec.xml'):
+            purchase = create_purchase()
+            purchase.account.email = 'testmock@example.com'
+            collection = purchase.pending()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.liability_gl_account_code, 'firstliab')
+            self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(adjustment.performance_obligation_id, '5')
 
     def test_account(self):
         account_code = 'test%s' % self.test_id
@@ -839,6 +896,56 @@ class TestResources(RecurlyTest):
             with self.mock_request('add-on/plan-deleted.xml'):
                 plan.delete()
 
+    def test_add_on_with_revrec(self):
+        plan_code = 'plan%s' % self.test_id
+        add_on_code = 'addonrevrec'
+
+        plan = Plan(
+            plan_code=plan_code,
+            name='Mock Plan',
+            setup_fee_in_cents=Money(0),
+            unit_amount_in_cents=Money(1000),
+        )
+        with self.mock_request('add-on/plan-created.xml'):
+            plan.save()
+
+        add_on = AddOn(
+            add_on_code=add_on_code,
+            name='Add-On with RevRec',
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5',
+            unit_amount_in_cents=Money(40)
+        )
+
+        with self.mock_request('add-on/created-with-revrec.xml'):
+            plan.create_add_on(add_on)
+
+        self.assertEqual(add_on.add_on_code, add_on_code)
+        self.assertEqual(add_on.name, 'Add-On with RevRec')
+        self.assertEqual(add_on.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(add_on.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(add_on.performance_obligation_id, '5')
+
+        with self.mock_request('add-on/exists-with-revrec.xml'):
+            same_add_on = plan.get_add_on(add_on_code)
+
+        self.assertEqual(same_add_on.add_on_code, add_on_code)
+        self.assertEqual(same_add_on.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(same_add_on.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(same_add_on.performance_obligation_id, '5')
+
+        add_on.liability_gl_account_id = None
+        add_on.revenue_gl_account_id = None
+        add_on.performance_obligation_id = None
+
+        with self.mock_request('add-on/updated-with-revrec.xml'):
+            add_on.save()
+
+        self.assertEqual(add_on.liability_gl_account_id, None)
+        self.assertEqual(add_on.revenue_gl_account_id, None)
+        self.assertEqual(add_on.performance_obligation_id, '6')
+
     def test_billing_info(self):
         logging.basicConfig(level=logging.DEBUG)  # make sure it's init'ed
         logger = logging.getLogger('recurly.http.request')
@@ -1139,6 +1246,29 @@ class TestResources(RecurlyTest):
                     with self.mock_request('adjustment/credit-adjustments.xml'):
                         credits = adjustment.credit_adjustments()
                         self.assertEqual(len(credits), 1)
+
+            """Test revrec adjustment"""
+            with self.mock_request('adjustment/charged-with-revrec.xml'):
+                charge = Adjustment(
+                    unit_amount_in_cents=1000,
+                    currency='USD',
+                    description='test charge',
+                    type='charge',
+                    liability_gl_account_id='t5ejtge1xw0x',
+                    revenue_gl_account_id='t5ejtgf1vxh1',
+                    performance_obligation_id='5',
+                )
+                account.charge(charge)
+
+            with self.mock_request('adjustment/account-has-adjustments.xml'):
+                charges = account.adjustments()
+
+            self.assertEqual(len(charges), 1)
+            same_charge = charges[0]
+            self.assertEqual(same_charge.unit_amount_in_cents, 1000)
+            self.assertEqual(same_charge.liability_gl_account_code, 'firstliab')
+            self.assertEqual(same_charge.revenue_gl_account_code, 'firstrev')
+            self.assertEqual(same_charge.performance_obligation_id, '5')
 
         finally:
             with self.mock_request('adjustment/account-deleted.xml'):
@@ -1712,6 +1842,49 @@ class TestResources(RecurlyTest):
             with self.mock_request('item/deleted.xml'):
                 item.delete()
 
+    def test_item_with_revrec(self):
+        item_code = 'item%s' % self.test_id
+        with self.mock_request('item/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Item.get, item_code)
+
+        item = Item(
+            item_code=item_code,
+            name='Mock Item',
+            description='An item of the mocked variety',
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5'
+        )
+
+        with self.mock_request('item/created-with-revrec.xml'):
+            item.save()
+
+        self.assertEqual(item.item_code, item_code)
+        self.assertEqual(item.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(item.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(item.performance_obligation_id, '5')
+
+        with self.mock_request('item/exists-with-revrec.xml'):
+            same_item = Item.get(item_code)
+
+        self.assertEqual(same_item.item_code, item_code)
+        self.assertEqual(same_item.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(same_item.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(same_item.performance_obligation_id, '5')
+
+        item.description = 'A mocked description'
+        item.liability_gl_account_id = None
+        item.revenue_gl_account_id = None
+        item.performance_obligation_id = None
+
+        with self.mock_request('item/updated-with-revrec.xml'):
+            item.save()
+
+        self.assertEqual(item.description, 'A mocked description')
+        self.assertEqual(item.liability_gl_account_id, None)
+        self.assertEqual(item.revenue_gl_account_id, None)
+        self.assertEqual(item.performance_obligation_id, '6')
+
     def test_custom_field_definition(self):
         """Test custom field definitions list"""
         with self.mock_request('custom_field_definitions/list.xml'):
@@ -1840,6 +2013,67 @@ class TestResources(RecurlyTest):
         ]
         with self.mock_request('plan/updated_with_ramps.xml'):
             plan.save()
+
+    def test_plan_with_revrec(self):
+        plan_code = 'plan%s' % self.test_id
+        with self.mock_request('plan/does-not-exist.xml'):
+            self.assertRaises(NotFoundError, Plan.get, plan_code)
+
+        plan = Plan(
+            name='RevRec Plan',
+            plan_code=plan_code,
+            setup_fee_in_cents=Money(200),
+            unit_amount_in_cents=Money(1000),
+            liability_gl_account_id='t5ejtge1xw0x',
+            revenue_gl_account_id='t5ejtgf1vxh1',
+            performance_obligation_id='5',
+            setup_fee_liability_gl_account_id='t5ejtge1xw0x',
+            setup_fee_revenue_gl_account_id='t5ejtgf1vxh1',
+            setup_fee_performance_obligation_id='5'
+        )
+
+        with self.mock_request('plan/created-with-revrec.xml'):
+            plan.save()
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(plan.name, 'RevRec Plan')
+        self.assertEqual(plan.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.performance_obligation_id, '5')
+        self.assertEqual(plan.setup_fee_liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.setup_fee_revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.setup_fee_performance_obligation_id, '5')
+
+        with self.mock_request('plan/exists_with_revrec.xml'):
+            same_plan = Plan.get(plan_code)
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(plan.name, 'RevRec Plan')
+        self.assertEqual(plan.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.performance_obligation_id, '5')
+        self.assertEqual(plan.setup_fee_liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(plan.setup_fee_revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(plan.setup_fee_performance_obligation_id, '5')
+
+        plan.liability_gl_account_id = None
+        plan.revenue_gl_account_id = None
+        plan.performance_obligation_id = None
+        plan.setup_fee_liability_gl_account_id = None
+        plan.setup_fee_revenue_gl_account_id = None
+        plan.setup_fee_performance_obligation_id = None
+
+        with self.mock_request('plan/updated_with_revrec.xml'):
+            plan.save()
+
+        self.assertEqual(plan.plan_code, plan_code)
+        self.assertEqual(plan.name, 'RevRec Plan')
+        self.assertEqual(plan.liability_gl_account_id, None)
+        self.assertEqual(plan.revenue_gl_account_id, None)
+        self.assertEqual(plan.performance_obligation_id, '6')
+        self.assertEqual(plan.setup_fee_liability_gl_account_id, None)
+        self.assertEqual(plan.setup_fee_revenue_gl_account_id, None)
+        self.assertEqual(plan.setup_fee_performance_obligation_id, '4')
 
     def test_preview_subscription_change(self):
         with self.mock_request('subscription/show.xml'):
@@ -2840,6 +3074,33 @@ class TestResources(RecurlyTest):
         gift_card.gifter_account = account
         return gift_card
 
+    def test_get_gift_card(self):
+        with self.mock_request('gift_cards/get.xml'):
+            gift_card = GiftCard.get(3880289408739841209)
+
+        self.assertEqual(gift_card.id, 3880289408739841209)
+        self.assertEqual(gift_card.redemption_code, 'ASDR63PM4JUTXW9I')
+        self.assertEqual(gift_card.product_code, 'test_gift_card')
+        self.assertEqual(gift_card.unit_amount_in_cents, 1000)
+        self.assertEqual(gift_card.currency, 'USD')
+        self.assertEqual(gift_card.delivery.method, 'email')
+        self.assertEqual(gift_card.delivery.email_address, 'sally@example.com')
+        self.assertEqual(gift_card.delivery.first_name, 'Sally')
+        self.assertEqual(gift_card.delivery.last_name, 'Smith')
+        self.assertEqual(gift_card.delivery.gifter_name, 'John')
+        self.assertEqual(gift_card.delivery.personal_message, 'Congrats!')
+        self.assertEqual(gift_card.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(gift_card.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(gift_card.performance_obligation_id, '4')
+
+    def test_list_gift_cards(self):
+        with self.mock_request('gift_cards/list.xml'):
+            gift_cards = GiftCard.all()
+
+        self.assertEqual(len(gift_cards), 2)
+        self.assertIsInstance(gift_cards[0], GiftCard)
+        self.assertIsInstance(gift_cards[1], GiftCard)
+
     def test_gift_cards_purchase(self):
         gift_card = self._build_gift_card()
 
@@ -3210,6 +3471,8 @@ class TestResources(RecurlyTest):
         self.assertIsInstance(entity.invoice_display_address, Address)
         self.assertEqual(entity.created_at, datetime(2023, 5, 13, 17, 28, 47, tzinfo=entity.created_at.tzinfo))
         self.assertEqual(entity.updated_at, datetime(2023, 10, 13, 17, 28, 48, tzinfo=entity.updated_at.tzinfo))
+        self.assertEqual(entity.default_liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(entity.default_revenue_gl_account_id, 't5ejtgf1vxh1')
 
     def test_list_business_entities(self):
         with self.mock_request('business_entity/list.xml'):
@@ -3392,6 +3655,86 @@ class TestResources(RecurlyTest):
         )
         with self.mock_request('account/created-with-external-accounts.xml'):
             account.save()
+
+    def test_list_general_ledger_accounts(self):
+        with self.mock_request('general_ledger_accounts/list.xml'):
+            general_ledger_accounts = GeneralLedgerAccount.all()
+
+        self.assertEqual(len(general_ledger_accounts), 2)
+
+    def test_list_filtered_general_ledger_accounts(self):
+        with self.mock_request('general_ledger_accounts/list_filtered.xml'):
+            general_ledger_accounts = GeneralLedgerAccount.all(account_type='revenue')
+
+        self.assertEqual(len(general_ledger_accounts), 1)
+        self.assertEqual(general_ledger_accounts[0].account_type, 'revenue')
+
+    def test_get_general_ledger_accounts(self):
+        with self.mock_request('general_ledger_accounts/get.xml'):
+            general_ledger_account = GeneralLedgerAccount.get('u90r5deeaxix')
+
+        self.assertEqual(general_ledger_account.id, 'u90r5deeaxix')
+        self.assertEqual(general_ledger_account.code, 'code1')
+        self.assertEqual(general_ledger_account.account_type, 'revenue')
+        self.assertEqual(general_ledger_account.description, 'Some Description')
+
+    def test_create_general_ledger_account(self):
+        general_ledger_account = GeneralLedgerAccount(
+            code='code2',
+            account_type='liability',
+            description='Liability Description'
+        )
+        with self.mock_request('general_ledger_accounts/created.xml'):
+            general_ledger_account.save()
+
+        self.assertEquals(general_ledger_account.code, 'code2')
+        self.assertEquals(general_ledger_account.account_type, 'liability')
+        self.assertEquals(general_ledger_account.description, 'Liability Description')
+
+    def test_update_general_ledger_account(self):
+        with self.mock_request('general_ledger_accounts/get.xml'):
+            general_ledger_account = GeneralLedgerAccount.get('u90r5deeaxix')
+
+        with self.mock_request('general_ledger_accounts/updated.xml'):
+            general_ledger_account.code = 'code2'
+            general_ledger_account.description = 'Updated Description'
+            general_ledger_account.save()
+
+        self.assertEquals(general_ledger_account.code, 'code2')
+        self.assertEquals(general_ledger_account.description, 'Updated Description')
+
+    def test_list_performance_obligations(self):
+        with self.mock_request('performance_obligations/list.xml'):
+            performance_obligations = PerformanceObligation.all()
+
+        self.assertEqual(len(performance_obligations), 6)
+
+    def test_get_performance_obligation(self):
+        with self.mock_request('performance_obligations/get.xml'):
+            performance_obligation = PerformanceObligation.get(6)
+
+        self.assertEqual(performance_obligation.id, '6')
+        self.assertEqual(performance_obligation.name, 'Over Time (Daily)')
+
+    def test_get_shipping_method(self):
+        with self.mock_request('shipping-method/get.xml'):
+            shipping_method = ShippingMethod.get('shipping2')
+
+        self.assertEqual(shipping_method.code, 'shipping2')
+        self.assertEqual(shipping_method.name, 'shipping 2')
+        self.assertEqual(shipping_method.accounting_code, 'ship')
+        self.assertEqual(shipping_method.tax_code, 'FR')
+        self.assertEqual(shipping_method.liability_gl_account_id, 't5ejtge1xw0x')
+        self.assertEqual(shipping_method.revenue_gl_account_id, 't5ejtgf1vxh1')
+        self.assertEqual(shipping_method.performance_obligation_id, '6')
+
+    def test_list_shipping_methods(self):
+        with self.mock_request('shipping-method/list.xml'):
+            shipping_methods = ShippingMethod.all()
+
+        self.assertEqual(len(shipping_methods), 2)
+        self.assertIsInstance(shipping_methods[0], ShippingMethod)
+        self.assertIsInstance(shipping_methods[1], ShippingMethod)
 
 if __name__ == '__main__':
     import unittest

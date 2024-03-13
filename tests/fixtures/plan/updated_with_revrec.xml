@@ -1,0 +1,67 @@
+PUT https://api.recurly.com/v2/plans/planmock HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<plan>
+  <liability_gl_account_id nil="nil"></liability_gl_account_id>
+  <performance_obligation_id nil="nil"></performance_obligation_id>
+  <revenue_gl_account_id nil="nil"></revenue_gl_account_id>
+  <setup_fee_liability_gl_account_id nil="nil"></setup_fee_liability_gl_account_id>
+  <setup_fee_performance_obligation_id nil="nil"></setup_fee_performance_obligation_id>
+  <setup_fee_revenue_gl_account_id nil="nil"></setup_fee_revenue_gl_account_id>
+</plan>
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<plan href="https://api.recurly.com/v2/plans/planmock">
+  <add_ons href="https://api.recurly.com/v2/plans/planmock/add_ons"/>
+  <plan_code>planmock</plan_code>
+  <name>RevRec Plan</name>
+  <description nil="nil"></description>
+  <success_url nil="nil"></success_url>
+  <cancel_url nil="nil"></cancel_url>
+  <display_donation_amounts type="boolean">false</display_donation_amounts>
+  <display_quantity type="boolean">false</display_quantity>
+  <display_phone_number type="boolean">false</display_phone_number>
+  <bypass_hosted_confirmation type="boolean">false</bypass_hosted_confirmation>
+  <unit_name>unit</unit_name>
+  <payment_page_tos_link nil="nil"></payment_page_tos_link>
+  <plan_interval_length type="integer">1</plan_interval_length>
+  <plan_interval_unit>months</plan_interval_unit>
+  <trial_interval_length type="integer">0</trial_interval_length>
+  <trial_interval_unit>days</trial_interval_unit>
+  <total_billing_cycles type="integer">1</total_billing_cycles>
+  <accounting_code nil="nil"></accounting_code>
+  <setup_fee_accounting_code nil="nil"></setup_fee_accounting_code>
+  <liability_gl_account_id nil="nil"></liability_gl_account_id>
+  <revenue_gl_account_id nil="nil"></revenue_gl_account_id>
+  <performance_obligation_id>6</performance_obligation_id>
+  <setup_fee_liability_gl_account_id nil="nil"></setup_fee_liability_gl_account_id>
+  <setup_fee_revenue_gl_account_id nil="nil"></setup_fee_revenue_gl_account_id>
+  <setup_fee_performance_obligation_id>4</setup_fee_performance_obligation_id>
+  <allow_any_item_on_subscriptions type="boolean">false</allow_any_item_on_subscriptions>
+  <created_at type="datetime">2024-02-06T22:01:53Z</created_at>
+  <updated_at type="datetime">2024-02-06T22:01:53Z</updated_at>
+  <auto_renew type="boolean">true</auto_renew>
+  <pricing_model>fixed</pricing_model>
+  <custom_fields type="array">
+  </custom_fields>
+  <revenue_schedule_type>evenly</revenue_schedule_type>
+  <setup_fee_revenue_schedule_type>evenly</setup_fee_revenue_schedule_type>
+  <trial_requires_billing_info type="boolean">true</trial_requires_billing_info>
+  <tax_exempt type="boolean">false</tax_exempt>
+  <tax_code nil="nil"></tax_code>
+  <unit_amount_in_cents>
+      <USD type="integer">1000</USD>
+  </unit_amount_in_cents>
+  <setup_fee_in_cents>
+      <USD type="integer">200</USD>
+  </setup_fee_in_cents>
+  <dunning_campaign_id nil="nil"></dunning_campaign_id>
+</plan>

@@ -1,0 +1,39 @@
+PUT https://api.recurly.com/v2/plans/planmock/add_ons/addonrevrec HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on>
+  <liability_gl_account_id nil="nil"></liability_gl_account_id>
+  <performance_obligation_id nil="nil"></performance_obligation_id>
+  <revenue_gl_account_id nil="nil"></revenue_gl_account_id>
+</add_on>
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<add_on href="https://api.recurly.com/v2/plans/planmock/add_ons/addonrevrec">
+  <plan href="https://api.recurly.com/v2/plans/planmock"/>
+  <add_on_code>addonrevrec</add_on_code>
+  <name>Add-On with RevRec</name>
+  <default_quantity type="integer">1</default_quantity>
+  <display_quantity_on_hosted_page type="boolean">false</display_quantity_on_hosted_page>
+  <tax_code nil="nil"></tax_code>
+  <unit_amount_in_cents>
+      <USD type="integer">40</USD>
+  </unit_amount_in_cents>
+  <accounting_code nil="nil"></accounting_code>
+  <add_on_type>fixed</add_on_type>
+  <optional type="boolean">true</optional>
+  <revenue_schedule_type>evenly</revenue_schedule_type>
+  <liability_gl_account_id nil="nil"></liability_gl_account_id>
+  <revenue_gl_account_id nil="nil"></revenue_gl_account_id>
+  <performance_obligation_id>6</performance_obligation_id>
+  <tier_type>flat</tier_type>
+  <created_at type="datetime">2024-02-20T23:06:46Z</created_at>
+  <updated_at type="datetime">2024-02-20T23:14:00Z</updated_at>
+</add_on>

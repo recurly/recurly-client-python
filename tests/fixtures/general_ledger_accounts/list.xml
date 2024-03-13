@@ -1,0 +1,30 @@
+GET https://api.recurly.com/v2/general_ledger_accounts HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+
+
+HTTP/1.1 200 OK
+X-Records: 1
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<general_ledger_accounts type="array">
+    <general_ledger_account href="https://api.recurly.com/v2/general_ledger_accounts/u90r5deeaxix">
+        <id>u90r5deeaxix</id>
+        <code>code1</code>
+        <account_type>revenue</account_type>
+        <description>Some Description</description>
+        <created_at type="datetime">2024-01-16T14:34:16Z</created_at>
+        <updated_at type="datetime">2024-01-16T14:34:16Z</updated_at>
+    </general_ledger_account>
+    <general_ledger_account href="https://api.recurly.com/v2/general_ledger_accounts/u9hmrpzksuy8">
+        <id>u9hmrpzksuy8</id>
+        <code>code2</code>
+        <account_type>liability</account_type>
+        <description>Liability Description</description>
+        <created_at type="datetime">2024-01-18T23:20:01Z</created_at>
+        <updated_at type="datetime">2024-01-18T23:20:01Z</updated_at>
+    </general_ledger_account>
+</general_ledger_accounts>

@@ -490,7 +490,9 @@ class BusinessEntity(Resource):
         'default_vat_number',
         'default_registration_number',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'default_revenue_gl_account_id',
+        'default_liability_gl_account_id',
     )
 
     _classes_for_nodename = {
@@ -513,6 +515,40 @@ class GatewayAttributes(Resource):
 
     attributes = (
         'account_reference',
+    )
+
+class GeneralLedgerAccount(Resource):
+
+    """General Ledger Account for Revenue Recognition"""
+
+    member_path = 'general_ledger_accounts/%s'
+    collection_path = 'general_ledger_accounts'
+
+    nodename = 'general_ledger_account'
+
+    attributes = (
+        'id',
+        'account_type',
+        'code',
+        'description',
+        'created_at',
+        'updated_at',
+    )
+
+class PerformanceObligation(Resource):
+
+    """Performance Obligation for Revenue Recognition"""
+
+    member_path = 'performance_obligations/%s'
+    collection_path = 'performance_obligations'
+
+    nodename = 'performance_obligation'
+
+    attributes = (
+        'id',
+        'name',
+        'created_at',
+        'updated_at',
     )
 
 class BillingInfo(Resource):
@@ -751,6 +787,9 @@ class GiftCard(Resource):
         'updated_at',
         'unit_amount_in_cents',
         'billing_info',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
     _classes_for_nodename = {'recipient_account': Account,'gifter_account':
             Account, 'delivery': Delivery}
@@ -961,6 +1000,9 @@ class Item(Resource):
         'created_at',
         'updated_at',
         'deleted_at',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
 
 class Adjustment(Resource):
@@ -1003,6 +1045,11 @@ class Adjustment(Resource):
         'shipping_address_id',
         'refundable_total_in_cents',
         'custom_fields',
+        'liability_gl_account_code',
+        'liability_gl_account_id',
+        'revenue_gl_account_code',
+        'revenue_gl_account_id',
+        'performance_obligation_id',
     )
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {
@@ -1447,6 +1494,9 @@ class ShippingMethod(Resource):
       'name',
       'accounting_code',
       'tax_code',
+      'liability_gl_account_id',
+      'revenue_gl_account_id',
+      'performance_obligation_id',
       'created_at',
       'updated_at',
     )
@@ -1491,6 +1541,12 @@ class Plan(Resource):
         'trial_interval_unit',
         'accounting_code',
         'setup_fee_accounting_code',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id',
+        'setup_fee_liability_gl_account_id',
+        'setup_fee_revenue_gl_account_id',
+        'setup_fee_performance_obligation_id',
         'created_at',
         'updated_at',
         'tax_exempt',
@@ -2081,7 +2137,10 @@ class AddOn(Resource):
         'updated_at',
         'tier_type',
         'tiers',
-        'percentage_tiers'
+        'percentage_tiers',
+        'liability_gl_account_id',
+        'revenue_gl_account_id',
+        'performance_obligation_id'
     )
 
     _classes_for_nodename = {
