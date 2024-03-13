@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.10.11](https://github.com/recurly/recurly-client-python/tree/2.10.11) (2024-03-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.10...2.10.11)
+
+
+**Merged Pull Requests**
+
+- Adding RevRec Support for Purchases [#680](https://github.com/recurly/recurly-client-python/pull/680) ([8eth](https://github.com/8eth))
+- Adding RevRec Support for Add Ons [#679](https://github.com/recurly/recurly-client-python/pull/679) ([8eth](https://github.com/8eth))
+- Adding RevRec Support for Gift Cards and Items [#676](https://github.com/recurly/recurly-client-python/pull/676) ([8eth](https://github.com/8eth))
+- Adding RevRec Support for Shipping Methods [#675](https://github.com/recurly/recurly-client-python/pull/675) ([8eth](https://github.com/8eth))
+- Adding RevRec Support for Plans [#673](https://github.com/recurly/recurly-client-python/pull/673) ([8eth](https://github.com/8eth))
+- Adding RevRec Support for Business Entities [#672](https://github.com/recurly/recurly-client-python/pull/672) ([8eth](https://github.com/8eth))
+- Adding support for Performance Obligations [#671](https://github.com/recurly/recurly-client-python/pull/671) ([8eth](https://github.com/8eth))
+- [DO NOT MERGE] Add RevRec Features to Python [#670](https://github.com/recurly/recurly-client-python/pull/670) ([8eth](https://github.com/8eth))
+- Adding support for General Ledger Accounts [#667](https://github.com/recurly/recurly-client-python/pull/667) ([8eth](https://github.com/8eth))
+
+
+
 ## [2.10.10](https://github.com/recurly/recurly-client-python/tree/2.10.10) (2023-12-06)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.9...2.10.10)
