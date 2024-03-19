@@ -985,6 +985,7 @@ class TestResources(RecurlyTest):
                 verification_value='7777',
                 year='2015',
                 month='12',
+                card_network_preference='Cartes Bancaires',
                 gateway_token='gatewaytoken123',
                 gateway_code='gatewaycode123',
                 gateway_attributes=gateway_attributes,
@@ -997,6 +998,7 @@ class TestResources(RecurlyTest):
             self.assertEqual(binfo.fraud.score, 87)
             self.assertEqual(binfo.fraud.decision, 'DECLINED')
             self.assertEqual(binfo.gateway_attributes.account_reference, 'ABC123')
+            self.assertEqual(binfo.card_network_preference, 'Cartes Bancaires')
 
             logger.removeHandler(log_handler)
             log_content = log_content.getvalue()

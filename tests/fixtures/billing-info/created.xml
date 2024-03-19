@@ -8,6 +8,7 @@ Content-Type: application/xml; charset=utf-8
 <?xml version="1.0" encoding="UTF-8"?>
 <billing_info type="credit_card">
   <address1>123 Main St</address1>
+  <card_network_preference>Cartes Bancaires</card_network_preference>
   <city>San Jose</city>
   <country>US</country>
   <currency>USD</currency>
@@ -48,6 +49,7 @@ Location: https://api.recurly.com/v2/accounts/binfomock/billing_info
   <currency>USD</currency>
   <gateway_token>gatewaytoken123</gateway_token>
   <gateway_code>gatewaycode123</gateway_code>
+  <card_network_preference>Cartes Bancaires</card_network_preference>
   <gateway_attributes>
     <account_reference>ABC123</account_reference>
   </gateway_attributes>
