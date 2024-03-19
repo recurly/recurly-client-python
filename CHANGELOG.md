@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.46.0](https://github.com/recurly/recurly-client-python/tree/4.46.0) (2024-03-19)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.45.0...4.46.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#683](https://github.com/recurly/recurly-client-python/pull/683) ([recurly-integrations](https://github.com/recurly-integrations))
+
+
+
 ## [4.45.0](https://github.com/recurly/recurly-client-python/tree/4.45.0) (2024-02-20)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.44.0...4.45.0)
