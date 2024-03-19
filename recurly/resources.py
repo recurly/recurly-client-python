@@ -371,6 +371,8 @@ class PaymentMethod(Resource):
         The bank account type. Only present for ACH payment methods.
     billing_agreement_id : str
         Billing Agreement identifier. Only present for Amazon or Paypal payment methods.
+    card_network_preference : str
+        Represents the card network preference associated with the billing info for dual badged cards. Must be a supported card network.
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
     cc_bin_country : str
@@ -405,6 +407,7 @@ class PaymentMethod(Resource):
     schema = {
         "account_type": str,
         "billing_agreement_id": str,
+        "card_network_preference": str,
         "card_type": str,
         "cc_bin_country": str,
         "exp_month": int,
@@ -1315,6 +1318,8 @@ class ExternalSubscription(Resource):
         An indication of the quantity of a subscribed item's quantity.
     state : str
         External subscriptions can be active, canceled, expired, or past_due.
+    test : bool
+        An indication of whether or not the external subscription was purchased in a sandbox environment.
     trial_ends_at : datetime
         When the external subscription trial period ends in the external platform.
     trial_started_at : datetime
@@ -1339,6 +1344,7 @@ class ExternalSubscription(Resource):
         "object": str,
         "quantity": int,
         "state": str,
+        "test": bool,
         "trial_ends_at": datetime,
         "trial_started_at": datetime,
         "updated_at": datetime,
