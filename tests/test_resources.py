@@ -157,6 +157,59 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(collection.charge_invoice, Invoice)
             self.assertEqual(purchase.billing_info_uuid, 'uniqueUuid')
 
+    def test_purchase_with_net_terms(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                currency = 'USD',
+                gateway_code = 'aBcD1234',
+                collection_method = 'manual',
+                net_terms = 0,
+                net_terms_type = 'eom',
+                shipping_address = ShippingAddress(
+                    first_name = 'Verena',
+                    last_name = 'Example',
+                    address1 = '456 Pillow Fort Drive',
+                    city = 'New Orleans',
+                    state = 'LA',
+                    zip = '70114',
+                    country = 'US',
+                    nickname = 'Work'
+                ),
+                account = Account(
+                    account_code = account_code,
+                    billing_info = BillingInfo(
+                        first_name = 'Verena',
+                        last_name = 'Example',
+                        number = '4111-1111-1111-1111',
+                        verification_value = '123',
+                        month = 11,
+                        year = 2020,
+                        address1 = '123 Main St',
+                        city = 'New Orleans',
+                        state = 'LA',
+                        zip = '70114',
+                        country = 'US',
+                    )
+                ),
+                subscriptions = [
+                    recurly.Subscription(plan_code = 'gold')
+                ],
+                adjustments = [
+                    recurly.Adjustment(unit_amount_in_cents=1000, description='Item 1',
+                                    quantity=1),
+                    recurly.Adjustment(unit_amount_in_cents=2000, description='Item 2',
+                                    quantity=2),
+                ]
+            )
+
+        with self.mock_request('purchase/invoiced-with-eom-net-terms.xml'):
+            collection = create_purchase().invoice()
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEquals(collection.charge_invoice.net_terms, 0)
+            self.assertEquals(collection.charge_invoice.net_terms_type, 'eom')
+
     def test_purchase_with_custom_fields_on_adjustments(self):
         account_code = 'test%s' % self.test_id
         def create_purchase():
@@ -1666,7 +1719,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('invoice/invoiced-with-optionals.xml'):
             collection = account.invoice(terms_and_conditions='Some Terms and Conditions',
                     customer_notes='Some Customer Notes', collection_method="manual",
-                    net_terms=30)
+                    net_terms=30, net_terms_type='net')
 
         invoice = collection.charge_invoice
 
@@ -1676,6 +1729,27 @@ class TestResources(RecurlyTest):
         self.assertEqual(invoice.customer_notes, 'Some Customer Notes')
         self.assertEqual(invoice.collection_method, 'manual')
         self.assertEqual(invoice.net_terms, 30)
+        self.assertEqual(invoice.net_terms_type, 'net')
+
+    def test_invoice_with_eom_net_terms(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced-with-eom-net-terms.xml'):
+            collection = account.invoice(terms_and_conditions='Some Terms and Conditions',
+                    customer_notes='Some Customer Notes', collection_method="manual",
+                    net_terms=30, net_terms_type='eom')
+
+        invoice = collection.charge_invoice
+
+        self.assertIsInstance(collection, InvoiceCollection)
+        self.assertIsInstance(invoice, Invoice)
+        self.assertEqual(invoice.terms_and_conditions, 'Some Terms and Conditions')
+        self.assertEqual(invoice.customer_notes, 'Some Customer Notes')
+        self.assertEqual(invoice.collection_method, 'manual')
+        self.assertEqual(invoice.net_terms, 30)
+        self.assertEqual(invoice.net_terms_type, 'eom')
 
     def test_invoice_offline_payment(self):
         with self.mock_request('invoice/show-invoice.xml'):
@@ -2363,6 +2437,7 @@ class TestResources(RecurlyTest):
                     plan_code='basicplan',
                     currency='USD',
                     net_terms=10,
+                    net_terms_type='net',
                     po_number='1000',
                     collection_method='manual'
                 )
@@ -2370,8 +2445,25 @@ class TestResources(RecurlyTest):
                     account.subscribe(manualsub)
                 self.assertTrue(manualsub._url)
                 self.assertEqual(manualsub.net_terms, 10)
+                self.assertEqual(manualsub.net_terms_type, 'net')
                 self.assertEqual(manualsub.collection_method, 'manual')
                 self.assertEqual(manualsub.po_number, '1000')
+
+                autoSubWithEOMNetTerms = Subscription(
+                    plan_code='basicplan',
+                    currency='USD',
+                    net_terms=45,
+                    net_terms_type='eom',
+                    po_number='1000',
+                    collection_method='automatic'
+                )
+                with self.mock_request('subscription/subscribed-auto-with-eom-net-terms.xml'):
+                    account.subscribe(autoSubWithEOMNetTerms)
+                self.assertTrue(autoSubWithEOMNetTerms._url)
+                self.assertEqual(autoSubWithEOMNetTerms.net_terms, 45)
+                self.assertEqual(autoSubWithEOMNetTerms.net_terms_type, 'eom')
+                self.assertEqual(autoSubWithEOMNetTerms.collection_method, 'automatic')
+                self.assertEqual(autoSubWithEOMNetTerms.po_number, '1000')
 
                 shipping_address = ShippingAddress()
                 shipping_address.address1 = '123 Main St'
