@@ -7,10 +7,10 @@ Content-Type: application/xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <subscription>
-  <collection_method>manual</collection_method>
+  <collection_method>automatic</collection_method>
   <currency>USD</currency>
-  <net_terms type="integer">10</net_terms>
-  <net_terms_type>net</net_terms_type>
+  <net_terms type="integer">45</net_terms>
+  <net_terms_type>eom</net_terms_type>
   <plan_code>basicplan</plan_code>
   <po_number>1000</po_number>
 </subscription>
@@ -30,9 +30,9 @@ Location: https://api.recurly.com/v2/subscriptions/12345678901234567890123456789
   </plan>
   <state>active</state>
   <quantity type="integer">1</quantity>
-  <net_terms type="integer">10</net_terms>
-  <net_terms_type>net</net_terms_type>
-  <collection_method>manual</collection_method>
+  <net_terms type="integer">45</net_terms>
+  <net_terms_type>eom</net_terms_type>
+  <collection_method>automatic</collection_method>
   <po_number>1000</po_number>
   <currency>EUR</currency>
   <unit_amount_in_cents type="integer">1000</unit_amount_in_cents>

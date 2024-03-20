@@ -11,7 +11,7 @@ Content-Type: application/xml; charset=utf-8
   <customer_notes>Some Customer Notes</customer_notes>
   <collection_method>manual</collection_method>
   <net_terms type="integer">30</net_terms>
-  <net_terms_type>net</net_terms_type>
+  <net_terms_type>eom</net_terms_type>
 </invoice>
 
 HTTP/1.1 201 Created
@@ -32,7 +32,7 @@ Location: https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8
       <customer_notes>Some Customer Notes</customer_notes>
       <collection_method>manual</collection_method>
       <net_terms type="integer">30</net_terms>
-      <net_terms_type>net</net_terms_type>
+      <net_terms_type>eom</net_terms_type>
       <start_date type="datetime">2009-11-03T23:27:46-08:00</start_date>
       <end_date type="datetime"></end_date>
       <description>test charge</description>
