@@ -22,7 +22,7 @@ https://dev.recurly.com/docs/getting-started
 
 """
 
-__version__ = '2.10.11'
+__version__ = '2.10.12'
 __python_version__ = '.'.join(map(str, sys.version_info[:3]))
 
 cached_rate_limits = {
@@ -608,7 +608,8 @@ class BillingInfo(Resource):
         'primary_payment_method',
         'backup_payment_method',
         'online_banking_payment_type',
-        'username'
+        'username',
+        'card_network_preference'
     )
     sensitive_attributes = ('number', 'verification_value', 'account_number', 'iban')
     xml_attribute_attributes = ('type',)

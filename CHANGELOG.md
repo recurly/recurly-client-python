@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.12](https://github.com/recurly/recurly-client-python/tree/2.10.12) (2024-03-19)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.11...2.10.12)
+
+
+**Merged Pull Requests**
+
+- Add card_network_preference field to v2 [#684](https://github.com/recurly/recurly-client-python/pull/684) ([gilv93](https://github.com/gilv93))
+
+
+
 ## [2.10.11](https://github.com/recurly/recurly-client-python/tree/2.10.11) (2024-03-13)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.10...2.10.11)
