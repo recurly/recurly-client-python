@@ -2301,6 +2301,7 @@ class ExternalSubscription(Resource):
         'account',
         'external_id',
         'external_product_reference',
+        'uuid',
         'external_invoices',
         'external_payment_phases',
         'last_purchased',
@@ -2333,6 +2334,14 @@ class ExternalSubscription(Resource):
 
         """
         return cls.get("external-id-{}".format(external_id))
+
+    @classmethod
+    def get_by_uuid(cls, uuid):
+        """Return a `External Subscription` instance identified by
+        the given uuid.
+
+        """
+        return cls.get("uuid-{}".format(uuid))
 
 class ExternalProductReference(Resource):
 

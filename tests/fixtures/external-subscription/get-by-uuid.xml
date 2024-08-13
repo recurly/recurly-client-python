@@ -1,4 +1,4 @@
-GET https://api.recurly.com/v2/external_subscriptions/sd28t3zdm59r HTTP/1.1
+GET https://api.recurly.com/v2/external_subscriptions/uuid-72bb9966bb5dc3767461ce4368a6b366 HTTP/1.1
 X-Api-Version: {api-version}
 Accept: application/xml
 Authorization: Basic YXBpa2V5Og==

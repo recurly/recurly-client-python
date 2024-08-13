@@ -3475,6 +3475,7 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_subscriptions[0].external_id, 'abcd1234')
         self.assertEqual(external_subscriptions[0].external_product_reference, None)
+        self.assertEqual(external_subscriptions[0].uuid, '72bb9966bb5dc3767461ce4368a6b366')
         self.assertEqual(external_subscriptions[0].last_purchased, None)
         self.assertEqual(external_subscriptions[0].auto_renew, False)
         self.assertEqual(external_subscriptions[0].in_grace_period, False)
@@ -3493,6 +3494,7 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_subscriptions[1].external_id, 'efgh5678')
         self.assertEqual(external_subscriptions[1].external_product_reference, None)
+        self.assertEqual(external_subscriptions[1].uuid, '72bba6cc3a2323d04632374f0fb44a5a')
         self.assertEqual(external_subscriptions[1].last_purchased, None)
         self.assertEqual(external_subscriptions[1].auto_renew, False)
         self.assertEqual(external_subscriptions[1].in_grace_period, False)
@@ -3518,6 +3520,7 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_subscriptions[0].external_id, 'abcd1234')
         self.assertEqual(external_subscriptions[0].external_product_reference, None)
+        self.assertEqual(external_subscriptions[0].uuid, '72bb9966bb5dc3767461ce4368a6b366')
         self.assertEqual(external_subscriptions[0].last_purchased, None)
         self.assertEqual(external_subscriptions[0].auto_renew, False)
         self.assertEqual(external_subscriptions[0].in_grace_period, False)
@@ -3536,6 +3539,7 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_subscriptions[1].external_id, 'efgh5678')
         self.assertEqual(external_subscriptions[1].external_product_reference, None)
+        self.assertEqual(external_subscriptions[1].uuid, '72bba6cc3a2323d04632374f0fb44a5a')
         self.assertEqual(external_subscriptions[1].last_purchased, None)
         self.assertEqual(external_subscriptions[1].auto_renew, False)
         self.assertEqual(external_subscriptions[1].in_grace_period, False)
@@ -3559,6 +3563,7 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_subscription.external_id, 'abcd1234')
         self.assertEqual(external_subscription.external_product_reference, None)
+        self.assertEqual(external_subscription.uuid, '72bb9966bb5dc3767461ce4368a6b366')
         self.assertEqual(external_subscription.last_purchased, None)
         self.assertEqual(external_subscription.auto_renew, False)
         self.assertEqual(external_subscription.in_grace_period, False)
@@ -3582,6 +3587,31 @@ class TestResources(RecurlyTest):
 
         self.assertEqual(external_subscription.external_id, 'abcd1234')
         self.assertEqual(external_subscription.external_product_reference, None)
+        self.assertEqual(external_subscription.uuid, '72bb9966bb5dc3767461ce4368a6b366')
+        self.assertEqual(external_subscription.last_purchased, None)
+        self.assertEqual(external_subscription.auto_renew, False)
+        self.assertEqual(external_subscription.in_grace_period, False)
+        self.assertEqual(external_subscription.imported, False)
+        self.assertEqual(external_subscription.test, False)
+        self.assertEqual(external_subscription.app_identifier, 'app_identifier')
+        self.assertEqual(external_subscription.quantity, 1)
+        self.assertEqual(external_subscription.state, 'active')
+        self.assertEqual(external_subscription.activated_at, None)
+        self.assertEqual(external_subscription.canceled_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscription.canceled_at.tzinfo))
+        self.assertEqual(external_subscription.expires_at, None)
+        self.assertEqual(external_subscription.trial_started_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscription.trial_started_at.tzinfo))
+        self.assertEqual(external_subscription.trial_ends_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscription.trial_ends_at.tzinfo))
+        self.assertEqual(external_subscription.created_at, datetime(2022, 11, 3, 21, 57, 14, tzinfo=external_subscription.created_at.tzinfo))
+        self.assertEqual(external_subscription.updated_at, datetime(2022, 11, 4, 18, 11, 51, tzinfo=external_subscription.updated_at.tzinfo))
+
+    def test_get_external_subscription_by_external_id(self):
+
+        with self.mock_request('external-subscription/get-by-uuid.xml'):
+            external_subscription = ExternalSubscription.get_by_uuid('72bb9966bb5dc3767461ce4368a6b366')
+
+        self.assertEqual(external_subscription.external_id, 'abcd1234')
+        self.assertEqual(external_subscription.external_product_reference, None)
+        self.assertEqual(external_subscription.uuid, '72bb9966bb5dc3767461ce4368a6b366')
         self.assertEqual(external_subscription.last_purchased, None)
         self.assertEqual(external_subscription.auto_renew, False)
         self.assertEqual(external_subscription.in_grace_period, False)
