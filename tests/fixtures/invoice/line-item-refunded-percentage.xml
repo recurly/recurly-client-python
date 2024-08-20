@@ -1,0 +1,39 @@
+POST https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8/refund HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice>
+    <line_items>
+        <adjustment>
+            <uuid>2bc3cf4cb513049c6aec1b419c97b508</uuid>
+            <percentage type="integer">50</percentage>
+            <prorate type="boolean">false</prorate>
+        </adjustment>
+    </line_items>
+    <credit_customer_notes>Credit Customer Notes</credit_customer_notes>
+    <description>Description</description>
+    <refund_method>credit_first</refund_method>
+</invoice>
+
+HTTP/1.1 201 Created
+Content-Type: application/xml; charset=utf-8
+Location: https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice href="https://api.recurly.com/v2/invoices/4ba1531325014b4f969cd13676f514d8">
+  <uuid>4ba1531325014b4f969cd13676f514d8</uuid>
+  <account_code>invoicemock</account_code>
+  <invoice_number type="integer">1001</invoice_number>
+  <invoice_number_prefix></invoice_number_prefix>
+  <subtotal_in_cents type="integer">-500</subtotal_in_cents>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <total_in_cents type="integer">-500</total_in_cents>
+  <start_date type="datetime">2009-11-03T23:27:46-08:00</start_date>
+  <end_date type="datetime"></end_date>
+  <description>test charge</description>
+  <created_at type="datetime">2009-11-03T23:27:46-08:00</created_at>
+</invoice>

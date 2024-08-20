@@ -1678,6 +1678,23 @@ class TestResources(RecurlyTest):
             refund_invoice = invoice.refund_amount(1000, options)
         self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
 
+    def test_invoice_refund_percentage(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced.xml'):
+            invoice = account.invoice().charge_invoice
+
+        with self.mock_request('invoice/refunded-percentage.xml'):
+            options = {
+                'refund_method': 'credit_first',
+                'credit_customer_notes': 'Credit Customer Notes',
+                'description': 'Description'
+            }
+            refund_invoice = invoice.refund_percentage(50, options)
+        self.assertEqual(refund_invoice.subtotal_in_cents, -50)
+
     def test_invoice_refund(self):
         account = Account(account_code='invoice%s' % self.test_id)
         with self.mock_request('invoice/account-created.xml'):
@@ -1696,6 +1713,42 @@ class TestResources(RecurlyTest):
             }
             refund_invoice = invoice.refund(line_items, options)
         self.assertEqual(refund_invoice.subtotal_in_cents, -1000)
+
+    def test_invoice_refund_line_item_percentage(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced-line-items.xml'):
+            invoice = account.invoice().charge_invoice
+
+        with self.mock_request('invoice/line-item-refunded-percentage.xml'):
+            line_items = [{ 'adjustment': invoice.line_items[0], 'percentage': 50, 'prorate': False }]
+            options = {
+                'refund_method': 'credit_first',
+                'credit_customer_notes': 'Credit Customer Notes',
+                'description': 'Description'
+            }
+            refund_invoice = invoice.refund(line_items, options)
+        self.assertEqual(refund_invoice.subtotal_in_cents, -500)
+
+    def test_invoice_refund_line_item_amount_in_cents(self):
+        account = Account(account_code='invoice%s' % self.test_id)
+        with self.mock_request('invoice/account-created.xml'):
+            account.save()
+
+        with self.mock_request('invoice/invoiced-line-items.xml'):
+            invoice = account.invoice().charge_invoice
+
+        with self.mock_request('invoice/line-item-refunded-amount-in-cents.xml'):
+            line_items = [{ 'adjustment': invoice.line_items[0], 'amount_in_cents': 500, 'prorate': False }]
+            options = {
+                'refund_method': 'credit_first',
+                'credit_customer_notes': 'Credit Customer Notes',
+                'description': 'Description'
+            }
+            refund_invoice = invoice.refund(line_items, options)
+        self.assertEqual(refund_invoice.subtotal_in_cents, -500)
 
     def test_invoice_collect(self):
         with self.mock_request('invoice/show-invoice.xml'):

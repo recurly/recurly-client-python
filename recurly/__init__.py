@@ -1210,7 +1210,24 @@ class Invoice(Resource):
             if 'refund_method' not in refund_options:
                 refund_options = { 'refund_method': 'credit_first' }
 
-        amount_element = self._refund_open_amount_xml(amount_in_cents,
+        amount_element = self._refund_open_amount_xml('amount_in_cents',
+                                                     amount_in_cents,
+                                                     refund_options)
+        return self._create_refund_invoice(amount_element)
+
+    def refund_percentage(self, percentage, refund_options = {}):
+        # For backwards compatibility
+        # TODO the consequent branch of this conditional should eventually be removed
+        # and we should document that as a breaking change in the changelog.
+        # The same change should be applied to the refund() method
+        if (isinstance(refund_options, six.string_types)):
+            refund_options = { 'refund_method': refund_options }
+        else:
+            if 'refund_method' not in refund_options:
+                refund_options = { 'refund_method': 'credit_first' }
+
+        amount_element = self._refund_open_amount_xml('percentage',
+                                                     percentage,
                                                      refund_options)
         return self._create_refund_invoice(amount_element)
 
@@ -1229,10 +1246,10 @@ class Invoice(Resource):
                                                           refund_options)
        return self._create_refund_invoice(adjustments_element)
 
-    def _refund_open_amount_xml(self, amount_in_cents, refund_options):
+    def _refund_open_amount_xml(self, refund_type, refund_amount, refund_options):
         elem = ElementTreeBuilder.Element(self.nodename)
-        elem.append(Resource.element_for_value('amount_in_cents',
-            amount_in_cents))
+        elem.append(Resource.element_for_value(refund_type,
+            refund_amount))
 
         # Need to sort the keys for tests to pass in python 2 and 3
         # Can remove `sorted` when we drop python 2 support
@@ -1247,15 +1264,22 @@ class Invoice(Resource):
 
         for item in line_items:
             adj_elem = ElementTreeBuilder.Element('adjustment')
-            adj_elem.append(Resource.element_for_value('uuid',
-                item['adjustment'].uuid))
-            adj_elem.append(Resource.element_for_value('quantity',
-            item['quantity']))
+            adj_elem.append(Resource.element_for_value('uuid', item['adjustment'].uuid))
+
+            if 'quantity' in item:
+                adj_elem.append(Resource.element_for_value('quantity', item['quantity']))
 
             if 'quantity_decimal' in item:
                 adj_elem.append(Resource.element_for_value('quantity_decimal', item['quantity_decimal']))
 
-            adj_elem.append(Resource.element_for_value('prorate', item['prorate']))
+            if 'percentage' in item:
+                adj_elem.append(Resource.element_for_value('percentage', item['percentage']))
+
+            if 'amount_in_cents' in item:
+                adj_elem.append(Resource.element_for_value('amount_in_cents', item['amount_in_cents']))
+
+            if 'prorate' in item:
+                adj_elem.append(Resource.element_for_value('prorate', item['prorate']))
             line_items_elem.append(adj_elem)
 
         elem.append(line_items_elem)
