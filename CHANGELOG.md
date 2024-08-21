@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.16](https://github.com/recurly/recurly-client-python/tree/2.10.16) (2024-08-21)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.15...2.10.16)
+
+
+**Merged Pull Requests**
+
+- Add percentage and amount_in_cents to line items [#699](https://github.com/recurly/recurly-client-python/pull/699) ([ELepolt](https://github.com/ELepolt))
+
+
+
 ## [2.10.15](https://github.com/recurly/recurly-client-python/tree/2.10.15) (2024-07-03)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.14...2.10.15)
