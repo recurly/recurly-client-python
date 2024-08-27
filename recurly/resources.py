@@ -1333,6 +1333,8 @@ class ExternalSubscription(Resource):
         When the external subscription trial period started in the external platform.
     updated_at : datetime
         When the external subscription was updated in Recurly.
+    uuid : str
+        Universally Unique Identifier created automatically.
     """
 
     schema = {
@@ -1357,6 +1359,7 @@ class ExternalSubscription(Resource):
         "trial_ends_at": datetime,
         "trial_started_at": datetime,
         "updated_at": datetime,
+        "uuid": str,
     }
 
 
