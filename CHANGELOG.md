@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.17](https://github.com/recurly/recurly-client-python/tree/2.10.17) (2024-08-28)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.16...2.10.17)
+
+
+**Merged Pull Requests**
+
+- Get external sub by uuid [#701](https://github.com/recurly/recurly-client-python/pull/701) ([amandamfielding](https://github.com/amandamfielding))
+
+
+
 ## [2.10.16](https://github.com/recurly/recurly-client-python/tree/2.10.16) (2024-08-21)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.15...2.10.16)
