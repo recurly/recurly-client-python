@@ -2073,6 +2073,7 @@ class TestResources(RecurlyTest):
             unit_amount_in_cents=Money(1000),
             total_billing_cycles=10,
             custom_fields=[CustomField(name='food', value='pizza')],
+            vertex_transaction_type='rental'
         )
         with self.mock_request('plan/created.xml'):
             plan.save()
@@ -2082,6 +2083,7 @@ class TestResources(RecurlyTest):
             self.assertIsInstance(plan.custom_fields[0], CustomField)
             self.assertEqual(plan.custom_fields[0].name, 'food')
             self.assertEqual(plan.custom_fields[0].value, 'pizza')
+            self.assertEqual(plan.vertex_transaction_type, 'rental')
 
             with self.mock_request('plan/exists.xml'):
                 same_plan = Plan.get(plan_code)
@@ -2094,6 +2096,7 @@ class TestResources(RecurlyTest):
             plan.unit_amount_in_cents = Money(USD=2000)
             plan.setup_fee_in_cents = Money(USD=200)
             plan.setup_fee_accounting_code = 'Setup Fee AC'
+            plan.vertex_transaction_type = 'sale'
             with self.mock_request('plan/updated.xml'):
                 plan.save()
         finally:
@@ -2104,6 +2107,7 @@ class TestResources(RecurlyTest):
         with self.mock_request('plan/show-taxed.xml'):
             plan = Plan.get(plan_code)
             self.assertTrue(plan.tax_exempt)
+            self.assertEqual(plan.vertex_transaction_type, 'sale')
 
     def test_plan_with_ramps(self):
         plan_code = 'plan%s' % self.test_id
@@ -2290,7 +2294,7 @@ class TestResources(RecurlyTest):
 
         assert isinstance(manualsub.proration_settings, ProrationSettings)
         ElementTree.tostring(account.to_element(), encoding='UTF-8')
-        
+
 
     def test_subscription_with_plan_ramp(self):
         plan_code = 'plan%s' % self.test_id

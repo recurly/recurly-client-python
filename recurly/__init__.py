@@ -1582,6 +1582,7 @@ class Plan(Resource):
         'updated_at',
         'tax_exempt',
         'tax_code',
+        'vertex_transaction_type',
         'unit_amount_in_cents',
         'setup_fee_in_cents',
         'total_billing_cycles',
