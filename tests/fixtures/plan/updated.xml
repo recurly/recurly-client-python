@@ -16,6 +16,7 @@ Content-Type: application/xml; charset=utf-8
   <unit_amount_in_cents>
     <USD type="integer">2000</USD>
   </unit_amount_in_cents>
+  <vertex_transaction_type>sale</vertex_transaction_type>
 </plan>
 
 HTTP/1.1 200 OK
@@ -41,6 +42,7 @@ Content-Type: application/xml; charset=utf-8
   <trial_interval_unit>days</trial_interval_unit>
   <setup_fee_accounting_code>Setup Fee AC</setup_fee_accounting_code>
   <created_at type="datetime">2011-10-03T22:23:12Z</created_at>
+  <vertex_transaction_type>sale</vertex_transaction_type>
   <unit_amount_in_cents>
     <USD type="integer">2000</USD>
   </unit_amount_in_cents>

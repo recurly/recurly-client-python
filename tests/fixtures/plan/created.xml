@@ -22,6 +22,7 @@ Content-Type: application/xml; charset=utf-8
   <unit_amount_in_cents>
     <USD type="integer">1000</USD>
   </unit_amount_in_cents>
+  <vertex_transaction_type>rental</vertex_transaction_type>
 </plan>
 
 HTTP/1.1 201 Created
@@ -48,6 +49,7 @@ Location: https://api.recurly.com/v2/plans/planmock
   <trial_interval_unit>days</trial_interval_unit>
   <total_billing_cycles type="integer">10</total_billing_cycles>
   <created_at type="datetime">2011-10-03T22:23:12Z</created_at>
+  <vertex_transaction_type>rental</vertex_transaction_type>
   <unit_amount_in_cents>
     <USD type="integer">1000</USD>
   </unit_amount_in_cents>
