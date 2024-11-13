@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.18](https://github.com/recurly/recurly-client-python/tree/2.10.18) (2024-11-13)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.17...2.10.18)
+
+
+**Merged Pull Requests**
+
+- Adds vertex_transaction_type to Plans [#705](https://github.com/recurly/recurly-client-python/pull/705) ([8eth](https://github.com/8eth))
+
+
+
 ## [2.10.17](https://github.com/recurly/recurly-client-python/tree/2.10.17) (2024-08-28)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.16...2.10.17)
