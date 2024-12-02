@@ -2984,6 +2984,8 @@ class Plan(Resource):
         Units for the plan's trial period.
     updated_at : datetime
         Last updated at
+    vertex_transaction_type : str
+        Used by Vertex for tax calculations. Possible values are `sale`, `rental`, `lease`.
     """
 
     schema = {
@@ -3018,6 +3020,7 @@ class Plan(Resource):
         "trial_requires_billing_info": bool,
         "trial_unit": str,
         "updated_at": datetime,
+        "vertex_transaction_type": str,
     }
 
 
