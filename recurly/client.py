@@ -2830,8 +2830,34 @@ class Client(BaseClient):
         )
         return self._make_request("DELETE", path, None, **options)
 
+    def create_external_subscription(self, body, **options):
+        """Create an external subscription
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of ExternalSubscriptionCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalSubscription
+            Returns the external subscription
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions",
+        )
+        return self._make_request("POST", path, body, **options)
+
     def list_external_subscriptions(self, **options):
-        """List a site's external subscriptions
+        """List the external subscriptions on a site
 
         Keyword Arguments
         -----------------
@@ -2881,6 +2907,37 @@ class Client(BaseClient):
             "/external_subscriptions/%s", external_subscription_id
         )
         return self._make_request("GET", path, None, **options)
+
+    def put_external_subscription(self, external_subscription_id, **options):
+        """Update an external subscription
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.body : ExternalSubscriptionUpdate
+            The body of the request.
+
+        Returns
+        -------
+
+        ExternalSubscription
+            Settings for an external subscription.
+        """
+        body = options.pop("body", None)
+        path = self._interpolate_path(
+            "/external_subscriptions/%s", external_subscription_id
+        )
+        return self._make_request("PUT", path, body, **options)
 
     def list_external_subscription_external_invoices(
         self, external_subscription_id, **options

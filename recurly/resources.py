@@ -766,6 +766,8 @@ class Transaction(Resource):
         The values in this field will vary from gateway to gateway.
     id : str
         Transaction ID
+    indicator : str
+        Must be sent for one-time transactions in order to provide context on which entity is submitting the transaction to ensure proper fraud checks are observed, such as 3DS. If the customer is in session, send `customer`. If this is a merchant initiated one-time transaction, send `merchant`.
     invoice : InvoiceMini
         Invoice mini details
     ip_address_country : str
@@ -776,6 +778,16 @@ class Transaction(Resource):
         - When the customer enters billing information into the Recurly.js or Hosted Payment Pages, Recurly records the IP address.
         - When the merchant enters billing information using the API, the merchant may provide an IP address.
         - When the merchant enters billing information using the UI, no IP address is recorded.
+    merchant_reason_code : str
+        This conditional parameter is useful for merchants in specific industries who need to submit one-time Merchant Initiated transactions in specific cases.
+        Not all gateways support these methods, but will support a generic one-time Merchant Initiated transaction.
+        Only use this if the initiator value is "merchant". Otherwise, it will be ignored.
+          - Incremental: Send `incremental` with an additional purchase if the original authorization amount is not sufficient to cover the costs of your service or product. For example, if the customer adds goods or services or there are additional expenses.
+          - No Show: Send `no_show` if you charge customers a fee due to an agreed-upon cancellation policy in your industry.
+          - Resubmission: Send `resubmission` if you need to attempt collection on a declined transaction. You may also use the force collection behavior which has the same effect.
+          - Service Extension: Send `service_extension` if you are in a service industry and the customer has increased/extended their service in some way. For example: adding a day onto a car rental agreement.
+          - Split Shipment: Send `split_shipment` if you sell physical product and need to split up a shipment into multiple transactions when the customer is no longer in session.
+          - Top Up: Send `top_up` if you process one-time transactions based on a pre-arranged agreement with your customer where there is a pre-arranged account balance that needs maintaining. For example, if the customer has agreed to maintain an account balance of 30.00 and their current balance is 20.00, the MIT amount would be at least 10.00 to meet that 30.00 threshold.
     object : str
         Object type
     origin : str
@@ -836,9 +848,11 @@ class Transaction(Resource):
         "gateway_response_time": float,
         "gateway_response_values": dict,
         "id": str,
+        "indicator": str,
         "invoice": "InvoiceMini",
         "ip_address_country": str,
         "ip_address_v4": str,
+        "merchant_reason_code": str,
         "object": str,
         "origin": str,
         "original_transaction_id": str,
@@ -2017,6 +2031,8 @@ class Subscription(Resource):
         Recurring subscriptions paid with ACH will have this attribute set. This timestamp is used for alerting customers to reauthorize in 3 years in accordance with NACHA rules. If a subscription becomes inactive or the billing info is no longer a bank account, this timestamp is cleared.
     billing_info_id : str
         Billing Info ID.
+    business_entity_id : str
+        The ID of the business entity associated with the subscription. This will be `null` if the subscription relies on resolving the business entity during renewal.
     canceled_at : datetime
         Canceled at
     collection_method : str
@@ -2134,6 +2150,7 @@ class Subscription(Resource):
         "auto_renew": bool,
         "bank_account_authorized_at": datetime,
         "billing_info_id": str,
+        "business_entity_id": str,
         "canceled_at": datetime,
         "collection_method": str,
         "converted_at": datetime,
@@ -2297,6 +2314,8 @@ class SubscriptionChange(Resource):
         These add-ons will be used when the subscription renews.
     billing_info : SubscriptionChangeBillingInfo
         Accept nested attributes for three_d_secure_action_result_token_id
+    business_entity : BusinessEntityMini
+        Business entity details
     created_at : datetime
         Created at
     custom_fields : :obj:`list` of :obj:`CustomField`
@@ -2334,6 +2353,7 @@ class SubscriptionChange(Resource):
         "activated": bool,
         "add_ons": ["SubscriptionAddOn"],
         "billing_info": "SubscriptionChangeBillingInfo",
+        "business_entity": "BusinessEntityMini",
         "created_at": datetime,
         "custom_fields": ["CustomField"],
         "deleted_at": datetime,
@@ -2509,6 +2529,28 @@ class SubscriptionAddOnPercentageTier(Resource):
     schema = {
         "ending_amount": float,
         "usage_percentage": str,
+    }
+
+
+class BusinessEntityMini(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The entity code of the business entity.
+    id : str
+        Business entity ID
+    name : str
+        This name describes your business entity and will appear on the invoice.
+    object : str
+        Object type
+    """
+
+    schema = {
+        "code": str,
+        "id": str,
+        "name": str,
+        "object": str,
     }
 
 
