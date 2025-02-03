@@ -22,5 +22,5 @@ setuptools.setup(
     url="https://github.com/recurly/recurly-client-python",
     packages=setuptools.find_packages(),
     classifiers=[],
-    tests_require=["coverage"],
+    extras_require={"test": ["coverage"]},
 )
