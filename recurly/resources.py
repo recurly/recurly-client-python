@@ -335,6 +335,8 @@ class BillingInfo(Resource):
     last_name : str
     object : str
         Object type
+    payment_gateway_references : :obj:`list` of :obj:`PaymentGatewayReferences`
+        Array of Payment Gateway References, each a reference to a third-party gateway object of varying types.
     payment_method : PaymentMethod
     primary_payment_method : bool
         The `primary_payment_method` field is used to indicate the primary billing info on the account. The first billing info created on an account will always become primary. This payment method will be used
@@ -357,6 +359,7 @@ class BillingInfo(Resource):
         "id": str,
         "last_name": str,
         "object": str,
+        "payment_gateway_references": ["PaymentGatewayReferences"],
         "payment_method": "PaymentMethod",
         "primary_payment_method": bool,
         "updated_at": datetime,
@@ -458,6 +461,22 @@ class FraudInfo(Resource):
         "decision": str,
         "risk_rules_triggered": dict,
         "score": int,
+    }
+
+
+class PaymentGatewayReferences(Resource):
+    """
+    Attributes
+    ----------
+    reference_type : str
+        The type of reference token. Required if token is passed in for Stripe Gateway.
+    token : str
+        Reference value used when the external token was created. If Stripe gateway is used, this value will need to be accompanied by its reference_type.
+    """
+
+    schema = {
+        "reference_type": str,
+        "token": str,
     }
 
 

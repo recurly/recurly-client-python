@@ -1881,6 +1881,8 @@ class Client(BaseClient):
         params.end_time : datetime
             Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`.
             **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC.
+        params.redeemed : str
+            Filter unique coupon codes by redemption status. `true` for redeemed, `false` for not redeemed.
 
         Returns
         -------
