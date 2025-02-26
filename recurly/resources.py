@@ -299,7 +299,7 @@ class ExternalAccount(Resource):
     external_account_code : str
         Represents the account code for the external account.
     external_connection_type : str
-        Represents the connection type. `AppleAppStore` or `GooglePlayStore`
+        Represents the connection type. One of the connection types of your enabled App Connectors
     id : str
         UUID of the external_account .
     object : str
@@ -382,13 +382,15 @@ class PaymentMethod(Resource):
     card_type : str
         Visa, MasterCard, American Express, Discover, JCB, etc.
     cc_bin_country : str
-        The 2-letter ISO 3166-1 alpha-2 country code associated with the credit card BIN, if known by Recurly. Available on the BillingInfo object only. Available when the BIN country lookup feature is enabled.
+        The 2-letter ISO 3166-1 alpha-2 country code associated with the card's issuer, if known.
     exp_month : int
         Expiration month.
     exp_year : int
         Expiration year.
     first_six : str
         Credit card number's first six digits.
+    funding_source : str
+        The funding source of the card, if known.
     gateway_attributes : GatewayAttributes
         Gateway specific attributes associated with this PaymentMethod
     gateway_code : str
@@ -419,6 +421,7 @@ class PaymentMethod(Resource):
         "exp_month": int,
         "exp_year": int,
         "first_six": str,
+        "funding_source": str,
         "gateway_attributes": "GatewayAttributes",
         "gateway_code": str,
         "gateway_token": str,
