@@ -1591,6 +1591,8 @@ class Invoice(Resource):
         For manual invoicing, this identifies the PO number associated with the subscription.
     previous_invoice_id : str
         On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from. This field is only populated for sites without the [Only Bill What Changed](https://docs.recurly.com/docs/only-bill-what-changed) feature enabled. Sites with Only Bill What Changed enabled should use the [related_invoices endpoint](https://recurly.com/developers/api/v2021-02-25/index.html#operation/list_related_invoices) to see purchase invoices refunded by this invoice.
+    reference_only_currency_conversion : ReferenceOnlyCurrencyConversion
+        Reference Only Currency Conversion
     refundable_amount : float
         The refundable amount on a charge invoice. It will be null for all other invoices.
     shipping_address : ShippingAddress
@@ -1652,6 +1654,7 @@ class Invoice(Resource):
         "paid": float,
         "po_number": str,
         "previous_invoice_id": str,
+        "reference_only_currency_conversion": "ReferenceOnlyCurrencyConversion",
         "refundable_amount": float,
         "shipping_address": "ShippingAddress",
         "state": str,
@@ -1714,6 +1717,25 @@ class InvoiceAddress(Resource):
         "region": str,
         "street1": str,
         "street2": str,
+    }
+
+
+class ReferenceOnlyCurrencyConversion(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    subtotal_in_cents : float
+        The subtotal converted to the currency.
+    tax_in_cents : float
+        The tax converted to the currency.
+    """
+
+    schema = {
+        "currency": str,
+        "subtotal_in_cents": float,
+        "tax_in_cents": float,
     }
 
 
