@@ -2979,6 +2979,34 @@ class Client(BaseClient):
         )
         return Pager(self, path, **options)
 
+    def create_external_invoice(self, external_subscription_id, body, **options):
+        """Create an external invoice
+
+        Parameters
+        ----------
+
+        external_subscription_id : str
+            External subscription id
+        body : dict
+            The request body. It should follow the schema of ExternalInvoiceCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        ExternalInvoice
+            Returns the external invoice
+        """
+        path = self._interpolate_path(
+            "/external_subscriptions/%s/external_invoices", external_subscription_id
+        )
+        return self._make_request("POST", path, body, **options)
+
     def list_invoices(self, **options):
         """List a site's invoices
 
