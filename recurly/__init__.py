@@ -6,7 +6,7 @@ import glob
 import ssl
 import sys
 
-__version__ = "4.57.0"
+__version__ = "4.58.0"
 __python_version__ = ".".join(map(str, sys.version_info[:3]))
 
 USER_AGENT = "Recurly/{}; python {}; {}".format(
