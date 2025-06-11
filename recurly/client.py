@@ -647,6 +647,69 @@ class Client(BaseClient):
         )
         return self._make_request("DELETE", path, None, **options)
 
+    def verify_billing_infos(self, account_id, billing_info_id, **options):
+        """Verify a billing information's credit card
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.body : BillingInfoVerify
+            The body of the request.
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        body = options.pop("body", None)
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s/verify", account_id, billing_info_id
+        )
+        return self._make_request("POST", path, body, **options)
+
+    def verify_billing_infos_cvv(self, account_id, billing_info_id, body, **options):
+        """Verify a billing information's credit card cvv
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
+        body : dict
+            The request body. It should follow the schema of BillingInfoVerifyCVV.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s/verify_cvv", account_id, billing_info_id
+        )
+        return self._make_request("POST", path, body, **options)
+
     def list_account_coupon_redemptions(self, account_id, **options):
         """List the coupon redemptions for an account
 
