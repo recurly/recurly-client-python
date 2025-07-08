@@ -621,6 +621,8 @@ class AccountAcquisition(Resource):
     ----------
     account : AccountMini
         Account mini details
+    acquired_at : datetime
+        Date the account was first created if different than the account.created_at. ie Importing accounts.
     campaign : str
         An arbitrary identifier for the marketing campaign that led to the acquisition of this account.
     channel : str
@@ -640,6 +642,7 @@ class AccountAcquisition(Resource):
 
     schema = {
         "account": "AccountMini",
+        "acquired_at": datetime,
         "campaign": str,
         "channel": str,
         "cost": "AccountAcquisitionCost",
