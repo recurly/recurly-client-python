@@ -3133,7 +3133,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3157,7 +3157,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
         body : dict
             The request body. It should follow the schema of InvoiceUpdate.
 
@@ -3183,7 +3183,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3207,7 +3207,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3231,7 +3231,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3260,7 +3260,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3284,7 +3284,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3308,7 +3308,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3332,7 +3332,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3356,7 +3356,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
         body : dict
             The request body. It should follow the schema of ExternalTransaction.
 
@@ -3382,7 +3382,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3440,7 +3440,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3488,7 +3488,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -3512,7 +3512,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
         body : dict
             The request body. It should follow the schema of InvoiceRefund.
 
@@ -3942,6 +3942,68 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/plans/%s/add_ons/%s", plan_id, add_on_id)
         return self._make_request("DELETE", path, None, **options)
+
+    def list_price_segments(self, **options):
+        """List a site's price segments
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.ids : :obj:`list` of :obj:`str`
+            Filter results by their IDs. Up to 200 IDs can be passed at once using
+            commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+            **Important notes:**
+
+            * The `ids` parameter cannot be used with any other ordering or filtering
+              parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+            * Invalid or unknown IDs will be ignored, so you should check that the
+              results correspond to your request.
+            * Records are returned in an arbitrary order. Since results are all
+              returned at once you can sort the records yourself.
+        params.limit : int
+            Limit number of records 1-200.
+        params.order : str
+            Sort order.
+
+        Returns
+        -------
+
+        Pager
+            A list of price segments.
+        """
+        path = self._interpolate_path(
+            "/price_segments",
+        )
+        return Pager(self, path, **options)
+
+    def get_price_segment(self, price_segment_id, **options):
+        """Fetch a price segment
+
+        Parameters
+        ----------
+
+        price_segment_id : str
+            The price segment ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        PriceSegment
+            A price segment.
+        """
+        path = self._interpolate_path("/price_segments/%s", price_segment_id)
+        return self._make_request("GET", path, None, **options)
 
     def list_add_ons(self, **options):
         """List a site's add-ons
