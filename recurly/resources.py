@@ -2146,6 +2146,8 @@ class Subscription(Resource):
         Just the important parts.
     po_number : str
         For manual invoicing, this identifies the PO number associated with the subscription.
+    price_segment_id : str
+        The price segment ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For requests, the code can also be used. Use prefix `code-`, e.g. `code-gold`.
     quantity : int
         Subscription quantity
     ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
@@ -2224,6 +2226,7 @@ class Subscription(Resource):
         "pending_change": "SubscriptionChange",
         "plan": "PlanMini",
         "po_number": str,
+        "price_segment_id": str,
         "quantity": int,
         "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "remaining_billing_cycles": int,
@@ -2895,7 +2898,6 @@ class Pricing(Resource):
     tax_inclusive : bool
         This field is deprecated. Please do not use it.
     unit_amount : float
-        Unit price
     """
 
     schema = {
@@ -3027,7 +3029,7 @@ class Plan(Resource):
     created_at : datetime
         Created at
     currencies : :obj:`list` of :obj:`PlanPricing`
-        Pricing
+        Present only when `pricing_model` is `'fixed'`.
     custom_fields : :obj:`list` of :obj:`CustomField`
         The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     deleted_at : datetime
@@ -3044,22 +3046,48 @@ class Plan(Resource):
         Length of the plan's billing interval in `interval_unit`.
     interval_unit : str
         Unit for the plan's billing interval.
+    liability_gl_account_id : str
+        The ID of a general ledger account. General ledger accounts are
+        only accessible as a part of the Recurly RevRec Standard and
+        Recurly RevRec Advanced features.
     name : str
         This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
     object : str
         Object type
+    performance_obligation_id : str
+        The ID of a performance obligation. Performance obligations are
+        only accessible as a part of the Recurly RevRec Standard and
+        Recurly RevRec Advanced features.
     pricing_model : str
         A fixed pricing model has the same price for each billing period.
         A ramp pricing model defines a set of Ramp Intervals, where a subscription changes price on
         a specified cadence of billing periods. The price change could be an increase or decrease.
     ramp_intervals : :obj:`list` of :obj:`PlanRampInterval`
         Ramp Intervals
+    revenue_gl_account_id : str
+        The ID of a general ledger account. General ledger accounts are
+        only accessible as a part of the Recurly RevRec Standard and
+        Recurly RevRec Advanced features.
     revenue_schedule_type : str
         Revenue schedule type
     setup_fee_accounting_code : str
         Accounting code for invoice line items for the plan's setup fee. If no value is provided, it defaults to plan's accounting code.
+    setup_fee_liability_gl_account_id : str
+        The ID of a general ledger account. General ledger accounts are
+        only accessible as a part of the Recurly RevRec Standard and
+        Recurly RevRec Advanced features.
+    setup_fee_performance_obligation_id : str
+        The ID of a performance obligation. Performance obligations are
+        only accessible as a part of the Recurly RevRec Standard and
+        Recurly RevRec Advanced features.
+    setup_fee_revenue_gl_account_id : str
+        The ID of a general ledger account. General ledger accounts are
+        only accessible as a part of the Recurly RevRec Standard and
+        Recurly RevRec Advanced features.
     setup_fee_revenue_schedule_type : str
         Setup fee revenue schedule type
+    setup_fees : :obj:`list` of :obj:`PlanSetupPricing`
+        Setup Fees
     state : str
         The current state of the plan.
     tax_code : str
@@ -3097,13 +3125,20 @@ class Plan(Resource):
         "id": str,
         "interval_length": int,
         "interval_unit": str,
+        "liability_gl_account_id": str,
         "name": str,
         "object": str,
+        "performance_obligation_id": str,
         "pricing_model": str,
         "ramp_intervals": ["PlanRampInterval"],
+        "revenue_gl_account_id": str,
         "revenue_schedule_type": str,
         "setup_fee_accounting_code": str,
+        "setup_fee_liability_gl_account_id": str,
+        "setup_fee_performance_obligation_id": str,
+        "setup_fee_revenue_gl_account_id": str,
         "setup_fee_revenue_schedule_type": str,
+        "setup_fees": ["PlanSetupPricing"],
         "state": str,
         "tax_code": str,
         "tax_exempt": bool,
@@ -3113,6 +3148,31 @@ class Plan(Resource):
         "trial_unit": str,
         "updated_at": datetime,
         "vertex_transaction_type": str,
+    }
+
+
+class PlanPricing(Resource):
+    """
+    Attributes
+    ----------
+    currency : str
+        3-letter ISO 4217 currency code.
+    price_segment_id : str
+        The price segment ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For requests, the code can also be used. Use prefix `code-`, e.g. `code-gold`.
+    setup_fee : float
+        This field is deprecated, please use top level `setup_fees` instead. Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
+    tax_inclusive : bool
+        This field is deprecated. Please do not use it.
+    unit_amount : float
+        This field should not be sent when the pricing model is `'ramp'`.
+    """
+
+    schema = {
+        "currency": str,
+        "price_segment_id": str,
+        "setup_fee": float,
+        "tax_inclusive": bool,
+        "unit_amount": float,
     }
 
 
@@ -3138,34 +3198,31 @@ class PlanRampPricing(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
+    price_segment_id : str
+        The price segment ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For requests, the code can also be used. Use prefix `code-`, e.g. `code-gold`.
     unit_amount : float
         Represents the price for the Ramp Interval.
     """
 
     schema = {
         "currency": str,
+        "price_segment_id": str,
         "unit_amount": float,
     }
 
 
-class PlanPricing(Resource):
+class PlanSetupPricing(Resource):
     """
     Attributes
     ----------
     currency : str
         3-letter ISO 4217 currency code.
-    setup_fee : float
-        Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
-    tax_inclusive : bool
-        This field is deprecated. Please do not use it.
     unit_amount : float
-        This field should not be sent when the pricing model is 'ramp'.
+        Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
     """
 
     schema = {
         "currency": str,
-        "setup_fee": float,
-        "tax_inclusive": bool,
         "unit_amount": float,
     }
 
@@ -3399,6 +3456,25 @@ class PercentageTier(Resource):
     schema = {
         "ending_amount": float,
         "usage_percentage": str,
+    }
+
+
+class PriceSegment(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The price segment code, e.g. `my-price-segment`.
+    id : str
+        The price segment ID, e.g. `e28zov4fw0v2`.
+    object : str
+        Object type
+    """
+
+    schema = {
+        "code": str,
+        "id": str,
+        "object": str,
     }
 
 
