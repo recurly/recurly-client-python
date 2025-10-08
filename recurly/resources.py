@@ -126,6 +126,8 @@ class Account(Resource):
     Attributes
     ----------
     address : Address
+    bill_date : datetime
+        The preferred billing date for the account. This date will be used as the billing date for when activating new subscriptions on the account.
     bill_to : str
         An enumerable describing the billing behavior of the account, specifically whether the account is self-paying or will rely on the parent account to pay.
     billing_info : BillingInfo
@@ -195,6 +197,7 @@ class Account(Resource):
 
     schema = {
         "address": "Address",
+        "bill_date": datetime,
         "bill_to": str,
         "billing_info": "BillingInfo",
         "cc_emails": str,
@@ -1838,6 +1841,8 @@ class LineItem(Resource):
         If this date is provided, it indicates the end of a time range.
     external_sku : str
         Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices feature is enabled.
+    harmonized_system_code : str
+        The Harmonized System (HS) code is an internationally standardized system of names and numbers to classify traded products. The HS code, sometimes called Commodity Code, is used by customs authorities around the world to identify products when assessing duties and taxes. The HS code may also be referred to as the tariff code or customs code. Values should contain only digits and decimals.
     id : str
         Line item ID
     invoice_id : str
@@ -1948,6 +1953,7 @@ class LineItem(Resource):
         "discount": float,
         "end_date": datetime,
         "external_sku": str,
+        "harmonized_system_code": str,
         "id": str,
         "invoice_id": str,
         "invoice_number": str,
@@ -2834,6 +2840,8 @@ class Item(Resource):
         Optional, description.
     external_sku : str
         Optional, stock keeping unit to link the item to other inventory systems.
+    harmonized_system_code : str
+        The Harmonized System (HS) code is an internationally standardized system of names and numbers to classify traded products. The HS code, sometimes called Commodity Code, is used by customs authorities around the world to identify products when assessing duties and taxes. The HS code may also be referred to as the tariff code or customs code. Values should contain only digits and decimals.
     id : str
         Item ID
     liability_gl_account_id : str
@@ -2875,6 +2883,7 @@ class Item(Resource):
         "deleted_at": datetime,
         "description": str,
         "external_sku": str,
+        "harmonized_system_code": str,
         "id": str,
         "liability_gl_account_id": str,
         "name": str,
@@ -3038,6 +3047,8 @@ class Plan(Resource):
         Optional description, not displayed.
     dunning_campaign_id : str
         Unique ID to identify a dunning campaign. Used to specify if a non-default dunning campaign should be assigned to this plan. For sites without multiple dunning campaigns enabled, the default dunning campaign will always be used.
+    harmonized_system_code : str
+        The Harmonized System (HS) code is an internationally standardized system of names and numbers to classify traded products. The HS code, sometimes called Commodity Code, is used by customs authorities around the world to identify products when assessing duties and taxes. The HS code may also be referred to as the tariff code or customs code. Values should contain only digits and decimals.
     hosted_pages : PlanHostedPages
         Hosted pages settings
     id : str
@@ -3121,6 +3132,7 @@ class Plan(Resource):
         "deleted_at": datetime,
         "description": str,
         "dunning_campaign_id": str,
+        "harmonized_system_code": str,
         "hosted_pages": "PlanHostedPages",
         "id": str,
         "interval_length": int,
@@ -3275,6 +3287,8 @@ class AddOn(Resource):
         Determines if the quantity field is displayed on the hosted pages for the add-on.
     external_sku : str
         Optional, stock keeping unit to link the item to other inventory systems.
+    harmonized_system_code : str
+        The Harmonized System (HS) code is an internationally standardized system of names and numbers to classify traded products. The HS code, sometimes called Commodity Code, is used by customs authorities around the world to identify products when assessing duties and taxes. The HS code may also be referred to as the tariff code or customs code. Values should contain only digits and decimals.
     id : str
         Add-on ID
     item : ItemMini
@@ -3340,6 +3354,7 @@ class AddOn(Resource):
         "deleted_at": datetime,
         "display_quantity": bool,
         "external_sku": str,
+        "harmonized_system_code": str,
         "id": str,
         "item": "ItemMini",
         "liability_gl_account_id": str,
