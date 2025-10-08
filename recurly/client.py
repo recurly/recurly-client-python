@@ -1288,6 +1288,32 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/notes", account_id)
         return Pager(self, path, **options)
 
+    def create_account_note(self, account_id, body, **options):
+        """Create an account note
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of AccountNoteCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        AccountNote
+            An account note.
+        """
+        path = self._interpolate_path("/accounts/%s/notes", account_id)
+        return self._make_request("POST", path, body, **options)
+
     def get_account_note(self, account_id, account_note_id, **options):
         """Fetch an account note
 
@@ -1315,6 +1341,34 @@ class Client(BaseClient):
             "/accounts/%s/notes/%s", account_id, account_note_id
         )
         return self._make_request("GET", path, None, **options)
+
+    def remove_account_note(self, account_id, account_note_id, **options):
+        """Delete an account note
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        account_note_id : str
+            Account Note ID.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Empty
+            Account note deleted.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/notes/%s", account_id, account_note_id
+        )
+        return self._make_request("DELETE", path, None, **options)
 
     def list_shipping_addresses(self, account_id, **options):
         """Fetch a list of an account's shipping addresses
