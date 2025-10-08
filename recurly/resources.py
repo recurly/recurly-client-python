@@ -1175,6 +1175,8 @@ class Invoice(Resource):
         If the invoice is charging or refunding for one or more subscriptions, these are their IDs.
     subtotal : float
         The summation of charges and credits, before discounts and taxes.
+    subtotal_after_discount : float
+        The summation of charges and credits, after discounts applied.
     tax : float
         The total tax on this invoice.
     tax_info : TaxInfo
@@ -1225,6 +1227,7 @@ class Invoice(Resource):
         "state": str,
         "subscription_ids": list,
         "subtotal": float,
+        "subtotal_after_discount": float,
         "tax": float,
         "tax_info": "TaxInfo",
         "terms_and_conditions": str,
@@ -1371,7 +1374,7 @@ class LineItem(Resource):
     add_on_id : str
         If the line item is a charge or credit for an add-on this is its ID.
     amount : float
-        `(quantity * unit_amount) - (discount + tax)`
+        `(quantity * unit_amount) - discount + tax`
     avalara_service_type : int
         Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     avalara_transaction_type : int
@@ -1452,7 +1455,7 @@ class LineItem(Resource):
     tax : float
         The tax amount for the line item.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Optional field used by Avalara, Vertex, and Recurly's In-the-Box tax solution to determine taxation rules. You can pass in specific tax codes using any of these tax integrations. For Recurly's In-the-Box tax offering you can also choose to instead use simple values of `unknown`, `physical`, or `digital` tax codes.
     tax_exempt : bool
         `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
     tax_inclusive : bool
@@ -2187,7 +2190,7 @@ class Item(Resource):
     state : str
         The current state of the item.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Optional field used by Avalara, Vertex, and Recurly's In-the-Box tax solution to determine taxation rules. You can pass in specific tax codes using any of these tax integrations. For Recurly's In-the-Box tax offering you can also choose to instead use simple values of `unknown`, `physical`, or `digital` tax codes.
     tax_exempt : bool
         `true` exempts tax on the item, `false` applies tax on the item.
     updated_at : datetime
@@ -2341,7 +2344,7 @@ class Plan(Resource):
     state : str
         The current state of the plan.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Optional field used by Avalara, Vertex, and Recurly's In-the-Box tax solution to determine taxation rules. You can pass in specific tax codes using any of these tax integrations. For Recurly's In-the-Box tax offering you can also choose to instead use simple values of `unknown`, `physical`, or `digital` tax codes.
     tax_exempt : bool
         `true` exempts tax on the plan, `false` applies tax on the plan.
     total_billing_cycles : int
@@ -2512,7 +2515,7 @@ class AddOn(Resource):
     state : str
         Add-ons can be either active or inactive.
     tax_code : str
-        Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+        Optional field used by Avalara, Vertex, and Recurly's In-the-Box tax solution to determine taxation rules. You can pass in specific tax codes using any of these tax integrations. For Recurly's In-the-Box tax offering you can also choose to instead use simple values of `unknown`, `physical`, or `digital` tax codes. If `item_code`/`item_id` is part of the request then `tax_code` must be absent.
     tier_type : str
         The type of tiering used by the Add-on.
     tiers : :obj:`list` of :obj:`Tier`

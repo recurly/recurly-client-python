@@ -421,6 +421,32 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s/billing_info/verify", account_id)
         return self._make_request("POST", path, body, options)
 
+    def verify_billing_info_cvv(self, account_id, body):
+        """Verify an account's credit card billing cvv
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        body : dict
+            The request body. It should follow the schema of BillingInfoVerifyCVV.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_info/verify_cvv", account_id
+        )
+        return self._make_request("POST", path, body, None)
+
     def list_billing_infos(self, account_id, **options):
         """Get the list of billing information associated with an account
 
@@ -568,6 +594,63 @@ class Client(BaseClient):
             "/accounts/%s/billing_infos/%s", account_id, billing_info_id
         )
         return self._make_request("DELETE", path, None, None)
+
+    def verify_billing_infos(self, account_id, billing_info_id, **options):
+        """Verify a billing information's credit card
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
+
+        Keyword Arguments
+        -----------------
+
+        body : BillingInfoVerify
+            The body of the request.
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        body = options.pop("body", None)
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s/verify", account_id, billing_info_id
+        )
+        return self._make_request("POST", path, body, options)
+
+    def verify_billing_infos_cvv(self, account_id, billing_info_id, body):
+        """Verify a billing information's credit card cvv
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        billing_info_id : str
+            Billing Info ID. Can ONLY be used for sites utilizing the Wallet feature.
+        body : dict
+            The request body. It should follow the schema of BillingInfoVerifyCVV.
+
+        Keyword Arguments
+        -----------------
+
+
+        Returns
+        -------
+
+        Transaction
+            Transaction information from verify.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/billing_infos/%s/verify_cvv", account_id, billing_info_id
+        )
+        return self._make_request("POST", path, body, None)
 
     def list_account_coupon_redemptions(self, account_id, **options):
         """List the coupon redemptions for an account
@@ -2013,7 +2096,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2035,7 +2118,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
         body : dict
             The request body. It should follow the schema of InvoiceUpdatable.
 
@@ -2059,7 +2142,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2081,7 +2164,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2103,7 +2186,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2128,7 +2211,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2150,7 +2233,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2172,7 +2255,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2194,7 +2277,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2216,7 +2299,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
         body : dict
             The request body. It should follow the schema of ExternalTransaction.
 
@@ -2240,7 +2323,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2294,7 +2377,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2338,7 +2421,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
 
         Keyword Arguments
         -----------------
@@ -2360,7 +2443,7 @@ class Client(BaseClient):
         ----------
 
         invoice_id : str
-            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`.
+            Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. For number with prefix or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
         body : dict
             The request body. It should follow the schema of InvoiceRefund.
 
