@@ -816,6 +816,8 @@ class Transaction(Resource):
           - Service Extension: Send `service_extension` if you are in a service industry and the customer has increased/extended their service in some way. For example: adding a day onto a car rental agreement.
           - Split Shipment: Send `split_shipment` if you sell physical product and need to split up a shipment into multiple transactions when the customer is no longer in session.
           - Top Up: Send `top_up` if you process one-time transactions based on a pre-arranged agreement with your customer where there is a pre-arranged account balance that needs maintaining. For example, if the customer has agreed to maintain an account balance of 30.00 and their current balance is 20.00, the MIT amount would be at least 10.00 to meet that 30.00 threshold.
+    next_action : TransactionNextAction
+        Next action values are used for any required customer follow-up action. Currently, this is supported for Ebanx when using Pix Automatico.
     object : str
         Object type
     origin : str
@@ -881,6 +883,7 @@ class Transaction(Resource):
         "ip_address_country": str,
         "ip_address_v4": str,
         "merchant_reason_code": str,
+        "next_action": "TransactionNextAction",
         "object": str,
         "origin": str,
         "original_transaction_id": str,
@@ -985,6 +988,22 @@ class TransactionPaymentGateway(Resource):
         "name": str,
         "object": str,
         "type": str,
+    }
+
+
+class TransactionNextAction(Resource):
+    """
+    Attributes
+    ----------
+    type : str
+        The type of next action required.
+    value : str
+        The value associated with the next action type.
+    """
+
+    schema = {
+        "type": str,
+        "value": str,
     }
 
 
