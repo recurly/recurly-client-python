@@ -816,6 +816,8 @@ class Transaction(Resource):
           - Service Extension: Send `service_extension` if you are in a service industry and the customer has increased/extended their service in some way. For example: adding a day onto a car rental agreement.
           - Split Shipment: Send `split_shipment` if you sell physical product and need to split up a shipment into multiple transactions when the customer is no longer in session.
           - Top Up: Send `top_up` if you process one-time transactions based on a pre-arranged agreement with your customer where there is a pre-arranged account balance that needs maintaining. For example, if the customer has agreed to maintain an account balance of 30.00 and their current balance is 20.00, the MIT amount would be at least 10.00 to meet that 30.00 threshold.
+    next_action : TransactionNextAction
+        Next action values are used for any required customer follow-up action. Currently, this is supported for Ebanx when using Pix Automatico.
     object : str
         Object type
     origin : str
@@ -881,6 +883,7 @@ class Transaction(Resource):
         "ip_address_country": str,
         "ip_address_v4": str,
         "merchant_reason_code": str,
+        "next_action": "TransactionNextAction",
         "object": str,
         "origin": str,
         "original_transaction_id": str,
@@ -985,6 +988,22 @@ class TransactionPaymentGateway(Resource):
         "name": str,
         "object": str,
         "type": str,
+    }
+
+
+class TransactionNextAction(Resource):
+    """
+    Attributes
+    ----------
+    type : str
+        The type of next action required.
+    value : str
+        The value associated with the next action type.
+    """
+
+    schema = {
+        "type": str,
+        "value": str,
     }
 
 
@@ -1757,7 +1776,7 @@ class TaxInfo(Resource):
     region : str
         Provides the tax region applied on an invoice. For U.S. Sales Tax, this will be the 2 letter state code. For EU VAT this will be the 2 letter country code. For all country level tax types, this will display the regional tax, like VAT, GST, or PST. Not present when Avalara for Communications is enabled.
     tax_details : :obj:`list` of :obj:`TaxDetail`
-        Provides additional tax details for Communications taxes when Avalara for Communications is enabled or Canadian Sales Tax when there is tax applied at both the country and province levels. This will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItemList. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
+        Provides additional tax details for Communications taxes when Avalara for Communications or Vertex Tax Breakdown is enabled or Canadian Sales Tax. Tax details will only be populated for the Invoice response when fetching a single invoice and not for the InvoiceList or LineItemList. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
     type : str
         Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales Tax, or the 2 letter country code for country level tax types like Canada, Australia, New Zealand, Israel, and all non-EU European countries. Not present when Avalara for Communications is enabled.
     """
@@ -1775,11 +1794,11 @@ class TaxDetail(Resource):
     Attributes
     ----------
     billable : bool
-        Whether or not the line item is taxable. Only populated for a single LineItem fetch when Avalara for Communications is enabled.
+        Whether or not the line item is taxable. Only populated for a single LineItem fetch when Avalara for Communications or Vertex is enabled.
     level : str
-        Provides the jurisdiction level for the Communications tax applied. Example values include city, state and federal. Present only when Avalara for Communications is enabled.
+        Provides the jurisdiction level for the Communications tax applied. Example values include city, state and federal. Present only when Avalara for Communications or Vertex is enabled.
     name : str
-        Provides the name of the Communications tax applied. Present only when Avalara for Communications is enabled.
+        Provides the name of the Communications tax applied. Present only when Avalara for Communications or Vertex is enabled.
     rate : float
         Provides the tax rate for the region.
     region : str
@@ -1787,7 +1806,7 @@ class TaxDetail(Resource):
     tax : float
         The total tax applied for this tax type.
     type : str
-        Provides the tax type for the region or type of Comminications tax when Avalara for Communications is enabled. For Canadian Sales Tax, this will be GST, HST, QST or PST.
+        Provides the tax type for the region or type of Comminications tax when Avalara for Communications or Vertex is enabled. For Canadian Sales Tax, this will be GST, HST, QST or PST.
     """
 
     schema = {
