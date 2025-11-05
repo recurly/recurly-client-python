@@ -18373,9 +18373,11 @@ components:
         street1:
           type: string
           title: Street 1
+          maxLength: 50
         street2:
           type: string
           title: Street 2
+          maxLength: 50
         city:
           type: string
           title: City
@@ -23977,8 +23979,10 @@ components:
         gateway_code:
           type: string
           title: Gateway Code
-          description: If present, this subscription's transactions will use the payment
-            gateway with this code.
+          description: If present, this subscription's subsequent transactions will
+            use the payment gateway with this code. To select a payment gateway to
+            use when creating a Subscription, be sure to set the `account.billing_info.gateway_code`
+            as well.
           maxLength: 13
         transaction_type:
           description: An optional type designation for the payment gateway transaction
@@ -24388,11 +24392,11 @@ components:
         tax_details:
           type: array
           description: Provides additional tax details for Communications taxes when
-            Avalara for Communications is enabled or Canadian Sales Tax when there
-            is tax applied at both the country and province levels. This will only
-            be populated for the Invoice response when fetching a single invoice and
-            not for the InvoiceList or LineItemList. Only populated for a single LineItem
-            fetch when Avalara for Communications is enabled.
+            Avalara for Communications or Vertex Tax Breakdown is enabled or Canadian
+            Sales Tax. Tax details will only be populated for the Invoice response
+            when fetching a single invoice and not for the InvoiceList or LineItemList.
+            Only populated for a single LineItem fetch when Avalara for Communications
+            is enabled.
           items:
             "$ref": "#/components/schemas/TaxDetail"
     TaxDetail:
@@ -24403,8 +24407,8 @@ components:
           type: string
           title: Type
           description: Provides the tax type for the region or type of Comminications
-            tax when Avalara for Communications is enabled. For Canadian Sales Tax,
-            this will be GST, HST, QST or PST.
+            tax when Avalara for Communications or Vertex is enabled. For Canadian
+            Sales Tax, this will be GST, HST, QST or PST.
         region:
           type: string
           title: Region
@@ -24425,18 +24429,18 @@ components:
           type: string
           title: Name
           description: Provides the name of the Communications tax applied. Present
-            only when Avalara for Communications is enabled.
+            only when Avalara for Communications or Vertex is enabled.
         level:
           type: string
           title: Level
           description: Provides the jurisdiction level for the Communications tax
             applied. Example values include city, state and federal. Present only
-            when Avalara for Communications is enabled.
+            when Avalara for Communications or Vertex is enabled.
         billable:
           type: boolean
           title: Billable
           description: Whether or not the line item is taxable. Only populated for
-            a single LineItem fetch when Avalara for Communications is enabled.
+            a single LineItem fetch when Avalara for Communications or Vertex is enabled.
     Transaction:
       type: object
       properties:
@@ -24634,6 +24638,22 @@ components:
           title: VAT Number
         fraud_info:
           "$ref": "#/components/schemas/TransactionFraudInfo"
+        next_action:
+          type: object
+          x-class-name: TransactionNextAction
+          description: Next action values are used for any required customer follow-up
+            action. Currently, this is supported for Ebanx when using Pix Automatico.
+          properties:
+            type:
+              type: string
+              title: Next action type
+              description: The type of next action required.
+              "$ref": "#/components/schemas/NextActionTypeEnum"
+            value:
+              type: string
+              title: Next action value
+              description: The value associated with the next action type.
+          title: Next action
     TransactionFraudInfo:
       type: object
       title: Fraud information
@@ -27043,9 +27063,11 @@ components:
       - credit_card
       - eft
       - google_pay
+      - mercadopago
       - money_order
       - other
       - paypal
+      - pix_automatico
       - roku
       - sepadirectdebit
       - wire_transfer
@@ -27183,6 +27205,11 @@ components:
       - scheduled
       - success
       - void
+    NextActionTypeEnum:
+      type: string
+      description: The type of next action required for the transaction.
+      enum:
+      - qr_code
     CvvCheckEnum:
       type: string
       enum:
@@ -27259,6 +27286,9 @@ components:
       - boleto
       - cash_app
       - upi_autopay
+      - pix_automatico
+      - mercadopago
+      - klarna
     CardTypeEnum:
       type: string
       enum:
@@ -27584,10 +27614,12 @@ components:
     AchTypeEnum:
       type: string
       description: The payment method type for a non-credit card based billing info.
-        `bacs` and `becs` are the only accepted values.
+        `bacs`, `becs`, `pix-automatico`, `mercadopago` are the only accepted values.
       enum:
       - bacs
       - becs
+      - pix-automatico
+      - mercadopago
     AchAccountTypeEnum:
       type: string
       description: The bank account type. (ACH only)
