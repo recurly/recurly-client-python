@@ -13,7 +13,7 @@ fi
 set -e
 
 # Run tests
-RECURLY_STRICT_MODE=true coverage run --omit=recurly/client.py,recurly/resources.py --source recurly setup.py test
+RECURLY_STRICT_MODE=true coverage run --omit=recurly/client.py,recurly/resources.py --source recurly -m unittest discover -s tests -t .
 
 # Prep html report
 coverage html
