@@ -1754,6 +1754,12 @@ class ReferenceOnlyCurrencyConversion(Resource):
     ----------
     currency : str
         3-letter ISO 4217 currency code.
+    date : str
+        The date of the conversion rate.
+    rate : str
+        The conversion rate to the currency.
+    source : str
+        The source of the conversion rate.
     subtotal_in_cents : float
         The subtotal converted to the currency.
     tax_in_cents : float
@@ -1762,6 +1768,9 @@ class ReferenceOnlyCurrencyConversion(Resource):
 
     schema = {
         "currency": str,
+        "date": str,
+        "rate": str,
+        "source": str,
         "subtotal_in_cents": float,
         "tax_in_cents": float,
     }
@@ -2118,6 +2127,9 @@ class Subscription(Resource):
         Returns subscription level coupon redemptions that are tied to this subscription.
     created_at : datetime
         Created at
+    credit_application_policy : CreditApplicationPolicy
+        Controls whether credit invoices are automatically applied to new invoices.
+        The `mode` field determines the application behavior.
     currency : str
         3-letter ISO 4217 currency code.
     current_period_ends_at : datetime
@@ -2233,6 +2245,7 @@ class Subscription(Resource):
         "converted_at": datetime,
         "coupon_redemptions": ["CouponRedemptionMini"],
         "created_at": datetime,
+        "credit_application_policy": "CreditApplicationPolicy",
         "currency": str,
         "current_period_ends_at": datetime,
         "current_period_started_at": datetime,
@@ -2667,6 +2680,21 @@ class SubscriptionRampIntervalResponse(Resource):
         "starting_billing_cycle": int,
         "starting_on": datetime,
         "unit_amount": float,
+    }
+
+
+class CreditApplicationPolicy(Resource):
+    """
+    Attributes
+    ----------
+    mode : str
+        Determines which credit invoices are applied to invoices:
+        - `all`: All available credit invoices are applied (default)
+        - `none`: No credit invoices are applied automatically
+    """
+
+    schema = {
+        "mode": str,
     }
 
 
