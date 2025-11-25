@@ -473,6 +473,30 @@ class TestResources(RecurlyTest):
             self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
             self.assertEqual(adjustment.performance_obligation_id, '5')
 
+    def test_purchase_with_vertex_transaction_type(self):
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        vertex_transaction_type='lease',
+                        unit_amount_in_cents=500
+                    )
+                ]
+            )
+
+        with self.mock_request('purchase/invoiced-with-vertex-transaction-type.xml'):
+            collection = create_purchase().invoice()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.vertex_transaction_type, 'lease')
+
     def test_account(self):
         account_code = 'test%s' % self.test_id
         with self.mock_request('account/does-not-exist.xml'):

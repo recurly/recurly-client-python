@@ -1055,6 +1055,7 @@ class Adjustment(Resource):
         'revenue_gl_account_code',
         'revenue_gl_account_id',
         'performance_obligation_id',
+        'vertex_transaction_type',
     )
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {
