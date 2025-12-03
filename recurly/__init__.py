@@ -1139,7 +1139,8 @@ class Invoice(Resource):
         'billing_info_uuid',
         'dunning_campaign_id',
         'refundable_in_cents',
-        'used_tax_service'
+        'used_tax_service',
+        'vertex_transaction_type',
     )
 
     blacklist_attributes = (
@@ -1407,6 +1408,7 @@ class Purchase(Resource):
         'transaction_type',
         'billing_info_uuid',
         'ramp_intervals',
+        'vertex_transaction_type',
     )
 
     def invoice(self):
