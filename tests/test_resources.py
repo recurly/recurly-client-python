@@ -473,6 +473,143 @@ class TestResources(RecurlyTest):
             self.assertEqual(adjustment.revenue_gl_account_code, 'firstrev')
             self.assertEqual(adjustment.performance_obligation_id, '5')
 
+    def test_purchase_with_adjustment_level_vertex_transaction_type(self):
+        """Test that Adjustment can have vertex_transaction_type within a purchase"""
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        vertex_transaction_type='lease',
+                        unit_amount_in_cents=500
+                    )
+                ]
+            )
+
+        with self.mock_request('purchase/invoiced-with-vertex-transaction-type.xml'):
+            collection = create_purchase().invoice()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(adjustment.vertex_transaction_type, 'lease')
+
+    def test_purchase_with_purchase_level_vertex_transaction_type(self):
+        """Test that Purchase can accept vertex_transaction_type at the top level"""
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        unit_amount_in_cents=500
+                    )
+                ],
+                vertex_transaction_type='sale'
+            )
+
+        with self.mock_request('purchase/invoiced-with-purchase-level-vertex-transaction-type.xml'):
+            collection = create_purchase().invoice()
+            adjustment = collection.charge_invoice.line_items[0]
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            # The adjustment inherits the purchase-level vertex_transaction_type
+            self.assertEqual(adjustment.vertex_transaction_type, 'sale')
+
+    def test_purchase_with_multiple_adjustments_vertex_transaction_type(self):
+        """Test that each adjustment in a purchase can have its own vertex_transaction_type"""
+        account_code = 'test%s' % self.test_id
+        def create_purchase():
+            return Purchase(
+                account = Account(
+                    account_code = account_code,
+                ),
+                adjustments = [
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        vertex_transaction_type='lease',
+                        unit_amount_in_cents=300
+                    ),
+                    recurly.Adjustment(
+                        currency = 'USD',
+                        vertex_transaction_type='rental',
+                        unit_amount_in_cents=200
+                    )
+                ]
+            )
+
+        with self.mock_request('purchase/invoiced-with-multiple-adjustment-vertex-types.xml'):
+            collection = create_purchase().invoice()
+            adjustments = collection.charge_invoice.line_items
+
+            self.assertIsInstance(collection, InvoiceCollection)
+            self.assertIsInstance(collection.charge_invoice, Invoice)
+            self.assertEqual(len(adjustments), 2)
+            # Each adjustment has its own vertex_transaction_type
+            self.assertEqual(adjustments[0].vertex_transaction_type, 'lease')
+            self.assertEqual(adjustments[1].vertex_transaction_type, 'rental')
+
+    def test_charge_with_vertex_transaction_type(self):
+        """Test that vertex_transaction_type can be set on a direct adjustment via account.charge()"""
+        account = Account(account_code='charge%s' % self.test_id)
+        with self.mock_request('adjustment/account-created.xml'):
+            account.save()
+
+        charge = Adjustment(
+            unit_amount_in_cents=1000,
+            currency='USD',
+            description='test charge',
+            type='charge',
+            vertex_transaction_type='sale'
+        )
+        
+        with self.mock_request('adjustment/charged-with-vertex-transaction-type.xml'):
+            account.charge(charge)
+        
+        # Verify the charge was created with vertex_transaction_type
+        self.assertEqual(charge.vertex_transaction_type, 'sale')
+
+    def test_purchase_with_invoice_override_vertex_transaction_type(self):
+        """Test that invoice-level vertex_transaction_type overrides adjustment-level values.
+        
+        This demonstrates the override behavior where an invoice can have its own
+        vertex_transaction_type that takes precedence over the individual adjustment values.
+        """
+        # Create a purchase with adjustment-level vertex_transaction_type='sale'
+        # but purchase-level (invoice-level) vertex_transaction_type='rental'
+        purchase = Purchase(
+            currency='USD',
+            account=Account(account_code='testmock'),
+            adjustments=[
+                Adjustment(
+                    unit_amount_in_cents=500,
+                    vertex_transaction_type='sale'  # Adjustment-level value
+                )
+            ],
+            vertex_transaction_type='rental'  # Invoice-level value (should override)
+        )
+        
+        with self.mock_request('purchase/invoiced-with-invoice-override-vertex-type.xml'):
+            invoice_collection = purchase.invoice()
+        
+        invoice = invoice_collection.charge_invoice
+        adjustments = invoice.line_items
+        
+        # Verify the invoice has the invoice-level vertex_transaction_type
+        self.assertEqual(invoice.vertex_transaction_type, 'rental')
+        
+        # The adjustment still has its own value (API preserves both)
+        # but the invoice-level value is what gets used for tax calculation
+        self.assertEqual(adjustments[0].vertex_transaction_type, 'sale')
+
     def test_account(self):
         account_code = 'test%s' % self.test_id
         with self.mock_request('account/does-not-exist.xml'):

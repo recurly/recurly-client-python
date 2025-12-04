@@ -1055,6 +1055,7 @@ class Adjustment(Resource):
         'revenue_gl_account_code',
         'revenue_gl_account_id',
         'performance_obligation_id',
+        'vertex_transaction_type',
     )
     xml_attribute_attributes = ('type',)
     _classes_for_nodename = {
@@ -1138,7 +1139,8 @@ class Invoice(Resource):
         'billing_info_uuid',
         'dunning_campaign_id',
         'refundable_in_cents',
-        'used_tax_service'
+        'used_tax_service',
+        'vertex_transaction_type',
     )
 
     blacklist_attributes = (
@@ -1406,6 +1408,7 @@ class Purchase(Resource):
         'transaction_type',
         'billing_info_uuid',
         'ramp_intervals',
+        'vertex_transaction_type',
     )
 
     def invoice(self):
