@@ -570,16 +570,16 @@ class TestResources(RecurlyTest):
             type='charge',
             vertex_transaction_type='sale'
         )
-        
+
         with self.mock_request('adjustment/charged-with-vertex-transaction-type.xml'):
             account.charge(charge)
-        
+
         # Verify the charge was created with vertex_transaction_type
         self.assertEqual(charge.vertex_transaction_type, 'sale')
 
     def test_purchase_with_invoice_override_vertex_transaction_type(self):
         """Test that invoice-level vertex_transaction_type overrides adjustment-level values.
-        
+
         This demonstrates the override behavior where an invoice can have its own
         vertex_transaction_type that takes precedence over the individual adjustment values.
         """
@@ -596,16 +596,16 @@ class TestResources(RecurlyTest):
             ],
             vertex_transaction_type='rental'  # Invoice-level value (should override)
         )
-        
+
         with self.mock_request('purchase/invoiced-with-invoice-override-vertex-type.xml'):
             invoice_collection = purchase.invoice()
-        
+
         invoice = invoice_collection.charge_invoice
         adjustments = invoice.line_items
-        
+
         # Verify the invoice has the invoice-level vertex_transaction_type
         self.assertEqual(invoice.vertex_transaction_type, 'rental')
-        
+
         # The adjustment still has its own value (API preserves both)
         # but the invoice-level value is what gets used for tax calculation
         self.assertEqual(adjustments[0].vertex_transaction_type, 'sale')
@@ -3453,6 +3453,62 @@ class TestResources(RecurlyTest):
         self.assertTrue(gift_card._url is not None)
         self.assertTrue(gift_card.delivery is not None)
         self.assertTrue(gift_card.canceled_at is None)
+
+    def test_gift_cards_purchase_with_tax_service_opt_out_true(self):
+        gift_card = self._build_gift_card()
+        gift_card.tax_service_opt_out = True
+
+        self.assertFalse('_url' in gift_card.attributes)
+
+        with self.mock_request('gift_cards/created-with-tax-service-opt-out-true.xml'):
+            gift_card.save()
+
+        self.assertTrue(gift_card._url is not None)
+        self.assertTrue(gift_card.delivery is not None)
+        self.assertTrue(gift_card.canceled_at is None)
+
+    def test_gift_cards_purchase_with_tax_service_opt_out_false(self):
+        gift_card = self._build_gift_card()
+        gift_card.tax_service_opt_out = False
+
+        self.assertFalse('_url' in gift_card.attributes)
+
+        with self.mock_request('gift_cards/created-with-tax-service-opt-out-false.xml'):
+            gift_card.save()
+
+        self.assertTrue(gift_card._url is not None)
+        self.assertTrue(gift_card.delivery is not None)
+        self.assertTrue(gift_card.canceled_at is None)
+
+    def test_gift_cards_purchase_with_tax_service_opt_out_invalid(self):
+        gift_card = self._build_gift_card()
+        gift_card.tax_service_opt_out = 'invalid'
+
+        self.assertFalse('_url' in gift_card.attributes)
+
+        with self.mock_request('gift_cards/created-with-tax-service-opt-out-invalid.xml'):
+            try:
+                gift_card.save()
+            except ValidationError as exc:
+                error = exc
+            else:
+                self.fail('Creating a gift card with invalid tax_service_opt_out did not raise a ValidationError')
+            self.assertEqual(error.symbol, 'tax_service_opt_out')
+            self.assertIn('Allowed values: true, false', error.message)
+
+    def test_gift_cards_purchase_with_tax_service_opt_out_legacy_site(self):
+        gift_card = self._build_gift_card()
+        gift_card.tax_service_opt_out = True
+
+        with self.mock_request('gift_cards/created-with-tax-service-opt-out-legacy-site.xml'):
+            try:
+                gift_card.save()
+            except ValidationError as exc:
+                error = exc
+            else:
+                self.fail('Creating a gift card with tax_service_opt_out on legacy site did not raise a ValidationError')
+            self.assertEqual(error.symbol, 'tax_service_opt_out')
+            self.assertIn('Not supported for legacy invoices', error.message)
 
     def test_gift_cards_preview(self):
         gift_card = self._build_gift_card()

@@ -792,7 +792,8 @@ class GiftCard(Resource):
         'billing_info',
         'liability_gl_account_id',
         'revenue_gl_account_id',
-        'performance_obligation_id'
+        'performance_obligation_id',
+        'tax_service_opt_out'
     )
     _classes_for_nodename = {'recipient_account': Account,'gifter_account':
             Account, 'delivery': Delivery}

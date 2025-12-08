@@ -1,0 +1,52 @@
+POST https://api.recurly.com/v2/gift_cards HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<gift_card>
+  <currency>USD</currency>
+  <delivery>
+    <address>
+      <address1>400 Alabama St</address1>
+      <city>San Francisco</city>
+      <country>US</country>
+      <state>CA</state>
+      <zip>94110</zip>
+    </address>
+    <email_address>john@email.com</email_address>
+    <first_name>John</first_name>
+    <last_name>Smith</last_name>
+    <method>email</method>
+  </delivery>
+  <gifter_account>
+    <account_code>e0004e3c-216c-4254-8767-9be605cd0b03</account_code>
+    <email>verena@example.com</email>
+    <first_name>Verena</first_name>
+    <last_name>Example</last_name>
+    <billing_info>
+      <country>US</country>
+      <currency>USD</currency>
+      <first_name>Verena</first_name>
+      <last_name>Example</last_name>
+      <month type="integer">11</month>
+      <number>4111-1111-1111-1111</number>
+      <verification_value>123</verification_value>
+      <year type="integer">2019</year>
+    </billing_info>
+  </gifter_account>
+  <product_code>test_gift_card</product_code>
+  <tax_service_opt_out>invalid</tax_service_opt_out>
+  <unit_amount_in_cents type="integer">2000</unit_amount_in_cents>
+</gift_card>
+
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<error>
+    <symbol>tax_service_opt_out</symbol>
+    <description>Allowed values: true, false</description>
+</error>
