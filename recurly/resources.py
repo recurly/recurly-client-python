@@ -1960,6 +1960,8 @@ class LineItem(Resource):
         When the line item was last changed.
     uuid : str
         The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    vertex_transaction_type : str
+        Used by Vertex for tax calculations. Possible values are sale, rental, lease.
     """
 
     schema = {
@@ -2022,6 +2024,7 @@ class LineItem(Resource):
         "unit_amount_decimal": str,
         "updated_at": datetime,
         "uuid": str,
+        "vertex_transaction_type": str,
     }
 
 
