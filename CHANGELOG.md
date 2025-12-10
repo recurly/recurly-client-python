@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.10.19](https://github.com/recurly/recurly-client-python/tree/2.10.19) (2025-12-10)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.18...2.10.19)
+
+
+**Merged Pull Requests**
+
+- Adding Vertex Transaction Type for Purchases Invoices and Adjustments [#733](https://github.com/recurly/recurly-client-python/pull/733) ([8eth](https://github.com/8eth))
+
+
+
 ## [2.10.18](https://github.com/recurly/recurly-client-python/tree/2.10.18) (2024-11-13)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/2.10.17...2.10.18)
