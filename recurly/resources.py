@@ -2420,6 +2420,8 @@ class SubscriptionChange(Resource):
         The ID of the Subscription Change.
     invoice_collection : InvoiceCollection
         Invoice Collection
+    next_bill_date : datetime
+        If present, this sets the date the subscription's next billing period will start (`current_period_ends_at`). When combined with proration_settings, proration calculation should occur, only supported when timeframe is now.
     object : str
         Object type
     plan : PlanMini
@@ -2453,6 +2455,7 @@ class SubscriptionChange(Resource):
         "deleted_at": datetime,
         "id": str,
         "invoice_collection": "InvoiceCollection",
+        "next_bill_date": datetime,
         "object": str,
         "plan": "PlanMini",
         "quantity": int,
