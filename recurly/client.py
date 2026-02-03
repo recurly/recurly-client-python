@@ -840,6 +840,64 @@ class Client(BaseClient):
         )
         return self._make_request("DELETE", path, None, **options)
 
+    def get_coupon_redemption(self, account_id, coupon_redemption_id, **options):
+        """Show the coupon redemption
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        coupon_redemption_id : str
+            Coupon Redemption ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        CouponRedemption
+            A coupon redemption.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/coupon_redemptions/%s", account_id, coupon_redemption_id
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def remove_coupon_redemption_by_id(
+        self, account_id, coupon_redemption_id, **options
+    ):
+        """Delete the coupon redemption
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+        coupon_redemption_id : str
+            Coupon Redemption ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        CouponRedemption
+            Coupon redemption deleted.
+        """
+        path = self._interpolate_path(
+            "/accounts/%s/coupon_redemptions/%s", account_id, coupon_redemption_id
+        )
+        return self._make_request("DELETE", path, None, **options)
+
     def list_account_credit_payments(self, account_id, **options):
         """List an account's credit payments
 
@@ -4873,6 +4931,70 @@ class Client(BaseClient):
             "/subscriptions/%s/coupon_redemptions", subscription_id
         )
         return Pager(self, path, **options)
+
+    def get_subscription_coupon_redemption(
+        self, subscription_id, coupon_redemption_id, **options
+    ):
+        """Show the coupon redemption for a subscription
+
+        Parameters
+        ----------
+
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+        coupon_redemption_id : str
+            Coupon Redemption ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        CouponRedemption
+            The coupon redemption on a subscription.
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/coupon_redemptions/%s",
+            subscription_id,
+            coupon_redemption_id,
+        )
+        return self._make_request("GET", path, None, **options)
+
+    def remove_subscription_coupon_redemption(
+        self, subscription_id, coupon_redemption_id, **options
+    ):
+        """Delete the coupon redemption from a subscription
+
+        Parameters
+        ----------
+
+        subscription_id : str
+            Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+        coupon_redemption_id : str
+            Coupon Redemption ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        CouponRedemption
+            Coupon redemption deleted.
+        """
+        path = self._interpolate_path(
+            "/subscriptions/%s/coupon_redemptions/%s",
+            subscription_id,
+            coupon_redemption_id,
+        )
+        return self._make_request("DELETE", path, None, **options)
 
     def list_usage(self, subscription_id, add_on_id, **options):
         """List a subscription add-on's usage records

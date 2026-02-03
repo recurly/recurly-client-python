@@ -1032,6 +1032,8 @@ class CouponRedemption(Resource):
         Subscription ID
     updated_at : datetime
         Last updated at
+    uuid : str
+        The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
     """
 
     schema = {
@@ -1046,6 +1048,7 @@ class CouponRedemption(Resource):
         "state": str,
         "subscription_id": str,
         "updated_at": datetime,
+        "uuid": str,
     }
 
 
@@ -2037,12 +2040,15 @@ class InvoiceCollection(Resource):
         Credit invoices
     object : str
         Object type
+    verification_transactions : :obj:`list` of :obj:`Transaction`
+        Verification transactions (used for free trial payment method validation)
     """
 
     schema = {
         "charge_invoice": "Invoice",
         "credit_invoices": ["Invoice"],
         "object": str,
+        "verification_transactions": ["Transaction"],
     }
 
 
@@ -2132,7 +2138,9 @@ class Subscription(Resource):
         Created at
     credit_application_policy : CreditApplicationPolicy
         Controls whether credit invoices are automatically applied to new invoices.
-        The `mode` field determines the application behavior.
+        The `mode` field determines the application behavior. When mode is `all`,
+        the optional `allowed_origins` array can restrict which credit invoice origins
+        are applied.
     currency : str
         3-letter ISO 4217 currency code.
     current_period_ends_at : datetime
@@ -2693,6 +2701,10 @@ class CreditApplicationPolicy(Resource):
     """
     Attributes
     ----------
+    allowed_origins : :obj:`list` of :obj:`str`
+        Optional array of credit invoice origin types to allow when mode is `all`.
+        If not specified when mode is `all`, credits from all origins are applied.
+        Only valid when mode is `all`.
     mode : str
         Determines which credit invoices are applied to invoices:
         - `all`: All available credit invoices are applied (default)
@@ -2700,6 +2712,7 @@ class CreditApplicationPolicy(Resource):
     """
 
     schema = {
+        "allowed_origins": list,
         "mode": str,
     }
 
