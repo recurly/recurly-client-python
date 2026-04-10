@@ -224,6 +224,10 @@ class Client(BaseClient):
 
         headers : dict
             Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.redact : bool
+            Permanently removes all personally identifiable information (PII) from this account after it has been deactivated, to fulfill a data subject's right to erasure under GDPR and similar privacy regulations (e.g. CCPA). Cannot be undone.
 
         Returns
         -------
@@ -233,6 +237,30 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/accounts/%s", account_id)
         return self._make_request("DELETE", path, None, **options)
+
+    def redact_account(self, account_id, **options):
+        """Redact an account (GDPR Right to Erasure)
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Account
+            Account has been accepted for redaction and will be processed asynchronously.
+        """
+        path = self._interpolate_path("/accounts/%s/redact", account_id)
+        return self._make_request("PUT", path, None, **options)
 
     def get_account_acquisition(self, account_id, **options):
         """Fetch an account's acquisition data
