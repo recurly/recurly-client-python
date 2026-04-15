@@ -234,6 +234,30 @@ class Client(BaseClient):
         path = self._interpolate_path("/accounts/%s", account_id)
         return self._make_request("DELETE", path, None, **options)
 
+    def redact_account(self, account_id, **options):
+        """Redact an account (GDPR Right to Erasure)
+
+        Parameters
+        ----------
+
+        account_id : str
+            Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        Account
+            Account has been accepted for redaction and will be processed asynchronously.
+        """
+        path = self._interpolate_path("/accounts/%s/redact", account_id)
+        return self._make_request("PUT", path, None, **options)
+
     def get_account_acquisition(self, account_id, **options):
         """Fetch an account's acquisition data
 
@@ -1986,6 +2010,32 @@ class Client(BaseClient):
             endpoint to obtain only the newly generated `UniqueCouponCodes`.
         """
         path = self._interpolate_path("/coupons/%s/generate", coupon_id)
+        return self._make_request("POST", path, body, **options)
+
+    def generate_unique_coupon_codes_sync(self, coupon_id, body, **options):
+        """Generate unique coupon codes synchronously
+
+        Parameters
+        ----------
+
+        coupon_id : str
+            Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`.
+        body : dict
+            The request body. It should follow the schema of CouponBulkCreateSync.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        UniqueCouponCodeGenerationResponse
+            The newly generated unique coupon codes.
+        """
+        path = self._interpolate_path("/coupons/%s/generate_sync", coupon_id)
         return self._make_request("POST", path, body, **options)
 
     def restore_coupon(self, coupon_id, body, **options):

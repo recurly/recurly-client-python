@@ -2739,6 +2739,22 @@ class UniqueCouponCodeParams(Resource):
     }
 
 
+class UniqueCouponCodeGenerationResponse(Resource):
+    """
+    Attributes
+    ----------
+    object : str
+        Object type
+    unique_coupon_codes : :obj:`list` of :obj:`UniqueCouponCode`
+        An array containing the newly generated unique coupon codes.
+    """
+
+    schema = {
+        "object": str,
+        "unique_coupon_codes": ["UniqueCouponCode"],
+    }
+
+
 class UniqueCouponCode(Resource):
     """
     Attributes
