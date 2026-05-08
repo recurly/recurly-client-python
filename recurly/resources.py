@@ -56,7 +56,7 @@ class Address(Resource):
     country : str
         Country, 2-letter ISO 3166-1 alpha-2 code.
     geo_code : str
-        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
+        Code that represents a geographic entity (location or object). Only returned when Vertex or Avalara for Communications is enabled.
     phone : str
         Phone number
     postal_code : str
@@ -251,7 +251,7 @@ class ShippingAddress(Resource):
     email : str
     first_name : str
     geo_code : str
-        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
+        Code that represents a geographic entity (location or object). Only returned when Vertex or Avalara for Communications is enabled.
     id : str
         Shipping Address ID
     last_name : str
@@ -508,12 +508,18 @@ class CustomField(Resource):
     ----------
     name : str
         Fields must be created in the UI before values can be assigned to them.
+    source_record_id : str
+        The UUID of the record this custom field was automatically copied from. Only present when the field was copied from another record.
+    source_record_type : str
+        The type of record this custom field was automatically copied from. Only present when the field was copied from another record.
     value : str
         Any values that resemble a credit card number or security code (CVV/CVC) will be rejected.
     """
 
     schema = {
         "name": str,
+        "source_record_id": str,
+        "source_record_type": str,
         "value": str,
     }
 
@@ -943,7 +949,7 @@ class AddressWithName(Resource):
     first_name : str
         First name
     geo_code : str
-        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
+        Code that represents a geographic entity (location or object). Only returned when Vertex or Avalara for Communications is enabled.
     last_name : str
         Last name
     phone : str
@@ -1568,6 +1574,8 @@ class Invoice(Resource):
         Credit payments
     currency : str
         3-letter ISO 4217 currency code.
+    custom_fields : :obj:`list` of :obj:`CustomField`
+        A list of custom fields that were on the account at the time of invoice creation and were marked to be displayed on invoices. Read-only; cannot be set directly on the invoice.
     customer_notes : str
         This will default to the Customer Notes text specified on the Invoice Settings. Specify custom notes to add or override Customer Notes.
     discount : float
@@ -1667,6 +1675,7 @@ class Invoice(Resource):
         "created_at": datetime,
         "credit_payments": ["CreditPayment"],
         "currency": str,
+        "custom_fields": ["CustomField"],
         "customer_notes": str,
         "discount": float,
         "due_at": datetime,
@@ -1718,7 +1727,7 @@ class InvoiceAddress(Resource):
     first_name : str
         First name
     geo_code : str
-        Code that represents a geographic entity (location or object). Only returned for Sling Vertex Integration
+        Code that represents a geographic entity (location or object). Only returned when Vertex or Avalara for Communications is enabled.
     last_name : str
         Last name
     name_on_account : str
