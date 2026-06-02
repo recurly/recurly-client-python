@@ -10,10 +10,13 @@ on:
       - master
       - qa
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - uses: r7kamura/semgrepper@v0
         continue-on-error: true
