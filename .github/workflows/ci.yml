@@ -1,6 +1,6 @@
 name: CI
 on: [push]
-concurrency: 
+concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 jobs:
@@ -11,9 +11,9 @@ jobs:
       matrix:
         python: ['3.8', '3.9', '3.10', '3.11']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6.0.3
       - name: Setup python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: ${{ matrix.python }}
       - run: ./scripts/build
