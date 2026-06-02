@@ -17,6 +17,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6.0.3
       - uses: r7kamura/semgrepper@v0
         continue-on-error: true
