@@ -3693,6 +3693,32 @@ class Client(BaseClient):
         path = self._interpolate_path("/invoices/%s/refund", invoice_id)
         return self._make_request("POST", path, body, **options)
 
+    def create_invoice_retry(self, body, **options):
+        """Create an invoice for revenue recovery
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of RecoveryInvoiceCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        InvoiceCollection
+            Returns the new invoices.
+        """
+        path = self._interpolate_path(
+            "/invoices/recovery",
+        )
+        return self._make_request("POST", path, body, **options)
+
     def list_line_items(self, **options):
         """List a site's line items
 

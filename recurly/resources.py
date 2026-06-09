@@ -1030,6 +1030,7 @@ class CouponRedemption(Resource):
         Coupon Redemption ID
     object : str
         Will always be `coupon`.
+    remaining_duration : CouponRedemptionRemainingDuration
     removed_at : datetime
         The date and time the redemption was removed from the account (un-redeemed).
     state : str
@@ -1050,6 +1051,7 @@ class CouponRedemption(Resource):
         "discounted": float,
         "id": str,
         "object": str,
+        "remaining_duration": "CouponRedemptionRemainingDuration",
         "removed_at": datetime,
         "state": str,
         "subscription_id": str,
@@ -1253,12 +1255,28 @@ class CouponDiscountTrial(Resource):
     length : int
         Trial length measured in the units specified by the sibling `unit` property
     unit : str
-        Temporal unit of the free trial
+        Temporal unit of the free trial. When `billing_period`, `length` represents the number of billing cycles.
     """
 
     schema = {
         "length": int,
         "unit": str,
+    }
+
+
+class CouponRedemptionRemainingDuration(Resource):
+    """
+    Attributes
+    ----------
+    expires_at : datetime
+        Present when `type` is `temporal`. The datetime after which this redemption will no longer apply.
+    type : str
+        The coupon's duration type. `temporal` includes an `expires_at` timestamp. `forever` and `single_use` have no additional fields.
+    """
+
+    schema = {
+        "expires_at": datetime,
+        "type": str,
     }
 
 
@@ -1568,6 +1586,8 @@ class Invoice(Resource):
         Date invoice was marked paid or failed.
     collection_method : str
         An automatic invoice means a corresponding transaction is run using the account's billing information at the same time the invoice is created. Manual invoices are created without a corresponding transaction. The merchant must enter a manual payment transaction or have the customer pay the invoice with an automatic method, like credit card, PayPal, Amazon, or ACH bank payment.
+    coupon_redemptions : :obj:`list` of :obj:`CouponRedemptionMini`
+        The coupon redemptions applied to this invoice.
     created_at : datetime
         Created at
     credit_payments : :obj:`list` of :obj:`CreditPayment`
@@ -1672,6 +1692,7 @@ class Invoice(Resource):
         "business_entity_id": str,
         "closed_at": datetime,
         "collection_method": str,
+        "coupon_redemptions": ["CouponRedemptionMini"],
         "created_at": datetime,
         "credit_payments": ["CreditPayment"],
         "currency": str,
@@ -1757,6 +1778,70 @@ class InvoiceAddress(Resource):
         "region": str,
         "street1": str,
         "street2": str,
+    }
+
+
+class CouponRedemptionMini(Resource):
+    """
+    Attributes
+    ----------
+    coupon : CouponMini
+    created_at : datetime
+        Created at
+    discounted : float
+        The amount that was discounted upon the application of the coupon, formatted with the currency.
+    id : str
+        Coupon Redemption ID
+    object : str
+        Will always be `coupon`.
+    remaining_duration : CouponRedemptionRemainingDuration
+    state : str
+        Coupon Redemption state
+    """
+
+    schema = {
+        "coupon": "CouponMini",
+        "created_at": datetime,
+        "discounted": float,
+        "id": str,
+        "object": str,
+        "remaining_duration": "CouponRedemptionRemainingDuration",
+        "state": str,
+    }
+
+
+class CouponMini(Resource):
+    """
+    Attributes
+    ----------
+    code : str
+        The code the customer enters to redeem the coupon.
+    coupon_type : str
+        Whether the coupon is "single_code" or "bulk". Bulk coupons will require a `unique_code_template` and will generate unique codes through the `/generate` endpoint.
+    discount : CouponDiscount
+        Details of the discount a coupon applies. Will contain a `type`
+        property and one of the following properties: `percent`, `fixed`, `trial`.
+    expired_at : datetime
+        The date and time the coupon was expired early or reached its `max_redemptions`.
+    id : str
+        Coupon ID
+    name : str
+        The internal name for the coupon.
+    object : str
+        Object type
+    state : str
+        Indicates if the coupon is redeemable, and if it is not, why.
+    """
+
+    schema = {
+        "code": str,
+        "coupon_type": str,
+        "discount": "CouponDiscount",
+        "expired_at": datetime,
+        "id": str,
+        "name": str,
+        "object": str,
+        "state": str,
     }
 
 
@@ -1876,7 +1961,9 @@ class LineItem(Resource):
     destination_tax_address_source : str
         The source of the address that will be used as the destinaion in determining taxes. Available only when the site is on an Elite plan. A value of "destination" refers to the "Customer tax address". A value of "origin" refers to the "Business entity tax address".
     discount : float
-        The discount applied to the line item.
+        The sum of all discounts applied to the line item.
+    discounts : :obj:`list` of :obj:`LineItemDiscount`
+        The breakdown of discounts applied to the line item by coupon redemption.
     end_date : datetime
         If this date is provided, it indicates the end of a time range.
     external_sku : str
@@ -1993,6 +2080,7 @@ class LineItem(Resource):
         "description": str,
         "destination_tax_address_source": str,
         "discount": float,
+        "discounts": ["LineItemDiscount"],
         "end_date": datetime,
         "external_sku": str,
         "harmonized_system_code": str,
@@ -2037,6 +2125,34 @@ class LineItem(Resource):
         "updated_at": datetime,
         "uuid": str,
         "vertex_transaction_type": str,
+    }
+
+
+class LineItemDiscount(Resource):
+    """
+    Attributes
+    ----------
+    coupon_id : str
+        The ID of the coupon that generated this discount.
+    coupon_redemption_id : str
+        The ID of the coupon redemption that generated this discount.
+    currency : str
+        3-letter ISO 4217 currency code.
+    discount_amount : float
+        The amount discounted on this line item by this coupon redemption.
+    object : str
+        Will always be `line_item_discount`.
+    order_applied : int
+        The order in which this discount was applied when multiple coupons were redeemed.
+    """
+
+    schema = {
+        "coupon_id": str,
+        "coupon_redemption_id": str,
+        "currency": str,
+        "discount_amount": float,
+        "object": str,
+        "order_applied": int,
     }
 
 
@@ -2348,68 +2464,6 @@ class ShippingMethodMini(Resource):
         "id": str,
         "name": str,
         "object": str,
-    }
-
-
-class CouponRedemptionMini(Resource):
-    """
-    Attributes
-    ----------
-    coupon : CouponMini
-    created_at : datetime
-        Created at
-    discounted : float
-        The amount that was discounted upon the application of the coupon, formatted with the currency.
-    id : str
-        Coupon Redemption ID
-    object : str
-        Will always be `coupon`.
-    state : str
-        Invoice state
-    """
-
-    schema = {
-        "coupon": "CouponMini",
-        "created_at": datetime,
-        "discounted": float,
-        "id": str,
-        "object": str,
-        "state": str,
-    }
-
-
-class CouponMini(Resource):
-    """
-    Attributes
-    ----------
-    code : str
-        The code the customer enters to redeem the coupon.
-    coupon_type : str
-        Whether the coupon is "single_code" or "bulk". Bulk coupons will require a `unique_code_template` and will generate unique codes through the `/generate` endpoint.
-    discount : CouponDiscount
-        Details of the discount a coupon applies. Will contain a `type`
-        property and one of the following properties: `percent`, `fixed`, `trial`.
-    expired_at : datetime
-        The date and time the coupon was expired early or reached its `max_redemptions`.
-    id : str
-        Coupon ID
-    name : str
-        The internal name for the coupon.
-    object : str
-        Object type
-    state : str
-        Indicates if the coupon is redeemable, and if it is not, why.
-    """
-
-    schema = {
-        "code": str,
-        "coupon_type": str,
-        "discount": "CouponDiscount",
-        "expired_at": datetime,
-        "id": str,
-        "name": str,
-        "object": str,
-        "state": str,
     }
 
 
