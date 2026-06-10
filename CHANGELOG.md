@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.72.0](https://github.com/recurly/recurly-client-python/tree/4.72.0) (2026-06-10)
+
+[Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.71.0...4.72.0)
+
+
+**Merged Pull Requests**
+
+- Generated Latest Changes for v2021-02-25 [#746](https://github.com/recurly/recurly-client-python/pull/746) ([recurly-integrations](https://github.com/recurly-integrations))
+- ci: Remediate Node.js 20 deprecation in GitHub Actions workflows [#745](https://github.com/recurly/recurly-client-python/pull/745) ([jparrabedoya](https://github.com/jparrabedoya))
+
+
+
 ## [4.71.0](https://github.com/recurly/recurly-client-python/tree/4.71.0) (2026-05-20)
 
 [Full Changelog](https://github.com/recurly/recurly-client-python/compare/4.70.0...4.71.0)
