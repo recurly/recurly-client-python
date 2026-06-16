@@ -784,6 +784,8 @@ class Transaction(Resource):
         Language code for the message
     cvv_check : str
         When processed, result from checking the CVV/CVC value on the transaction.
+    description : str
+        The description that gets sent to the gateway.
     fraud_info : TransactionFraudInfo
         Fraud information
     gateway_approval_code : str
@@ -876,6 +878,7 @@ class Transaction(Resource):
         "customer_message": str,
         "customer_message_locale": str,
         "cvv_check": str,
+        "description": str,
         "fraud_info": "TransactionFraudInfo",
         "gateway_approval_code": str,
         "gateway_message": str,
@@ -2331,6 +2334,8 @@ class Subscription(Resource):
         Null unless subscription is paused or will pause at the end of the current billing period.
     renewal_billing_cycles : int
         If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
+    resume_at : datetime
+        The date the subscription billing resumes following a pause. Null unless the subscription is paused or scheduled to be paused.
     revenue_schedule_type : str
         Revenue schedule type
     shipping : SubscriptionShipping
@@ -2406,6 +2411,7 @@ class Subscription(Resource):
         "remaining_billing_cycles": int,
         "remaining_pause_cycles": int,
         "renewal_billing_cycles": int,
+        "resume_at": datetime,
         "revenue_schedule_type": str,
         "shipping": "SubscriptionShipping",
         "started_with_gift": bool,
