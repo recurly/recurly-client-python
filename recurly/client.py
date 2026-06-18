@@ -224,6 +224,10 @@ class Client(BaseClient):
 
         headers : dict
             Extra HTTP headers to send with the request.
+        params : dict
+            Query Parameters.
+        params.redact : bool
+            Permanently removes all personally identifiable information (PII) from this account after it has been deactivated, to fulfill a data subject's right to erasure under GDPR and similar privacy regulations (e.g. CCPA). Cannot be undone.
 
         Returns
         -------

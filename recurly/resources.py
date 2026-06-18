@@ -3963,27 +3963,6 @@ class InvoiceTemplate(Resource):
     }
 
 
-class Entitlements(Resource):
-    """
-    Attributes
-    ----------
-    data : :obj:`list` of :obj:`Entitlement`
-    has_more : bool
-        Indicates there are more results on subsequent pages.
-    next : str
-        Path to subsequent page of results.
-    object : str
-        Object Type
-    """
-
-    schema = {
-        "data": ["Entitlement"],
-        "has_more": bool,
-        "next": str,
-        "object": str,
-    }
-
-
 class Entitlement(Resource):
     """
     Attributes
