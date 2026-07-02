@@ -1273,12 +1273,15 @@ class CouponRedemptionRemainingDuration(Resource):
     ----------
     expires_at : datetime
         Present when `type` is `temporal`. The datetime after which this redemption will no longer apply.
+    redemptions_remaining : int
+        The number of redemption periods remaining for which this coupon will still apply.
     type : str
-        The coupon's duration type. `temporal` includes an `expires_at` timestamp. `forever` and `single_use` have no additional fields.
+        The coupon's duration type. `temporal` includes an `expires_at` timestamp. `billing_periods` includes a `redemptions_remaining` count of billing cycles. `forever` and `single_use` have no additional fields.
     """
 
     schema = {
         "expires_at": datetime,
+        "redemptions_remaining": int,
         "type": str,
     }
 
@@ -3541,7 +3544,7 @@ class AddOnPricing(Resource):
     unit_amount : float
         Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
     unit_amount_decimal : str
-        Allows up to 9 decimal places. Only supported when `add_on_type` = `usage`.
+        Allows up to 9 decimal places.
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
@@ -3581,7 +3584,7 @@ class TierPricing(Resource):
     unit_amount : float
         Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
     unit_amount_decimal : str
-        Allows up to 9 decimal places. Only supported when `add_on_type` = `usage`.
+        Allows up to 9 decimal places.
         If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
     """
 
