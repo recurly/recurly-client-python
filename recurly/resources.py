@@ -392,6 +392,10 @@ class PaymentMethod(Resource):
         Expiration year.
     first_six : str
         Credit card number's first six digits.
+
+        For a tokenized wallet payment (`apple_pay`, `google_pay`, or
+        `google_pay_device_pan`), this is the DPAN's (the wallet/device token's own
+        number) first six digits, not the underlying card's (FPAN).
     funding_source : str
         The funding source of the card, if known.
     gateway_attributes : GatewayAttributes
@@ -401,7 +405,12 @@ class PaymentMethod(Resource):
     gateway_token : str
         A token used in place of a credit card in order to perform transactions.
     last_four : str
-        Credit card number's last four digits. Will refer to bank account if payment method is ACH.
+        Credit card number's last four digits. Will refer to bank account if payment
+        method is ACH.
+
+        For a tokenized wallet payment (`apple_pay`, `google_pay`, or
+        `google_pay_device_pan`), this is the DPAN's last four digits, not the
+        underlying card's (FPAN).
     last_two : str
         The IBAN bank account's last two digits.
     name_on_account : str
@@ -833,6 +842,8 @@ class Transaction(Resource):
     original_transaction_id : str
         If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
     payment_gateway : TransactionPaymentGateway
+    payment_gateway_references : :obj:`list` of :obj:`PaymentGatewayReferences`
+        Array of Payment Gateway References captured at transaction time, each a reference to a third-party gateway object of varying types.
     payment_method : PaymentMethod
     refunded : bool
         Indicates if part or all of this transaction was refunded.
@@ -897,6 +908,7 @@ class Transaction(Resource):
         "origin": str,
         "original_transaction_id": str,
         "payment_gateway": "TransactionPaymentGateway",
+        "payment_gateway_references": ["PaymentGatewayReferences"],
         "payment_method": "PaymentMethod",
         "refunded": bool,
         "status": str,
@@ -1112,7 +1124,11 @@ class Coupon(Resource):
     plans : :obj:`list` of :obj:`PlanMini`
         A list of plans for which this coupon applies. This will be `null` if `applies_to_all_plans=true`.
     redeem_by : datetime
-        The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
+        The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time. Null for bulk coupons configured with a relative redeem-by interval (see redeem_by_interval_unit and redeem_by_interval_amount).
+    redeem_by_interval_amount : int
+        For a bulk coupon with a relative redeem-by, the number of redeem_by_interval_unit intervals after a code's generation that it remains redeemable. Null unless the coupon uses a relative redeem-by.
+    redeem_by_interval_unit : str
+        For a bulk coupon with a relative redeem-by, the unit of the interval after which each generated unique code expires. Null unless the coupon uses a relative redeem-by.
     redemption_resource : str
         Whether the discount is for all eligible charges on the account, or only a specific subscription.
     state : str
@@ -1153,6 +1169,8 @@ class Coupon(Resource):
         "object": str,
         "plans": ["PlanMini"],
         "redeem_by": datetime,
+        "redeem_by_interval_amount": int,
+        "redeem_by_interval_unit": str,
         "redemption_resource": str,
         "state": str,
         "temporal_amount": int,
@@ -2845,6 +2863,8 @@ class UniqueCouponCode(Resource):
         Unique Coupon Code ID
     object : str
         Object type
+    redeem_by_date : datetime
+        Absolute expiry computed and stored at code-generation time. Set only for Window (relative redeem-by) coupons. Null for Anytime coupons and Specific Date coupons — those resolve expiry from the parent coupon's redeem_by at redemption time, not at code-generation time.
     redeemed_at : datetime
         The date and time the unique coupon code was redeemed.
     state : str
@@ -2861,6 +2881,7 @@ class UniqueCouponCode(Resource):
         "expired_at": datetime,
         "id": str,
         "object": str,
+        "redeem_by_date": datetime,
         "redeemed_at": datetime,
         "state": str,
         "updated_at": datetime,
