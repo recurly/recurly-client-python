@@ -3936,11 +3936,33 @@ class DunningInterval(Resource):
         Number of days before sending the next email.
     email_template : str
         Email template being used.
+    email_template_id : str
+        The id of the custom email template assigned to this interval, from `GET /dunning_campaigns/email_templates`. `null` means the system default template for this interval. Accepted on write; round-tripped on read.
     """
 
     schema = {
         "days": int,
         "email_template": str,
+        "email_template_id": str,
+    }
+
+
+class DunningCampaignEmailTemplate(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+        The id to assign under `intervals[].email_template_id`.
+    name : str
+        Template name.
+    type : str
+        The root template this custom template replaces, e.g. `payment_declined`, `invoice_past_due`, `post_trial_payment_declined`, `subscription_canceled_nonpayment`.
+    """
+
+    schema = {
+        "id": str,
+        "name": str,
+        "type": str,
     }
 
 

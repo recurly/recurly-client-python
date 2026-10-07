@@ -5604,6 +5604,32 @@ class Client(BaseClient):
         )
         return Pager(self, path, **options)
 
+    def create_dunning_campaign(self, body, **options):
+        """Create a new dunning campaign
+
+        Parameters
+        ----------
+
+        body : dict
+            The request body. It should follow the schema of DunningCampaignCreate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        DunningCampaign
+            A new dunning campaign.
+        """
+        path = self._interpolate_path(
+            "/dunning_campaigns",
+        )
+        return self._make_request("POST", path, body, **options)
+
     def get_dunning_campaign(self, dunning_campaign_id, **options):
         """Fetch a dunning campaign
 
@@ -5627,6 +5653,70 @@ class Client(BaseClient):
         """
         path = self._interpolate_path("/dunning_campaigns/%s", dunning_campaign_id)
         return self._make_request("GET", path, None, **options)
+
+    def update_dunning_campaign(self, dunning_campaign_id, body, **options):
+        """Update a dunning campaign
+
+        Parameters
+        ----------
+
+        dunning_campaign_id : str
+            Dunning Campaign ID, e.g. `e28zov4fw0v2`.
+        body : dict
+            The request body. It should follow the schema of DunningCampaignUpdate.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        DunningCampaign
+            The updated dunning campaign.
+        """
+        path = self._interpolate_path("/dunning_campaigns/%s", dunning_campaign_id)
+        return self._make_request("PUT", path, body, **options)
+
+    def deactivate_dunning_campaign(self, dunning_campaign_id, **options):
+        """Deactivate a dunning campaign
+
+        Parameters
+        ----------
+
+        dunning_campaign_id : str
+            Dunning Campaign ID, e.g. `e28zov4fw0v2`.
+
+        Keyword Arguments
+        -----------------
+
+        headers : dict
+            Extra HTTP headers to send with the request.
+
+        Returns
+        -------
+
+        DunningCampaign
+            The deactivated dunning campaign.
+        """
+        path = self._interpolate_path("/dunning_campaigns/%s", dunning_campaign_id)
+        return self._make_request("DELETE", path, None, **options)
+
+    def list_dunning_campaign_email_templates(self, **options):
+        """List the custom email templates assignable to a dunning campaign interval
+
+        Returns
+        -------
+
+        Pager
+            A list of the site's assignable custom email templates.
+        """
+        path = self._interpolate_path(
+            "/dunning_campaigns/email_templates",
+        )
+        return Pager(self, path, **options)
 
     def put_dunning_campaign_bulk_update(self, dunning_campaign_id, body, **options):
         """Assign a dunning campaign to multiple plans
