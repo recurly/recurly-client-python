@@ -2,12 +2,10 @@ import http.client
 import socket
 from base64 import b64encode
 import json
-from . import resources
 from .resource import Resource, Empty
 from .request import Request
 from .response import Response
 from recurly import USER_AGENT, DEFAULT_REQUEST_TIMEOUT, ApiError, NetworkError
-from pydoc import locate
 import urllib.parse
 from datetime import datetime
 from enum import Enum
@@ -30,7 +28,6 @@ def request_converter(value):
 class BaseClient:
     def __init__(self, api_key, timeout=None, **options):
         self.__api_key = api_key
-        actual_timeout = timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
         api_host = HOST
 
         if "region" in options:
@@ -42,8 +39,16 @@ class BaseClient:
 
             api_host = API_HOSTS[options["region"]]
 
+        self.__actual_timeout = (
+            timeout if timeout is not None else DEFAULT_REQUEST_TIMEOUT
+        )
+        self.__api_host = api_host
+        self._create_conn()
+        self.__needs_reset = False
+
+    def _create_conn(self):
         self.__conn = http.client.HTTPSConnection(
-            api_host, PORT, timeout=actual_timeout
+            self.__api_host, PORT, timeout=self.__actual_timeout
         )
 
     def _make_request(self, method, path, body, **options):
@@ -66,9 +71,16 @@ class BaseClient:
             if "params" in options:
                 path += "?" + self._url_encode(options["params"])
 
+            # Every __conn must have getresponse() called on it successfully
+            # or it must be thrown away
+            if self.__needs_reset:
+                self._create_conn()
+
+            self.__needs_reset = True
             self.__conn.request(method, path, body, headers=headers)
             request = Request(method, path, body)
             resp = Response(self.__conn.getresponse(), request)
+            self.__needs_reset = False
 
             if resp.status >= 400:
                 if resp.body:
