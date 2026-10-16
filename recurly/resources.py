@@ -1421,6 +1421,8 @@ class ExternalSubscription(Resource):
         The id of the subscription in the external systems., I.e. Apple App Store or Google Play Store.
     external_payment_phases : :obj:`list` of :obj:`ExternalPaymentPhase`
         The phases of the external subscription payment lifecycle.
+    external_product : ExternalProductMini
+        Just the important parts.
     external_product_reference : ExternalProductReferenceMini
         External Product Reference details
     id : str
@@ -1433,6 +1435,8 @@ class ExternalSubscription(Resource):
         When a new billing event occurred on the external subscription in conjunction with a recent billing period, reactivation or upgrade/downgrade.
     object : str
         Object type
+    plan : PlanMini
+        Just the important parts.
     quantity : int
         An indication of the quantity of a subscribed item's quantity.
     state : str
@@ -1459,12 +1463,14 @@ class ExternalSubscription(Resource):
         "expires_at": datetime,
         "external_id": str,
         "external_payment_phases": ["ExternalPaymentPhase"],
+        "external_product": "ExternalProductMini",
         "external_product_reference": "ExternalProductReferenceMini",
         "id": str,
         "imported": bool,
         "in_grace_period": bool,
         "last_purchased": datetime,
         "object": str,
+        "plan": "PlanMini",
         "quantity": int,
         "state": str,
         "test": bool,
@@ -1500,6 +1506,25 @@ class ExternalProductReferenceMini(Resource):
         "object": str,
         "reference_code": str,
         "updated_at": datetime,
+    }
+
+
+class ExternalProductMini(Resource):
+    """
+    Attributes
+    ----------
+    id : str
+        External product ID
+    name : str
+        The merchant-facing name of the external product.
+    object : str
+        Object type
+    """
+
+    schema = {
+        "id": str,
+        "name": str,
+        "object": str,
     }
 
 
