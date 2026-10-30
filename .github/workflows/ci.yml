@@ -7,7 +7,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-26.04 runners lack Python 3.8/3.9 builds for actions/setup-python.
+    runs-on: ubuntu-24.04
     name: Python ${{ matrix.python }} tests
     strategy:
       matrix:
@@ -22,7 +23,7 @@ jobs:
       - run: ./scripts/test
   buildall:
     if: ${{ always() }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Build (matrix)
     needs: build
     steps:
