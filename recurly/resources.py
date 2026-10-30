@@ -484,7 +484,7 @@ class PaymentGatewayReferences(Resource):
     Attributes
     ----------
     reference_type : str
-        The type of reference token. Required if token is passed in for Stripe Gateway or Ebanx UPI.
+        The type of reference token. The value can be omitted for gateways that only support one type of token.
     token : str
         Reference value used when the external token was created. If a Stripe gateway or Ebanx gateway is used, this value will need to be accompanied by its reference_type.
     """
@@ -2549,6 +2549,8 @@ class SubscriptionChange(Resource):
         Object type
     plan : PlanMini
         Just the important parts.
+    price_segment_id : str
+        The price segment ID, e.g. `e28zov4fw0v2`.
     quantity : int
         Subscription quantity
     ramp_intervals : :obj:`list` of :obj:`SubscriptionRampIntervalResponse`
@@ -2581,6 +2583,7 @@ class SubscriptionChange(Resource):
         "next_bill_date": datetime,
         "object": str,
         "plan": "PlanMini",
+        "price_segment_id": str,
         "quantity": int,
         "ramp_intervals": ["SubscriptionRampIntervalResponse"],
         "revenue_schedule_type": str,
